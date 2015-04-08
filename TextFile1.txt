@@ -1,0 +1,343 @@
+﻿
+
+//////            int numPos = 1;
+//////            //TODO: а теперь из DATA заполним таблицу командами
+
+//////            bool wrkspd = false;
+//////            decimal x=0,y=0,z=0;
+
+
+
+//////            foreach (LineCommands lcmd in GKode.kode)
+//////            {
+//////                int p = dataGrid.Rows.Add();
+
+//////                dataGrid.Rows[p].Cells[0].Value = "[" + numPos.ToString().PadLeft(GKode.CountRow.ToString().Length, '0') + "]" + " " + lcmd.sGoodsCmd;
+//////                dataGrid.Rows[p].Cells[1].Value = lcmd.sBadCmd;
+
+////////*******
+//////                try
+//////                {
+//////                    foreach (string ss in lcmd.Cmd)
+//////                    {
+//////                        if (ss.Trim() == "G0" || ss.Trim() == "G00") wrkspd = false;
+
+//////                        if (ss.Trim() == "G1" || ss.Trim() == "G01") wrkspd = true;
+
+//////                        if (ss.Substring(0, 1) == "X")
+//////                        {
+//////                            string value = ss.Substring(1).Trim().Replace('.', ',');
+//////                            x = decimal.Parse(value);
+//////                        }
+
+//////                        if (ss.Substring(0, 1) == "Y")
+//////                        {
+//////                            string value = ss.Substring(1).Trim().Replace('.', ',');
+//////                            y = decimal.Parse(value);
+//////                        }
+
+//////                        if (ss.Substring(0, 1) == "Z")
+//////                        {
+//////                            string value = ss.Substring(1).Trim().Replace('.', ',');
+//////                            z = decimal.Parse(value);
+//////                        }
+//////                    }
+//////                }
+//////                catch (Exception)
+//////                {
+                    
+//////                   // throw;
+//////                }
+
+
+
+//////                G3D.points.Add(new G3Dpoint(x, y, z, wrkspd, numPos));
+
+
+
+//////                //******
+
+                
+//////                toolStripProgressBar.Value = numPos-1;
+//////                numPos++;
+//////            }
+
+
+//////            toolStripProgressBar.Value = GKode.CountRow;
+
+//////            dataGrid.Rows[0].Selected = true;
+//////            //labelWorkingRow.Text = @"Выполнение будет со строки: 1";
+
+
+
+        //private void button2_Click(object sender, EventArgs e)
+        //{
+        //    //TODO: создание пустой матрицы
+
+        //    dataCode.Matrix.Clear();
+        //    for (int y = 0; y < numericUpDown2.Value; y++)
+        //    {
+        //        matrixYline my = new matrixYline();
+
+        //        for (int x = 0; x < numericUpDown1.Value; x++)
+        //        {
+        //            my.X.Add(new matrixPoint(0,0,false));
+        //        }
+        //        dataCode.Matrix.Add(my);
+        //    }
+
+
+        //    // наполнение
+        //    foreach (Point pp in _pointsForScan)
+        //    {
+        //        dataCode.Matrix[pp.IndexY].Y = pp.Y;
+        //        dataCode.Matrix[pp.IndexY].X[pp.IndexX].X = pp.X;
+        //        dataCode.Matrix[pp.IndexY].X[pp.IndexX].Z = pp.Z;
+        //        dataCode.Matrix[pp.IndexY].X[pp.IndexX].Used = true;
+        //    }
+
+        //}
+
+
+
+		
+
+            //TODO: наполнить массив данными для сканирования
+            //for (int x = 0; x < numCountX.Value; x++)
+            //{
+            //    for (int y = 0; y < numCountY.Value; y++)
+            //    {
+            //        //_pointsForScan.Add(new Point(numPosX.Value + (x * numericUpDown3.Value), numPosY.Value + (y * numericUpDown3.Value), deviceInfo.AxesZ_PositionMM, x, y));
+
+            //        dataGridView.Rows[y + 1].Cells[x + 1].Value = deviceInfo.AxesZ_PositionMM;
+            //    }
+            //}
+
+
+
+
+
+            //TODO: создание пустой матрицы
+
+            //dataCode.Matrix.Clear();
+            //for (int y = 0; y < numCountY.Value; y++)
+            //{
+            //    matrixYline my = new matrixYline();
+
+            //    for (int x = 0; x < numCountX.Value; x++)
+            //    {
+            //        my.X.Add(new matrixPoint(0, 0, false));
+            //    }
+            //    dataCode.Matrix.Add(my);
+            //}
+
+
+            // наполнение
+            //foreach (Point pp in _pointsForScan)
+            //{
+            //    dataCode.Matrix[pp.IndexY].Y = pp.Y;
+            //    dataCode.Matrix[pp.IndexY].X[pp.IndexX].X = pp.X;
+            //    dataCode.Matrix[pp.IndexY].X[pp.IndexX].Z = pp.Z;
+            //    dataCode.Matrix[pp.IndexY].X[pp.IndexX].Used = true;
+            //}
+
+      
+
+	  
+
+
+      //////////// Поток выполняющий сканирование
+      //////////  private void theads()
+      //////////  {
+      //////////      if (_ctrl.ShpindelMoveSpeed != 0) return;
+            
+      //////////      //координаты куда передвинуться
+      //////////      decimal px = dataCode.Matrix[indexScanY].X[indexScanX].X;
+      //////////      decimal pz = dataCode.Matrix[indexScanY].X[indexScanX].Z;
+      //////////      decimal py = dataCode.Matrix[indexScanY].Y;
+
+      //////////      //спозиционируемся
+      //////////      _ctrl.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
+
+      //////////      //опустим щуп
+      //////////      _ctrl.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
+      //////////      _ctrl.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
+      //////////      _ctrl.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
+
+
+
+
+
+
+            
+      //////////      //TODO: придумать как это убрать - тут подождем
+      //////////      System.Threading.Thread.Sleep(1000);
+
+      //////////      while (_ctrl.ShpindelMoveSpeed != 0)
+      //////////      {
+      //////////          dataCode.Matrix[indexScanY].X[indexScanX].Z = deviceInfo.AxesZ_PositionMM - numReturn.Value;
+      //////////      }
+
+
+      //////////      if (indexScanX == indexMaxScanX && indexScanY == indexMaxScanY)
+      //////////      {
+      //////////          Scan = false;
+      //////////          _ctrl.SendBinaryData(BinaryData.pack_FF());
+      //////////      }
+
+      //////////      if (indexScanX < indexMaxScanX)
+      //////////      {
+      //////////          indexScanX++;
+      //////////      }
+      //////////      else
+      //////////      {
+      //////////          indexScanX = 0;
+
+      //////////          if (indexScanY < indexMaxScanY)
+      //////////          {
+      //////////              indexScanY++;
+      //////////          }
+      //////////          else
+      //////////          {
+      //////////              indexScanY = 0;
+      //////////          }
+      //////////      }
+      //////////  }
+ 
+
+
+ 
+
+                //Gl.glLineStipple(1, 0x00FF); //Штриховая
+
+            //#region Отображение инструкций из конструктора команд
+
+            ////if (cbShowConstructor.Checked)
+            ////{
+            ////    foreach (object pObj in DATA_Conctructor)
+            ////    {
+            ////        if (pObj.GetType() == new cLine().GetType()) //проверим в данных это линия?
+            ////        {
+            ////            cLine line = (cLine)pObj;
+
+            ////            Gl.glColor3f(100, 2100, 0);
+            ////            Gl.glLineWidth(3);
+
+            ////            Gl.glBegin(Gl.GL_LINES);
+            ////            Gl.glVertex3d(line.pointStart.Xd, line.pointStart.Yd, line.pointStart.Zd);
+            ////            Gl.glVertex3d(line.pointEnd.Xd, line.pointEnd.Yd, line.pointEnd.Zd);
+            ////            Gl.glEnd();
+            ////            Gl.glLineWidth(1);
+            ////        }
+
+            ////        if (pObj.GetType() == new cCircle().GetType()) //проверим в данных это линия?
+            ////        {
+            ////            cCircle circle = (cCircle)pObj;
+            ////            //вызовем функцию, которая вернет массив точек круга
+            ////            List<cLine> circleline = GetCircleToLine(circle);
+
+            ////            Gl.glColor3f(100, 2100, 0);
+            ////            Gl.glLineWidth(3);
+            ////            foreach (cLine line in circleline)
+            ////            {
+            ////                Gl.glBegin(Gl.GL_LINES);
+            ////                Gl.glVertex3d(line.pointStart.Xd, line.pointStart.Yd, line.pointStart.Zd);
+            ////                Gl.glVertex3d(line.pointEnd.Xd, line.pointEnd.Yd, line.pointEnd.Zd);
+            ////            }
+            ////            Gl.glEnd();
+            ////            Gl.glLineWidth(1);
+            ////        }
+            ////    }
+
+
+            ////    //переделать
+            ////    //foreach (TreeNode tr in treeViewCommands.Nodes[0].Nodes)
+            ////    //{
+            ////    //    if (tr.Name == "line")
+            ////    //    {
+
+            ////    //    }
+
+            ////    //    if (tr.Name == "circle")
+            ////    //    {
+            ////    //        Gl.glColor3f(100, 2100, 0);
+            ////    //        Gl.glLineWidth(3);
+
+            ////    //        //вызовем функцию, которая вернет массив точек круга
+            ////    //        List<Point3D> circlePoints = new List<Point3D>();
+
+            ////    //        circlePoints = GetCircle(tr);
+
+            ////    //        double tmpx = double.Parse(tr.Nodes["X1"].Text);
+            ////    //        double tmpy = double.Parse(tr.Nodes["Y1"].Text);
+
+            ////    //        foreach (Point3D pp in circlePoints)
+            ////    //        {
+            ////    //            Gl.glBegin(Gl.GL_LINES);
+            ////    //            Gl.glVertex3d(tmpx, tmpy, 0);
+            ////    //            Gl.glVertex3d(pp.X, pp.Y, 0);
+            ////    //            Gl.glEnd();
+            ////    //            tmpx = pp.X;
+            ////    //            tmpy = pp.Y;
+            ////    //        }
+            ////    //        Gl.glLineWidth(1);
+            ////    //    }
+            ////    //}
+            ////}
+
+            //#endregion
+            //#region Отображение любимых точек
+
+            ////Gl.glColor3f(1.0F, 1.0F, 1.0F);
+            ////Gl.glPointSize((float)PointsSize.Value);
+            ////Gl.glBegin(Gl.GL_POINTS);
+
+            ////foreach (cPoint poi in DATA_Points)
+            ////{
+            ////    Gl.glVertex3d((double)poi.X, (double)poi.Y, (double)poi.Z);
+            ////}
+
+            ////Gl.glEnd();
+
+            ////if (cbPointShowNumbers.Checked)
+            ////{
+            ////    int ix = 0;
+            ////    foreach (cPoint poi in DATA_Points)
+            ////    {
+            ////        Gl.glRasterPos3d((double)poi.X, (double)poi.Y, (double)poi.Z); //координаты расположения текста
+            ////        Glut.glutBitmapString(Glut.GLUT_BITMAP_9_BY_15, ix.ToString());
+            ////        ix++;
+            ////    }
+            ////}
+
+
+            //#endregion
+
+
+
+
+
+
+			//ОТЛАДКА математики
+			private void button4_Click_1(object sender, EventArgs e)
+			{
+				Point p1 = new Point(numericUpDown11.Value, numericUpDown10.Value, numericUpDown9.Value);
+				Point p2 = new Point(numericUpDown12.Value, numericUpDown14.Value, numericUpDown13.Value);
+				Point p3 = new Point(numericUpDown15.Value, numericUpDown17.Value, numericUpDown16.Value);
+				Point p4 = new Point(numericUpDown21.Value, numericUpDown23.Value, numericUpDown22.Value);
+
+				Point p5 = new Point(numericUpDown18.Value, numericUpDown20.Value, numericUpDown19.Value);
+
+
+				Point p12 = Geometry.CalcPX(p1, p2, p5);
+				Point p34 = Geometry.CalcPX(p3, p4, p5);
+
+				Point p1234 = Geometry.CalcPY(p12, p34, p5);
+
+				numericUpDown24.Value = p1234.X;
+				numericUpDown26.Value = p1234.Y;
+				numericUpDown25.Value = p1234.Z;
+
+				//Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
+
+			}
