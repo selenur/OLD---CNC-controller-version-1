@@ -1202,33 +1202,56 @@ namespace CNC_Controller
                     dobPoint pResult = new dobPoint(pointX, pointY, pointZ);
 
                     int indexXmin = 0;
-                    int indexXmax = 0;
 
-                    for (int x = 0; x < dataCode.matrix2.GetLength(0); x++)
+                    int indexYmin = 0;
+
+                    for (int x = 0; x < dataCode.matrix2.GetLength(0)-1; x++)
                     {
-                        if (dataCode.matrix2[x, 0].X > pResult.X) indexXmax = x;
-                        if (dataCode.matrix2[x, 0].X < pResult.X) indexXmin = x;
+                        //нужно текущую точку проверить между 2-х точек
+
+                        if (dataCode.matrix2[x, 0].X < pResult.X && dataCode.matrix2[x + 1, 0].X > pResult.X)
+                        {
+                            indexXmin = x;
+                        }
                     }
 
 
-
-                    for (int y = 0; y < dataCode.matrix2.GetLength(1); y++)
+                    for (int y = 0; y < dataCode.matrix2.GetLength(1)-1; y++)
                     {
-
-
-
-
-
-
-
-
-
+                        if (dataCode.matrix2[0, y].Y < pResult.Y && dataCode.matrix2[0, y+1].Y > pResult.Y)
+                        {
+                            indexYmin = y;
+                        }
                     }
 
 
                     //2) запустим математику
 
+                    dobPoint p1 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin].X, dataCode.matrix2[indexXmin, indexYmin].Y, dataCode.matrix2[indexXmin, indexYmin].Z);
+                    dobPoint p2 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin+1].X, dataCode.matrix2[indexXmin, indexYmin+1].Y, dataCode.matrix2[indexXmin, indexYmin+1].Z);
+                    dobPoint p3 = new dobPoint(dataCode.matrix2[indexXmin+1, indexYmin].X, dataCode.matrix2[indexXmin+1, indexYmin].Y, dataCode.matrix2[indexXmin+1, indexYmin].Z);
+                    dobPoint p4 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin + 1].X, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Y, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Z);
 
+                    //Point p1 = new Point(numericUpDown11.Value, numericUpDown10.Value, numericUpDown9.Value);
+                    //Point p2 = new Point(numericUpDown12.Value, numericUpDown14.Value, numericUpDown13.Value);
+                    //Point p3 = new Point(numericUpDown15.Value, numericUpDown17.Value, numericUpDown16.Value);
+                    //Point p4 = new Point(numericUpDown21.Value, numericUpDown23.Value, numericUpDown22.Value);
+
+                    //Point p5 = new Point(numericUpDown18.Value, numericUpDown20.Value, numericUpDown19.Value);
+
+
+                    dobPoint p12 = Geometry.CalcPX(p1, p2, pResult);
+                    dobPoint p34 = Geometry.CalcPX(p3, p4, pResult);
+
+                    dobPoint p1234 = Geometry.CalcPY(p12, p34, pResult);
+
+                    pointZ = p1234.Z;
+
+                    //numericUpDown24.Value = p1234.X;
+                    //numericUpDown26.Value = p1234.Y;
+                    //numericUpDown25.Value = p1234.Z;
+
+                    ////Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
 
                 }
 

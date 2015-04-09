@@ -1571,20 +1571,20 @@ namespace CNC_Controller
         /// <param name="p4">вторая точка второй линии X</param>
         /// <param name="p5">точка у которой нужно скорректировать высоту</param>
         /// <returns></returns>
-        public static decPoint GetZ(decPoint p1, decPoint p2, decPoint p3, decPoint p4, decPoint p5)
+        public static dobPoint GetZ(dobPoint p1, dobPoint p2, dobPoint p3, dobPoint p4, dobPoint p5)
         {
-            decPoint p12 = Geometry.CalcPX(p1, p2, p5);
-            decPoint p34 = Geometry.CalcPX(p3, p4, p5);
+            dobPoint p12 = Geometry.CalcPX(p1, p2, p5);
+            dobPoint p34 = Geometry.CalcPX(p3, p4, p5);
 
-            decPoint p1234 = Geometry.CalcPY(p12, p34, p5);
+            dobPoint p1234 = Geometry.CalcPY(p12, p34, p5);
 
             return p1234;
         }
 
         //нахождение высоты Z точки p0, лежащей на прямой которая паралельна оси X
-        public static decPoint CalcPX(decPoint p1, decPoint p2, decPoint p0)
+        public static dobPoint CalcPX(dobPoint p1, dobPoint p2, dobPoint p0)
         {
-            decPoint ReturnPoint = new decPoint(p0.X,p0.Y,p0.Z);
+            dobPoint ReturnPoint = new dobPoint(p0.X, p0.Y, p0.Z);
 
             ReturnPoint.Z = p1.Z + (((p1.Z - p2.Z) / (p1.X - p2.X)) * (p0.X - p1.X));
 
@@ -1596,9 +1596,9 @@ namespace CNC_Controller
 
         //TODO: деление на ноль
         //нахождение высоты Z точки p0, лежащей на прямой между точками p3 p4  (прямая паралельна оси Y)
-        public static decPoint CalcPY(decPoint p1, decPoint p2, decPoint p0)
+        public static dobPoint CalcPY(dobPoint p1, dobPoint p2, dobPoint p0)
         {
-            decPoint ReturnPoint = new decPoint(p0.X, p0.Y, p0.Z);
+            dobPoint ReturnPoint = new dobPoint(p0.X, p0.Y, p0.Z);
 
             ReturnPoint.Z = p1.Z + (((p1.Z - p2.Z) / (p1.Y - p2.Y)) * (p0.Y - p1.Y));
 
