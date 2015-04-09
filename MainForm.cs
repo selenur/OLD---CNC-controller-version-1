@@ -1190,43 +1190,40 @@ namespace CNC_Controller
                 //добавление корректировки по z
                 if (deltaFeed)
                 {
-                    //текущая точка
-                    dobPoint p5 = new dobPoint(pointX, pointY, pointZ);
 
-                    //точки сетки из матрицы
-                    dobPoint p1 = new dobPoint(0, 0, 0);
-                    dobPoint p2 = new dobPoint(0, 0, 0);
-                    dobPoint p3 = new dobPoint(0, 0, 0);
-                    dobPoint p4 = new dobPoint(0, 0, 0);
+
 
 
 
 
                     //1) получим координаты 4-х ближайших точек из матрицы
 
+                    //текущая точка
+                    dobPoint pResult = new dobPoint(pointX, pointY, pointZ);
 
-                    //foreach (matrixYline mline in dataCode.Matrix)
-                    //{
-                    //    double ppY = (double)mline.Y;
+                    int indexXmin = 0;
+                    int indexXmax = 0;
 
-                        
-
-
-
-
-                    //    //foreach (matrixPoint mPoint in mline.X)
-                    //    //{
-                    //    //    double ppX = (double)mPoint.X;
+                    for (int x = 0; x < dataCode.matrix2.GetLength(0); x++)
+                    {
+                        if (dataCode.matrix2[x, 0].X > pResult.X) indexXmax = x;
+                        if (dataCode.matrix2[x, 0].X < pResult.X) indexXmin = x;
+                    }
 
 
 
+                    for (int y = 0; y < dataCode.matrix2.GetLength(1); y++)
+                    {
 
 
 
 
-                    //    //}
-                    //}
 
+
+
+
+
+                    }
 
 
                     //2) запустим математику
