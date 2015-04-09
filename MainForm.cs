@@ -1054,96 +1054,63 @@ namespace CNC_Controller
                 Gl.glColor3f(1.000f, 0.498f, 0.314f);
                 Gl.glPointSize(10.0F);
                 Gl.glBegin(Gl.GL_POINTS);
-                foreach (matrixYline yline in dataCode.Matrix)
-                {
-                    foreach (matrixPoint point in yline.X)
-                    {
-                        if (!point.Used) continue;
 
-                        Gl.glVertex3d((double)point.X, (double)yline.Y, (double)point.Z);
+
+                int maxX = dataCode.matrix2.GetLength(0);
+                int maxY = dataCode.matrix2.GetLength(1);
+
+                for (int x = 0; x < maxX; x++)
+                {
+                    for (int y = 0; y < maxY; y++)
+                    {
+                        if (dataCode.matrix2[x, y] == null) continue;
+                        
+                        //рисуем точку
+                        Gl.glVertex3d(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z);
                     }
                 }
+
                 Gl.glEnd();
-                
 
                 //Добавим связи между точками
-
                 Gl.glColor3f(0.678f, 1.000f, 0.184f);
                 Gl.glLineWidth(0.4f);
-                Gl.glBegin(Gl.GL_LINES); //РИСОВАНИЕ ОБЫЧНОЙ ЛИНИИ
-            
-                int indY = 0;
-                int maxY = dataCode.Matrix.Count-1;
+                Gl.glBegin(Gl.GL_LINES); 
 
-                foreach (matrixYline yline in dataCode.Matrix)
+                for (int x = 0; x < maxX; x++)
                 {
-                    int indX = 0;
-                    int maxX = yline.X.Count-1;
-
-                    foreach (matrixPoint point in yline.X)
+                    for (int y = 0; y < maxY; y++)
                     {
-                        if (!point.Used)
+                        if (dataCode.matrix2[x, y] == null) continue;
+
+                        if (x > 0)
                         {
-                            indX++;
-                            continue;
+                            //line 1
+                            Gl.glVertex3d(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z);
+                            Gl.glVertex3d(dataCode.matrix2[x-1, y].X, dataCode.matrix2[x-1, y].Y, dataCode.matrix2[x-1, y].Z);
                         }
 
-                        // линия №1 "Вверх"
-
-                        if (indY < maxY)
+                        if (x < maxX-1)
                         {
-                            matrixYline lineY = dataCode.Matrix[indY + 1];
-                            matrixPoint pointX = lineY.X[indX];
-
-                            if (pointX.Used)
-                            {
-                                Gl.glVertex3d((double)point.X, (double)yline.Y, (double)point.Z);
-                                Gl.glVertex3d((double)pointX.X, (double)lineY.Y, (double)pointX.Z);
-                            }
+                            //line2
+                            Gl.glVertex3d(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z);
+                            Gl.glVertex3d(dataCode.matrix2[x + 1, y].X, dataCode.matrix2[x + 1, y].Y, dataCode.matrix2[x + 1, y].Z);
                         }
 
-                        // линия №3 "вправо"
-                        if (indX < maxX)
+                        if (y > 0)
                         {
-                            matrixYline lineY = dataCode.Matrix[indY];
-                            matrixPoint pointX = lineY.X[indX + 1];
-
-                            if (pointX.Used)
-                            {
-                                Gl.glVertex3d((double)point.X, (double)yline.Y, (double)point.Z);
-                                Gl.glVertex3d((double)pointX.X, (double)lineY.Y, (double)pointX.Z);
-                            }
+                            //line 3
+                            Gl.glVertex3d(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z);
+                            Gl.glVertex3d(dataCode.matrix2[x , y- 1].X, dataCode.matrix2[x , y- 1].Y, dataCode.matrix2[x , y- 1].Z);
                         }
 
-                        // линия №5 "Вниз"
-                        if (indY > 0)
+                        if (y < maxY-1)
                         {
-                            matrixYline lineY = dataCode.Matrix[indY - 1];
-                            matrixPoint pointX = lineY.X[indX];
-
-                            if (pointX.Used)
-                            {
-                                Gl.glVertex3d((double)point.X, (double)yline.Y, (double)point.Z);
-                                Gl.glVertex3d((double)pointX.X, (double)lineY.Y, (double)pointX.Z);
-                            }
+                            //line4
+                            Gl.glVertex3d(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z);
+                            Gl.glVertex3d(dataCode.matrix2[x , y+ 1].X, dataCode.matrix2[x , y+ 1].Y, dataCode.matrix2[x , y+ 1].Z);
                         }
-
-                        // линия №7 "влево"
-                        if (indX > 0)
-                        {
-                            matrixYline lineY = dataCode.Matrix[indY];
-                            matrixPoint pointX = lineY.X[indX - 1];
-
-                            if (pointX.Used)
-                            {
-                                Gl.glVertex3d((double)point.X, (double)yline.Y, (double)point.Z);
-                                Gl.glVertex3d((double)pointX.X, (double)lineY.Y, (double)pointX.Z);
-                            }
-                        }
-
-                        indX++;
                     }
-                    indY++;
                 }
                 Gl.glEnd();
             }
@@ -1195,18 +1162,21 @@ namespace CNC_Controller
             //TODO: переделать
             foreach (GKOD_ready vv in dataCode.GKODready)
             {
-                if (vv.workspeed) Gl.glColor3f(0, 255, 0);
-                else Gl.glColor3f(255, 0, 0);
+                if (vv.workspeed) Gl.glColor3f(0, 255, 0); else Gl.glColor3f(255, 0, 0);
 
-                //TODO: выделим жирным текущую линию
-                Gl.glLineWidth(0.1f);
-                if (vv.numberInstruct == (_indexLineForTask-1)) Gl.glLineWidth(3.0f);
+                //выделим жирным текущую линию
+                if (vv.numberInstruct == (_indexLineForTask - 1)) Gl.glLineWidth(3.0f); else Gl.glLineWidth(0.1f);
 
-                Gl.glBegin(Gl.GL_LINES); //РИСОВАНИЕ ОБЫЧНОЙ ЛИНИИ
 
+                //смещение положения g-кода
                 double pointXpp = 0;
                 double pointYpp = 0;
                 double pointZpp = 0;
+
+                //координаты следующей точки
+                double pointX = (double)vv.X;
+                double pointY = (double)vv.Y;
+                double pointZ = (double)vv.Z;
 
 
                 //добавление смещения G-кода
@@ -1220,8 +1190,43 @@ namespace CNC_Controller
                 //добавление корректировки по z
                 if (deltaFeed)
                 {
-                    
+                    //текущая точка
+                    dobPoint p5 = new dobPoint(pointX, pointY, pointZ);
+
+                    //точки сетки из матрицы
+                    dobPoint p1 = new dobPoint(0, 0, 0);
+                    dobPoint p2 = new dobPoint(0, 0, 0);
+                    dobPoint p3 = new dobPoint(0, 0, 0);
+                    dobPoint p4 = new dobPoint(0, 0, 0);
+
+
+
+
                     //1) получим координаты 4-х ближайших точек из матрицы
+
+
+                    //foreach (matrixYline mline in dataCode.Matrix)
+                    //{
+                    //    double ppY = (double)mline.Y;
+
+                        
+
+
+
+
+                    //    //foreach (matrixPoint mPoint in mline.X)
+                    //    //{
+                    //    //    double ppX = (double)mPoint.X;
+
+
+
+
+
+
+
+                    //    //}
+                    //}
+
 
 
                     //2) запустим математику
@@ -1231,14 +1236,16 @@ namespace CNC_Controller
                 }
 
 
+                Gl.glBegin(Gl.GL_LINES); //РИСОВАНИЕ ОБЫЧНОЙ ЛИНИИ
 
                 Gl.glVertex3d(endX + pointXpp, endY + pointYpp, endZ + pointZpp);
-                    Gl.glVertex3d((double)vv.X + deltaX, (double)vv.Y + deltaY, (double)vv.Z + deltaZ);
-                    Gl.glEnd();
-                    endX = (double)vv.X;
-                    endY = (double)vv.Y;
-                    endZ = (double)vv.Z;
+                Gl.glVertex3d(pointX + deltaX, pointY + deltaY, pointZ + deltaZ);
 
+                Gl.glEnd();
+
+                endX = pointX;
+                endY = pointY;
+                endZ = pointZ;
             }
 
             #endregion

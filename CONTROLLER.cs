@@ -1222,7 +1222,7 @@ namespace CNC_Controller
         /// <summary>
         /// Набор точек матрицы, получаемой при сканировании поверхности
         /// </summary>
-        public static List<matrixYline> Matrix = new List<matrixYline>(); 
+        //public static List<matrixYline> Matrix = new List<matrixYline>(); 
 
 
         /// <summary>
@@ -1417,6 +1417,15 @@ namespace CNC_Controller
             
 
         }
+    
+    
+        //Более удобная матрица
+        public static dobPoint[,] matrix2 = new dobPoint[1,1]; 
+
+
+    
+    
+    
     }
 
 
@@ -1496,20 +1505,36 @@ namespace CNC_Controller
 
 
 
-    public class Point
+    public class decPoint
     {
 
         public decimal X;       // координата в мм
         public decimal Y;       // координата в мм
         public decimal Z;       // координата в мм
 
-        public Point(decimal _x, decimal _y, decimal _z)
+        public decPoint(decimal _x, decimal _y, decimal _z)
         {
             X = _x;
             Y = _y;
             Z = _z;
         }
     }
+
+    public class dobPoint
+    {
+
+        public double X;       // координата в мм
+        public double Y;       // координата в мм
+        public double Z;       // координата в мм
+
+        public dobPoint(double _x, double _y, double _z)
+        {
+            X = _x;
+            Y = _y;
+            Z = _z;
+        }
+    }
+
 
     //класс для работы с геометрией
     public static class Geometry
@@ -1546,20 +1571,20 @@ namespace CNC_Controller
         /// <param name="p4">вторая точка второй линии X</param>
         /// <param name="p5">точка у которой нужно скорректировать высоту</param>
         /// <returns></returns>
-        public static Point GetZ(Point p1, Point p2, Point p3, Point p4, Point p5)
+        public static decPoint GetZ(decPoint p1, decPoint p2, decPoint p3, decPoint p4, decPoint p5)
         {
-            Point p12 = Geometry.CalcPX(p1, p2, p5);
-            Point p34 = Geometry.CalcPX(p3, p4, p5);
+            decPoint p12 = Geometry.CalcPX(p1, p2, p5);
+            decPoint p34 = Geometry.CalcPX(p3, p4, p5);
 
-            Point p1234 = Geometry.CalcPY(p12, p34, p5);
+            decPoint p1234 = Geometry.CalcPY(p12, p34, p5);
 
             return p1234;
         }
 
         //нахождение высоты Z точки p0, лежащей на прямой которая паралельна оси X
-        public static Point CalcPX(Point p1, Point p2, Point p0)
+        public static decPoint CalcPX(decPoint p1, decPoint p2, decPoint p0)
         {
-            Point ReturnPoint = new Point(p0.X,p0.Y,p0.Z);
+            decPoint ReturnPoint = new decPoint(p0.X,p0.Y,p0.Z);
 
             ReturnPoint.Z = p1.Z + (((p1.Z - p2.Z) / (p1.X - p2.X)) * (p0.X - p1.X));
 
@@ -1571,9 +1596,9 @@ namespace CNC_Controller
 
         //TODO: деление на ноль
         //нахождение высоты Z точки p0, лежащей на прямой между точками p3 p4  (прямая паралельна оси Y)
-        public static Point CalcPY(Point p1, Point p2, Point p0)
+        public static decPoint CalcPY(decPoint p1, decPoint p2, decPoint p0)
         {
-            Point ReturnPoint = new Point(p0.X, p0.Y, p0.Z);
+            decPoint ReturnPoint = new decPoint(p0.X, p0.Y, p0.Z);
 
             ReturnPoint.Z = p1.Z + (((p1.Z - p2.Z) / (p1.Y - p2.Y)) * (p0.Y - p1.Y));
 

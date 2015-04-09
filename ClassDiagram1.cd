@@ -23,46 +23,9 @@
   </Class>
   <Class Name="CNC_Controller.CONTROLLER" Collapsed="true">
     <Position X="1.75" Y="0.5" Width="3.75" />
-    <Members>
-      <Field Name="_connected" Hidden="true" />
-      <Field Name="_ec" Hidden="true" />
-      <Field Name="_filesetting" Hidden="true" />
-      <Field Name="_myUsbDevice" Hidden="true" />
-      <Field Name="_theads" Hidden="true" />
-      <Field Name="_usbReader" Hidden="true" />
-      <Field Name="_usbWriter" Hidden="true" />
-      <Method Name="ADDMessage" Hidden="true" />
-      <Method Name="CompareArray" Hidden="true" />
-      <Method Name="LoadProperty" Hidden="true" />
-      <Method Name="ParseInfo" Hidden="true" />
-      <Method Name="SaveProperty" Hidden="true" />
-      <Method Name="TheadsStart" Hidden="true" />
-    </Members>
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
-    <NestedTypes>
-      <Delegate Name="CNC_Controller.CONTROLLER.DeviceEventConnect" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>CONTROLLER.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-      <Delegate Name="CNC_Controller.CONTROLLER.DeviceEventDisconnect" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>CONTROLLER.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-      <Delegate Name="CNC_Controller.CONTROLLER.DeviceEventNewData" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>CONTROLLER.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-      <Delegate Name="CNC_Controller.CONTROLLER.DeviceEventNewMessage" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>CONTROLLER.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>EIQCEBEIQABAYIIgAAcAhMAAgACEAACABYAAIEAAgEA=</HashCode>
       <FileName>CONTROLLER.cs</FileName>
@@ -85,7 +48,7 @@
   <Class Name="CNC_Controller.dataCode">
     <Position X="6.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAIAAAAAAAAAAAAAAAAAiCAAAAAAAAAhAAAA=</HashCode>
+      <HashCode>AIAAAAAAAIAAAAAAAACAAAAAAAACCAAAAAAAAAhAAAA=</HashCode>
       <FileName>CONTROLLER.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -117,7 +80,7 @@
       <FileName>CONTROLLER.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CNC_Controller.Point">
+  <Class Name="CNC_Controller.dobPoint">
     <Position X="10.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>

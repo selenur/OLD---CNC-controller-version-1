@@ -53,18 +53,23 @@ namespace CNC_Controller
         private void RefrechDataGrid()
         {
             //наполним массив
-            dataCode.Matrix.Clear();
+            //dataCode.Matrix.Clear();
+
+            dataCode.matrix2 = new dobPoint[(int)numCountX.Value, (int)numCountY.Value];
 
             for (int y = 0; y < numCountY.Value; y++)
             {
-                matrixYline matrixline = new matrixYline();
-                matrixline.Y = numPosY.Value + (y* numStep.Value);
+                //matrixYline matrixline = new matrixYline();
+                
+                //matrixline.Y = numPosY.Value + (y* numStep.Value);
 
                 for (int x = 0; x < numCountX.Value; x++)
                 {
-                    matrixline.X.Add(new matrixPoint(numPosX.Value + (x * numStep.Value), numPosZ.Value, true));
+                    dataCode.matrix2[x, y] = new dobPoint((double)numPosX.Value + (x * (double)numStep.Value), (double)numPosY.Value + (y * (double)numStep.Value), (double)numPosZ.Value);
+
+                    //matrixline.X.Add(new matrixPoint(numPosX.Value + (x * numStep.Value), numPosZ.Value, true));
                 }
-                dataCode.Matrix.Add(matrixline);
+                //dataCode.Matrix.Add(matrixline);
             }
 
             //и перезаполним таблицу
@@ -78,20 +83,22 @@ namespace CNC_Controller
             for (int x = 0; x < numCountX.Value; x++)
             {
                 dataGridView.Columns.Add("X" + x.ToString(), "");
-                dataGridView.Rows[0].Cells[x+1].Value = "X " + (numPosX.Value + (x*numStep.Value)).ToString();
+                dataGridView.Rows[0].Cells[x+1].Value = "X " + (numPosX.Value + (x*numStep.Value));
             }
 
             for (int y = 0; y < numCountY.Value; y++)
             {
                 int index = dataGridView.Rows.Add();
-                dataGridView.Rows[index].Cells[0].Value = "Y " + (numPosY.Value + (y * numStep.Value)).ToString();
+                dataGridView.Rows[index].Cells[0].Value = "Y " + (numPosY.Value + (y * numStep.Value));
             }
 
             for (int y = 0; y < numCountY.Value; y++)
             {
                 for (int x = 0; x < numCountX.Value; x++)
                 {
-                    dataGridView.Rows[y + 1].Cells[x + 1].Value = dataCode.Matrix[y].X[x].Z;
+                    dataGridView.Rows[y + 1].Cells[x + 1].Value = dataCode.matrix2[x, y].Z;
+
+                    //dataGridView.Rows[y + 1].Cells[x + 1].Value = dataCode.Matrix[y].X[x].Z;
                 }
             }
 
@@ -119,7 +126,9 @@ namespace CNC_Controller
 
             try
             {
-                dataCode.Matrix[y - 1].X[x - 1].Z = val;
+                dataCode.matrix2[x - 1, y - 1].Z = (double)val;
+
+                //dataCode.Matrix[y - 1].X[x - 1].Z = val;
             }
             catch (Exception)
             {
@@ -164,8 +173,10 @@ namespace CNC_Controller
 
                 indexScanX = 0;
                 indexScanY = 0;
-                indexMaxScanX = dataCode.Matrix[0].X.Count -1;
-                indexMaxScanY = dataCode.Matrix.Count - 1;
+                //indexMaxScanX = dataCode.Matrix[0].X.Count - 1;
+                //indexMaxScanY = dataCode.Matrix.Count - 1;
+                indexMaxScanX = (int)numCountX.Value - 1;
+                indexMaxScanY = (int)numCountY.Value - 1;
 
                 backgroundWorker1.RunWorkerAsync();
             }
@@ -184,7 +195,8 @@ namespace CNC_Controller
 
             try
             {
-                dataGridView.Rows[indexScanY + 1].Cells[indexScanX + 1].Value = dataCode.Matrix[indexScanY].X[indexScanX].Z;
+               // dataGridView.Rows[indexScanY + 1].Cells[indexScanX + 1].Value = dataCode.Matrix[indexScanY].X[indexScanX].Z;
+                dataGridView.Rows[indexScanY + 1].Cells[indexScanX + 1].Value = dataCode.matrix2[indexScanX, indexScanY].Z;
             }
             catch (Exception)
             {
@@ -211,10 +223,12 @@ namespace CNC_Controller
             if (_ctrl.ShpindelMoveSpeed != 0) return;
             
             //координаты куда передвинуться
-            decimal px = dataCode.Matrix[indexScanY].X[indexScanX].X;
+            //decimal px = dataCode.Matrix[indexScanY].X[indexScanX].X;
+            decimal px = (decimal)dataCode.matrix2[indexScanX, indexScanY].X;
             //decimal pz = dataCode.Matrix[indexScanY].X[indexScanX].Z;
             decimal pz = numPosZ.Value;
-            decimal py = dataCode.Matrix[indexScanY].Y;
+            //decimal py = dataCode.Matrix[indexScanY].Y;
+            decimal py = (decimal)dataCode.matrix2[indexScanX, indexScanY].Y;
 
             //спозиционируемся
             _ctrl.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
@@ -234,8 +248,8 @@ namespace CNC_Controller
 
             
             System.Threading.Thread.Sleep(300);
-            dataCode.Matrix[indexScanY].X[indexScanX].Z = deviceInfo.AxesZ_PositionMM;
-
+            //dataCode.Matrix[indexScanY].X[indexScanX].Z = deviceInfo.AxesZ_PositionMM;
+            dataCode.matrix2[indexScanX, indexScanY].Z = (double)deviceInfo.AxesZ_PositionMM;
 
             _ctrl.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
             _ctrl.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
