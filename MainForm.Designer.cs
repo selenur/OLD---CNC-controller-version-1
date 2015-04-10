@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpenFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +52,12 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.buttonSpindel = new System.Windows.Forms.ToolStripButton();
             this.buttonESTOP = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripDropDownadditionally = new System.Windows.Forms.ToolStripDropDownButton();
+            this.settingControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.additionallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scansurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonEditData = new System.Windows.Forms.ToolStripButton();
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -92,14 +97,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3D = new System.Windows.Forms.TabPage();
             this.btDefaulPreview = new System.Windows.Forms.Button();
             this.lb3DPosView = new System.Windows.Forms.Label();
             this.menu3Dview = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuLabelX = new System.Windows.Forms.ToolStripLabel();
             this.posAngleXm = new System.Windows.Forms.ToolStripButton();
             this.posAngleX = new System.Windows.Forms.ToolStripLabel();
@@ -179,8 +181,8 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.RenderTimer = new System.Windows.Forms.Timer(this.components);
             this.TaskTimer = new System.Windows.Forms.Timer(this.components);
-            this.panel2 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -198,7 +200,6 @@
             this.groupBoxManualSpeedGkode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage3D.SuspendLayout();
             this.menu3Dview.SuspendLayout();
@@ -217,8 +218,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             this.groupBoxWorking.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
-            this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -229,7 +232,7 @@
             this.helpToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(918, 24);
+            this.MainMenu.Size = new System.Drawing.Size(910, 24);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "menuStrip1";
             // 
@@ -326,10 +329,12 @@
             this.toolStripSeparator3,
             this.buttonSpindel,
             this.buttonESTOP,
-            this.toolStripButton1});
+            this.toolStripSeparator4,
+            this.toolStripDropDownadditionally,
+            this.toolStripButtonEditData});
             this.MainToolStrip.Location = new System.Drawing.Point(0, 24);
             this.MainToolStrip.Name = "MainToolStrip";
-            this.MainToolStrip.Size = new System.Drawing.Size(918, 39);
+            this.MainToolStrip.Size = new System.Drawing.Size(910, 39);
             this.MainToolStrip.TabIndex = 1;
             this.MainToolStrip.Text = "toolStrip1";
             // 
@@ -399,19 +404,64 @@
             this.buttonESTOP.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.buttonESTOP.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonESTOP.Name = "buttonESTOP";
-            this.buttonESTOP.Size = new System.Drawing.Size(162, 36);
-            this.buttonESTOP.Text = "Аварийная остановка";
+            this.buttonESTOP.Size = new System.Drawing.Size(115, 36);
+            this.buttonESTOP.Text = "ОСТАНОВКА";
             this.buttonESTOP.Click += new System.EventHandler(this.toolStripButtonEnergyStop_Click);
             // 
-            // toolStripButton1
+            // toolStripSeparator4
             // 
-            this.toolStripButton1.Image = global::CNC_Controller.Properties.Resources.layer_grid;
-            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(196, 36);
-            this.toolStripButton1.Text = "Сканирование поверхности";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 39);
+            // 
+            // toolStripDropDownadditionally
+            // 
+            this.toolStripDropDownadditionally.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingControllerToolStripMenuItem,
+            this.additionallyToolStripMenuItem,
+            this.scansurfaceToolStripMenuItem});
+            this.toolStripDropDownadditionally.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownadditionally.Image")));
+            this.toolStripDropDownadditionally.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripDropDownadditionally.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownadditionally.Name = "toolStripDropDownadditionally";
+            this.toolStripDropDownadditionally.Size = new System.Drawing.Size(140, 36);
+            this.toolStripDropDownadditionally.Text = "Дополнительно";
+            // 
+            // settingControllerToolStripMenuItem
+            // 
+            this.settingControllerToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.pci;
+            this.settingControllerToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.settingControllerToolStripMenuItem.Name = "settingControllerToolStripMenuItem";
+            this.settingControllerToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.settingControllerToolStripMenuItem.Text = "Настройка контроллера";
+            this.settingControllerToolStripMenuItem.Click += new System.EventHandler(this.settingControllerToolStripMenuItem_Click);
+            // 
+            // additionallyToolStripMenuItem
+            // 
+            this.additionallyToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.google_webmaster_tools;
+            this.additionallyToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.additionallyToolStripMenuItem.Name = "additionallyToolStripMenuItem";
+            this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.additionallyToolStripMenuItem.Text = "Настройка 3D отображения";
+            this.additionallyToolStripMenuItem.Click += new System.EventHandler(this.additionallyToolStripMenuItem_Click);
+            // 
+            // scansurfaceToolStripMenuItem
+            // 
+            this.scansurfaceToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.layer_grid;
+            this.scansurfaceToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.scansurfaceToolStripMenuItem.Name = "scansurfaceToolStripMenuItem";
+            this.scansurfaceToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.scansurfaceToolStripMenuItem.Text = "Сканирование поверхности";
+            this.scansurfaceToolStripMenuItem.Click += new System.EventHandler(this.scansurfaceToolStripMenuItem_Click);
+            // 
+            // toolStripButtonEditData
+            // 
+            this.toolStripButtonEditData.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonEditData.Image")));
+            this.toolStripButtonEditData.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonEditData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonEditData.Name = "toolStripButtonEditData";
+            this.toolStripButtonEditData.Size = new System.Drawing.Size(179, 36);
+            this.toolStripButtonEditData.Text = "манипуляции с G-кодом";
+            this.toolStripButtonEditData.Click += new System.EventHandler(this.toolStripButtonEditData_Click);
             // 
             // MainStatusStrip
             // 
@@ -422,7 +472,7 @@
             this.toolStripStatusLabelNumberInstruction});
             this.MainStatusStrip.Location = new System.Drawing.Point(0, 581);
             this.MainStatusStrip.Name = "MainStatusStrip";
-            this.MainStatusStrip.Size = new System.Drawing.Size(918, 22);
+            this.MainStatusStrip.Size = new System.Drawing.Size(910, 22);
             this.MainStatusStrip.TabIndex = 2;
             this.MainStatusStrip.Text = "statusStrip1";
             // 
@@ -903,17 +953,6 @@
             this.label6.TabIndex = 8;
             this.label6.Text = "Скорость перемещения:";
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.tabControl1);
-            this.panel1.Location = new System.Drawing.Point(210, 66);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(490, 512);
-            this.panel1.TabIndex = 4;
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage3D);
@@ -922,7 +961,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(490, 512);
+            this.tabControl1.Size = new System.Drawing.Size(476, 512);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage3D
@@ -934,7 +973,7 @@
             this.tabPage3D.Location = new System.Drawing.Point(4, 22);
             this.tabPage3D.Name = "tabPage3D";
             this.tabPage3D.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3D.Size = new System.Drawing.Size(482, 486);
+            this.tabPage3D.Size = new System.Drawing.Size(468, 486);
             this.tabPage3D.TabIndex = 2;
             this.tabPage3D.Text = "3D";
             this.tabPage3D.UseVisualStyleBackColor = true;
@@ -943,7 +982,7 @@
             // 
             this.btDefaulPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btDefaulPreview.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btDefaulPreview.Location = new System.Drawing.Point(335, 0);
+            this.btDefaulPreview.Location = new System.Drawing.Point(321, 0);
             this.btDefaulPreview.Name = "btDefaulPreview";
             this.btDefaulPreview.Size = new System.Drawing.Size(146, 23);
             this.btDefaulPreview.TabIndex = 23;
@@ -959,7 +998,7 @@
             this.lb3DPosView.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lb3DPosView.Location = new System.Drawing.Point(2, 1);
             this.lb3DPosView.Name = "lb3DPosView";
-            this.lb3DPosView.Size = new System.Drawing.Size(333, 22);
+            this.lb3DPosView.Size = new System.Drawing.Size(319, 22);
             this.lb3DPosView.TabIndex = 22;
             this.lb3DPosView.Text = "---------------------------------------------------";
             this.lb3DPosView.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -972,8 +1011,6 @@
             this.menu3Dview.Dock = System.Windows.Forms.DockStyle.None;
             this.menu3Dview.Font = new System.Drawing.Font("Tahoma", 10F);
             this.menu3Dview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemSetting,
-            this.toolStripSeparator4,
             this.menuLabelX,
             this.posAngleXm,
             this.posAngleX,
@@ -990,24 +1027,9 @@
             this.posAngleZm});
             this.menu3Dview.Location = new System.Drawing.Point(2, 23);
             this.menu3Dview.Name = "menu3Dview";
-            this.menu3Dview.Size = new System.Drawing.Size(477, 37);
+            this.menu3Dview.Size = new System.Drawing.Size(463, 37);
             this.menu3Dview.TabIndex = 24;
             this.menu3Dview.Text = "menuStrip1";
-            // 
-            // toolStripMenuItemSetting
-            // 
-            this.toolStripMenuItemSetting.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripMenuItemSetting.Image = global::CNC_Controller.Properties.Resources.google_webmaster_tools;
-            this.toolStripMenuItemSetting.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripMenuItemSetting.Name = "toolStripMenuItemSetting";
-            this.toolStripMenuItemSetting.Size = new System.Drawing.Size(44, 33);
-            this.toolStripMenuItemSetting.Text = "Дополнительные настройки";
-            this.toolStripMenuItemSetting.Click += new System.EventHandler(this.toolStripMenuItemSetting_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 33);
             // 
             // menuLabelX
             // 
@@ -1138,7 +1160,7 @@
             this.OpenGL_preview.ForeColor = System.Drawing.Color.SlateBlue;
             this.OpenGL_preview.Location = new System.Drawing.Point(2, 65);
             this.OpenGL_preview.Name = "OpenGL_preview";
-            this.OpenGL_preview.Size = new System.Drawing.Size(477, 415);
+            this.OpenGL_preview.Size = new System.Drawing.Size(463, 415);
             this.OpenGL_preview.StencilBits = ((byte)(0));
             this.OpenGL_preview.TabIndex = 21;
             this.OpenGL_preview.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OpenGL_preview_KeyDown);
@@ -1162,7 +1184,7 @@
             this.tabPageSupp.Location = new System.Drawing.Point(4, 22);
             this.tabPageSupp.Name = "tabPageSupp";
             this.tabPageSupp.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSupp.Size = new System.Drawing.Size(482, 486);
+            this.tabPageSupp.Size = new System.Drawing.Size(448, 486);
             this.tabPageSupp.TabIndex = 1;
             this.tabPageSupp.Text = "Дополнительно";
             this.tabPageSupp.UseVisualStyleBackColor = true;
@@ -1819,7 +1841,6 @@
             // 
             this.dataGrid.AllowUserToAddRows = false;
             this.dataGrid.AllowUserToDeleteRows = false;
-            this.dataGrid.AllowUserToResizeColumns = false;
             this.dataGrid.AllowUserToResizeRows = false;
             this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -1829,14 +1850,14 @@
             this.dataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGrid.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGrid.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGrid.Location = new System.Drawing.Point(6, 19);
             this.dataGrid.MultiSelect = false;
             this.dataGrid.Name = "dataGrid";
@@ -1851,9 +1872,9 @@
             // Column1
             // 
             this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Column1.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column1.DefaultCellStyle = dataGridViewCellStyle4;
             this.Column1.HeaderText = "Команды для выполнения";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
@@ -1862,15 +1883,14 @@
             // Column2
             // 
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Red;
-            this.Column2.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Red;
+            this.Column2.DefaultCellStyle = dataGridViewCellStyle5;
             this.Column2.HeaderText = "Не распознано";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column2.Visible = false;
-            this.Column2.Width = 60;
+            this.Column2.Width = 80;
             // 
             // timerKeyHook
             // 
@@ -1894,16 +1914,6 @@
             this.TaskTimer.Interval = 1;
             this.TaskTimer.Tick += new System.EventHandler(this.TaskTimer_Tick);
             // 
-            // panel2
-            // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.groupBox1);
-            this.panel2.Location = new System.Drawing.Point(706, 66);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(212, 512);
-            this.panel2.TabIndex = 5;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.groupBoxManualSpeedGkode);
@@ -1917,13 +1927,31 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "G-код";
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(210, 66);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
+            this.splitContainer1.Size = new System.Drawing.Size(692, 512);
+            this.splitContainer1.SplitterDistance = 476;
+            this.splitContainer1.TabIndex = 6;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(918, 603);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(910, 603);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.MainStatusStrip);
             this.Controls.Add(this.MainToolStrip);
@@ -1956,7 +1984,6 @@
             this.groupBoxManualSpeedGkode.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            this.panel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage3D.ResumeLayout(false);
             this.menu3Dview.ResumeLayout(false);
@@ -1983,8 +2010,10 @@
             this.groupBoxWorking.ResumeLayout(false);
             this.groupBoxWorking.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
-            this.panel2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2026,7 +2055,6 @@
         private System.Windows.Forms.Label labelXmin;
         private System.Windows.Forms.Label labelYmin;
         private System.Windows.Forms.Label labelXmax;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panelControl1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.GroupBox groupBoxManualMove;
@@ -2078,8 +2106,6 @@
         private System.Windows.Forms.ToolStripButton posAngleZm;
         private Tao.Platform.Windows.SimpleOpenGlControl OpenGL_preview;
         private System.Windows.Forms.Timer RenderTimer;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSetting;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label8;
@@ -2091,7 +2117,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Label labelSpeed;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.TextBox textBoxNumberLine;
         private System.Windows.Forms.Timer TaskTimer;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
@@ -2136,10 +2161,16 @@
         private System.Windows.Forms.RadioButton radioButton_RC;
         private System.Windows.Forms.RadioButton radioButton_Hz;
         private System.Windows.Forms.RadioButton radioButton_off;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownadditionally;
+        private System.Windows.Forms.ToolStripMenuItem additionallyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scansurfaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingControllerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton toolStripButtonEditData;
     }
 }
 

@@ -55,10 +55,11 @@ D:\GITHUB\CNC-controller-for-mk1\bin\Debug\LibUsbDotNet.dll
 D:\GITHUB\CNC-controller-for-mk1\bin\Debug\LibUsbDotNet.xml
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.csprojResolveAssemblyReference.cache
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.AboutBox.resources
-D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.feeler.resources
-D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.KeyInfo.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.MainForm.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.Properties.Resources.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.Sett3D.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.setting.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.csproj.GenerateResource.Cache
+D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.ScanSurface.resources
+D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.ManualControl.resources
+D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.EditGkode.resources

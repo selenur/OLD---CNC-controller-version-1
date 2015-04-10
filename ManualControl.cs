@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace CNC_Controller
 {
-    public partial class KeyInfo : Form
+    public partial class ManualControl : Form
     {
         CONTROLLER _cnc;
 
-        public KeyInfo(ref CONTROLLER cnc)
+        public ManualControl(ref CONTROLLER cnc)
         {
             InitializeComponent();
             _cnc = cnc;

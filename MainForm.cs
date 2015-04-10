@@ -637,7 +637,7 @@ namespace CNC_Controller
 
         private void buttonShowKeyInfo_Click(object sender, EventArgs e)
         {
-            KeyInfo kf = new KeyInfo(ref _cnc);
+            ManualControl kf = new ManualControl(ref _cnc);
             kf.ShowDialog();
         }
 
@@ -704,12 +704,24 @@ namespace CNC_Controller
             _cnc.DeviceNewPosition(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, 0);
         }
 
-        private void settingToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowSetting()
         {
             setting setfrm = new setting(ref _cnc);
             DialogResult dlgResult = setfrm.ShowDialog();
             
             if (dlgResult == DialogResult.OK) _cnc.SaveSetting();
+           
+
+        }
+
+        private void settingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowSetting();
+        }
+
+        private void settingControllerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowSetting();
         }
 
         private void btLogClear_Click(object sender, EventArgs e)
@@ -740,23 +752,31 @@ namespace CNC_Controller
             _cnc.EnergyStop();
         }
 
-        private void toolStripMenuItemSetting_Click(object sender, EventArgs e)
+        private void Feed()
         {
+            PreviewSetting.ShowMatrix = true;
+            ScanSurface frm = new ScanSurface(ref _cnc);
+            frm.Show();
+        }
+
+        private void additionallyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //вызов 3Д формы
             //покажем графические настройки
             Sett3D frm = new Sett3D(this);
             frm.Show();
         }
 
-        private void Feed()
+        private void scansurfaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PreviewSetting.ShowMatrix = true;
-            feeler frm = new feeler(ref _cnc);
-            frm.Show();
+            //вызов формы сканирования
+            Feed();
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void toolStripButtonEditData_Click(object sender, EventArgs e)
         {
-            Feed();
+            EditGkode frm = new EditGkode(this);
+            frm.Show();
         }
 
 
@@ -1192,7 +1212,8 @@ namespace CNC_Controller
                 {
 
 
-
+                    /* 
+                     //TODO: В связи с переделкой ряда ключевых механизмов применение матрицы отключим
 
 
 
@@ -1209,7 +1230,7 @@ namespace CNC_Controller
                     {
                         //нужно текущую точку проверить между 2-х точек
 
-                        if (dataCode.matrix2[x, 0].X < pResult.X && dataCode.matrix2[x + 1, 0].X > pResult.X)
+                        if (pResult.X > dataCode.matrix2[x, 0].X && pResult.X < dataCode.matrix2[x + 1, 0].X)
                         {
                             indexXmin = x;
                         }
@@ -1252,7 +1273,7 @@ namespace CNC_Controller
                     //numericUpDown25.Value = p1234.Z;
 
                     ////Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
-
+                    */
                 }
 
 
@@ -1585,6 +1606,12 @@ namespace CNC_Controller
 
  
         #endregion
+
+
+
+
+
+
    
     }
 

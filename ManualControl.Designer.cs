@@ -1,6 +1,6 @@
 ﻿namespace CNC_Controller
 {
-    partial class KeyInfo
+    partial class ManualControl
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KeyInfo));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManualControl));
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -64,11 +64,14 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(446, 603);
+            this.button1.Image = global::CNC_Controller.Properties.Resources.cancel1;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(436, 544);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 30);
+            this.button1.Size = new System.Drawing.Size(100, 51);
             this.button1.TabIndex = 0;
             this.button1.Text = "Закрыть";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button1.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
@@ -256,18 +259,19 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Управление мышкой";
             // 
-            // KeyInfo
+            // ManualControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(551, 634);
+            this.ClientSize = new System.Drawing.Size(544, 603);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "KeyInfo";
-            this.Text = "Клавиши управления";
+            this.Name = "ManualControl";
+            this.Text = "Ручное управление";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.KeyInfo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();

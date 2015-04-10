@@ -29,13 +29,6 @@ namespace CNC_Controller
             numericUpDown5.Value=mf.PreviewSetting.GridYend;
 
 
-            checkBoxChangePos.Checked = mf.deltaUsage;
-            numPosX.Value = (decimal)mf.deltaX;
-            numPosY.Value = (decimal)mf.deltaY;
-            numPosZ.Value = (decimal)mf.deltaZ;
-
-            checkBox6.Checked = mf.deltaFeed;
-
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -84,32 +77,5 @@ namespace CNC_Controller
         {
             mf.PreviewSetting.ShowAxes = checkBox4.Checked;
         }
-
-        private void numPosX_ValueChanged(object sender, EventArgs e)
-        {
-            mf.deltaX = (double)numPosX.Value;
-        }
-
-        private void numPosY_ValueChanged(object sender, EventArgs e)
-        {
-            mf.deltaY = (double)numPosY.Value;
-        }
-
-        private void numPosZ_ValueChanged(object sender, EventArgs e)
-        {
-            mf.deltaZ = (double)numPosZ.Value;
-        }
-
-        private void checkBoxChangePos_CheckedChanged(object sender, EventArgs e)
-        {
-            mf.deltaUsage = checkBoxChangePos.Checked;
-        }
-
-        private void checkBox6_CheckedChanged(object sender, EventArgs e)
-        {
-            mf.deltaFeed = checkBox6.Checked;
-        }
-
-
     }
 }

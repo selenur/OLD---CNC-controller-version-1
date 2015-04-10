@@ -81,17 +81,23 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="CONTROLLER.cs" />
-    <Compile Include="feeler.cs">
+    <Compile Include="EditGkode.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="feeler.Designer.cs">
-      <DependentUpon>feeler.cs</DependentUpon>
+    <Compile Include="EditGkode.Designer.cs">
+      <DependentUpon>EditGkode.cs</DependentUpon>
     </Compile>
-    <Compile Include="KeyInfo.cs">
+    <Compile Include="ScanSurface.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="KeyInfo.Designer.cs">
-      <DependentUpon>KeyInfo.cs</DependentUpon>
+    <Compile Include="ScanSurface.Designer.cs">
+      <DependentUpon>ScanSurface.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManualControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManualControl.Designer.cs">
+      <DependentUpon>ManualControl.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -117,11 +123,14 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="feeler.resx">
-      <DependentUpon>feeler.cs</DependentUpon>
+    <EmbeddedResource Include="EditGkode.resx">
+      <DependentUpon>EditGkode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KeyInfo.resx">
-      <DependentUpon>KeyInfo.cs</DependentUpon>
+    <EmbeddedResource Include="ScanSurface.resx">
+      <DependentUpon>ScanSurface.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManualControl.resx">
+      <DependentUpon>ManualControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
