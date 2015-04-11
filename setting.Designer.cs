@@ -155,10 +155,9 @@
             // 
             // checkBoxDemoController
             // 
-            this.checkBoxDemoController.AutoSize = true;
-            this.checkBoxDemoController.Location = new System.Drawing.Point(22, 136);
+            this.checkBoxDemoController.Location = new System.Drawing.Point(164, 12);
             this.checkBoxDemoController.Name = "checkBoxDemoController";
-            this.checkBoxDemoController.Size = new System.Drawing.Size(274, 17);
+            this.checkBoxDemoController.Size = new System.Drawing.Size(184, 54);
             this.checkBoxDemoController.TabIndex = 10;
             this.checkBoxDemoController.Text = "Имитация устройства (виртуальный контроллер)";
             this.checkBoxDemoController.UseVisualStyleBackColor = true;
@@ -167,19 +166,20 @@
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(23, 165);
+            this.label4.Location = new System.Drawing.Point(165, 62);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(325, 72);
+            this.label4.Size = new System.Drawing.Size(197, 72);
             this.label4.TabIndex = 11;
             this.label4.Text = "В режиме имитации, при наличии настоящего контроллера, использоваться будет вирту" +
     "альный контроллер!!!";
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button2.Image = global::CNC_Controller.Properties.Resources.cancelPic;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(294, 266);
+            this.button2.Location = new System.Drawing.Point(286, 175);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 28);
             this.button2.TabIndex = 2;
@@ -189,10 +189,11 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Image = global::CNC_Controller.Properties.Resources.accept_button;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(197, 266);
+            this.button1.Location = new System.Drawing.Point(189, 175);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(91, 28);
             this.button1.TabIndex = 1;
@@ -205,7 +206,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(382, 308);
+            this.ClientSize = new System.Drawing.Size(374, 217);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBoxDemoController);
             this.Controls.Add(this.groupBox1);
@@ -223,7 +224,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

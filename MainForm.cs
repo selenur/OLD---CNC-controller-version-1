@@ -95,6 +95,20 @@ namespace CNC_Controller
         private void CncNewData(object sender)
         {
             Invoke((MethodInvoker)RefreshElementsForms);
+
+
+            //сдвинем границы
+            if (ShowGrate)
+            {
+                if ((double)deviceInfo.AxesX_PositionMM < grateXmin) grateXmin = (double)deviceInfo.AxesX_PositionMM;
+                if ((double)deviceInfo.AxesX_PositionMM > grateXmax) grateXmax = (double)deviceInfo.AxesX_PositionMM;
+
+                if ((double)deviceInfo.AxesY_PositionMM < grateYmin) grateYmin = (double)deviceInfo.AxesY_PositionMM;
+                if ((double)deviceInfo.AxesY_PositionMM > grateYmax) grateYmax = (double)deviceInfo.AxesY_PositionMM;
+
+
+            }
+
         }
 
         //событие о прекращении связи
@@ -794,6 +808,12 @@ namespace CNC_Controller
         int _oldPosX;
         int _oldPosY;
 
+        public bool ShowGrate = false;
+        public double grateXmin = 0;
+        public double grateXmax = 0;
+        public double grateYmin = 0;
+        public double grateYmax = 0;
+
 
         /// <summary>
         /// инициализация 3D просмотра
@@ -1147,7 +1167,7 @@ namespace CNC_Controller
                 double startY = (double)deviceInfo.AxesY_PositionMM;
                 double startZ = (double)deviceInfo.AxesZ_PositionMM;
 
-                Gl.glColor3f(0, 1.0F, 0);
+                Gl.glColor3f(1.000f, 1.000f, 0.000f);
                 Gl.glLineWidth(3);
                 Gl.glBegin(Gl.GL_LINES);
 
@@ -1276,6 +1296,7 @@ namespace CNC_Controller
                     */
                 }
 
+                
 
                 Gl.glBegin(Gl.GL_LINES); //РИСОВАНИЕ ОБЫЧНОЙ ЛИНИИ
 
@@ -1290,6 +1311,42 @@ namespace CNC_Controller
             }
 
             #endregion
+
+
+
+            #region Отображение границ рабочего поля
+
+            if (ShowGrate)
+            {
+                //отобразим лишь 4 линии
+                
+            //public double grateXmin = 0;
+            //public double grateXmax = 0;
+            //public double grateYmin = 0;
+            //public double grateYmax = 0;
+
+                Gl.glLineWidth(4.0f);
+
+                Gl.glColor3f(0.541f, 0.169f, 0.886f);
+
+                Gl.glBegin(Gl.GL_LINE_STRIP); //РИСОВАНИЕ ОБЫЧНОЙ ЛИНИИ
+
+                Gl.glVertex3d(grateXmin, grateYmin, 0);
+                Gl.glVertex3d(grateXmax, grateYmin, 0);
+                Gl.glVertex3d(grateXmax, grateYmax, 0);
+                Gl.glVertex3d(grateXmin, grateYmax, 0);
+                Gl.glVertex3d(grateXmin, grateYmin, 0);
+
+                Gl.glEnd();
+
+
+            }
+
+
+            #endregion
+
+
+
 
             #region Завершение отрисовки
 

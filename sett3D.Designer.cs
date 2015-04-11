@@ -45,6 +45,17 @@
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numPosYmax = new System.Windows.Forms.NumericUpDown();
+            this.numPosXmax = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numPosYmin = new System.Windows.Forms.NumericUpDown();
+            this.numPosXmin = new System.Windows.Forms.NumericUpDown();
+            this.labelposY = new System.Windows.Forms.Label();
+            this.labelposX = new System.Windows.Forms.Label();
+            this.checkBoxShowGrate = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
@@ -53,6 +64,11 @@
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosYmax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosXmax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosYmin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosXmin)).BeginInit();
             this.SuspendLayout();
             // 
             // numericUpDown1
@@ -266,11 +282,12 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(355, 308);
+            this.tabControl1.Size = new System.Drawing.Size(291, 361);
             this.tabControl1.TabIndex = 15;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.checkBox1);
             this.tabPage1.Controls.Add(this.checkBox4);
             this.tabPage1.Controls.Add(this.checkBox3);
@@ -278,16 +295,172 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(347, 282);
+            this.tabPage1.Size = new System.Drawing.Size(283, 335);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "3D настройки";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.numPosYmax);
+            this.groupBox2.Controls.Add(this.numPosXmax);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.numPosYmin);
+            this.groupBox2.Controls.Add(this.numPosXmin);
+            this.groupBox2.Controls.Add(this.labelposY);
+            this.groupBox2.Controls.Add(this.labelposX);
+            this.groupBox2.Controls.Add(this.checkBoxShowGrate);
+            this.groupBox2.Location = new System.Drawing.Point(8, 204);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(252, 123);
+            this.groupBox2.TabIndex = 15;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "                                                        ";
+            // 
+            // numPosYmax
+            // 
+            this.numPosYmax.DecimalPlaces = 3;
+            this.numPosYmax.Location = new System.Drawing.Point(121, 69);
+            this.numPosYmax.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numPosYmax.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numPosYmax.Name = "numPosYmax";
+            this.numPosYmax.Size = new System.Drawing.Size(79, 20);
+            this.numPosYmax.TabIndex = 12;
+            this.numPosYmax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numPosYmax.ValueChanged += new System.EventHandler(this.numPosYmax_ValueChanged);
+            // 
+            // numPosXmax
+            // 
+            this.numPosXmax.DecimalPlaces = 3;
+            this.numPosXmax.Location = new System.Drawing.Point(121, 43);
+            this.numPosXmax.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numPosXmax.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numPosXmax.Name = "numPosXmax";
+            this.numPosXmax.Size = new System.Drawing.Size(79, 20);
+            this.numPosXmax.TabIndex = 11;
+            this.numPosXmax.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numPosXmax.ValueChanged += new System.EventHandler(this.numPosXmax_ValueChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(129, 23);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(60, 13);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "максимум";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(47, 24);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(54, 13);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "минимум";
+            // 
+            // numPosYmin
+            // 
+            this.numPosYmin.DecimalPlaces = 3;
+            this.numPosYmin.Location = new System.Drawing.Point(36, 69);
+            this.numPosYmin.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numPosYmin.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numPosYmin.Name = "numPosYmin";
+            this.numPosYmin.Size = new System.Drawing.Size(79, 20);
+            this.numPosYmin.TabIndex = 8;
+            this.numPosYmin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numPosYmin.ValueChanged += new System.EventHandler(this.numPosYmin_ValueChanged);
+            // 
+            // numPosXmin
+            // 
+            this.numPosXmin.DecimalPlaces = 3;
+            this.numPosXmin.Location = new System.Drawing.Point(36, 43);
+            this.numPosXmin.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numPosXmin.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numPosXmin.Name = "numPosXmin";
+            this.numPosXmin.Size = new System.Drawing.Size(79, 20);
+            this.numPosXmin.TabIndex = 7;
+            this.numPosXmin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numPosXmin.ValueChanged += new System.EventHandler(this.numPosXmin_ValueChanged);
+            // 
+            // labelposY
+            // 
+            this.labelposY.AutoSize = true;
+            this.labelposY.Location = new System.Drawing.Point(16, 71);
+            this.labelposY.Name = "labelposY";
+            this.labelposY.Size = new System.Drawing.Size(14, 13);
+            this.labelposY.TabIndex = 6;
+            this.labelposY.Text = "Y";
+            // 
+            // labelposX
+            // 
+            this.labelposX.AutoSize = true;
+            this.labelposX.Location = new System.Drawing.Point(16, 45);
+            this.labelposX.Name = "labelposX";
+            this.labelposX.Size = new System.Drawing.Size(14, 13);
+            this.labelposX.TabIndex = 5;
+            this.labelposX.Text = "X";
+            // 
+            // checkBoxShowGrate
+            // 
+            this.checkBoxShowGrate.AutoSize = true;
+            this.checkBoxShowGrate.Location = new System.Drawing.Point(10, 0);
+            this.checkBoxShowGrate.Name = "checkBoxShowGrate";
+            this.checkBoxShowGrate.Size = new System.Drawing.Size(171, 17);
+            this.checkBoxShowGrate.TabIndex = 0;
+            this.checkBoxShowGrate.Text = "показывать границы станка";
+            this.checkBoxShowGrate.UseVisualStyleBackColor = true;
+            this.checkBoxShowGrate.CheckedChanged += new System.EventHandler(this.checkBoxShowGrate_CheckedChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(36, 92);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(165, 25);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "Обнулить границы";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Sett3D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(355, 308);
+            this.ClientSize = new System.Drawing.Size(291, 361);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -305,6 +478,12 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosYmax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosXmax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosYmin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPosXmin)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -328,5 +507,16 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox checkBoxShowGrate;
+        private System.Windows.Forms.NumericUpDown numPosYmax;
+        private System.Windows.Forms.NumericUpDown numPosXmax;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numPosYmin;
+        private System.Windows.Forms.NumericUpDown numPosXmin;
+        private System.Windows.Forms.Label labelposY;
+        private System.Windows.Forms.Label labelposX;
+        private System.Windows.Forms.Button button1;
     }
 }

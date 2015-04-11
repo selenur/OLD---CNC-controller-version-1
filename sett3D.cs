@@ -28,6 +28,13 @@ namespace CNC_Controller
             numericUpDown4.Value=mf.PreviewSetting.GridYstart;
             numericUpDown5.Value=mf.PreviewSetting.GridYend;
 
+            checkBoxShowGrate.Checked = mf.ShowGrate;
+            numPosXmin.Value = (decimal)mf.grateXmin;
+            numPosXmax.Value = (decimal)mf.grateXmax;
+            numPosYmin.Value = (decimal)mf.grateYmin;
+            numPosYmax.Value = (decimal)mf.grateYmax;
+
+
 
         }
 
@@ -76,6 +83,39 @@ namespace CNC_Controller
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             mf.PreviewSetting.ShowAxes = checkBox4.Checked;
+        }
+
+        private void checkBoxShowGrate_CheckedChanged(object sender, EventArgs e)
+        {
+            mf.ShowGrate = checkBoxShowGrate.Checked;
+        }
+
+        private void numPosXmin_ValueChanged(object sender, EventArgs e)
+        {
+            mf.grateXmin = (double)numPosXmin.Value;
+        }
+
+        private void numPosXmax_ValueChanged(object sender, EventArgs e)
+        {
+            mf.grateXmax = (double)numPosXmax.Value;
+        }
+
+        private void numPosYmin_ValueChanged(object sender, EventArgs e)
+        {
+            mf.grateYmin = (double)numPosYmin.Value;
+        }
+
+        private void numPosYmax_ValueChanged(object sender, EventArgs e)
+        {
+            mf.grateYmax = (double)numPosYmax.Value;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            mf.grateXmin = (double)deviceInfo.AxesX_PositionMM;
+            mf.grateXmax = (double)deviceInfo.AxesX_PositionMM;
+            mf.grateYmin = (double)deviceInfo.AxesY_PositionMM;
+            mf.grateYmax = (double)deviceInfo.AxesY_PositionMM;
         }
     }
 }
