@@ -1553,9 +1553,21 @@ namespace CNC_Controller
 
                 GKOD_ready gr = dataCode.GKODready[_indexLineForTask];
 
+
                 int posX = deviceInfo.CalcPosPulse("X", gr.X);
                 int posY = deviceInfo.CalcPosPulse("Y", gr.Y);
                 int posZ = deviceInfo.CalcPosPulse("Z", gr.Z);
+
+
+
+                //добавление смещения G-кода
+                if (deltaUsage)
+                {
+                    posX += deviceInfo.CalcPosPulse("X", (decimal)deltaX);
+                    posY += deviceInfo.CalcPosPulse("Y", (decimal)deltaY);
+                    posZ += deviceInfo.CalcPosPulse("Z", (decimal)deltaZ);
+                }
+
                 int speed = (gr.workspeed) ? speedG1 : speedG0;
 
                 _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, _indexLineForTask));
