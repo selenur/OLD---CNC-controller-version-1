@@ -62,13 +62,13 @@
             // 
             // checkBox6
             // 
-            this.checkBox6.Enabled = false;
             this.checkBox6.Location = new System.Drawing.Point(25, 149);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(234, 49);
             this.checkBox6.TabIndex = 14;
             this.checkBox6.Text = "Корректировать высоту Z с учетом сканирования поверхности";
             this.checkBox6.UseVisualStyleBackColor = true;
+            this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
             // 
             // labelposX
             // 

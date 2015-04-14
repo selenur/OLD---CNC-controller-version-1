@@ -1594,6 +1594,8 @@ namespace CNC_Controller
             return ReturnPoint;
         }
 
+
+
         //TODO: деление на ноль
         //нахождение высоты Z точки p0, лежащей на прямой между точками p3 p4  (прямая паралельна оси Y)
         public static dobPoint CalcPY(dobPoint p1, dobPoint p2, dobPoint p0)

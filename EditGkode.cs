@@ -50,12 +50,9 @@ namespace CNC_Controller
             mf.deltaZ = (double)numPosZ.Value;
         }
 
-
-
-
-        //private void checkBox6_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    mf.deltaFeed = checkBox6.Checked;
-        //}
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+            mf.deltaFeed = checkBox6.Checked;
+        }
     }
 }

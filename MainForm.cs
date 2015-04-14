@@ -1,6 +1,7 @@
 ﻿using System;
 //using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -57,6 +58,31 @@ namespace CNC_Controller
             PreviewSetting.PosZoom = 7;
 
             RefreshElementsForms();
+
+
+
+            //TODO: DEBUG
+            dataCode.matrix2 = new dobPoint[3, 3];
+
+            dataCode.matrix2[0, 0] = new dobPoint(0, 0, 0);
+            dataCode.matrix2[1, 0] = new dobPoint(5, 0, 0);
+            dataCode.matrix2[2, 0] = new dobPoint(10, 0, 0);
+
+
+            dataCode.matrix2[0, 1] = new dobPoint(0, 5, 1);
+            dataCode.matrix2[1, 1] = new dobPoint(5, 5, 1);
+            dataCode.matrix2[2, 1] = new dobPoint(10, 5, 1);
+
+
+            dataCode.matrix2[0, 2] = new dobPoint(0, 10, 2);
+            dataCode.matrix2[1, 2] = new dobPoint(5, 10, 2);
+            dataCode.matrix2[2, 2] = new dobPoint(10, 10, 2);
+
+            PreviewSetting.ShowMatrix = true;
+
+
+
+
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -674,7 +700,7 @@ namespace CNC_Controller
 
             foreach (string ss in sData)
             {
-                dataCode.AddData(ss);
+                dataCode.AddData(ss.ToUpper());
 
                 toolStripProgressBar.Value++;
             }
@@ -1197,7 +1223,10 @@ namespace CNC_Controller
 
             #region Отображение готовых инструкций для контроллера
 
-            Double endX = 0, endY = 0, endZ = 0;
+            //Double endX = 0, endY = 0, endZ = 0;
+
+            Gl.glBegin(Gl.GL_LINE_STRIP); 
+            Gl.glLineWidth(0.4f);
 
             //TODO: переделать
             foreach (GKOD_ready vv in dataCode.GKODready)
@@ -1227,88 +1256,32 @@ namespace CNC_Controller
                     pointZpp = deltaZ;
                 }
 
+                double matrixDeltaZ = 0;
                 //добавление корректировки по z
                 if (deltaFeed)
                 {
-
-
-                    /* 
-                     //TODO: В связи с переделкой ряда ключевых механизмов применение матрицы отключим
-
-
-
-                    //1) получим координаты 4-х ближайших точек из матрицы
-
-                    //текущая точка
-                    dobPoint pResult = new dobPoint(pointX, pointY, pointZ);
-
-                    int indexXmin = 0;
-
-                    int indexYmin = 0;
-
-                    for (int x = 0; x < dataCode.matrix2.GetLength(0)-1; x++)
-                    {
-                        //нужно текущую точку проверить между 2-х точек
-
-                        if (pResult.X > dataCode.matrix2[x, 0].X && pResult.X < dataCode.matrix2[x + 1, 0].X)
-                        {
-                            indexXmin = x;
-                        }
-                    }
-
-
-                    for (int y = 0; y < dataCode.matrix2.GetLength(1)-1; y++)
-                    {
-                        if (dataCode.matrix2[0, y].Y < pResult.Y && dataCode.matrix2[0, y+1].Y > pResult.Y)
-                        {
-                            indexYmin = y;
-                        }
-                    }
-
-
-                    //2) запустим математику
-
-                    dobPoint p1 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin].X, dataCode.matrix2[indexXmin, indexYmin].Y, dataCode.matrix2[indexXmin, indexYmin].Z);
-                    dobPoint p2 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin+1].X, dataCode.matrix2[indexXmin, indexYmin+1].Y, dataCode.matrix2[indexXmin, indexYmin+1].Z);
-                    dobPoint p3 = new dobPoint(dataCode.matrix2[indexXmin+1, indexYmin].X, dataCode.matrix2[indexXmin+1, indexYmin].Y, dataCode.matrix2[indexXmin+1, indexYmin].Z);
-                    dobPoint p4 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin + 1].X, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Y, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Z);
-
-                    //Point p1 = new Point(numericUpDown11.Value, numericUpDown10.Value, numericUpDown9.Value);
-                    //Point p2 = new Point(numericUpDown12.Value, numericUpDown14.Value, numericUpDown13.Value);
-                    //Point p3 = new Point(numericUpDown15.Value, numericUpDown17.Value, numericUpDown16.Value);
-                    //Point p4 = new Point(numericUpDown21.Value, numericUpDown23.Value, numericUpDown22.Value);
-
-                    //Point p5 = new Point(numericUpDown18.Value, numericUpDown20.Value, numericUpDown19.Value);
-
-
-                    dobPoint p12 = Geometry.CalcPX(p1, p2, pResult);
-                    dobPoint p34 = Geometry.CalcPX(p3, p4, pResult);
-
-                    dobPoint p1234 = Geometry.CalcPY(p12, p34, pResult);
-
-                    pointZ = p1234.Z;
-
-                    //numericUpDown24.Value = p1234.X;
-                    //numericUpDown26.Value = p1234.Y;
-                    //numericUpDown25.Value = p1234.Z;
-
-                    ////Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
-                    */
+                    matrixDeltaZ = GetDeltaZ(pointX, pointY);
+ 
                 }
 
                 
 
-                Gl.glBegin(Gl.GL_LINES); //РИСОВАНИЕ ОБЫЧНОЙ ЛИНИИ
+                
 
-                Gl.glVertex3d(endX + pointXpp, endY + pointYpp, endZ + pointZpp);
-                Gl.glVertex3d(pointX + deltaX, pointY + deltaY, pointZ + deltaZ);
+                //Gl.glVertex3d(endX + pointXpp, endY + pointYpp, endZ + pointZpp);
+                Gl.glVertex3d(pointX + deltaX, pointY + deltaY, pointZ + deltaZ + matrixDeltaZ);
+                Gl.glLineWidth(0.4f);
+              
 
-                Gl.glEnd();
-
-                endX = pointX;
-                endY = pointY;
-                endZ = pointZ;
+                //endX = pointX;
+                //endY = pointY;
+                //endZ = pointZ;
             }
+
+            Gl.glEnd();
+
+            
+
 
             #endregion
 
@@ -1371,6 +1344,79 @@ namespace CNC_Controller
             posAngleY.Text = PreviewSetting.PosAngleY + @"°";
             posAngleZ.Text = PreviewSetting.PosAngleZ + @"°";
         }
+
+
+
+
+        private double GetDeltaZ(double _x, double _y)
+        {
+                        //точка которую нужно отобразить
+           dobPoint pResult = new dobPoint(_x, _y, 0);
+
+
+            int indexXmin = 0;
+            int indexYmin = 0;
+            for (int x = 0; x < dataCode.matrix2.GetLength(0) - 1; x++)
+            {
+                for (int y = 0; y < dataCode.matrix2.GetLength(1) - 1; y++)
+                {
+                    if (_x > dataCode.matrix2[x, 0].X && _x < dataCode.matrix2[x + 1, 0].X && dataCode.matrix2[0, y].Y < _y && dataCode.matrix2[0, y + 1].Y > _y)
+                    {
+                        indexXmin = x;
+                        indexYmin = y;
+                    }
+                }
+            }
+
+
+            dobPoint p1 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin].X, dataCode.matrix2[indexXmin, indexYmin].Y, dataCode.matrix2[indexXmin, indexYmin].Z);
+            dobPoint p3 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin + 1].X, dataCode.matrix2[indexXmin, indexYmin + 1].Y, dataCode.matrix2[indexXmin, indexYmin + 1].Z);
+            dobPoint p2 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin].X, dataCode.matrix2[indexXmin + 1, indexYmin].Y, dataCode.matrix2[indexXmin + 1, indexYmin].Z);
+            dobPoint p4 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin + 1].X, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Y, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Z);
+
+            dobPoint p12 = Geometry.CalcPX(p1, p2, pResult);
+            dobPoint p34 = Geometry.CalcPX(p3, p4, pResult);
+            dobPoint p1234 = Geometry.CalcPY(p12, p34, pResult);
+/* 
+
+            //pointZ = p1234.Z;
+
+
+
+             //TODO: В связи с переделкой ряда ключевых механизмов применение матрицы отключим
+
+
+
+            //1) получим координаты 4-х ближайших точек из матрицы
+
+            //текущая точка
+                    
+
+
+
+
+            //2) запустим математику
+
+
+            //Point p1 = new Point(numericUpDown11.Value, numericUpDown10.Value, numericUpDown9.Value);
+            //Point p2 = new Point(numericUpDown12.Value, numericUpDown14.Value, numericUpDown13.Value);
+            //Point p3 = new Point(numericUpDown15.Value, numericUpDown17.Value, numericUpDown16.Value);
+            //Point p4 = new Point(numericUpDown21.Value, numericUpDown23.Value, numericUpDown22.Value);
+
+            //Point p5 = new Point(numericUpDown18.Value, numericUpDown20.Value, numericUpDown19.Value);
+
+
+
+            //numericUpDown24.Value = p1234.X;
+            //numericUpDown26.Value = p1234.Y;
+            //numericUpDown25.Value = p1234.Z;
+
+            ////Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
+            */
+
+            return p1234.Z;
+        }
+
 
         private void posAngleXm_Click(object sender, EventArgs e)
         {
@@ -1567,6 +1613,14 @@ namespace CNC_Controller
                     posY += deviceInfo.CalcPosPulse("Y", (decimal)deltaY);
                     posZ += deviceInfo.CalcPosPulse("Z", (decimal)deltaZ);
                 }
+
+                //добавление искажения матрицы
+                if (deltaFeed)
+                {
+                    double matrixDeltaZ = GetDeltaZ((double)gr.X, (double)gr.Y);
+                    posZ += deviceInfo.CalcPosPulse("Z", (decimal)matrixDeltaZ);
+                }
+
 
                 int speed = (gr.workspeed) ? speedG1 : speedG0;
 
