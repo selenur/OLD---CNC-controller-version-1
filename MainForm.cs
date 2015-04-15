@@ -1,12 +1,11 @@
 ﻿using System;
-//using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Globalization;
-using System.Windows.Forms;
+using System.IO;
 using System.Runtime.InteropServices;
-using Tao.OpenGl;                 // для работы с библиотекой OpenGL
-using Tao.FreeGlut;               // для работы с библиотекой FreeGLUT
+using System.Windows.Forms;
+using Tao.FreeGlut;
+using Tao.OpenGl;
 
 namespace CNC_Controller
 {
@@ -22,9 +21,6 @@ namespace CNC_Controller
         public MainForm()
         {
             InitializeComponent();
-
-            _indexLineForTask = 0;
-            _task = EStatusTask.Waiting;
 
             // 1 Подключение событий от контроллера
             _cnc = new CONTROLLER();
@@ -43,46 +39,13 @@ namespace CNC_Controller
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            toolStripStatus.Text = @"";
             Init3D();
 
-            PreviewSetting.ShowInstrument = true;
-            //preview_setting.ShowGrid = true;
+            Task.indexLineTask = -1; //пока нет никаких заданий
+            Task.StatusTask = EStatusTask.Waiting; //пока нет заданий для выполнения
 
-            PreviewSetting.PosAngleX = -90;
-            PreviewSetting.PosAngleY = 0;
-            PreviewSetting.PosAngleZ = 0;
-            PreviewSetting.PosX = -96;
-            PreviewSetting.PosY = -64;
-            PreviewSetting.PosZ = -300;
-            PreviewSetting.PosZoom = 7;
-
+            toolStripStatus.Text = @"";
             RefreshElementsForms();
-
-
-
-            //TODO: DEBUG
-            dataCode.matrix2 = new dobPoint[3, 3];
-
-            dataCode.matrix2[0, 0] = new dobPoint(0, 0, 0);
-            dataCode.matrix2[1, 0] = new dobPoint(5, 0, 0);
-            dataCode.matrix2[2, 0] = new dobPoint(10, 0, 0);
-
-
-            dataCode.matrix2[0, 1] = new dobPoint(0, 5, 1);
-            dataCode.matrix2[1, 1] = new dobPoint(5, 5, 1);
-            dataCode.matrix2[2, 1] = new dobPoint(10, 5, 1);
-
-
-            dataCode.matrix2[0, 2] = new dobPoint(0, 10, 2);
-            dataCode.matrix2[1, 2] = new dobPoint(5, 10, 2);
-            dataCode.matrix2[2, 2] = new dobPoint(10, 10, 2);
-
-            PreviewSetting.ShowMatrix = true;
-
-
-
-
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -99,7 +62,6 @@ namespace CNC_Controller
                 _cnc.WasDisconnected -= CncDisconnect;
                 _cnc.NewDataFromController -= CncNewData;
                 _cnc.Message -= CncMessage;
-
                 MouseWheel -= this_MouseWheel;
             }
         }
@@ -122,7 +84,6 @@ namespace CNC_Controller
         {
             Invoke((MethodInvoker)RefreshElementsForms);
 
-
             //сдвинем границы
             if (ShowGrate)
             {
@@ -131,10 +92,7 @@ namespace CNC_Controller
 
                 if ((double)deviceInfo.AxesY_PositionMM < grateYmin) grateYmin = (double)deviceInfo.AxesY_PositionMM;
                 if ((double)deviceInfo.AxesY_PositionMM > grateYmax) grateYmax = (double)deviceInfo.AxesY_PositionMM;
-
-
             }
-
         }
 
         //событие о прекращении связи
@@ -355,9 +313,8 @@ namespace CNC_Controller
         /// <summary>
         /// Для определения выполняется ли ручное движение
         /// </summary>
-        bool _manualMoveButtonPressed;
+        private bool _manualMoveButtonPressed;
 
-        // ReSharper disable once FunctionComplexityOverflow
         private void timerKeyHooks_Tick(object sender, EventArgs e)
         {
 
@@ -416,10 +373,11 @@ namespace CNC_Controller
             }
 
 
-            if (!checkBoxManualMove.Checked) return;
+            if (!checkBoxManualMove.Checked) return;  //проверка флажка "управление с NUM-pad"
 
-            if (!_cnc.TestAllowActions()) return;
+            if (!_cnc.TestAllowActions()) return; //Проверка что контроллер доступен
 
+            if (Task.StatusTask != EStatusTask.Waiting) return; //Проверка что нет выполняемых задач в данный момент
 
             bool num0 = IsPressed(VirtualKeyStates.VkNumpad0);
             bool num1 = IsPressed(VirtualKeyStates.VkNumpad1);
@@ -552,7 +510,7 @@ namespace CNC_Controller
             }
 
 
-            if (_task == EStatusTask.Waiting)
+            if (Task.StatusTask == EStatusTask.Waiting)
             {
                 buttonStartTask.Enabled = true;
                 btStopTask.Enabled = false;
@@ -563,7 +521,7 @@ namespace CNC_Controller
             }
 
 
-            if (_task == EStatusTask.TaskPaused)
+            if (Task.StatusTask == EStatusTask.TaskPaused)
             {
                 buttonStartTask.Enabled = false;
                 btStopTask.Enabled = true;
@@ -574,7 +532,7 @@ namespace CNC_Controller
             }
 
 
-            if (_task == EStatusTask.TaskWorking)
+            if (Task.StatusTask == EStatusTask.TaskWorking)
             {
                 buttonStartTask.Enabled = false;
                 btStopTask.Enabled = true;
@@ -625,15 +583,6 @@ namespace CNC_Controller
             checkBox15.Checked = bb19.Bit5;
             checkBox16.Checked = bb19.Bit6;
             checkBox17.Checked = bb19.Bit7;
-
-            //if (!_cnc.AvailableNewData) return; //нет смысла обновлять элементы на форме
-
-            //RefreshElementsForms();
-
-            //TODO: добавим проверку которая получает описание ошибки у класса cnc
-
-            //toolStripStatus.Text = _cnc.StringError; //ошибку выведем на форме
-
         }
 
         //событие от колёсика мышки
@@ -692,7 +641,7 @@ namespace CNC_Controller
             //Очистим данные
             dataCode.Clear();
 
-            string[] sData = System.IO.File.ReadAllLines(openFileDialog.FileName);
+            string[] sData = File.ReadAllLines(openFileDialog.FileName);
 
             toolStripProgressBar.Value = 0;
             toolStripProgressBar.Minimum = 0;
@@ -750,8 +699,6 @@ namespace CNC_Controller
             DialogResult dlgResult = setfrm.ShowDialog();
             
             if (dlgResult == DialogResult.OK) _cnc.SaveSetting();
-           
-
         }
 
         private void settingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -871,6 +818,18 @@ namespace CNC_Controller
 
             // начало визуализации (активируем таймер) 
             RenderTimer.Start();
+
+
+            PreviewSetting.ShowInstrument = true;
+            //preview_setting.ShowGrid = true;
+
+            PreviewSetting.PosAngleX = -90;
+            PreviewSetting.PosAngleY = 0;
+            PreviewSetting.PosAngleZ = 0;
+            PreviewSetting.PosX = -96;
+            PreviewSetting.PosY = -64;
+            PreviewSetting.PosZ = -300;
+            PreviewSetting.PosZoom = 7;
 
         }
 
@@ -1223,19 +1182,23 @@ namespace CNC_Controller
 
             #region Отображение готовых инструкций для контроллера
 
-            //Double endX = 0, endY = 0, endZ = 0;
-
+            Gl.glLineWidth(0.3f);
             Gl.glBegin(Gl.GL_LINE_STRIP); 
-            Gl.glLineWidth(0.4f);
 
             //TODO: переделать
             foreach (GKOD_ready vv in dataCode.GKODready)
             {
                 if (vv.workspeed) Gl.glColor3f(0, 255, 0); else Gl.glColor3f(255, 0, 0);
 
-                //выделим жирным текущую линию
-                if (vv.numberInstruct == (_indexLineForTask - 1)) Gl.glLineWidth(3.0f); else Gl.glLineWidth(0.1f);
-
+                ////выделим жирным текущую линию
+                //if (vv.numberInstruct == (Task.indexLineTask - 1))
+                //{
+                //    Gl.glLineWidth(3.0f);
+                //}
+                //else
+                //{
+                    Gl.glLineWidth(0.1f);
+                //}
 
                 //смещение положения g-кода
                 double pointXpp = 0;
@@ -1246,7 +1209,6 @@ namespace CNC_Controller
                 double pointX = (double)vv.X;
                 double pointY = (double)vv.Y;
                 double pointZ = (double)vv.Z;
-
 
                 //добавление смещения G-кода
                 if (deltaUsage)
@@ -1264,18 +1226,9 @@ namespace CNC_Controller
  
                 }
 
-                
-
-                
-
-                //Gl.glVertex3d(endX + pointXpp, endY + pointYpp, endZ + pointZpp);
                 Gl.glVertex3d(pointX + deltaX, pointY + deltaY, pointZ + deltaZ + matrixDeltaZ);
                 Gl.glLineWidth(0.4f);
               
-
-                //endX = pointX;
-                //endY = pointY;
-                //endZ = pointZ;
             }
 
             Gl.glEnd();
@@ -1346,7 +1299,7 @@ namespace CNC_Controller
         }
 
 
-
+        
 
         private double GetDeltaZ(double _x, double _y)
         {
@@ -1476,8 +1429,6 @@ namespace CNC_Controller
 
         }
 
-
-
         #endregion
 
         #region Выполнение G-кода из таблицы
@@ -1490,81 +1441,61 @@ namespace CNC_Controller
 
         public bool deltaFeed = false;
 
-
-        /// <summary>
-        /// Номер строки с заданием для выполнения
-        /// </summary>
-        private int _indexLineForTask;
-
-        /// <summary>
-        /// Виды статусов выполнения задания
-        /// </summary>
-        private enum EStatusTask { Waiting = 0, TaskStart, TaskWorking, TaskPaused,  TaskStop};
-
-        /// <summary>
-        /// Свойство для работы со статусом задания
-        /// </summary>
-        private EStatusTask _task;
-
         private void dataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (_task == EStatusTask.Waiting)
+            if (Task.StatusTask == EStatusTask.Waiting)
             {
-                _indexLineForTask = (dataGrid.Rows.Count > 0) ?  e.RowIndex+1:0;
+                Task.indexLineTask = (dataGrid.Rows.Count > 0) ? e.RowIndex + 1 : 0;
 
-                textBoxNumberLine.Text = _indexLineForTask.ToString();
+                textBoxNumberLine.Text = Task.indexLineTask.ToString();
             }
         }
 
         private void buttonStartTask_Click(object sender, EventArgs e)
         {
-            if (_task != EStatusTask.Waiting) return;
-            
-            DialogResult dlgres = MessageBox.Show(@"Вы хотите начать выполнение программы с строки " + _indexLineForTask.ToString() + @"?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            if (Task.StatusTask != EStatusTask.Waiting) return;
+
+            DialogResult dlgres = MessageBox.Show(@"Вы хотите начать выполнение программы с строки " + Task.indexLineTask + @"?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
             checkBoxManualMove.Checked = false;
 
             if (dlgres == DialogResult.Cancel) return;
 
-            //TODO: переделать
-            ////toolStripProgressBar.Minimum = 0;
-            ////toolStripProgressBar.Maximum = G3D.points.Count;
-
-            _task = EStatusTask.TaskStart;
+            Task.StatusTask = EStatusTask.TaskStart;
         }
 
         private void buttonPauseTask_Click(object sender, EventArgs e)
         {
-            if (_task == EStatusTask.TaskWorking || _task == EStatusTask.TaskPaused)
+            if (Task.StatusTask == EStatusTask.TaskWorking || Task.StatusTask == EStatusTask.TaskPaused)
             {
-                _task = (_task == EStatusTask.TaskPaused) ? EStatusTask.TaskWorking : EStatusTask.TaskPaused;
+                Task.StatusTask = (Task.StatusTask == EStatusTask.TaskPaused) ? EStatusTask.TaskWorking : EStatusTask.TaskPaused;
             }
         }
 
         private void btStopTask_Click(object sender, EventArgs e)
         {
-            if (_task != EStatusTask.TaskWorking) return;
+            if (Task.StatusTask != EStatusTask.TaskWorking) return;
 
-            _task = EStatusTask.TaskStop;
+            Task.StatusTask = EStatusTask.TaskStop;
         }
 
         private void TaskTimer_Tick(object sender, EventArgs e)
         {
 
-            if (_task == EStatusTask.TaskStart) toolStripStatusLabel1.Text = @"Запуск задания";
-            if (_task == EStatusTask.TaskPaused) toolStripStatusLabel1.Text = @"Пауза выполнения";
-            if (_task == EStatusTask.TaskStop) toolStripStatusLabel1.Text = @"Остановка задания";
-            if (_task == EStatusTask.TaskWorking) toolStripStatusLabel1.Text = @"Выполнение задания";
-            if (_task == EStatusTask.Waiting) toolStripStatusLabel1.Text = @"ожидание";
+            if (Task.StatusTask == EStatusTask.TaskStart) toolStripStatusLabel1.Text = @"Запуск задания";
+            if (Task.StatusTask == EStatusTask.TaskPaused) toolStripStatusLabel1.Text = @"Пауза выполнения";
+            if (Task.StatusTask == EStatusTask.TaskStop) toolStripStatusLabel1.Text = @"Остановка задания";
+            if (Task.StatusTask == EStatusTask.TaskWorking) toolStripStatusLabel1.Text = @"Выполнение задания";
+            if (Task.StatusTask == EStatusTask.Waiting) toolStripStatusLabel1.Text = @"ожидание";
             
             
             
             //TODO: вот тут основная поссылка данных
 
             int speedG1 = (int)numericUpDown1.Value;
-            int speedG0 = (int)numericUpDown2.Value;               
- 
-            if (_task == EStatusTask.TaskStart)
+            int speedG0 = (int)numericUpDown2.Value;
+
+            if (Task.StatusTask == EStatusTask.TaskStart)
             {
                 AddLog("Запуск задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
 
@@ -1576,28 +1507,28 @@ namespace CNC_Controller
                 _cnc.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
                 _cnc.SendBinaryData(BinaryData.pack_C0());
 
-                _task = EStatusTask.TaskWorking;
+                Task.StatusTask = EStatusTask.TaskWorking;
 
                 return;
             }
 
 
             //TODO: переделать
-            if (_task == EStatusTask.TaskWorking)
+            if (Task.StatusTask == EStatusTask.TaskWorking)
             {
 
-                if (_indexLineForTask >= dataCode.GKODready.Count)
+                if (Task.indexLineTask >= dataCode.GKODready.Count)
                 {
-                    _task = EStatusTask.TaskStop;
+                    Task.StatusTask = EStatusTask.TaskStop;
                     return;
                 }
 
 
                 if (_cnc.AvailableBufferSize < 5) return;
 
-                if (_indexLineForTask > (_cnc.NumberComleatedInstructions+3)) return;
+                if (Task.indexLineTask > (_cnc.NumberComleatedInstructions + 3)) return;
 
-                GKOD_ready gr = dataCode.GKODready[_indexLineForTask];
+                GKOD_ready gr = dataCode.GKODready[Task.indexLineTask];
 
 
                 int posX = deviceInfo.CalcPosPulse("X", gr.X);
@@ -1624,15 +1555,15 @@ namespace CNC_Controller
 
                 int speed = (gr.workspeed) ? speedG1 : speedG0;
 
-                _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, _indexLineForTask));
+                _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.indexLineTask));
 
                 //TODO: распарсим и выполним
-                _indexLineForTask++;
-                textBoxNumberLine.Text = _indexLineForTask.ToString();
+                Task.indexLineTask++;
+                textBoxNumberLine.Text = Task.indexLineTask.ToString();
 
             }
 
-            if (_task == EStatusTask.TaskStop)
+            if (Task.StatusTask == EStatusTask.TaskStop)
             {
                 _cnc.SendBinaryData(BinaryData.pack_FF());
                 _cnc.SendBinaryData(BinaryData.pack_9D());
@@ -1644,7 +1575,7 @@ namespace CNC_Controller
                 _cnc.SendBinaryData(BinaryData.pack_FF());
 
                 AddLog("Завершение задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
-                _task = EStatusTask.Waiting;
+                Task.StatusTask = EStatusTask.Waiting;
             }
         }
 
@@ -1729,15 +1660,8 @@ namespace CNC_Controller
 
  
         #endregion
-
-
-
-
-
-
    
     }
-
 
     /// <summary>
     /// Класс для хранения параметров предпросмотра в окне OpenGL
@@ -1767,4 +1691,29 @@ namespace CNC_Controller
 
     }
 
+
+
+
+    /// <summary>
+    /// Виды статусов выполнения задания
+    /// </summary>
+    public enum EStatusTask { Waiting = 0, TaskStart, TaskWorking, TaskPaused, TaskStop };
+
+    /// <summary>
+    /// Класс для работы с заданием для контроллера
+    /// </summary>
+    public static class Task
+    {
+        /// <summary>
+        /// Сво-во для определения режима работы
+        /// </summary>
+        public static EStatusTask StatusTask = EStatusTask.Waiting;
+
+        /// <summary>
+        /// Номер строки с заданием для выполнения
+        /// </summary>
+        public static int indexLineTask = -1;
+
+
+    }
 }
