@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,7 +39,7 @@
             this.numPosZ = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.numStep = new System.Windows.Forms.NumericUpDown();
+            this.numStepX = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.numCountX = new System.Windows.Forms.NumericUpDown();
             this.numCountY = new System.Windows.Forms.NumericUpDown();
@@ -56,18 +56,21 @@
             this.label6 = new System.Windows.Forms.Label();
             this.numSpeed = new System.Windows.Forms.NumericUpDown();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.numStepY = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numStep)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStepX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numReturn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStepY)).BeginInit();
             this.SuspendLayout();
             // 
             // numPosY
@@ -180,7 +183,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.numStep);
+            this.groupBox2.Controls.Add(this.numStepY);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.numStepX);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.numCountX);
             this.groupBox2.Controls.Add(this.numCountY);
@@ -188,36 +193,36 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Location = new System.Drawing.Point(12, 163);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(172, 137);
+            this.groupBox2.Size = new System.Drawing.Size(172, 160);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "2) Размер и количество шагов";
             // 
-            // numStep
+            // numStepX
             // 
-            this.numStep.DecimalPlaces = 1;
-            this.numStep.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numStep.Location = new System.Drawing.Point(62, 25);
-            this.numStep.Maximum = new decimal(new int[] {
+            this.numStepX.DecimalPlaces = 1;
+            this.numStepX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numStepX.Location = new System.Drawing.Point(79, 25);
+            this.numStepX.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numStep.Minimum = new decimal(new int[] {
+            this.numStepX.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numStep.Name = "numStep";
-            this.numStep.Size = new System.Drawing.Size(96, 29);
-            this.numStep.TabIndex = 14;
-            this.numStep.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numStep.Value = new decimal(new int[] {
+            this.numStepX.Name = "numStepX";
+            this.numStepX.Size = new System.Drawing.Size(79, 29);
+            this.numStepX.TabIndex = 14;
+            this.numStepX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numStepX.Value = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numStep.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
+            this.numStepX.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
             // 
             // label5
             // 
@@ -225,14 +230,14 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label5.Location = new System.Drawing.Point(11, 30);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 20);
+            this.label5.Size = new System.Drawing.Size(67, 20);
             this.label5.TabIndex = 13;
-            this.label5.Text = "ШАГ";
+            this.label5.Text = "ШАГ X:";
             // 
             // numCountX
             // 
             this.numCountX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numCountX.Location = new System.Drawing.Point(38, 60);
+            this.numCountX.Location = new System.Drawing.Point(38, 94);
             this.numCountX.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -257,7 +262,7 @@
             // numCountY
             // 
             this.numCountY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numCountY.Location = new System.Drawing.Point(38, 94);
+            this.numCountY.Location = new System.Drawing.Point(38, 128);
             this.numCountY.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -283,7 +288,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(11, 65);
+            this.label3.Location = new System.Drawing.Point(11, 99);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(21, 20);
             this.label3.TabIndex = 9;
@@ -293,7 +298,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(11, 99);
+            this.label4.Location = new System.Drawing.Point(11, 133);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(21, 20);
             this.label4.TabIndex = 10;
@@ -311,22 +316,22 @@
             this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView.ColumnHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView.Location = new System.Drawing.Point(211, 22);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
@@ -375,7 +380,7 @@
             this.groupBox3.Controls.Add(this.numReturn);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.numSpeed);
-            this.groupBox3.Location = new System.Drawing.Point(12, 306);
+            this.groupBox3.Location = new System.Drawing.Point(12, 329);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(172, 108);
             this.groupBox3.TabIndex = 13;
@@ -448,6 +453,42 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
+            // numStepY
+            // 
+            this.numStepY.DecimalPlaces = 1;
+            this.numStepY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numStepY.Location = new System.Drawing.Point(80, 57);
+            this.numStepY.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numStepY.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numStepY.Name = "numStepY";
+            this.numStepY.Size = new System.Drawing.Size(79, 29);
+            this.numStepY.TabIndex = 16;
+            this.numStepY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numStepY.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numStepY.ValueChanged += new System.EventHandler(this.numStepY_ValueChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.Location = new System.Drawing.Point(12, 62);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(67, 20);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "ШАГ Y:";
+            // 
             // ScanSurface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -470,7 +511,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numStep)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStepX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
@@ -478,6 +519,7 @@
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numReturn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStepY)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -491,7 +533,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.NumericUpDown numStep;
+        private System.Windows.Forms.NumericUpDown numStepX;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown numCountX;
         private System.Windows.Forms.NumericUpDown numCountY;
@@ -510,5 +552,7 @@
         private System.Windows.Forms.NumericUpDown numPosZ;
         private System.Windows.Forms.Label label8;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.NumericUpDown numStepY;
+        private System.Windows.Forms.Label label9;
     }
 }

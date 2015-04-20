@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace CNC_Controller
@@ -65,7 +66,7 @@ namespace CNC_Controller
 
                 for (int x = 0; x < numCountX.Value; x++)
                 {
-                    dataCode.matrix2[x, y] = new dobPoint((double)numPosX.Value + (x * (double)numStep.Value), (double)numPosY.Value + (y * (double)numStep.Value), (double)numPosZ.Value);
+                    dataCode.matrix2[x, y] = new dobPoint((double)numPosX.Value + (x * (double)numStepX.Value), (double)numPosY.Value + (y * (double)numStepY.Value), (double)numPosZ.Value);
 
                     //matrixline.X.Add(new matrixPoint(numPosX.Value + (x * numStep.Value), numPosZ.Value, true));
                 }
@@ -83,13 +84,13 @@ namespace CNC_Controller
             for (int x = 0; x < numCountX.Value; x++)
             {
                 dataGridView.Columns.Add("X" + x.ToString(), "");
-                dataGridView.Rows[0].Cells[x+1].Value = "X " + (numPosX.Value + (x*numStep.Value));
+                dataGridView.Rows[0].Cells[x+1].Value = "X " + (numPosX.Value + (x*numStepX.Value));
             }
 
             for (int y = 0; y < numCountY.Value; y++)
             {
                 int index = dataGridView.Rows.Add();
-                dataGridView.Rows[index].Cells[0].Value = "Y " + (numPosY.Value + (y * numStep.Value));
+                dataGridView.Rows[index].Cells[0].Value = "Y " + (numPosY.Value + (y * numStepY.Value));
             }
 
             for (int y = 0; y < numCountY.Value; y++)
@@ -206,7 +207,7 @@ namespace CNC_Controller
             
         }
 
-        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             Scan = true;
 
@@ -232,32 +233,32 @@ namespace CNC_Controller
 
             //спозиционируемся
             _ctrl.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
 
             //опустим щуп
             _ctrl.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
             _ctrl.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, 0));      // + настройка отхода, и скорости
             _ctrl.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
 
             while (!deviceInfo.AxesZ_LimitMax)
             {
                 //dataCode.Matrix[indexScanY].X[indexScanX].Z = deviceInfo.AxesZ_PositionMM - numReturn.Value;
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(100);
             }
 
             
-            System.Threading.Thread.Sleep(300);
+            Thread.Sleep(300);
             //dataCode.Matrix[indexScanY].X[indexScanX].Z = deviceInfo.AxesZ_PositionMM;
             dataCode.matrix2[indexScanX, indexScanY].Z = (double)deviceInfo.AxesZ_PositionMM;
 
             _ctrl.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
             _ctrl.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
             _ctrl.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
             //спозиционируемся
             _ctrl.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
-            System.Threading.Thread.Sleep(100);
+            Thread.Sleep(100);
 
             if (indexScanX == indexMaxScanX && indexScanY == indexMaxScanY)
             {
@@ -282,6 +283,11 @@ namespace CNC_Controller
                     indexScanY = 0;
                 }
             }
+        }
+
+        private void numStepY_ValueChanged(object sender, EventArgs e)
+        {
+            RefrechDataGrid();
         }
   
     
