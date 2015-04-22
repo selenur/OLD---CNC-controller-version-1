@@ -1209,15 +1209,15 @@ namespace CNC_Controller
     /// </summary>
     public static class dataCode
     {
-        /// <summary>
-        /// Набор готовых инструкций для станка 
-        /// </summary>
-        public static List<GKOD_ready> GKODready = new List<GKOD_ready>();
+        ///// <summary>
+        ///// Набор готовых инструкций для станка 
+        ///// </summary>
+        //public static List<GKOD_ready> GKODready = new List<GKOD_ready>();
 
         /// <summary>
         /// Набор сырых инструкций для станка 
         /// </summary>
-        public static List<GKOD_raw> GKODraw = new List<GKOD_raw>();
+        //public static List<GKOD_raw> GKODraw = new List<GKOD_raw>();
 
         /// <summary>
         /// Набор точек матрицы, получаемой при сканировании поверхности
@@ -1225,200 +1225,18 @@ namespace CNC_Controller
         //public static List<matrixYline> Matrix = new List<matrixYline>(); 
 
 
-        /// <summary>
-        /// Очистка данных
-        /// </summary>
-        public static void Clear()
-        {
-            GKODready.Clear();
-            GKODraw.Clear();
-        }
-
-        private static List<string> parserGkodeLine(string value)
-        {
-
-            List<string> lcmd = new List<string>();
-            int inx = 0;
-            bool collectCommand = false;
-
-            foreach (char symb in value)
-            {
-                if (symb > 0x40 && symb < 0x5B)  //символы от A до Z
-                {
-                    if (collectCommand)
-                    {
-                        inx++;
-                        collectCommand = false;
-                    }
-
-                    collectCommand = true;
-                    lcmd.Add("");
-                }
-
-                if (collectCommand) lcmd[inx] += symb.ToString();
-            }
-
-            return lcmd;
-        }
-
-        /// <summary>
-        /// Добавление данных, в виде строки с G-кодом
-        /// </summary>
-        /// <param name="value">строка с G-кодом</param>
-        public static void AddData(string value)
-        {
-
-            // 1) распарсим строку
-            List<string> lcmd = parserGkodeLine(value);
-
-            // 2) проанализируем список команд
-            //    //а так-же разберем команды на те которые знаем и не знаем
-            string sGoodsCmd = "";
-            string sBadCmd = "";
-
-            foreach (string ss in lcmd)
-            {
-                    string sCommd = ss.Substring(0, 1).Trim().ToUpper();
-                    string sValue = ss.Substring(1).Trim().ToUpper();
-
-                    bool good = false;
-
-                    if (sCommd == "G") //скорости движения
-                    {
-                        if (sValue == "0" || sValue == "1") good = true;
-                        if (sValue == "00" || sValue == "01") good = true;
-                    }
-
-                    if (sCommd == "M") //вкл/выкл шпинделя
-                    {
-                        if (sValue == "3" || sValue == "5") good = true;
-                        if (sValue == "03" || sValue == "05") good = true;
-                    }
-
-                    if (sCommd == "X" || sCommd == "Y" || sCommd == "Z")
-                    {
-                        //координаты 3-х осей 
-                        good = true;
-                        //TODO: дальше могут быть некорректные данные
-                    }
-
-                    if (good)
-                    {
-                        sGoodsCmd += ss + " ";
-                    }
-                    else
-                    {
-                        sBadCmd += ss + " ";
-                    }
-            }
-
-            GKODraw.Add(new GKOD_raw(value, sGoodsCmd, sBadCmd, GKODraw.Count));
-        }
-
-        //перезаполнение данных в GKOD_ready из GKOD_raw
-        public static void CalculateData()
-        {
-
-            GKODready.Clear();
-
-            decimal posx = 0, posy = 0, posz = 0;
-            int CNC_speedNow = 100;
-            bool spindelOn = false;
-            bool workspeed = false;
+        ///// <summary>
+        ///// Очистка данных
+        ///// </summary>
+        //public static void Clear()
+        //{
+        //    //GKODready.Clear();
+        //    //GKODraw.Clear();
+        //}
 
 
-            foreach (GKOD_raw valueGkodRaw in dataCode.GKODraw)
-            {
-                if (valueGkodRaw.GoodStr == "") continue;
-
-                List<string> lcmd = parserGkodeLine(valueGkodRaw.GoodStr);
-
-                foreach (string ss in lcmd)
-                {
-                    string value = ss.Trim().ToUpper();
 
 
-                    if (value == "G0" || value == "G00")
-                    {
-                        CNC_speedNow = 500;//todo:
-                        workspeed = false;
-                    }
-
-                    if (value == "G1" || value == "G01")
-                    {
-                        CNC_speedNow = 200;//todo:
-                        workspeed = true;
-                    }
-
-                    if (value.Substring(0, 1) == "X")
-                    {
-                        string value1 = ss.Substring(1).Trim().Replace('.', ',');
-                        if (value1.Trim() != "")
-                        {
-                            try
-                            {
-                                //защита при чтении неправильного файла
-                                posx = decimal.Parse(value1);
-                            }
-                            catch (Exception)
-                            {
-
-                                //throw;
-                            }
-                        }
-                        
-                    }
-
-                    if (value.Substring(0, 1) == "Y")
-                    {
-                        string value1 = ss.Substring(1).Trim().Replace('.', ',');
-                        if (value1.Trim() != "")
-                        {
-                            try
-                            {
-                                //защита при чтении неправильного файла
-                                posy = decimal.Parse(value1);
-                            }
-                            catch (Exception)
-                            {
-                                
-                                //throw;
-                            }
-                            
-                        }
-                    }
-
-                    if (value.Substring(0, 1) == "Z")
-                    {
-                        string value1 = ss.Substring(1).Trim().Replace('.', ',');
-                        if (value1.Trim() != "")
-                        {
-                            try
-                            {
-                                //защита при чтении неправильного файла
-                                posz = decimal.Parse(value1);
-                            }
-                            catch (Exception)
-                            {
-
-                                //throw;
-                            }
-                        }
-                    }
-
-                    if (value == "M3" || value == "M03") spindelOn = true;
-
-                    if (value == "M5" || value == "M05") spindelOn = false;
-
-                }
-
-                GKODready.Add(new GKOD_ready(valueGkodRaw.numberLine, spindelOn, posx, posy, posz, CNC_speedNow, workspeed));
-            }
-            
-
-        }
-    
-    
         //Более удобная матрица
         public static dobPoint[,] matrix2 = new dobPoint[1,1]; 
 
@@ -1453,30 +1271,7 @@ namespace CNC_Controller
         }
     }
 
-    /// <summary>
-    /// Готовые данные из G-кода для станка
-    /// </summary>
-    public class GKOD_ready
-    {
-        public decimal X;       // координата в мм
-        public decimal Y;       // координата в мм
-        public decimal Z;       // координата в мм
-        public int speed;       // скорость
-        public bool spindelON;  // вкл. шпинделя
-        public int numberInstruct; //номер инструкции
-        public bool workspeed = false;
 
-        public GKOD_ready(int _numberInstruct, bool _spindelON, decimal _X, decimal _Y, decimal _Z, int _speed, bool _workspeed)
-        {
-            X = _X;
-            Y = _Y;
-            Z = _Z;
-            spindelON = _spindelON;
-            numberInstruct = _numberInstruct;
-            speed = _speed;
-            workspeed = _workspeed;
-        }
-    }
 
     /// <summary>
     /// Сырые данные G-кода для станка
@@ -1486,14 +1281,12 @@ namespace CNC_Controller
         public string FullStr = "";
         public string GoodStr = ""; //для распознанных
         public string BadStr = ""; //для нераспознанных
-        public int numberLine = 0;
 
-        public GKOD_raw(string _FullStr, string _GoodStr, string _BadStr, int _numberLine)
+        public GKOD_raw(string _FullStr, string _GoodStr, string _BadStr)
         {
             FullStr = _FullStr;
             GoodStr = _GoodStr;
             BadStr = _BadStr;
-            numberLine = _numberLine;
         }
     }
 

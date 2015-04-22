@@ -46,6 +46,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.numPosYmax = new System.Windows.Forms.NumericUpDown();
             this.numPosXmax = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
@@ -55,7 +56,6 @@
             this.labelposY = new System.Windows.Forms.Label();
             this.labelposX = new System.Windows.Forms.Label();
             this.checkBoxShowGrate = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
@@ -171,9 +171,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(22, 6);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(151, 17);
+            this.checkBox1.Size = new System.Drawing.Size(210, 17);
             this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "Показывать инструмент";
+            this.checkBox1.Text = "Показывать инструмент (шпиндель)";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -182,20 +182,20 @@
             this.checkBox2.AutoSize = true;
             this.checkBox2.Location = new System.Drawing.Point(15, 0);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(120, 17);
+            this.checkBox2.Size = new System.Drawing.Size(148, 17);
             this.checkBox2.TabIndex = 6;
-            this.checkBox2.Text = "Показывать сетку";
+            this.checkBox2.Text = "Показывать сетку (мм.)";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 20);
+            this.label1.Location = new System.Drawing.Point(34, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
+            this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 7;
-            this.label1.Text = "шаг мм";
+            this.label1.Text = "шаг";
             // 
             // label2
             // 
@@ -236,7 +236,7 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(22, 181);
+            this.checkBox3.Location = new System.Drawing.Point(16, 300);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(238, 17);
             this.checkBox3.TabIndex = 12;
@@ -262,12 +262,12 @@
             this.groupBox1.Size = new System.Drawing.Size(253, 113);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "                                                 ";
+            this.groupBox1.Text = "                                                  ";
             // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(22, 158);
+            this.checkBox4.Location = new System.Drawing.Point(16, 277);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(140, 17);
             this.checkBox4.TabIndex = 14;
@@ -282,7 +282,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(291, 361);
+            this.tabControl1.Size = new System.Drawing.Size(274, 351);
             this.tabControl1.TabIndex = 15;
             // 
             // tabPage1
@@ -295,9 +295,9 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(283, 335);
+            this.tabPage1.Size = new System.Drawing.Size(266, 325);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "3D настройки";
+            this.tabPage1.Text = "Основные";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox2
@@ -312,12 +312,22 @@
             this.groupBox2.Controls.Add(this.labelposY);
             this.groupBox2.Controls.Add(this.labelposX);
             this.groupBox2.Controls.Add(this.checkBoxShowGrate);
-            this.groupBox2.Location = new System.Drawing.Point(8, 204);
+            this.groupBox2.Location = new System.Drawing.Point(6, 148);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(252, 123);
+            this.groupBox2.Size = new System.Drawing.Size(253, 123);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "                                                        ";
+            this.groupBox2.Text = "                                                                     ";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(36, 92);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(165, 25);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "Обнулить границы";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // numPosYmax
             // 
@@ -440,32 +450,22 @@
             this.checkBoxShowGrate.AutoSize = true;
             this.checkBoxShowGrate.Location = new System.Drawing.Point(10, 0);
             this.checkBoxShowGrate.Name = "checkBoxShowGrate";
-            this.checkBoxShowGrate.Size = new System.Drawing.Size(171, 17);
+            this.checkBoxShowGrate.Size = new System.Drawing.Size(209, 17);
             this.checkBoxShowGrate.TabIndex = 0;
-            this.checkBoxShowGrate.Text = "показывать границы станка";
+            this.checkBoxShowGrate.Text = "показывать границы рабочего поля";
             this.checkBoxShowGrate.UseVisualStyleBackColor = true;
             this.checkBoxShowGrate.CheckedChanged += new System.EventHandler(this.checkBoxShowGrate_CheckedChanged);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(36, 92);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 25);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "Обнулить границы";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Sett3D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 361);
+            this.ClientSize = new System.Drawing.Size(274, 351);
             this.Controls.Add(this.tabControl1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.Name = "Sett3D";
-            this.Text = "Дополнительные настройки";
+            this.Text = "Дополнительные настройки 3D";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.sett3D_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();

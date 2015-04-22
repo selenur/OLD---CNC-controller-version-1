@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace CNC_Controller
@@ -15,13 +10,14 @@ namespace CNC_Controller
 
         public EditGkode(MainForm _mf)
         {
+            if (_mf == null) throw new ArgumentNullException(@"Ошибка инициализации формы 'Корректировка G-кода'");
             InitializeComponent();
             mf = _mf;
         }
 
         private void EditGkode_Load(object sender, EventArgs e)
         {
-            checkBoxChangePos.Checked = mf.deltaUsage;
+            cbCorrection.Checked = mf.Correction;
             numPosX.Value = (decimal)mf.deltaX;
             numPosY.Value = (decimal)mf.deltaY;
             numPosZ.Value = (decimal)mf.deltaZ;
@@ -31,11 +27,17 @@ namespace CNC_Controller
             numericUpDown1.Value = (decimal)mf.koeffSizeX;
             numericUpDown2.Value = (decimal)mf.koeffSizeY;
 
+            groupBox1.Enabled = cbCorrection.Checked;
+            groupBox2.Enabled = cbCorrection.Checked;
+            checkBox6.Enabled = cbCorrection.Checked;
         }
 
-        private void checkBoxChangePos_CheckedChanged(object sender, EventArgs e)
+        private void ccbCorrection_CheckedChanged(object sender, EventArgs e)
         {
-            mf.deltaUsage = checkBoxChangePos.Checked;
+            mf.Correction = cbCorrection.Checked;
+            groupBox1.Enabled = cbCorrection.Checked;
+            groupBox2.Enabled = cbCorrection.Checked;
+            checkBox6.Enabled = cbCorrection.Checked;
         }
 
         private void numPosX_ValueChanged(object sender, EventArgs e)
@@ -67,6 +69,5 @@ namespace CNC_Controller
         {
             mf.koeffSizeY = (double)numericUpDown2.Value;
         }
-
     }
 }

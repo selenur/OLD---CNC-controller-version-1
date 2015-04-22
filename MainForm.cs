@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -542,7 +543,8 @@ namespace CNC_Controller
                 buttonZtoZero.Enabled = false;
 
                 toolStripProgressBar.Value = _cnc.NumberComleatedInstructions;
-                dataGrid.Rows[_cnc.NumberComleatedInstructions].Selected = true;
+                //listGkodeForUser.Rows[_cnc.NumberComleatedInstructions].Selected = true;
+                listBox1.SelectedIndex = _cnc.NumberComleatedInstructions;
             }
 
 
@@ -630,16 +632,225 @@ namespace CNC_Controller
             kf.ShowDialog();
         }
 
-        private void OpenFile()
+
+
+
+
+        private List<string> parserGkodeLine(string value)
         {
 
+            List<string> lcmd = new List<string>();
+            int inx = 0;
+            bool collectCommand = false;
+
+            // если строка начинается со скобки, то эту строку не анализируем!!!
+            if (value.Substring(0, 1) == "(")
+            {
+                lcmd.Add(value);
+                return lcmd;
+            }
+
+            foreach (char symb in value)
+            {
+                if (symb > 0x40 && symb < 0x5B)  //символы от A до Z
+                {
+                    if (collectCommand)
+                    {
+                        inx++;
+                        collectCommand = false;
+                    }
+
+                    collectCommand = true;
+                    lcmd.Add("");
+                }
+
+                if (collectCommand) lcmd[inx] += symb.ToString();
+            }
+
+            return lcmd;
+        }
+
+        /// <summary>
+        /// Парсинг строки с G-кодом
+        /// </summary>
+        /// <param name="value">строка с G-кодом</param>
+        public GKOD_raw parseStringCode(string value)
+        {
+            GKOD_raw result = null;
+
+            // 1) распарсим строку
+            List<string> lcmd = parserGkodeLine(value);
+
+            // 2) проанализируем список команд
+            //    //а так-же разберем команды на те которые знаем и не знаем
+            string sGoodsCmd = "";
+            string sBadCmd = "";
+
+            foreach (string ss in lcmd)
+            {
+                string sCommd = ss.Substring(0, 1).Trim().ToUpper();
+                string sValue = ss.Substring(1).Trim().ToUpper();
+
+                bool good = false;
+
+                if (sCommd == "G") //скорости движения
+                {
+                    if (sValue == "0" || sValue == "1") good = true;
+                    if (sValue == "00" || sValue == "01") good = true;
+                }
+
+                if (sCommd == "M") //вкл/выкл шпинделя
+                {
+                    if (sValue == "3" || sValue == "5") good = true;
+                    if (sValue == "03" || sValue == "05") good = true;
+                }
+
+                if (sCommd == "X" || sCommd == "Y" || sCommd == "Z")
+                {
+                    //координаты 3-х осей 
+                    good = true;
+                    //TODO: дальше могут быть некорректные данные
+                }
+
+                if (good)
+                {
+                    sGoodsCmd += ss + " ";
+                }
+                else
+                {
+                    sBadCmd += ss + " ";
+                }
+            }
+
+            if (lcmd.Count == 0) sBadCmd = value;
+
+            result = new GKOD_raw(value, sGoodsCmd, sBadCmd);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Набор готовых инструкций для станка 
+        /// </summary>
+        public static List<GKOD_ready> GKODready = new List<GKOD_ready>();
+
+        public void CalcData(List<string> listCode)
+        {
+            GKODready.Clear();
+            decimal posx = 0;
+            decimal posy = 0;
+            decimal posz = 0;
+            int CNC_speedNow = 100;
+            bool spindelOn = false;
+            bool workspeed = false;
+
+            int index = 0;
+
+            int maxIndex = listCode.Count.ToString().Length; //вычисление количества символов используемых для нумерации записей
+
+            //listGkodeForUser.Rows.Clear();
+            listBox1.Items.Clear();
+
+            foreach (string valueStr in listCode)
+            {
+                index++;
+
+                List<string> lcmd = parserGkodeLine(valueStr);
+
+                foreach (string ss in lcmd)
+                {
+                    string value = ss.Trim();
+
+                    if (value == "G0" || value == "G00")
+                    {
+                        workspeed = false;
+                    }
+
+                    if (value == "G1" || value == "G01")
+                    {
+                        workspeed = true;
+                    }
+
+                    if (value.Substring(0, 1) == "X")
+                    {
+                        string value1 = value.Substring(1).Trim().Replace('.', ',');
+                        if (value1.Trim() != "")
+                        {
+                            try
+                            {
+                                //защита при чтении неправильного файла
+                                posx = decimal.Parse(value1);
+                            }
+                            catch (Exception)
+                            {
+                                //throw;
+                            }
+                        }
+                    }
+
+                    if (value.Substring(0, 1) == "Y")
+                    {
+                        string value1 = value.Substring(1).Trim().Replace('.', ',');
+                        if (value1.Trim() != "")
+                        {
+                            try
+                            {
+                                //защита при чтении неправильного файла
+                                posy = decimal.Parse(value1);
+                            }
+                            catch (Exception)
+                            {
+                                //throw;
+                            }
+                        }
+                    }
+
+                    if (value.Substring(0, 1) == "Z")
+                    {
+                        string value1 = value.Substring(1).Trim().Replace('.', ',');
+                        if (value1.Trim() != "")
+                        {
+                            try
+                            {
+                                //защита при чтении неправильного файла
+                                posz = decimal.Parse(value1);
+                            }
+                            catch (Exception)
+                            {
+                                //throw;
+                            }
+                        }
+                    }
+
+                    if (value == "M3" || value == "M03") spindelOn = true;
+
+                    if (value == "M5" || value == "M05") spindelOn = false;
+
+                }
+
+                GKODready.Add(new GKOD_ready(index, spindelOn, posx, posy, posz, CNC_speedNow, workspeed));
+
+                //int p = listGkodeForUser.Rows.Add();
+                //listGkodeForUser.Rows[p].Cells[0].Value = "[" + index.ToString().PadLeft(maxIndex, '0') + "]" + " " + valueStr;
+                listBox1.Items.Add("[" + index.ToString().PadLeft(maxIndex, '0') + "]" + " " + valueStr);
+            }
+        }
+    
+    
+
+
+
+
+
+
+
+        private void OpenFile()
+        {
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
 
-            Text = @"Управленец ЧПУ: " + openFileDialog.FileName;
-            listBoxLog.Items.Add(@"Загрузка данных из файла: " + openFileDialog.FileName);
+            Text = @"Управленец ЧПУ: " + openFileDialog.FileName; //заголовок окна
 
-            //Очистим данные
-            dataCode.Clear();
+            listBoxLog.Items.Add(@"Загрузка данных из файла: " + openFileDialog.FileName);
 
             string[] sData = File.ReadAllLines(openFileDialog.FileName);
 
@@ -647,25 +858,28 @@ namespace CNC_Controller
             toolStripProgressBar.Minimum = 0;
             toolStripProgressBar.Maximum = sData.Length;
 
-            foreach (string ss in sData)
-            {
-                dataCode.AddData(ss.ToUpper());
+            int index = 0;
 
-                toolStripProgressBar.Value++;
+            List<string> goodstr = new List<string>();
+
+            foreach (string str in sData)
+            {
+                toolStripProgressBar.Value = index;
+                index++;
+
+                GKOD_raw graw = parseStringCode(str.ToUpper());
+
+                if (graw.GoodStr.Trim().Length == 0)
+                {
+                    AddLog(@"В строке: " + index + " не распознаны команды: " + graw.BadStr);
+                    continue;
+                }
+
+                goodstr.Add(graw.GoodStr);
             }
 
-            dataGrid.Rows.Clear();
-
-            int pp = dataCode.GKODraw.Count.ToString().Length;
-
-            foreach (GKOD_raw valueGkodRaw in dataCode.GKODraw)
-            {
-                int p = dataGrid.Rows.Add();
-                dataGrid.Rows[p].Cells[0].Value = "[" + p.ToString().PadLeft(pp, '0') + "]" + " " + valueGkodRaw.GoodStr;
-                dataGrid.Rows[p].Cells[1].Value = valueGkodRaw.BadStr;
-            }
-
-            dataCode.CalculateData();
+            //запуск анализа нормальных команд
+            CalcData(goodstr);
         }
 
         private void menuOpenFile_Click(object sender, EventArgs e)
@@ -1183,61 +1397,75 @@ namespace CNC_Controller
             #region Отображение готовых инструкций для контроллера
 
             Gl.glLineWidth(0.3f);
-            Gl.glBegin(Gl.GL_LINE_STRIP); 
-
-            //TODO: переделать
-            foreach (GKOD_ready vv in dataCode.GKODready)
+            Gl.glBegin(Gl.GL_LINE_STRIP);
+            foreach (GKOD_ready vv in GKODready)
             {
+                //Gl.glLineWidth(0.1f);
                 if (vv.workspeed) Gl.glColor3f(0, 255, 0); else Gl.glColor3f(255, 0, 0);
-
-                ////выделим жирным текущую линию
-                //if (vv.numberInstruct == (Task.indexLineTask - 1))
-                //{
-                //    Gl.glLineWidth(3.0f);
-                //}
-                //else
-                //{
-                    Gl.glLineWidth(0.1f);
-                //}
-
-                //смещение положения g-кода
-                double pointXpp = 0;
-                double pointYpp = 0;
-                double pointZpp = 0;
-
+                
                 //координаты следующей точки
                 double pointX = (double)vv.X;
                 double pointY = (double)vv.Y;
                 double pointZ = (double)vv.Z;
 
                 //добавление смещения G-кода
-                if (deltaUsage)
+                if (Correction)
                 {
-                    pointXpp = deltaX;
-                    pointYpp = deltaY;
-                    pointZpp = deltaZ;
-
+                    // применение пропорций
                     pointX *= koeffSizeX;
                     pointY *= koeffSizeY;
 
+                    //применение смещения
+                    pointX += deltaX;
+                    pointY += deltaY;
+                    pointZ += deltaZ;
+
+                    //применение матрицы поверхности детали
+                    if (deltaFeed)
+                    {
+                        pointZ += GetDeltaZ(pointX, pointY);
+                    }
                 }
 
-                double matrixDeltaZ = 0;
-                //добавление корректировки по z
-                if (deltaFeed)
-                {
-                    matrixDeltaZ = GetDeltaZ(pointX, pointY);
- 
-                }
-
-                Gl.glVertex3d(pointX + deltaX, pointY + deltaY, pointZ + deltaZ + matrixDeltaZ);
+                Gl.glVertex3d(pointX, pointY, pointZ);
                 Gl.glLineWidth(0.4f);
-              
             }
 
             Gl.glEnd();
 
-            
+            //отобразим выделенную линию
+            GKOD_ready poi1 = null;
+            GKOD_ready poi2 = null;
+
+            foreach (GKOD_ready vv in GKODready)
+            {
+                //выделим жирным текущую линию
+                if (vv.numberInstruct == (Task.indexLineTask - 1))
+                {
+                    poi1 = vv;
+                }
+
+                if (vv.numberInstruct == (Task.indexLineTask))
+                {
+                    poi2 = vv;
+                }
+            }
+
+
+            if (poi1 != null && poi2 != null)
+            {
+                Gl.glLineWidth(3.0f);
+                Gl.glColor3f(1, 1, 1);
+                Gl.glBegin(Gl.GL_LINE_STRIP);
+
+                Gl.glVertex3d((double)poi1.X, (double)poi1.Y, (double)poi1.Z);
+                Gl.glVertex3d((double)poi2.X, (double)poi2.Y, (double)poi2.Z);
+
+                Gl.glEnd();           
+            }
+
+
+
 
 
             #endregion
@@ -1438,7 +1666,11 @@ namespace CNC_Controller
         #region Выполнение G-кода из таблицы
 
         //Для использования, корректировки положения
-        public bool deltaUsage = false;
+
+        /// <summary>
+        /// Необходимость применения корректировки данных
+        /// </summary>
+        public bool Correction = false;
         public double deltaX = 0;
         public double deltaY = 0;
         public double deltaZ = 0;
@@ -1447,15 +1679,18 @@ namespace CNC_Controller
 
         public bool deltaFeed = false;
 
-        private void dataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (Task.StatusTask == EStatusTask.Waiting)
-            {
-                Task.indexLineTask = (dataGrid.Rows.Count > 0) ? e.RowIndex + 1 : 0;
+        ////private void dataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        ////{
+        ////    if (Task.StatusTask == EStatusTask.Waiting)
+        ////    {
+        ////        //Task.indexLineTask = (listGkodeForUser.Rows.Count > 0) ? e.RowIndex + 1 : 0;
+                
 
-                textBoxNumberLine.Text = Task.indexLineTask.ToString();
-            }
-        }
+
+
+        ////        textBoxNumberLine.Text = Task.indexLineTask.ToString();
+        ////    }
+        ////}
 
         private void buttonStartTask_Click(object sender, EventArgs e)
         {
@@ -1523,7 +1758,7 @@ namespace CNC_Controller
             if (Task.StatusTask == EStatusTask.TaskWorking)
             {
 
-                if (Task.indexLineTask >= dataCode.GKODready.Count)
+                if (Task.indexLineTask >= GKODready.Count)
                 {
                     Task.StatusTask = EStatusTask.TaskStop;
                     return;
@@ -1534,33 +1769,34 @@ namespace CNC_Controller
 
                 if (Task.indexLineTask > (_cnc.NumberComleatedInstructions + 3)) return;
 
-                GKOD_ready gr = dataCode.GKODready[Task.indexLineTask];
+                GKOD_ready gr = GKODready[Task.indexLineTask];
 
-
-                int posX = deviceInfo.CalcPosPulse("X", gr.X);
-                int posY = deviceInfo.CalcPosPulse("Y", gr.Y);
-                int posZ = deviceInfo.CalcPosPulse("Z", gr.Z);
-
-
+                double pointX = (double)gr.X;
+                double pointY = (double)gr.Y;
+                double pointZ = (double)gr.Z;
 
                 //добавление смещения G-кода
-                if (deltaUsage)
+                if (Correction)
                 {
-                    posX = (int)((double)posX * koeffSizeX);
-                    posY = (int)((double)posY * koeffSizeY);
+                    // применение пропорций
+                    pointX *= koeffSizeX;
+                    pointY *= koeffSizeY;
 
-                    posX += deviceInfo.CalcPosPulse("X", (decimal)deltaX);
-                    posY += deviceInfo.CalcPosPulse("Y", (decimal)deltaY);
-                    posZ += deviceInfo.CalcPosPulse("Z", (decimal)deltaZ);
+                    //применение смещения
+                    pointX += deltaX;
+                    pointY += deltaY;
+                    pointZ += deltaZ;
+
+                    //применение матрицы поверхности детали
+                    if (deltaFeed)
+                    {
+                        pointZ += GetDeltaZ(pointX, pointY);
+                    }
                 }
 
-                //добавление искажения матрицы
-                if (deltaFeed)
-                {
-                    double matrixDeltaZ = GetDeltaZ((double)gr.X, (double)gr.Y);
-                    posZ += deviceInfo.CalcPosPulse("Z", (decimal)matrixDeltaZ);
-                }
-
+                int posX = deviceInfo.CalcPosPulse("X", (decimal)pointX);
+                int posY = deviceInfo.CalcPosPulse("Y", (decimal)pointY);
+                int posZ = deviceInfo.CalcPosPulse("Z", (decimal)pointZ);
 
                 int speed = (gr.workspeed) ? speedG1 : speedG0;
 
@@ -1674,6 +1910,32 @@ namespace CNC_Controller
         {
             //TODO: откроем окно со списком точек
         }
+
+        private void listBox1_Click(object sender, EventArgs e)
+        {
+            
+            if (Task.StatusTask == EStatusTask.Waiting)
+            {
+                Task.indexLineTask = listBox1.SelectedIndex;
+                textBoxNumberLine.Text = (listBox1.SelectedIndex +1).ToString();
+            }
+
+        }
+
+        private void listBox1_DataSourceChanged(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Task.StatusTask == EStatusTask.Waiting)
+            {
+                Task.indexLineTask = listBox1.SelectedIndex;
+                textBoxNumberLine.Text = (listBox1.SelectedIndex + 1).ToString();
+            }
+        }
    
     }
 
@@ -1729,5 +1991,32 @@ namespace CNC_Controller
         public static int indexLineTask = -1;
 
 
+    }
+
+
+
+    /// <summary>
+    /// Готовые данные из G-кода для станка
+    /// </summary>
+    public class GKOD_ready
+    {
+        public decimal X;       // координата в мм
+        public decimal Y;       // координата в мм
+        public decimal Z;       // координата в мм
+        public int speed;       // скорость
+        public bool spindelON;  // вкл. шпинделя
+        public int numberInstruct; //номер инструкции
+        public bool workspeed = false;
+
+        public GKOD_ready(int _numberInstruct, bool _spindelON, decimal _X, decimal _Y, decimal _Z, int _speed, bool _workspeed)
+        {
+            X = _X;
+            Y = _Y;
+            Z = _Z;
+            spindelON = _spindelON;
+            numberInstruct = _numberInstruct;
+            speed = _speed;
+            workspeed = _workspeed;
+        }
     }
 }

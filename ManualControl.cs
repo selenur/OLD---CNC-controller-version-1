@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-//using System.Linq;
-using System.Text;
-//using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CNC_Controller
@@ -18,26 +12,6 @@ namespace CNC_Controller
         {
             InitializeComponent();
             _cnc = cnc;
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            //// -x
-            //if (num1 || num4 || num7) _x = "-";
-            //// +x
-            //if (num3 || num6 || num9) _x = "+";
-
-            //// -y
-            //if (num1 || num2 || num3) _y = "-";
-            //// +y
-            //if (num7 || num8 || num9) _y = "+";
-
-            //// -z
-            //if (num0) _z = "-";
-            //// +z
-            //if (num5) _z = "+";
-
-            //CNC.StartManualMove(_x, _y, _z, (int)numericUpDownManualSpeed.Value);
         }
 
         private void KeyInfo_Load(object sender, EventArgs e)
@@ -163,6 +137,11 @@ namespace CNC_Controller
         {
             button5.BackColor = Color.FromName("Control");
             _cnc.StopManualMove();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            numericUpDown1.Value = trackBar1.Value;
         }
     }
 }

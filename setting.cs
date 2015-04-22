@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace CNC_Controller
@@ -24,7 +19,6 @@ namespace CNC_Controller
             numPulseY.Value = (decimal)deviceInfo.AxesY_PulsePerMm;
             numPulseZ.Value = (decimal)deviceInfo.AxesZ_PulsePerMm;
             checkBoxDemoController.Checked = deviceInfo.DEMO_DEVICE;
-
         }
 
         private void button1_Click(object sender, EventArgs e)

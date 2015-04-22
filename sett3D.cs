@@ -33,9 +33,6 @@ namespace CNC_Controller
             numPosXmax.Value = (decimal)mf.grateXmax;
             numPosYmin.Value = (decimal)mf.grateYmin;
             numPosYmax.Value = (decimal)mf.grateYmax;
-
-
-
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -61,7 +58,6 @@ namespace CNC_Controller
         private void numericUpDown3_ValueChanged(object sender, EventArgs e)
         {
             mf.PreviewSetting.GridXend = (int)numericUpDown3.Value;
-
         }
 
         private void numericUpDown4_ValueChanged(object sender, EventArgs e)
