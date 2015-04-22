@@ -28,6 +28,9 @@ namespace CNC_Controller
 
             checkBox6.Checked = mf.deltaFeed;
 
+            numericUpDown1.Value = (decimal)mf.koeffSizeX;
+            numericUpDown2.Value = (decimal)mf.koeffSizeY;
+
         }
 
         private void checkBoxChangePos_CheckedChanged(object sender, EventArgs e)
@@ -54,5 +57,16 @@ namespace CNC_Controller
         {
             mf.deltaFeed = checkBox6.Checked;
         }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            mf.koeffSizeX = (double)numericUpDown1.Value;
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            mf.koeffSizeY = (double)numericUpDown2.Value;
+        }
+
     }
 }

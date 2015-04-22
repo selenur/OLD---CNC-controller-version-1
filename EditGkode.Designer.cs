@@ -31,6 +31,11 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.labelposX = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.checkBoxChangePos = new System.Windows.Forms.CheckBox();
             this.labelposY = new System.Windows.Forms.Label();
             this.numPosZ = new System.Windows.Forms.NumericUpDown();
@@ -38,6 +43,9 @@
             this.numPosY = new System.Windows.Forms.NumericUpDown();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
@@ -47,24 +55,25 @@
             // 
             this.groupBox2.Controls.Add(this.checkBox6);
             this.groupBox2.Controls.Add(this.labelposX);
+            this.groupBox2.Controls.Add(this.groupBox1);
             this.groupBox2.Controls.Add(this.checkBoxChangePos);
             this.groupBox2.Controls.Add(this.labelposY);
             this.groupBox2.Controls.Add(this.numPosZ);
             this.groupBox2.Controls.Add(this.labelposZ);
             this.groupBox2.Controls.Add(this.numPosY);
             this.groupBox2.Controls.Add(this.numPosX);
-            this.groupBox2.Location = new System.Drawing.Point(33, 30);
+            this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(331, 213);
+            this.groupBox2.Size = new System.Drawing.Size(389, 218);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Выполнение G-кода";
             // 
             // checkBox6
             // 
-            this.checkBox6.Location = new System.Drawing.Point(25, 149);
+            this.checkBox6.Location = new System.Drawing.Point(22, 165);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(234, 49);
+            this.checkBox6.Size = new System.Drawing.Size(334, 47);
             this.checkBox6.TabIndex = 14;
             this.checkBox6.Text = "Корректировать высоту Z с учетом сканирования поверхности";
             this.checkBox6.UseVisualStyleBackColor = true;
@@ -74,11 +83,106 @@
             // 
             this.labelposX.AutoSize = true;
             this.labelposX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposX.Location = new System.Drawing.Point(21, 51);
+            this.labelposX.Location = new System.Drawing.Point(18, 47);
             this.labelposX.Name = "labelposX";
             this.labelposX.Size = new System.Drawing.Size(21, 20);
             this.labelposX.TabIndex = 6;
             this.labelposX.Text = "X";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.numericUpDown2);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.numericUpDown1);
+            this.groupBox1.Location = new System.Drawing.Point(190, 19);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(186, 131);
+            this.groupBox1.TabIndex = 19;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Изменить пропорции";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(12, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(21, 20);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "X";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.DecimalPlaces = 3;
+            this.numericUpDown2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numericUpDown2.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numericUpDown2.Location = new System.Drawing.Point(39, 53);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 29);
+            this.numericUpDown2.TabIndex = 17;
+            this.numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(12, 58);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(21, 20);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Y";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.DecimalPlaces = 3;
+            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numericUpDown1.Location = new System.Drawing.Point(39, 19);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 29);
+            this.numericUpDown1.TabIndex = 18;
+            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // checkBoxChangePos
             // 
@@ -95,7 +199,7 @@
             // 
             this.labelposY.AutoSize = true;
             this.labelposY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposY.Location = new System.Drawing.Point(21, 85);
+            this.labelposY.Location = new System.Drawing.Point(18, 81);
             this.labelposY.Name = "labelposY";
             this.labelposY.Size = new System.Drawing.Size(21, 20);
             this.labelposY.TabIndex = 7;
@@ -105,7 +209,7 @@
             // 
             this.numPosZ.DecimalPlaces = 3;
             this.numPosZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosZ.Location = new System.Drawing.Point(48, 114);
+            this.numPosZ.Location = new System.Drawing.Point(45, 110);
             this.numPosZ.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -126,7 +230,7 @@
             // 
             this.labelposZ.AutoSize = true;
             this.labelposZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposZ.Location = new System.Drawing.Point(22, 119);
+            this.labelposZ.Location = new System.Drawing.Point(19, 115);
             this.labelposZ.Name = "labelposZ";
             this.labelposZ.Size = new System.Drawing.Size(20, 20);
             this.labelposZ.TabIndex = 8;
@@ -136,7 +240,7 @@
             // 
             this.numPosY.DecimalPlaces = 3;
             this.numPosY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosY.Location = new System.Drawing.Point(48, 80);
+            this.numPosY.Location = new System.Drawing.Point(45, 76);
             this.numPosY.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -157,7 +261,7 @@
             // 
             this.numPosX.DecimalPlaces = 3;
             this.numPosX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosX.Location = new System.Drawing.Point(48, 46);
+            this.numPosX.Location = new System.Drawing.Point(45, 42);
             this.numPosX.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -178,14 +282,19 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(511, 399);
+            this.ClientSize = new System.Drawing.Size(411, 243);
             this.Controls.Add(this.groupBox2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "EditGkode";
-            this.Text = "EditGkode";
+            this.Text = "Корректировка G-кода";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.EditGkode_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
@@ -204,5 +313,10 @@
         private System.Windows.Forms.Label labelposZ;
         private System.Windows.Forms.NumericUpDown numPosY;
         private System.Windows.Forms.NumericUpDown numPosX;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }

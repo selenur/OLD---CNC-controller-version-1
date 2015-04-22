@@ -58,6 +58,7 @@
             this.additionallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scansurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButtonEditData = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonLikePoint = new System.Windows.Forms.ToolStripButton();
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -183,7 +184,6 @@
             this.TaskTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.toolStripButtonLikePoint = new System.Windows.Forms.ToolStripButton();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -464,6 +464,18 @@
             this.toolStripButtonEditData.Size = new System.Drawing.Size(179, 36);
             this.toolStripButtonEditData.Text = "манипуляции с G-кодом";
             this.toolStripButtonEditData.Click += new System.EventHandler(this.toolStripButtonEditData_Click);
+            // 
+            // toolStripButtonLikePoint
+            // 
+            this.toolStripButtonLikePoint.Enabled = false;
+            this.toolStripButtonLikePoint.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLikePoint.Image")));
+            this.toolStripButtonLikePoint.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonLikePoint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLikePoint.Name = "toolStripButtonLikePoint";
+            this.toolStripButtonLikePoint.Size = new System.Drawing.Size(113, 36);
+            this.toolStripButtonLikePoint.Text = "Набор точек";
+            this.toolStripButtonLikePoint.Visible = false;
+            this.toolStripButtonLikePoint.Click += new System.EventHandler(this.toolStripButtonLikePoint_Click);
             // 
             // MainStatusStrip
             // 
@@ -1950,16 +1962,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(692, 512);
             this.splitContainer1.SplitterDistance = 476;
             this.splitContainer1.TabIndex = 6;
-            // 
-            // toolStripButtonLikePoint
-            // 
-            this.toolStripButtonLikePoint.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLikePoint.Image")));
-            this.toolStripButtonLikePoint.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButtonLikePoint.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonLikePoint.Name = "toolStripButtonLikePoint";
-            this.toolStripButtonLikePoint.Size = new System.Drawing.Size(113, 36);
-            this.toolStripButtonLikePoint.Text = "Набор точек";
-            this.toolStripButtonLikePoint.Click += new System.EventHandler(this.toolStripButtonLikePoint_Click);
             // 
             // MainForm
             // 

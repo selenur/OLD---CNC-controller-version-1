@@ -1216,6 +1216,10 @@ namespace CNC_Controller
                     pointXpp = deltaX;
                     pointYpp = deltaY;
                     pointZpp = deltaZ;
+
+                    pointX *= koeffSizeX;
+                    pointY *= koeffSizeY;
+
                 }
 
                 double matrixDeltaZ = 0;
@@ -1438,6 +1442,8 @@ namespace CNC_Controller
         public double deltaX = 0;
         public double deltaY = 0;
         public double deltaZ = 0;
+        public double koeffSizeX = 1;
+        public double koeffSizeY = 1;
 
         public bool deltaFeed = false;
 
@@ -1540,6 +1546,9 @@ namespace CNC_Controller
                 //добавление смещения G-кода
                 if (deltaUsage)
                 {
+                    posX = (int)((double)posX * koeffSizeX);
+                    posY = (int)((double)posY * koeffSizeY);
+
                     posX += deviceInfo.CalcPosPulse("X", (decimal)deltaX);
                     posY += deviceInfo.CalcPosPulse("Y", (decimal)deltaY);
                     posZ += deviceInfo.CalcPosPulse("Z", (decimal)deltaZ);
