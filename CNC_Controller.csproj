@@ -87,6 +87,12 @@
     <Compile Include="EditGkode.Designer.cs">
       <DependentUpon>EditGkode.cs</DependentUpon>
     </Compile>
+    <Compile Include="LikePointForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LikePointForm.Designer.cs">
+      <DependentUpon>LikePointForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScanSurface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditGkode.resx">
       <DependentUpon>EditGkode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LikePointForm.resx">
+      <DependentUpon>LikePointForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScanSurface.resx">
       <DependentUpon>ScanSurface.cs</DependentUpon>

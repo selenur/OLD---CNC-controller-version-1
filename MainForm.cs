@@ -1660,6 +1660,11 @@ namespace CNC_Controller
 
  
         #endregion
+
+        private void toolStripButtonLikePoint_Click(object sender, EventArgs e)
+        {
+            //TODO: откроем окно со списком точек
+        }
    
     }
 
