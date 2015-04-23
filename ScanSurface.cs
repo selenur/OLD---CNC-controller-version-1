@@ -10,6 +10,10 @@ namespace CNC_Controller
     {
         // ReSharper disable once NotAccessedField.Local
         private CONTROLLER _ctrl;
+
+        private dobPoint selectedPoint = null;
+        private int selectedX = -1;
+        private int selectedY = -1;
         
         public ScanSurface(ref CONTROLLER ctrl)
         {
@@ -19,6 +23,9 @@ namespace CNC_Controller
 
         private void feeler_Load(object sender, EventArgs e)
         {
+            //TODO: загрузить данные из существующей матрицы
+
+
             numPosX.Value = deviceInfo.AxesX_PositionMM;
             numPosY.Value = deviceInfo.AxesY_PositionMM;
             numPosZ.Value = deviceInfo.AxesZ_PositionMM;
@@ -288,6 +295,73 @@ namespace CNC_Controller
         private void numStepY_ValueChanged(object sender, EventArgs e)
         {
             RefrechDataGrid();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (selectedPoint == null)
+            {
+                label10.Text = @"X: 000.000  Y: 000.000";
+                return;
+            }
+
+            label10.Text = @"X: " + selectedPoint.X + @"  Y: " + selectedPoint.Y;
+        }
+
+        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int x = e.ColumnIndex-1;
+            int y = e.RowIndex-1;
+
+            if (x < 0 || y < 0)
+            {
+                selectedPoint = null;
+
+                selectedX = -1;
+                selectedY = -1;
+            }
+            else
+            {
+                selectedPoint = new dobPoint(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z);
+                selectedX = x;
+                selectedY = y;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+
+            if (!_ctrl.TestAllowActions()) return;
+
+            if (selectedPoint == null) return;
+
+            int speed = 200;
+
+            _ctrl.SendBinaryData(BinaryData.pack_9E(0x05));
+            _ctrl.SendBinaryData(BinaryData.pack_BF(speed, speed, speed));
+            _ctrl.SendBinaryData(BinaryData.pack_C0());
+            _ctrl.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", (decimal)selectedPoint.X), deviceInfo.CalcPosPulse("Y", (decimal)selectedPoint.Y), deviceInfo.CalcPosPulse("Z", (decimal)selectedPoint.Z), speed, 0));
+            _ctrl.SendBinaryData(BinaryData.pack_FF());
+            _ctrl.SendBinaryData(BinaryData.pack_9D());
+            _ctrl.SendBinaryData(BinaryData.pack_9E(0x02));
+            _ctrl.SendBinaryData(BinaryData.pack_FF());
+            _ctrl.SendBinaryData(BinaryData.pack_FF());
+            _ctrl.SendBinaryData(BinaryData.pack_FF());
+            _ctrl.SendBinaryData(BinaryData.pack_FF());
+            _ctrl.SendBinaryData(BinaryData.pack_FF());
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            // 
+            
+            //узнаем координаты из таблицы, куда все поместить
+
+            if (selectedX == -1 || selectedY == -1) return;
+
+            dataCode.matrix2[selectedX, selectedY].Z = (double)deviceInfo.AxesZ_PositionMM;
         }
   
     

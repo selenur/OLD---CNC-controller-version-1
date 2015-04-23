@@ -1451,15 +1451,40 @@ namespace CNC_Controller
 
             foreach (GKOD_ready vv in GKODready)
             {
+
+                //координаты следующей точки
+                double pointX = (double)vv.X;
+                double pointY = (double)vv.Y;
+                double pointZ = (double)vv.Z;
+
+                //добавление смещения G-кода
+                if (Correction)
+                {
+                    // применение пропорций
+                    pointX *= koeffSizeX;
+                    pointY *= koeffSizeY;
+
+                    //применение смещения
+                    pointX += deltaX;
+                    pointY += deltaY;
+                    pointZ += deltaZ;
+
+                    //применение матрицы поверхности детали
+                    if (deltaFeed)
+                    {
+                        pointZ += GetDeltaZ(pointX, pointY);
+                    }
+                }
+
                 //выделим жирным текущую линию
                 if (vv.numberInstruct == (numSelect - 1))
                 {
-                    poi1 = vv;
+                    poi1 = new GKOD_ready(vv.numberInstruct, vv.spindelON, (decimal)pointX, (decimal)pointY, (decimal)pointZ, vv.speed, vv.workspeed);
                 }
 
                 if (vv.numberInstruct == (numSelect))
                 {
-                    poi2 = vv;
+                    poi2 = new GKOD_ready(vv.numberInstruct, vv.spindelON, (decimal)pointX, (decimal)pointY, (decimal)pointZ, vv.speed, vv.workspeed);
                 }
             }
 

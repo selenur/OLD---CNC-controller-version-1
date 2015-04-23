@@ -654,8 +654,6 @@ namespace CNC_Controller
     /// </summary>
     public enum EStatusDevice { Connect = 0, Disconnect };
 
-
-
     static class deviceInfo
     {
         /// <summary>
@@ -748,7 +746,6 @@ namespace CNC_Controller
             return 0;
         }
     }
-
 
     /// <summary>
     /// Класс для получиния бинарных данных
@@ -1201,7 +1198,6 @@ namespace CNC_Controller
 
     }
 
-
     #region НАБОР ДАННЫХ
 
     /// <summary>
@@ -1292,11 +1288,6 @@ namespace CNC_Controller
 
 
     #endregion
-
-
-
-
-
 
     public class decPoint
     {
