@@ -1437,15 +1437,27 @@ namespace CNC_Controller
             GKOD_ready poi1 = null;
             GKOD_ready poi2 = null;
 
+
+            int numSelect = 0;
+
+            if (Task.StatusTask == EStatusTask.Waiting)
+            {
+                numSelect = Task.indexLineTask+1;
+            }
+            else
+            {
+                numSelect = _cnc.NumberComleatedInstructions+1;
+            }
+
             foreach (GKOD_ready vv in GKODready)
             {
                 //выделим жирным текущую линию
-                if (vv.numberInstruct == (Task.indexLineTask - 1))
+                if (vv.numberInstruct == (numSelect - 1))
                 {
                     poi1 = vv;
                 }
 
-                if (vv.numberInstruct == (Task.indexLineTask))
+                if (vv.numberInstruct == (numSelect))
                 {
                     poi2 = vv;
                 }
@@ -1696,6 +1708,21 @@ namespace CNC_Controller
         {
             if (Task.StatusTask != EStatusTask.Waiting) return;
 
+            if (!_cnc.Connected)
+            {
+                MessageBox.Show(@"Нет связи с контроллером!");
+                return;
+            }
+
+            if (GKODready.Count == 0)
+            {
+                // нет данных для выполнения
+                MessageBox.Show(@"Нет данных для выполнения!");
+                return;
+            }
+
+            if (Task.indexLineTask == -1) Task.indexLineTask = 0;
+
             DialogResult dlgres = MessageBox.Show(@"Вы хотите начать выполнение программы с строки " + Task.indexLineTask + @"?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
             checkBoxManualMove.Checked = false;
@@ -1722,6 +1749,7 @@ namespace CNC_Controller
 
         private void TaskTimer_Tick(object sender, EventArgs e)
         {
+            if (!_cnc.Connected) return;
 
             if (Task.StatusTask == EStatusTask.TaskStart) toolStripStatusLabel1.Text = @"Запуск задания";
             if (Task.StatusTask == EStatusTask.TaskPaused) toolStripStatusLabel1.Text = @"Пауза выполнения";
