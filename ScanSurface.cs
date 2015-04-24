@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -362,9 +363,37 @@ namespace CNC_Controller
             if (selectedX == -1 || selectedY == -1) return;
 
             dataCode.matrix2[selectedX, selectedY].Z = (double)deviceInfo.AxesZ_PositionMM;
+            dataGridView.Rows[selectedY + 1].Cells[selectedX + 1].Value = dataCode.matrix2[selectedX, selectedY].Z;
+
         }
-  
-    
+
+        private void button6_MouseDown(object sender, MouseEventArgs e)
+        {
+            button6.BackColor = Color.DarkGreen;
+            _ctrl.StartManualMove("0", "0", "+", 100);       
+        }
+
+        private void button6_MouseUp(object sender, MouseEventArgs e)
+        {
+            button6.BackColor = Color.FromName("Control");
+            _ctrl.StopManualMove();        
+        }
+
+        private void button5_MouseDown(object sender, MouseEventArgs e)
+        {
+            button5.BackColor = Color.DarkGreen;
+            _ctrl.StartManualMove("0", "0", "-", 100);
+        }
+
+        private void button5_MouseUp(object sender, MouseEventArgs e)
+        {
+            button5.BackColor = Color.FromName("Control");
+            _ctrl.StopManualMove();
+        }
+
+
+
+
     }
 }
 

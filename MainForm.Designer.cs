@@ -177,7 +177,7 @@
             this.RenderTimer = new System.Windows.Forms.Timer(this.components);
             this.TaskTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listGkodeCommand = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
@@ -1872,7 +1872,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.listBox1);
+            this.groupBox1.Controls.Add(this.listGkodeCommand);
             this.groupBox1.Controls.Add(this.groupBoxManualSpeedGkode);
             this.groupBox1.Controls.Add(this.groupBoxWorking);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1883,21 +1883,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "G-код";
             // 
-            // listBox1
+            // listGkodeCommand
             // 
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listGkodeCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 19;
-            this.listBox1.Location = new System.Drawing.Point(6, 20);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(194, 251);
-            this.listBox1.TabIndex = 10;
-            this.listBox1.Click += new System.EventHandler(this.listBox1_Click);
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            this.listBox1.DataSourceChanged += new System.EventHandler(this.listBox1_DataSourceChanged);
+            this.listGkodeCommand.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listGkodeCommand.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.listGkodeCommand.FormattingEnabled = true;
+            this.listGkodeCommand.ItemHeight = 19;
+            this.listGkodeCommand.Location = new System.Drawing.Point(6, 20);
+            this.listGkodeCommand.Name = "listGkodeCommand";
+            this.listGkodeCommand.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listGkodeCommand.Size = new System.Drawing.Size(194, 251);
+            this.listGkodeCommand.TabIndex = 10;
+            this.listGkodeCommand.Click += new System.EventHandler(this.listBox1_Click);
+            this.listGkodeCommand.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listGkodeCommand.DataSourceChanged += new System.EventHandler(this.listBox1_DataSourceChanged);
             // 
             // splitContainer1
             // 
@@ -2140,7 +2142,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripButtonEditData;
         private System.Windows.Forms.ToolStripButton toolStripButtonLikePoint;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox listGkodeCommand;
     }
 }
 

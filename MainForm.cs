@@ -544,7 +544,9 @@ namespace CNC_Controller
 
                 toolStripProgressBar.Value = _cnc.NumberComleatedInstructions;
                 //listGkodeForUser.Rows[_cnc.NumberComleatedInstructions].Selected = true;
-                listBox1.SelectedIndex = _cnc.NumberComleatedInstructions;
+                
+                //TODO: переделать алгоритм, иначе это изменение сбивает выделенный диапазон
+                //listGkodeCommand.SelectedIndex = _cnc.NumberComleatedInstructions;
             }
 
 
@@ -629,7 +631,7 @@ namespace CNC_Controller
         private void buttonShowKeyInfo_Click(object sender, EventArgs e)
         {
             ManualControl kf = new ManualControl(ref _cnc);
-            kf.ShowDialog();
+            kf.Show();
         }
 
 
@@ -749,7 +751,7 @@ namespace CNC_Controller
             int maxIndex = listCode.Count.ToString().Length; //вычисление количества символов используемых для нумерации записей
 
             //listGkodeForUser.Rows.Clear();
-            listBox1.Items.Clear();
+            listGkodeCommand.Items.Clear();
 
             foreach (string valueStr in listCode)
             {
@@ -832,7 +834,7 @@ namespace CNC_Controller
 
                 //int p = listGkodeForUser.Rows.Add();
                 //listGkodeForUser.Rows[p].Cells[0].Value = "[" + index.ToString().PadLeft(maxIndex, '0') + "]" + " " + valueStr;
-                listBox1.Items.Add("[" + index.ToString().PadLeft(maxIndex, '0') + "]" + " " + valueStr);
+                listGkodeCommand.Items.Add("[" + index.ToString().PadLeft(maxIndex, '0') + "]" + " " + valueStr);
             }
         }
     
@@ -1433,22 +1435,11 @@ namespace CNC_Controller
 
             Gl.glEnd();
 
-            //отобразим выделенную линию
-            GKOD_ready poi1 = null;
-            GKOD_ready poi2 = null;
 
-
-            int numSelect = 0;
-
-            if (Task.StatusTask == EStatusTask.Waiting)
-            {
-                numSelect = Task.indexLineTask+1;
-            }
-            else
-            {
-                numSelect = _cnc.NumberComleatedInstructions+1;
-            }
-
+            //******Вывод выделенной траектории***********************
+            Gl.glLineWidth(3.0f);
+            Gl.glColor3f(1, 1, 1);
+            Gl.glBegin(Gl.GL_LINE_STRIP);
             foreach (GKOD_ready vv in GKODready)
             {
 
@@ -1476,30 +1467,105 @@ namespace CNC_Controller
                     }
                 }
 
-                //выделим жирным текущую линию
-                if (vv.numberInstruct == (numSelect - 1))
-                {
-                    poi1 = new GKOD_ready(vv.numberInstruct, vv.spindelON, (decimal)pointX, (decimal)pointY, (decimal)pointZ, vv.speed, vv.workspeed);
-                }
+                //добавим тут фильт
 
-                if (vv.numberInstruct == (numSelect))
+                if (Task.StatusTask == EStatusTask.Waiting)
                 {
-                    poi2 = new GKOD_ready(vv.numberInstruct, vv.spindelON, (decimal)pointX, (decimal)pointY, (decimal)pointZ, vv.speed, vv.workspeed);
+                    int numSelectStart = Task.indexLineTask;
+                    int numSelectStop = Task.countSelectLineTask + numSelectStart;
+
+                    if (vv.numberInstruct >= numSelectStart && vv.numberInstruct <= numSelectStop)
+                    {
+                        Gl.glVertex3d(pointX, pointY, pointZ);
+                    }
+                }
+                else
+                {
+                    // Тут выделяется только одна линия из траектории
+                    int numSelect = _cnc.NumberComleatedInstructions + 1;
+                    if (vv.numberInstruct == (numSelect - 1))
+                    {
+                        Gl.glVertex3d(pointX, pointY, pointZ);
+                    }
+
+                    if (vv.numberInstruct == (numSelect))
+                    {
+                        Gl.glVertex3d(pointX, pointY, pointZ);
+                    }
                 }
             }
+            Gl.glEnd();
 
 
-            if (poi1 != null && poi2 != null)
-            {
-                Gl.glLineWidth(3.0f);
-                Gl.glColor3f(1, 1, 1);
-                Gl.glBegin(Gl.GL_LINE_STRIP);
 
-                Gl.glVertex3d((double)poi1.X, (double)poi1.Y, (double)poi1.Z);
-                Gl.glVertex3d((double)poi2.X, (double)poi2.Y, (double)poi2.Z);
 
-                Gl.glEnd();           
-            }
+            //////////////отобразим выделенную одну или несколько линий
+            ////////////GKOD_ready poi1 = null;
+            ////////////GKOD_ready poi2 = null;
+
+
+            ////////////int numSelect = 0;
+
+            ////////////if (Task.StatusTask == EStatusTask.Waiting)
+            ////////////{
+            ////////////    numSelect = Task.indexLineTask+1;
+            ////////////}
+            ////////////else
+            ////////////{
+            ////////////    numSelect = _cnc.NumberComleatedInstructions+1;
+            ////////////}
+
+            ////////////foreach (GKOD_ready vv in GKODready)
+            ////////////{
+
+            ////////////    //координаты следующей точки
+            ////////////    double pointX = (double)vv.X;
+            ////////////    double pointY = (double)vv.Y;
+            ////////////    double pointZ = (double)vv.Z;
+
+            ////////////    //добавление смещения G-кода
+            ////////////    if (Correction)
+            ////////////    {
+            ////////////        // применение пропорций
+            ////////////        pointX *= koeffSizeX;
+            ////////////        pointY *= koeffSizeY;
+
+            ////////////        //применение смещения
+            ////////////        pointX += deltaX;
+            ////////////        pointY += deltaY;
+            ////////////        pointZ += deltaZ;
+
+            ////////////        //применение матрицы поверхности детали
+            ////////////        if (deltaFeed)
+            ////////////        {
+            ////////////            pointZ += GetDeltaZ(pointX, pointY);
+            ////////////        }
+            ////////////    }
+
+            ////////////    //выделим жирным текущую линию
+            ////////////    if (vv.numberInstruct == (numSelect - 1))
+            ////////////    {
+            ////////////        poi1 = new GKOD_ready(vv.numberInstruct, vv.spindelON, (decimal)pointX, (decimal)pointY, (decimal)pointZ, vv.speed, vv.workspeed);
+            ////////////    }
+
+            ////////////    if (vv.numberInstruct == (numSelect))
+            ////////////    {
+            ////////////        poi2 = new GKOD_ready(vv.numberInstruct, vv.spindelON, (decimal)pointX, (decimal)pointY, (decimal)pointZ, vv.speed, vv.workspeed);
+            ////////////    }
+            ////////////}
+
+
+            ////////////if (poi1 != null && poi2 != null)
+            ////////////{
+            ////////////    Gl.glLineWidth(3.0f);
+            ////////////    Gl.glColor3f(1, 1, 1);
+            ////////////    Gl.glBegin(Gl.GL_LINE_STRIP);
+
+            ////////////    Gl.glVertex3d((double)poi1.X, (double)poi1.Y, (double)poi1.Z);
+            ////////////    Gl.glVertex3d((double)poi2.X, (double)poi2.Y, (double)poi2.Z);
+
+            ////////////    Gl.glEnd();           
+            ////////////}
 
 
 
@@ -1746,14 +1812,38 @@ namespace CNC_Controller
                 return;
             }
 
-            if (Task.indexLineTask == -1) Task.indexLineTask = 0;
 
-            DialogResult dlgres = MessageBox.Show(@"Вы хотите начать выполнение программы с строки " + Task.indexLineTask + @"?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            //TODO: посмотрим что выделено в листбоксе
+
+            if (listGkodeCommand.SelectedIndex == -1) return; //не выделена строка с которой начать
+
+            Task.indexLineTask = listGkodeCommand.SelectedIndex;
+
+            if (listGkodeCommand.SelectedItems.Count == 1)
+            {
+                //выбрана всего одна строка
+
+                DialogResult dlgres = MessageBox.Show(@"Будет выполнен код со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() + "\n Начать выполнение?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+
+                if (dlgres == DialogResult.Cancel) return;
+
+                //сами установим границы выполнения
+                Task.countSelectLineTask = GKODready.Count - listGkodeCommand.SelectedIndex;
+            }
+            else
+            {
+                //выбран диапазон строк
+
+                DialogResult dlgr = MessageBox.Show(@"Будет выполнен код со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() + @" по строку №: " + (listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count).ToString() + "\n Начать выполнение?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+
+                if (dlgr == DialogResult.Cancel) return;
+
+                if (listGkodeCommand.SelectedIndex > 0) Task.indexLineTask = listGkodeCommand.SelectedIndex - 1;
+
+                Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count+1;
+            }
 
             checkBoxManualMove.Checked = false;
-
-            if (dlgres == DialogResult.Cancel) return;
-
             Task.StatusTask = EStatusTask.TaskStart;
         }
 
@@ -1811,7 +1901,10 @@ namespace CNC_Controller
             if (Task.StatusTask == EStatusTask.TaskWorking)
             {
 
-                if (Task.indexLineTask >= GKODready.Count)
+
+                //TODO: Выполняем до нужной строки
+
+                if (Task.countSelectLineTask == 0)
                 {
                     Task.StatusTask = EStatusTask.TaskStop;
                     return;
@@ -1855,8 +1948,11 @@ namespace CNC_Controller
 
                 _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.indexLineTask));
 
+
+
                 //TODO: распарсим и выполним
                 Task.indexLineTask++;
+                Task.countSelectLineTask--;
                 textBoxNumberLine.Text = Task.indexLineTask.ToString();
 
             }
@@ -1969,8 +2065,8 @@ namespace CNC_Controller
             
             if (Task.StatusTask == EStatusTask.Waiting)
             {
-                Task.indexLineTask = listBox1.SelectedIndex;
-                textBoxNumberLine.Text = (listBox1.SelectedIndex +1).ToString();
+                Task.indexLineTask = listGkodeCommand.SelectedIndex;
+                textBoxNumberLine.Text = (listGkodeCommand.SelectedIndex +1).ToString();
             }
 
         }
@@ -1985,8 +2081,9 @@ namespace CNC_Controller
         {
             if (Task.StatusTask == EStatusTask.Waiting)
             {
-                Task.indexLineTask = listBox1.SelectedIndex;
-                textBoxNumberLine.Text = (listBox1.SelectedIndex + 1).ToString();
+                Task.indexLineTask = listGkodeCommand.SelectedIndex;
+                Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count;
+                textBoxNumberLine.Text = (listGkodeCommand.SelectedIndex + 1).ToString();
             }
         }
    
@@ -2042,6 +2139,11 @@ namespace CNC_Controller
         /// Номер строки с заданием для выполнения
         /// </summary>
         public static int indexLineTask = -1;
+
+        /// <summary>
+        /// Количество выделенных строк (если выделено более 1-й строки, то нужно выполнить задание только по этим строкам)
+        /// </summary>
+        public static int countSelectLineTask = 0;
 
 
     }
