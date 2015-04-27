@@ -32,30 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuOpenFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.bt_exit = new System.Windows.Forms.ToolStripMenuItem();
             this.controllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btConnect = new System.Windows.Forms.ToolStripMenuItem();
-            this.bt_disconnect = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStrip = new System.Windows.Forms.ToolStrip();
-            this.bt_ConnDiskonect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btOpenFile = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.bt_exit2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.buttonSpindel = new System.Windows.Forms.ToolStripButton();
-            this.buttonESTOP = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripDropDownadditionally = new System.Windows.Forms.ToolStripDropDownButton();
-            this.settingControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.additionallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scansurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripButtonEditData = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonLikePoint = new System.Windows.Forms.ToolStripButton();
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -64,9 +47,6 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panelPosition = new System.Windows.Forms.Panel();
             this.groupBoxPositions = new System.Windows.Forms.GroupBox();
-            this.buttonZtoZero = new System.Windows.Forms.Button();
-            this.buttonYtoZero = new System.Windows.Forms.Button();
-            this.buttonXtoZero = new System.Windows.Forms.Button();
             this.numPosZ = new System.Windows.Forms.NumericUpDown();
             this.numPosY = new System.Windows.Forms.NumericUpDown();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
@@ -75,13 +55,7 @@
             this.labelposX = new System.Windows.Forms.Label();
             this.panelIndicator = new System.Windows.Forms.Panel();
             this.groupBoxLimits = new System.Windows.Forms.GroupBox();
-            this.labelZmax = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.labelZmin = new System.Windows.Forms.Label();
-            this.labelYmax = new System.Windows.Forms.Label();
-            this.labelXmin = new System.Windows.Forms.Label();
-            this.labelYmin = new System.Windows.Forms.Label();
-            this.labelXmax = new System.Windows.Forms.Label();
             this.panelControl1 = new System.Windows.Forms.Panel();
             this.labelSpeed = new System.Windows.Forms.Label();
             this.groupBoxManualMove = new System.Windows.Forms.GroupBox();
@@ -101,19 +75,13 @@
             this.lb3DPosView = new System.Windows.Forms.Label();
             this.menu3Dview = new System.Windows.Forms.MenuStrip();
             this.menuLabelX = new System.Windows.Forms.ToolStripLabel();
-            this.posAngleXm = new System.Windows.Forms.ToolStripButton();
             this.posAngleX = new System.Windows.Forms.ToolStripLabel();
-            this.posAngleXp = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.menuLabelY = new System.Windows.Forms.ToolStripLabel();
-            this.posAngleYp = new System.Windows.Forms.ToolStripButton();
             this.posAngleY = new System.Windows.Forms.ToolStripLabel();
-            this.posAngleYm = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.menuLabelZ = new System.Windows.Forms.ToolStripLabel();
-            this.posAngleZp = new System.Windows.Forms.ToolStripButton();
             this.posAngleZ = new System.Windows.Forms.ToolStripLabel();
-            this.posAngleZm = new System.Windows.Forms.ToolStripButton();
             this.OpenGL_preview = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.tabPageSupp = new System.Windows.Forms.TabPage();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
@@ -168,10 +136,7 @@
             this.listBoxLog = new System.Windows.Forms.ListBox();
             this.groupBoxWorking = new System.Windows.Forms.GroupBox();
             this.textBoxNumberLine = new System.Windows.Forms.TextBox();
-            this.buttonPauseTask = new System.Windows.Forms.Button();
             this.labelWorkingRow = new System.Windows.Forms.Label();
-            this.btStopTask = new System.Windows.Forms.Button();
-            this.buttonStartTask = new System.Windows.Forms.Button();
             this.timerKeyHook = new System.Windows.Forms.Timer(this.components);
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.RenderTimer = new System.Windows.Forms.Timer(this.components);
@@ -179,6 +144,42 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listGkodeCommand = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.posAngleXm = new System.Windows.Forms.ToolStripButton();
+            this.posAngleXp = new System.Windows.Forms.ToolStripButton();
+            this.posAngleYp = new System.Windows.Forms.ToolStripButton();
+            this.posAngleYm = new System.Windows.Forms.ToolStripButton();
+            this.posAngleZp = new System.Windows.Forms.ToolStripButton();
+            this.posAngleZm = new System.Windows.Forms.ToolStripButton();
+            this.buttonPauseTask = new System.Windows.Forms.Button();
+            this.btStopTask = new System.Windows.Forms.Button();
+            this.buttonStartTask = new System.Windows.Forms.Button();
+            this.buttonZtoZero = new System.Windows.Forms.Button();
+            this.buttonYtoZero = new System.Windows.Forms.Button();
+            this.buttonXtoZero = new System.Windows.Forms.Button();
+            this.labelZmax = new System.Windows.Forms.Label();
+            this.labelZmin = new System.Windows.Forms.Label();
+            this.labelYmax = new System.Windows.Forms.Label();
+            this.labelXmin = new System.Windows.Forms.Label();
+            this.labelYmin = new System.Windows.Forms.Label();
+            this.labelXmax = new System.Windows.Forms.Label();
+            this.bt_ConnDiskonect = new System.Windows.Forms.ToolStripButton();
+            this.btOpenFile = new System.Windows.Forms.ToolStripButton();
+            this.bt_exit2 = new System.Windows.Forms.ToolStripButton();
+            this.buttonSpindel = new System.Windows.Forms.ToolStripButton();
+            this.buttonESTOP = new System.Windows.Forms.ToolStripButton();
+            this.toolStripDropDownadditionally = new System.Windows.Forms.ToolStripDropDownButton();
+            this.settingControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.additionallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scansurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generatorCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonEditData = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonLikePoint = new System.Windows.Forms.ToolStripButton();
+            this.menuOpenFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.bt_exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.btConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.bt_disconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -241,24 +242,6 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.fileToolStripMenuItem.Text = "&Файл";
             // 
-            // menuOpenFile
-            // 
-            this.menuOpenFile.Image = global::CNC_Controller.Properties.Resources.open_folder;
-            this.menuOpenFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.menuOpenFile.Name = "menuOpenFile";
-            this.menuOpenFile.Size = new System.Drawing.Size(203, 38);
-            this.menuOpenFile.Text = "Открыть файл";
-            this.menuOpenFile.Click += new System.EventHandler(this.menuOpenFile_Click);
-            // 
-            // bt_exit
-            // 
-            this.bt_exit.Image = global::CNC_Controller.Properties.Resources.door_in;
-            this.bt_exit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.bt_exit.Name = "bt_exit";
-            this.bt_exit.Size = new System.Drawing.Size(203, 38);
-            this.bt_exit.Text = "Завершение работы";
-            this.bt_exit.Click += new System.EventHandler(this.bt_exit_Click);
-            // 
             // controllerToolStripMenuItem
             // 
             this.controllerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -269,33 +252,6 @@
             this.controllerToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.controllerToolStripMenuItem.Text = "&Контроллер";
             // 
-            // btConnect
-            // 
-            this.btConnect.Image = global::CNC_Controller.Properties.Resources.connect;
-            this.btConnect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btConnect.Name = "btConnect";
-            this.btConnect.Size = new System.Drawing.Size(225, 38);
-            this.btConnect.Text = "Подключиться";
-            this.btConnect.Click += new System.EventHandler(this.btConnect_Click);
-            // 
-            // bt_disconnect
-            // 
-            this.bt_disconnect.Image = global::CNC_Controller.Properties.Resources.disconnect;
-            this.bt_disconnect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.bt_disconnect.Name = "bt_disconnect";
-            this.bt_disconnect.Size = new System.Drawing.Size(225, 38);
-            this.bt_disconnect.Text = "Отключиться";
-            this.bt_disconnect.Click += new System.EventHandler(this.bt_disconnect_Click);
-            // 
-            // settingToolStripMenuItem
-            // 
-            this.settingToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.pci;
-            this.settingToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            this.settingToolStripMenuItem.Size = new System.Drawing.Size(225, 38);
-            this.settingToolStripMenuItem.Text = "Настройки контроллера";
-            this.settingToolStripMenuItem.Click += new System.EventHandler(this.settingToolStripMenuItem_Click);
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -303,15 +259,6 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
             this.helpToolStripMenuItem.Text = "Помощь";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.contact_email;
-            this.aboutToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(165, 38);
-            this.aboutToolStripMenuItem.Text = "О программе";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainToolStrip
             // 
@@ -334,142 +281,25 @@
             this.MainToolStrip.TabIndex = 1;
             this.MainToolStrip.Text = "toolStrip1";
             // 
-            // bt_ConnDiskonect
-            // 
-            this.bt_ConnDiskonect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bt_ConnDiskonect.Image = global::CNC_Controller.Properties.Resources.disconnect;
-            this.bt_ConnDiskonect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.bt_ConnDiskonect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bt_ConnDiskonect.Name = "bt_ConnDiskonect";
-            this.bt_ConnDiskonect.Size = new System.Drawing.Size(36, 36);
-            this.bt_ConnDiskonect.Text = "Подключиться к контроллеру";
-            this.bt_ConnDiskonect.Click += new System.EventHandler(this.bt_ConnDiskonect_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
-            // 
-            // btOpenFile
-            // 
-            this.btOpenFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btOpenFile.Image = global::CNC_Controller.Properties.Resources.open_folder;
-            this.btOpenFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.btOpenFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btOpenFile.Name = "btOpenFile";
-            this.btOpenFile.Size = new System.Drawing.Size(36, 36);
-            this.btOpenFile.Text = "Открыть файл";
-            this.btOpenFile.Click += new System.EventHandler(this.btOpenFile_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
             // 
-            // bt_exit2
-            // 
-            this.bt_exit2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bt_exit2.Image = global::CNC_Controller.Properties.Resources.door_in;
-            this.bt_exit2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.bt_exit2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bt_exit2.Name = "bt_exit2";
-            this.bt_exit2.Size = new System.Drawing.Size(36, 36);
-            this.bt_exit2.Text = "toolStripButton2";
-            this.bt_exit2.Click += new System.EventHandler(this.bt_exit2_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 39);
             // 
-            // buttonSpindel
-            // 
-            this.buttonSpindel.Enabled = false;
-            this.buttonSpindel.Image = ((System.Drawing.Image)(resources.GetObject("buttonSpindel.Image")));
-            this.buttonSpindel.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonSpindel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonSpindel.Name = "buttonSpindel";
-            this.buttonSpindel.Size = new System.Drawing.Size(110, 36);
-            this.buttonSpindel.Text = "ШПИНДЕЛЬ";
-            this.buttonSpindel.Click += new System.EventHandler(this.buttonSpindel_Click_1);
-            // 
-            // buttonESTOP
-            // 
-            this.buttonESTOP.Enabled = false;
-            this.buttonESTOP.Image = ((System.Drawing.Image)(resources.GetObject("buttonESTOP.Image")));
-            this.buttonESTOP.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.buttonESTOP.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.buttonESTOP.Name = "buttonESTOP";
-            this.buttonESTOP.Size = new System.Drawing.Size(115, 36);
-            this.buttonESTOP.Text = "ОСТАНОВКА";
-            this.buttonESTOP.Click += new System.EventHandler(this.toolStripButtonEnergyStop_Click);
-            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(6, 39);
-            // 
-            // toolStripDropDownadditionally
-            // 
-            this.toolStripDropDownadditionally.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingControllerToolStripMenuItem,
-            this.additionallyToolStripMenuItem,
-            this.scansurfaceToolStripMenuItem});
-            this.toolStripDropDownadditionally.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownadditionally.Image")));
-            this.toolStripDropDownadditionally.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripDropDownadditionally.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownadditionally.Name = "toolStripDropDownadditionally";
-            this.toolStripDropDownadditionally.Size = new System.Drawing.Size(140, 36);
-            this.toolStripDropDownadditionally.Text = "Дополнительно";
-            // 
-            // settingControllerToolStripMenuItem
-            // 
-            this.settingControllerToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.pci;
-            this.settingControllerToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.settingControllerToolStripMenuItem.Name = "settingControllerToolStripMenuItem";
-            this.settingControllerToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
-            this.settingControllerToolStripMenuItem.Text = "Настройка контроллера";
-            this.settingControllerToolStripMenuItem.Click += new System.EventHandler(this.settingControllerToolStripMenuItem_Click);
-            // 
-            // additionallyToolStripMenuItem
-            // 
-            this.additionallyToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.google_webmaster_tools;
-            this.additionallyToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.additionallyToolStripMenuItem.Name = "additionallyToolStripMenuItem";
-            this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
-            this.additionallyToolStripMenuItem.Text = "Настройка 3D отображения";
-            this.additionallyToolStripMenuItem.Click += new System.EventHandler(this.additionallyToolStripMenuItem_Click);
-            // 
-            // scansurfaceToolStripMenuItem
-            // 
-            this.scansurfaceToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.layer_grid;
-            this.scansurfaceToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.scansurfaceToolStripMenuItem.Name = "scansurfaceToolStripMenuItem";
-            this.scansurfaceToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
-            this.scansurfaceToolStripMenuItem.Text = "Сканирование поверхности";
-            this.scansurfaceToolStripMenuItem.Click += new System.EventHandler(this.scansurfaceToolStripMenuItem_Click);
-            // 
-            // toolStripButtonEditData
-            // 
-            this.toolStripButtonEditData.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonEditData.Image")));
-            this.toolStripButtonEditData.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButtonEditData.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonEditData.Name = "toolStripButtonEditData";
-            this.toolStripButtonEditData.Size = new System.Drawing.Size(179, 36);
-            this.toolStripButtonEditData.Text = "манипуляции с G-кодом";
-            this.toolStripButtonEditData.Click += new System.EventHandler(this.toolStripButtonEditData_Click);
-            // 
-            // toolStripButtonLikePoint
-            // 
-            this.toolStripButtonLikePoint.Enabled = false;
-            this.toolStripButtonLikePoint.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLikePoint.Image")));
-            this.toolStripButtonLikePoint.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButtonLikePoint.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonLikePoint.Name = "toolStripButtonLikePoint";
-            this.toolStripButtonLikePoint.Size = new System.Drawing.Size(113, 36);
-            this.toolStripButtonLikePoint.Text = "Набор точек";
-            this.toolStripButtonLikePoint.Visible = false;
-            this.toolStripButtonLikePoint.Click += new System.EventHandler(this.toolStripButtonLikePoint_Click);
             // 
             // MainStatusStrip
             // 
@@ -548,39 +378,6 @@
             this.groupBoxPositions.TabIndex = 4;
             this.groupBoxPositions.TabStop = false;
             this.groupBoxPositions.Text = "Координаты";
-            // 
-            // buttonZtoZero
-            // 
-            this.buttonZtoZero.Enabled = false;
-            this.buttonZtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
-            this.buttonZtoZero.Location = new System.Drawing.Point(1, 81);
-            this.buttonZtoZero.Name = "buttonZtoZero";
-            this.buttonZtoZero.Size = new System.Drawing.Size(26, 28);
-            this.buttonZtoZero.TabIndex = 12;
-            this.buttonZtoZero.UseVisualStyleBackColor = true;
-            this.buttonZtoZero.Click += new System.EventHandler(this.buttonZtoZero_Click);
-            // 
-            // buttonYtoZero
-            // 
-            this.buttonYtoZero.Enabled = false;
-            this.buttonYtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
-            this.buttonYtoZero.Location = new System.Drawing.Point(1, 47);
-            this.buttonYtoZero.Name = "buttonYtoZero";
-            this.buttonYtoZero.Size = new System.Drawing.Size(26, 28);
-            this.buttonYtoZero.TabIndex = 11;
-            this.buttonYtoZero.UseVisualStyleBackColor = true;
-            this.buttonYtoZero.Click += new System.EventHandler(this.buttonYtoZero_Click);
-            // 
-            // buttonXtoZero
-            // 
-            this.buttonXtoZero.Enabled = false;
-            this.buttonXtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
-            this.buttonXtoZero.Location = new System.Drawing.Point(1, 14);
-            this.buttonXtoZero.Name = "buttonXtoZero";
-            this.buttonXtoZero.Size = new System.Drawing.Size(26, 28);
-            this.buttonXtoZero.TabIndex = 10;
-            this.buttonXtoZero.UseVisualStyleBackColor = true;
-            this.buttonXtoZero.Click += new System.EventHandler(this.buttonXtoZero_Click);
             // 
             // numPosZ
             // 
@@ -695,19 +492,6 @@
             this.groupBoxLimits.TabStop = false;
             this.groupBoxLimits.Text = "Индикация лимитов";
             // 
-            // labelZmax
-            // 
-            this.labelZmax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelZmax.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelZmax.ImageIndex = 0;
-            this.labelZmax.ImageList = this.imageList1;
-            this.labelZmax.Location = new System.Drawing.Point(92, 62);
-            this.labelZmax.Name = "labelZmax";
-            this.labelZmax.Size = new System.Drawing.Size(85, 23);
-            this.labelZmax.TabIndex = 10;
-            this.labelZmax.Text = "       Zмакс";
-            this.labelZmax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -715,71 +499,6 @@
             this.imageList1.Images.SetKeyName(0, "draw_ellipse.png");
             this.imageList1.Images.SetKeyName(1, "sport_tennis.png");
             this.imageList1.Images.SetKeyName(2, "stop.png");
-            // 
-            // labelZmin
-            // 
-            this.labelZmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelZmin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelZmin.ImageIndex = 0;
-            this.labelZmin.ImageList = this.imageList1;
-            this.labelZmin.Location = new System.Drawing.Point(6, 62);
-            this.labelZmin.Name = "labelZmin";
-            this.labelZmin.Size = new System.Drawing.Size(80, 23);
-            this.labelZmin.TabIndex = 9;
-            this.labelZmin.Text = "       Zмин";
-            this.labelZmin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelYmax
-            // 
-            this.labelYmax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelYmax.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelYmax.ImageIndex = 0;
-            this.labelYmax.ImageList = this.imageList1;
-            this.labelYmax.Location = new System.Drawing.Point(92, 39);
-            this.labelYmax.Name = "labelYmax";
-            this.labelYmax.Size = new System.Drawing.Size(91, 23);
-            this.labelYmax.TabIndex = 8;
-            this.labelYmax.Text = "       Yмакс";
-            this.labelYmax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelXmin
-            // 
-            this.labelXmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelXmin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelXmin.ImageIndex = 0;
-            this.labelXmin.ImageList = this.imageList1;
-            this.labelXmin.Location = new System.Drawing.Point(6, 16);
-            this.labelXmin.Name = "labelXmin";
-            this.labelXmin.Size = new System.Drawing.Size(80, 23);
-            this.labelXmin.TabIndex = 5;
-            this.labelXmin.Text = "       Xмин";
-            this.labelXmin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelYmin
-            // 
-            this.labelYmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelYmin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelYmin.ImageIndex = 0;
-            this.labelYmin.ImageList = this.imageList1;
-            this.labelYmin.Location = new System.Drawing.Point(6, 39);
-            this.labelYmin.Name = "labelYmin";
-            this.labelYmin.Size = new System.Drawing.Size(80, 23);
-            this.labelYmin.TabIndex = 7;
-            this.labelYmin.Text = "       Yмин";
-            this.labelYmin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // labelXmax
-            // 
-            this.labelXmax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelXmax.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelXmax.ImageIndex = 0;
-            this.labelXmax.ImageList = this.imageList1;
-            this.labelXmax.Location = new System.Drawing.Point(92, 16);
-            this.labelXmax.Name = "labelXmax";
-            this.labelXmax.Size = new System.Drawing.Size(92, 23);
-            this.labelXmax.TabIndex = 6;
-            this.labelXmax.Text = "       Xмакс";
-            this.labelXmax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panelControl1
             // 
@@ -1048,34 +767,12 @@
             this.menuLabelX.Size = new System.Drawing.Size(89, 30);
             this.menuLabelX.Text = "Вращение: X";
             // 
-            // posAngleXm
-            // 
-            this.posAngleXm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.posAngleXm.ForeColor = System.Drawing.Color.Yellow;
-            this.posAngleXm.Image = global::CNC_Controller.Properties.Resources.undo;
-            this.posAngleXm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.posAngleXm.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.posAngleXm.Name = "posAngleXm";
-            this.posAngleXm.Size = new System.Drawing.Size(36, 30);
-            this.posAngleXm.Click += new System.EventHandler(this.posAngleXm_Click);
-            // 
             // posAngleX
             // 
             this.posAngleX.Name = "posAngleX";
             this.posAngleX.Size = new System.Drawing.Size(23, 30);
             this.posAngleX.Text = "0°";
             this.posAngleX.Click += new System.EventHandler(this.posAngleX_Click);
-            // 
-            // posAngleXp
-            // 
-            this.posAngleXp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.posAngleXp.ForeColor = System.Drawing.Color.Yellow;
-            this.posAngleXp.Image = global::CNC_Controller.Properties.Resources.redo;
-            this.posAngleXp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.posAngleXp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.posAngleXp.Name = "posAngleXp";
-            this.posAngleXp.Size = new System.Drawing.Size(36, 30);
-            this.posAngleXp.Click += new System.EventHandler(this.posAngleXp_Click);
             // 
             // toolStripSeparator10
             // 
@@ -1088,34 +785,12 @@
             this.menuLabelY.Size = new System.Drawing.Size(16, 30);
             this.menuLabelY.Text = "Y";
             // 
-            // posAngleYp
-            // 
-            this.posAngleYp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.posAngleYp.ForeColor = System.Drawing.Color.Yellow;
-            this.posAngleYp.Image = global::CNC_Controller.Properties.Resources.undo;
-            this.posAngleYp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.posAngleYp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.posAngleYp.Name = "posAngleYp";
-            this.posAngleYp.Size = new System.Drawing.Size(36, 30);
-            this.posAngleYp.Click += new System.EventHandler(this.posAngleYp_Click);
-            // 
             // posAngleY
             // 
             this.posAngleY.Name = "posAngleY";
             this.posAngleY.Size = new System.Drawing.Size(23, 30);
             this.posAngleY.Text = "0°";
             this.posAngleY.Click += new System.EventHandler(this.posAngleY_Click);
-            // 
-            // posAngleYm
-            // 
-            this.posAngleYm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.posAngleYm.ForeColor = System.Drawing.Color.Yellow;
-            this.posAngleYm.Image = global::CNC_Controller.Properties.Resources.redo;
-            this.posAngleYm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.posAngleYm.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.posAngleYm.Name = "posAngleYm";
-            this.posAngleYm.Size = new System.Drawing.Size(36, 30);
-            this.posAngleYm.Click += new System.EventHandler(this.posAngleYm_Click);
             // 
             // toolStripSeparator11
             // 
@@ -1128,32 +803,12 @@
             this.menuLabelZ.Size = new System.Drawing.Size(16, 30);
             this.menuLabelZ.Text = "Z";
             // 
-            // posAngleZp
-            // 
-            this.posAngleZp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.posAngleZp.Image = global::CNC_Controller.Properties.Resources.undo;
-            this.posAngleZp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.posAngleZp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.posAngleZp.Name = "posAngleZp";
-            this.posAngleZp.Size = new System.Drawing.Size(36, 30);
-            this.posAngleZp.Click += new System.EventHandler(this.posAngleZp_Click);
-            // 
             // posAngleZ
             // 
             this.posAngleZ.Name = "posAngleZ";
             this.posAngleZ.Size = new System.Drawing.Size(23, 30);
             this.posAngleZ.Text = "0°";
             this.posAngleZ.Click += new System.EventHandler(this.posAngleZ_Click);
-            // 
-            // posAngleZm
-            // 
-            this.posAngleZm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.posAngleZm.Image = global::CNC_Controller.Properties.Resources.redo;
-            this.posAngleZm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.posAngleZm.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.posAngleZm.Name = "posAngleZm";
-            this.posAngleZm.Size = new System.Drawing.Size(36, 30);
-            this.posAngleZm.Click += new System.EventHandler(this.posAngleZm_Click);
             // 
             // OpenGL_preview
             // 
@@ -1808,16 +1463,6 @@
             this.textBoxNumberLine.TabIndex = 11;
             this.textBoxNumberLine.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // buttonPauseTask
-            // 
-            this.buttonPauseTask.Image = global::CNC_Controller.Properties.Resources.control_pause_blue;
-            this.buttonPauseTask.Location = new System.Drawing.Point(78, 58);
-            this.buttonPauseTask.Name = "buttonPauseTask";
-            this.buttonPauseTask.Size = new System.Drawing.Size(50, 46);
-            this.buttonPauseTask.TabIndex = 10;
-            this.buttonPauseTask.UseVisualStyleBackColor = true;
-            this.buttonPauseTask.Click += new System.EventHandler(this.buttonPauseTask_Click);
-            // 
             // labelWorkingRow
             // 
             this.labelWorkingRow.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -1827,26 +1472,6 @@
             this.labelWorkingRow.TabIndex = 9;
             this.labelWorkingRow.Text = "С №:";
             this.labelWorkingRow.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // btStopTask
-            // 
-            this.btStopTask.Image = global::CNC_Controller.Properties.Resources.control_stop_blue;
-            this.btStopTask.Location = new System.Drawing.Point(134, 58);
-            this.btStopTask.Name = "btStopTask";
-            this.btStopTask.Size = new System.Drawing.Size(50, 46);
-            this.btStopTask.TabIndex = 1;
-            this.btStopTask.UseVisualStyleBackColor = true;
-            this.btStopTask.Click += new System.EventHandler(this.btStopTask_Click);
-            // 
-            // buttonStartTask
-            // 
-            this.buttonStartTask.Image = global::CNC_Controller.Properties.Resources.control_play_blue;
-            this.buttonStartTask.Location = new System.Drawing.Point(22, 58);
-            this.buttonStartTask.Name = "buttonStartTask";
-            this.buttonStartTask.Size = new System.Drawing.Size(50, 46);
-            this.buttonStartTask.TabIndex = 0;
-            this.buttonStartTask.UseVisualStyleBackColor = true;
-            this.buttonStartTask.Click += new System.EventHandler(this.buttonStartTask_Click);
             // 
             // timerKeyHook
             // 
@@ -1919,6 +1544,392 @@
             this.splitContainer1.Size = new System.Drawing.Size(692, 512);
             this.splitContainer1.SplitterDistance = 476;
             this.splitContainer1.TabIndex = 6;
+            // 
+            // posAngleXm
+            // 
+            this.posAngleXm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.posAngleXm.ForeColor = System.Drawing.Color.Yellow;
+            this.posAngleXm.Image = global::CNC_Controller.Properties.Resources.undo;
+            this.posAngleXm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.posAngleXm.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.posAngleXm.Name = "posAngleXm";
+            this.posAngleXm.Size = new System.Drawing.Size(36, 30);
+            this.posAngleXm.Click += new System.EventHandler(this.posAngleXm_Click);
+            // 
+            // posAngleXp
+            // 
+            this.posAngleXp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.posAngleXp.ForeColor = System.Drawing.Color.Yellow;
+            this.posAngleXp.Image = global::CNC_Controller.Properties.Resources.redo;
+            this.posAngleXp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.posAngleXp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.posAngleXp.Name = "posAngleXp";
+            this.posAngleXp.Size = new System.Drawing.Size(36, 30);
+            this.posAngleXp.Click += new System.EventHandler(this.posAngleXp_Click);
+            // 
+            // posAngleYp
+            // 
+            this.posAngleYp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.posAngleYp.ForeColor = System.Drawing.Color.Yellow;
+            this.posAngleYp.Image = global::CNC_Controller.Properties.Resources.undo;
+            this.posAngleYp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.posAngleYp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.posAngleYp.Name = "posAngleYp";
+            this.posAngleYp.Size = new System.Drawing.Size(36, 30);
+            this.posAngleYp.Click += new System.EventHandler(this.posAngleYp_Click);
+            // 
+            // posAngleYm
+            // 
+            this.posAngleYm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.posAngleYm.ForeColor = System.Drawing.Color.Yellow;
+            this.posAngleYm.Image = global::CNC_Controller.Properties.Resources.redo;
+            this.posAngleYm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.posAngleYm.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.posAngleYm.Name = "posAngleYm";
+            this.posAngleYm.Size = new System.Drawing.Size(36, 30);
+            this.posAngleYm.Click += new System.EventHandler(this.posAngleYm_Click);
+            // 
+            // posAngleZp
+            // 
+            this.posAngleZp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.posAngleZp.Image = global::CNC_Controller.Properties.Resources.undo;
+            this.posAngleZp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.posAngleZp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.posAngleZp.Name = "posAngleZp";
+            this.posAngleZp.Size = new System.Drawing.Size(36, 30);
+            this.posAngleZp.Click += new System.EventHandler(this.posAngleZp_Click);
+            // 
+            // posAngleZm
+            // 
+            this.posAngleZm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.posAngleZm.Image = global::CNC_Controller.Properties.Resources.redo;
+            this.posAngleZm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.posAngleZm.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.posAngleZm.Name = "posAngleZm";
+            this.posAngleZm.Size = new System.Drawing.Size(36, 30);
+            this.posAngleZm.Click += new System.EventHandler(this.posAngleZm_Click);
+            // 
+            // buttonPauseTask
+            // 
+            this.buttonPauseTask.Image = global::CNC_Controller.Properties.Resources.control_pause_blue;
+            this.buttonPauseTask.Location = new System.Drawing.Point(78, 58);
+            this.buttonPauseTask.Name = "buttonPauseTask";
+            this.buttonPauseTask.Size = new System.Drawing.Size(50, 46);
+            this.buttonPauseTask.TabIndex = 10;
+            this.buttonPauseTask.UseVisualStyleBackColor = true;
+            this.buttonPauseTask.Click += new System.EventHandler(this.buttonPauseTask_Click);
+            // 
+            // btStopTask
+            // 
+            this.btStopTask.Image = global::CNC_Controller.Properties.Resources.control_stop_blue;
+            this.btStopTask.Location = new System.Drawing.Point(134, 58);
+            this.btStopTask.Name = "btStopTask";
+            this.btStopTask.Size = new System.Drawing.Size(50, 46);
+            this.btStopTask.TabIndex = 1;
+            this.btStopTask.UseVisualStyleBackColor = true;
+            this.btStopTask.Click += new System.EventHandler(this.btStopTask_Click);
+            // 
+            // buttonStartTask
+            // 
+            this.buttonStartTask.Image = global::CNC_Controller.Properties.Resources.control_play_blue;
+            this.buttonStartTask.Location = new System.Drawing.Point(22, 58);
+            this.buttonStartTask.Name = "buttonStartTask";
+            this.buttonStartTask.Size = new System.Drawing.Size(50, 46);
+            this.buttonStartTask.TabIndex = 0;
+            this.buttonStartTask.UseVisualStyleBackColor = true;
+            this.buttonStartTask.Click += new System.EventHandler(this.buttonStartTask_Click);
+            // 
+            // buttonZtoZero
+            // 
+            this.buttonZtoZero.Enabled = false;
+            this.buttonZtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
+            this.buttonZtoZero.Location = new System.Drawing.Point(1, 81);
+            this.buttonZtoZero.Name = "buttonZtoZero";
+            this.buttonZtoZero.Size = new System.Drawing.Size(26, 28);
+            this.buttonZtoZero.TabIndex = 12;
+            this.buttonZtoZero.UseVisualStyleBackColor = true;
+            this.buttonZtoZero.Click += new System.EventHandler(this.buttonZtoZero_Click);
+            // 
+            // buttonYtoZero
+            // 
+            this.buttonYtoZero.Enabled = false;
+            this.buttonYtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
+            this.buttonYtoZero.Location = new System.Drawing.Point(1, 47);
+            this.buttonYtoZero.Name = "buttonYtoZero";
+            this.buttonYtoZero.Size = new System.Drawing.Size(26, 28);
+            this.buttonYtoZero.TabIndex = 11;
+            this.buttonYtoZero.UseVisualStyleBackColor = true;
+            this.buttonYtoZero.Click += new System.EventHandler(this.buttonYtoZero_Click);
+            // 
+            // buttonXtoZero
+            // 
+            this.buttonXtoZero.Enabled = false;
+            this.buttonXtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
+            this.buttonXtoZero.Location = new System.Drawing.Point(1, 14);
+            this.buttonXtoZero.Name = "buttonXtoZero";
+            this.buttonXtoZero.Size = new System.Drawing.Size(26, 28);
+            this.buttonXtoZero.TabIndex = 10;
+            this.buttonXtoZero.UseVisualStyleBackColor = true;
+            this.buttonXtoZero.Click += new System.EventHandler(this.buttonXtoZero_Click);
+            // 
+            // labelZmax
+            // 
+            this.labelZmax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelZmax.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelZmax.ImageIndex = 0;
+            this.labelZmax.ImageList = this.imageList1;
+            this.labelZmax.Location = new System.Drawing.Point(92, 62);
+            this.labelZmax.Name = "labelZmax";
+            this.labelZmax.Size = new System.Drawing.Size(85, 23);
+            this.labelZmax.TabIndex = 10;
+            this.labelZmax.Text = "       Zмакс";
+            this.labelZmax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelZmin
+            // 
+            this.labelZmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelZmin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelZmin.ImageIndex = 0;
+            this.labelZmin.ImageList = this.imageList1;
+            this.labelZmin.Location = new System.Drawing.Point(6, 62);
+            this.labelZmin.Name = "labelZmin";
+            this.labelZmin.Size = new System.Drawing.Size(80, 23);
+            this.labelZmin.TabIndex = 9;
+            this.labelZmin.Text = "       Zмин";
+            this.labelZmin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelYmax
+            // 
+            this.labelYmax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelYmax.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelYmax.ImageIndex = 0;
+            this.labelYmax.ImageList = this.imageList1;
+            this.labelYmax.Location = new System.Drawing.Point(92, 39);
+            this.labelYmax.Name = "labelYmax";
+            this.labelYmax.Size = new System.Drawing.Size(91, 23);
+            this.labelYmax.TabIndex = 8;
+            this.labelYmax.Text = "       Yмакс";
+            this.labelYmax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelXmin
+            // 
+            this.labelXmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelXmin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelXmin.ImageIndex = 0;
+            this.labelXmin.ImageList = this.imageList1;
+            this.labelXmin.Location = new System.Drawing.Point(6, 16);
+            this.labelXmin.Name = "labelXmin";
+            this.labelXmin.Size = new System.Drawing.Size(80, 23);
+            this.labelXmin.TabIndex = 5;
+            this.labelXmin.Text = "       Xмин";
+            this.labelXmin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelYmin
+            // 
+            this.labelYmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelYmin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelYmin.ImageIndex = 0;
+            this.labelYmin.ImageList = this.imageList1;
+            this.labelYmin.Location = new System.Drawing.Point(6, 39);
+            this.labelYmin.Name = "labelYmin";
+            this.labelYmin.Size = new System.Drawing.Size(80, 23);
+            this.labelYmin.TabIndex = 7;
+            this.labelYmin.Text = "       Yмин";
+            this.labelYmin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelXmax
+            // 
+            this.labelXmax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelXmax.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelXmax.ImageIndex = 0;
+            this.labelXmax.ImageList = this.imageList1;
+            this.labelXmax.Location = new System.Drawing.Point(92, 16);
+            this.labelXmax.Name = "labelXmax";
+            this.labelXmax.Size = new System.Drawing.Size(92, 23);
+            this.labelXmax.TabIndex = 6;
+            this.labelXmax.Text = "       Xмакс";
+            this.labelXmax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // bt_ConnDiskonect
+            // 
+            this.bt_ConnDiskonect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bt_ConnDiskonect.Image = global::CNC_Controller.Properties.Resources.disconnect;
+            this.bt_ConnDiskonect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.bt_ConnDiskonect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bt_ConnDiskonect.Name = "bt_ConnDiskonect";
+            this.bt_ConnDiskonect.Size = new System.Drawing.Size(36, 36);
+            this.bt_ConnDiskonect.Text = "Подключиться к контроллеру";
+            this.bt_ConnDiskonect.Click += new System.EventHandler(this.bt_ConnDiskonect_Click);
+            // 
+            // btOpenFile
+            // 
+            this.btOpenFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btOpenFile.Image = global::CNC_Controller.Properties.Resources.open_folder;
+            this.btOpenFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btOpenFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btOpenFile.Name = "btOpenFile";
+            this.btOpenFile.Size = new System.Drawing.Size(36, 36);
+            this.btOpenFile.Text = "Открыть файл";
+            this.btOpenFile.Click += new System.EventHandler(this.btOpenFile_Click);
+            // 
+            // bt_exit2
+            // 
+            this.bt_exit2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bt_exit2.Image = global::CNC_Controller.Properties.Resources.door_in;
+            this.bt_exit2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.bt_exit2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bt_exit2.Name = "bt_exit2";
+            this.bt_exit2.Size = new System.Drawing.Size(36, 36);
+            this.bt_exit2.Text = "toolStripButton2";
+            this.bt_exit2.Click += new System.EventHandler(this.bt_exit2_Click);
+            // 
+            // buttonSpindel
+            // 
+            this.buttonSpindel.Enabled = false;
+            this.buttonSpindel.Image = ((System.Drawing.Image)(resources.GetObject("buttonSpindel.Image")));
+            this.buttonSpindel.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonSpindel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonSpindel.Name = "buttonSpindel";
+            this.buttonSpindel.Size = new System.Drawing.Size(110, 36);
+            this.buttonSpindel.Text = "ШПИНДЕЛЬ";
+            this.buttonSpindel.Click += new System.EventHandler(this.buttonSpindel_Click_1);
+            // 
+            // buttonESTOP
+            // 
+            this.buttonESTOP.Enabled = false;
+            this.buttonESTOP.Image = ((System.Drawing.Image)(resources.GetObject("buttonESTOP.Image")));
+            this.buttonESTOP.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.buttonESTOP.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonESTOP.Name = "buttonESTOP";
+            this.buttonESTOP.Size = new System.Drawing.Size(115, 36);
+            this.buttonESTOP.Text = "ОСТАНОВКА";
+            this.buttonESTOP.Click += new System.EventHandler(this.toolStripButtonEnergyStop_Click);
+            // 
+            // toolStripDropDownadditionally
+            // 
+            this.toolStripDropDownadditionally.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingControllerToolStripMenuItem,
+            this.additionallyToolStripMenuItem,
+            this.scansurfaceToolStripMenuItem,
+            this.generatorCodeToolStripMenuItem});
+            this.toolStripDropDownadditionally.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownadditionally.Image")));
+            this.toolStripDropDownadditionally.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripDropDownadditionally.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownadditionally.Name = "toolStripDropDownadditionally";
+            this.toolStripDropDownadditionally.Size = new System.Drawing.Size(140, 36);
+            this.toolStripDropDownadditionally.Text = "Дополнительно";
+            // 
+            // settingControllerToolStripMenuItem
+            // 
+            this.settingControllerToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.pci;
+            this.settingControllerToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.settingControllerToolStripMenuItem.Name = "settingControllerToolStripMenuItem";
+            this.settingControllerToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.settingControllerToolStripMenuItem.Text = "Настройка контроллера";
+            this.settingControllerToolStripMenuItem.Click += new System.EventHandler(this.settingControllerToolStripMenuItem_Click);
+            // 
+            // additionallyToolStripMenuItem
+            // 
+            this.additionallyToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.google_webmaster_tools;
+            this.additionallyToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.additionallyToolStripMenuItem.Name = "additionallyToolStripMenuItem";
+            this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.additionallyToolStripMenuItem.Text = "Настройка 3D отображения";
+            this.additionallyToolStripMenuItem.Click += new System.EventHandler(this.additionallyToolStripMenuItem_Click);
+            // 
+            // scansurfaceToolStripMenuItem
+            // 
+            this.scansurfaceToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.layer_grid;
+            this.scansurfaceToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.scansurfaceToolStripMenuItem.Name = "scansurfaceToolStripMenuItem";
+            this.scansurfaceToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.scansurfaceToolStripMenuItem.Text = "Сканирование поверхности";
+            this.scansurfaceToolStripMenuItem.Click += new System.EventHandler(this.scansurfaceToolStripMenuItem_Click);
+            // 
+            // generatorCodeToolStripMenuItem
+            // 
+            this.generatorCodeToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.draw_vertex;
+            this.generatorCodeToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.generatorCodeToolStripMenuItem.Name = "generatorCodeToolStripMenuItem";
+            this.generatorCodeToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.generatorCodeToolStripMenuItem.Text = "Модуль генерации кода";
+            this.generatorCodeToolStripMenuItem.Click += new System.EventHandler(this.generatorCodeToolStripMenuItem_Click);
+            // 
+            // toolStripButtonEditData
+            // 
+            this.toolStripButtonEditData.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonEditData.Image")));
+            this.toolStripButtonEditData.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonEditData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonEditData.Name = "toolStripButtonEditData";
+            this.toolStripButtonEditData.Size = new System.Drawing.Size(179, 36);
+            this.toolStripButtonEditData.Text = "манипуляции с G-кодом";
+            this.toolStripButtonEditData.Click += new System.EventHandler(this.toolStripButtonEditData_Click);
+            // 
+            // toolStripButtonLikePoint
+            // 
+            this.toolStripButtonLikePoint.Enabled = false;
+            this.toolStripButtonLikePoint.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLikePoint.Image")));
+            this.toolStripButtonLikePoint.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButtonLikePoint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLikePoint.Name = "toolStripButtonLikePoint";
+            this.toolStripButtonLikePoint.Size = new System.Drawing.Size(113, 36);
+            this.toolStripButtonLikePoint.Text = "Набор точек";
+            this.toolStripButtonLikePoint.Visible = false;
+            this.toolStripButtonLikePoint.Click += new System.EventHandler(this.toolStripButtonLikePoint_Click);
+            // 
+            // menuOpenFile
+            // 
+            this.menuOpenFile.Image = global::CNC_Controller.Properties.Resources.open_folder;
+            this.menuOpenFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.menuOpenFile.Name = "menuOpenFile";
+            this.menuOpenFile.Size = new System.Drawing.Size(203, 38);
+            this.menuOpenFile.Text = "Открыть файл";
+            this.menuOpenFile.Click += new System.EventHandler(this.menuOpenFile_Click);
+            // 
+            // bt_exit
+            // 
+            this.bt_exit.Image = global::CNC_Controller.Properties.Resources.door_in;
+            this.bt_exit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.bt_exit.Name = "bt_exit";
+            this.bt_exit.Size = new System.Drawing.Size(203, 38);
+            this.bt_exit.Text = "Завершение работы";
+            this.bt_exit.Click += new System.EventHandler(this.bt_exit_Click);
+            // 
+            // btConnect
+            // 
+            this.btConnect.Image = global::CNC_Controller.Properties.Resources.connect;
+            this.btConnect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.btConnect.Name = "btConnect";
+            this.btConnect.Size = new System.Drawing.Size(225, 38);
+            this.btConnect.Text = "Подключиться";
+            this.btConnect.Click += new System.EventHandler(this.btConnect_Click);
+            // 
+            // bt_disconnect
+            // 
+            this.bt_disconnect.Image = global::CNC_Controller.Properties.Resources.disconnect;
+            this.bt_disconnect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.bt_disconnect.Name = "bt_disconnect";
+            this.bt_disconnect.Size = new System.Drawing.Size(225, 38);
+            this.bt_disconnect.Text = "Отключиться";
+            this.bt_disconnect.Click += new System.EventHandler(this.bt_disconnect_Click);
+            // 
+            // settingToolStripMenuItem
+            // 
+            this.settingToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.pci;
+            this.settingToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
+            this.settingToolStripMenuItem.Size = new System.Drawing.Size(225, 38);
+            this.settingToolStripMenuItem.Text = "Настройки контроллера";
+            this.settingToolStripMenuItem.Click += new System.EventHandler(this.settingToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.contact_email;
+            this.aboutToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(165, 38);
+            this.aboutToolStripMenuItem.Text = "О программе";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -2143,6 +2154,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonEditData;
         private System.Windows.Forms.ToolStripButton toolStripButtonLikePoint;
         private System.Windows.Forms.ListBox listGkodeCommand;
+        private System.Windows.Forms.ToolStripMenuItem generatorCodeToolStripMenuItem;
     }
 }
 

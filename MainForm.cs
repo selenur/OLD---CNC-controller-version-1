@@ -1840,7 +1840,8 @@ namespace CNC_Controller
 
                 if (listGkodeCommand.SelectedIndex > 0) Task.indexLineTask = listGkodeCommand.SelectedIndex - 1;
 
-                Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count+1;
+                Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count+1
+                    ;
             }
 
             checkBoxManualMove.Checked = false;
@@ -2085,6 +2086,13 @@ namespace CNC_Controller
                 Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count;
                 textBoxNumberLine.Text = (listGkodeCommand.SelectedIndex + 1).ToString();
             }
+        }
+
+        private void generatorCodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            GeneratorCode frm = new GeneratorCode(ref _cnc);
+            frm.Show();
         }
    
     }

@@ -233,6 +233,16 @@ namespace CNC_Controller.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap draw_vertex {
+            get {
+                object obj = ResourceManager.GetObject("draw_vertex", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap glasses {
             get {
                 object obj = ResourceManager.GetObject("glasses", resourceCulture);

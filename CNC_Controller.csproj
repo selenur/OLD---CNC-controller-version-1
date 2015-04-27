@@ -87,6 +87,12 @@
     <Compile Include="EditGkode.Designer.cs">
       <DependentUpon>EditGkode.cs</DependentUpon>
     </Compile>
+    <Compile Include="GeneratorCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneratorCode.Designer.cs">
+      <DependentUpon>GeneratorCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="LikePointForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditGkode.resx">
       <DependentUpon>EditGkode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneratorCode.resx">
+      <DependentUpon>GeneratorCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LikePointForm.resx">
       <DependentUpon>LikePointForm.cs</DependentUpon>
@@ -260,11 +269,10 @@
     <None Include="picture\cancel.png" />
     <None Include="picture\google_webmaster_tools.png" />
     <None Include="picture\layer_grid.png" />
+    <None Include="Resources\draw_vertex.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
