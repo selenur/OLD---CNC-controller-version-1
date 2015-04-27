@@ -11,14 +11,14 @@ namespace CNC_Controller
     public partial class GeneratorCode : Form
     {
 
-        private CONTROLLER _ctrl;
+        private MainForm mf;
 
         private string code = "";
 
 
-        public GeneratorCode(ref CONTROLLER ctrl)
+        public GeneratorCode(MainForm _mf)
         {
-            _ctrl = ctrl;
+            mf = _mf;
             InitializeComponent();
         }
 
@@ -29,32 +29,73 @@ namespace CNC_Controller
 
         private void buttonGenerateCode_Click(object sender, EventArgs e)
         {
+            string code = "";
+
             // 1. прямолинейное движение к начальной точке
-            code += "G0 X" + numPosX.Value.ToString() + " Y" + numPosY.Value.ToString() + " Z" + numPosZ.Value.ToString() + "\n";
+            code += "G0 X" + numPosX.Value.ToString() + " Y" + numPosY.Value.ToString() + "\n";
+            code += "G1 Z" + numPosZ.Value.ToString() + "\n";
 
             // 2. движение змейкой
 
-            decimal posYNow = numPosY.Value;
-            decimal posYMax = numPosY.Value + numericUpDownSizeY.Value;
-            decimal posXMax = numPosX.Value + numericUpDownSizeX.Value;
+
+            bool toLeft = true; // направление движения змейки
 
 
-            while (posYNow != posYMax)
+            int countTask = (int)numericUpDown1.Value+1;
+
+            decimal posZ = numPosZ.Value;
+
+            while (countTask > 0)
             {
-                code += "G0 X" + posXMax.ToString() + "\n";
 
-                if ((posYNow + numericUpDownDelta.Value) > (numPosY.Value + numericUpDownSizeY.Value))
+
+                decimal posYNow = numPosY.Value;
+                decimal posYMax = numPosY.Value + numericUpDownSizeY.Value;
+                decimal posXMax = numPosX.Value + numericUpDownSizeX.Value;
+
+
+                while (posYNow != posYMax)
                 {
-                    posYNow = posYMax;
+                    if (toLeft)
+                    {
+                        toLeft = false;
+                        code += "G1 X" + posXMax.ToString() + "\n";
+                    }
+                    else
+                    {
+                        toLeft = true;
+                        code += "G1 X" + numPosX.Value.ToString() + "\n";
+                    }
+
+                    if ((posYNow + numericUpDownDelta.Value) > (numPosY.Value + numericUpDownSizeY.Value))
+                    {
+                        posYNow = posYMax;
+                    }
+                    else
+                    {
+                        posYNow += numericUpDownDelta.Value;
+                    }
+
+                    code += "G1 Y" + posYNow.ToString() + "\n";
+                }
+
+
+                if (toLeft)
+                {
+                    code += "G1 X" + posXMax.ToString() + "\n";
                 }
                 else
                 {
-                    posYNow += numericUpDownDelta.Value;
+                    code += "G1 X" + numPosX.Value.ToString() + "\n";
                 }
 
-                code += "G0 Y" + posYNow.ToString() + "\n";
+                posZ -= numericUpDown2.Value;
 
-                code += "G0 X" + numPosX.Value.ToString() + "\n";
+                code += "G0 Z" +  posZ  + "\n";
+
+
+
+                countTask--;
             }
 
 
@@ -76,12 +117,14 @@ namespace CNC_Controller
 
 
 
+            if (radioButton2.Checked)
+            {
+                // 3. Поднятие вверх
+                code += "G0 Z" + numericUpDown3.Value.ToString() + "\n";
+            }
 
-            // 3. Поднятие вверх
-            code += "G0 X" + numPosX.Value.ToString() + " Y" + numPosY.Value.ToString() + " Z" +
-                    (numPosZ.Value + 10).ToString() + "\n";
-
-
+            //пошлем сгенерированный код
+            mf.LoadDataFromText(code);
         }
     }
 }

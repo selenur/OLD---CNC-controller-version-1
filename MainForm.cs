@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Tao.FreeGlut;
 using Tao.OpenGl;
@@ -640,8 +641,11 @@ namespace CNC_Controller
 
         private List<string> parserGkodeLine(string value)
         {
-
+            
             List<string> lcmd = new List<string>();
+
+            if (value.Trim() == "") return lcmd;
+
             int inx = 0;
             bool collectCommand = false;
 
@@ -837,11 +841,53 @@ namespace CNC_Controller
                 listGkodeCommand.Items.Add("[" + index.ToString().PadLeft(maxIndex, '0') + "]" + " " + valueStr);
             }
         }
-    
-    
 
 
 
+
+
+        public void LoadDataFromText(string textGcode)
+        {
+            //GKODready.Clear();
+            //listGkodeCommand.Items.Clear();
+
+            //if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+
+            Text = @"Управленец ЧПУ: * сгенерированный G-код *" ; //заголовок окна
+
+            listBoxLog.Items.Add(@"Загрузка данных из файла: " + openFileDialog.FileName);
+
+            //string[] sData = File.ReadAllLines(openFileDialog.FileName);
+
+            toolStripProgressBar.Value = 0;
+            toolStripProgressBar.Minimum = 0;
+            toolStripProgressBar.Maximum = textGcode.Length;
+
+            int index = 0;
+
+            List<string> goodstr = new List<string>();
+
+            string[] lines = Regex.Split(textGcode, "\n");
+
+            foreach (string str in lines)
+            {
+                toolStripProgressBar.Value = index;
+                index++;
+
+                GKOD_raw graw = parseStringCode(str.ToUpper());
+
+                if (graw.GoodStr.Trim().Length == 0)
+                {
+                    AddLog(@"В строке: " + index + " не распознаны команды: " + graw.BadStr);
+                    continue;
+                }
+
+                goodstr.Add(graw.GoodStr);
+            }
+
+           ///запуск анализа нормальных команд
+            CalcData(goodstr);
+        }
 
 
 
@@ -2091,7 +2137,7 @@ namespace CNC_Controller
         private void generatorCodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            GeneratorCode frm = new GeneratorCode(ref _cnc);
+            GeneratorCode frm = new GeneratorCode(this);
             frm.Show();
         }
    
