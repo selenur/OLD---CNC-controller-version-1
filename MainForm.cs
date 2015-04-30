@@ -1880,9 +1880,40 @@ namespace CNC_Controller
             {
                 //выбран диапазон строк
 
+                
+
                 DialogResult dlgr = MessageBox.Show(@"Будет выполнен код со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() + @" по строку №: " + (listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count).ToString() + "\n Начать выполнение?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
                 if (dlgr == DialogResult.Cancel) return;
+
+
+                //TODO: добавить поднятие по оси Z (что-бы тректорией подхода не испортить деталь
+
+                if (!_cnc.TestAllowActions()) return;
+
+                _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
+                _cnc.SendBinaryData(BinaryData.pack_BF(200, 200, 200));
+                _cnc.SendBinaryData(BinaryData.pack_C0());
+
+                _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z",10), 100, 0));
+                
+                
+                //TODO: добавить ещё движение только по XY до точки старта
+                //_cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0));
+                
+                _cnc.SendBinaryData(BinaryData.pack_FF());
+                _cnc.SendBinaryData(BinaryData.pack_9D());
+                _cnc.SendBinaryData(BinaryData.pack_9E(0x02));
+                _cnc.SendBinaryData(BinaryData.pack_FF());
+                _cnc.SendBinaryData(BinaryData.pack_FF());
+                _cnc.SendBinaryData(BinaryData.pack_FF());
+                _cnc.SendBinaryData(BinaryData.pack_FF());
+                _cnc.SendBinaryData(BinaryData.pack_FF());
+
+
+
+
+
 
                 if (listGkodeCommand.SelectedIndex > 0) Task.indexLineTask = listGkodeCommand.SelectedIndex - 1;
 
@@ -1961,6 +1992,8 @@ namespace CNC_Controller
                 if (_cnc.AvailableBufferSize < 5) return;
 
                 if (Task.indexLineTask > (_cnc.NumberComleatedInstructions + 3)) return;
+
+                //TODO: Добавим паузу для продолжения
 
                 GKOD_ready gr = GKODready[Task.indexLineTask];
 

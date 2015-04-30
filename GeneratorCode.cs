@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace CNC_Controller
@@ -22,12 +17,8 @@ namespace CNC_Controller
             InitializeComponent();
         }
 
-        private void GeneratorCode_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonGenerateCode_Click(object sender, EventArgs e)
+        //Генерация, и посылка новых данных
+        private void RefreshData()
         {
             string code = "";
 
@@ -41,7 +32,7 @@ namespace CNC_Controller
             bool toLeft = true; // направление движения змейки
 
 
-            int countTask = (int)numericUpDown1.Value+1;
+            int countTask = (int)numericUpDown1.Value + 1;
 
             decimal posZ = numPosZ.Value;
 
@@ -91,7 +82,7 @@ namespace CNC_Controller
 
                 posZ -= numericUpDown2.Value;
 
-                code += "G0 Z" +  posZ  + "\n";
+                code += "G0 Z" + posZ + "\n";
 
 
 
@@ -125,6 +116,21 @@ namespace CNC_Controller
 
             //пошлем сгенерированный код
             mf.LoadDataFromText(code);
+
+        }
+
+
+
+
+        private void GeneratorCode_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonGenerateCode_Click(object sender, EventArgs e)
+        {
+            RefreshData();
+
         }
     }
 }
