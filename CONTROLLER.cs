@@ -1269,22 +1269,7 @@ namespace CNC_Controller
 
 
 
-    /// <summary>
-    /// Сырые данные G-кода для станка
-    /// </summary>
-    public class GKOD_raw
-    {
-        public string FullStr = "";
-        public string GoodStr = ""; //для распознанных
-        public string BadStr = ""; //для нераспознанных
 
-        public GKOD_raw(string _FullStr, string _GoodStr, string _BadStr)
-        {
-            FullStr = _FullStr;
-            GoodStr = _GoodStr;
-            BadStr = _BadStr;
-        }
-    }
 
 
     #endregion

@@ -464,6 +464,13 @@ namespace CNC_Controller
 
             if (!_cnc.Connected) return;
 
+            if (Task.StatusTask == EStatusTask.TaskStart) toolStripStatusLabel1.Text = @"Запуск задания";
+            if (Task.StatusTask == EStatusTask.TaskPaused) toolStripStatusLabel1.Text = @"Пауза выполнения";
+            if (Task.StatusTask == EStatusTask.TaskStop) toolStripStatusLabel1.Text = @"Остановка задания";
+            if (Task.StatusTask == EStatusTask.TaskWorking) toolStripStatusLabel1.Text = @"Выполнение задания";
+            if (Task.StatusTask == EStatusTask.Waiting) toolStripStatusLabel1.Text = @"ожидание";
+
+
 
             numPosX.Value = deviceInfo.AxesX_PositionMM;
             numPosY.Value = deviceInfo.AxesY_PositionMM;
@@ -500,55 +507,6 @@ namespace CNC_Controller
             labelYmin.ImageIndex = deviceInfo.AxesY_LimitMin ? 2 : 0;
             labelZmax.ImageIndex = deviceInfo.AxesZ_LimitMax ? 2 : 0;
             labelZmin.ImageIndex = deviceInfo.AxesZ_LimitMin ? 2 : 0;
-
-
-
-            if (!_cnc.Connected) 
-            {
-                buttonStartTask.Enabled = false;
-                btStopTask.Enabled = false;
-                buttonPauseTask.Enabled = false;
-                return;
-            }
-
-
-            if (Task.StatusTask == EStatusTask.Waiting)
-            {
-                buttonStartTask.Enabled = true;
-                btStopTask.Enabled = false;
-                buttonPauseTask.Enabled = false;
-                buttonXtoZero.Enabled = true;
-                buttonYtoZero.Enabled = true;
-                buttonZtoZero.Enabled = true;
-            }
-
-
-            if (Task.StatusTask == EStatusTask.TaskPaused)
-            {
-                buttonStartTask.Enabled = false;
-                btStopTask.Enabled = true;
-                buttonPauseTask.Enabled = true;
-                buttonXtoZero.Enabled = false;
-                buttonYtoZero.Enabled = false;
-                buttonZtoZero.Enabled = false;
-            }
-
-
-            if (Task.StatusTask == EStatusTask.TaskWorking)
-            {
-                buttonStartTask.Enabled = false;
-                btStopTask.Enabled = true;
-                buttonPauseTask.Enabled = true;
-                buttonXtoZero.Enabled = false;
-                buttonYtoZero.Enabled = false;
-                buttonZtoZero.Enabled = false;
-
-                toolStripProgressBar.Value = _cnc.NumberComleatedInstructions;
-                //listGkodeForUser.Rows[_cnc.NumberComleatedInstructions].Selected = true;
-                
-                //TODO: переделать алгоритм, иначе это изменение сбивает выделенный диапазон
-                //listGkodeCommand.SelectedIndex = _cnc.NumberComleatedInstructions;
-            }
 
 
             //***************
@@ -588,6 +546,60 @@ namespace CNC_Controller
             checkBox15.Checked = bb19.Bit5;
             checkBox16.Checked = bb19.Bit6;
             checkBox17.Checked = bb19.Bit7;
+
+            // end debug
+
+
+            // Кнопки запуска остановки заданий
+            groupBoxWorking.Enabled = _cnc.Connected;
+
+            if (_cnc.Connected)
+            {
+                if (TaskTimer.Enabled)
+                {
+                    buttonStartTask.Enabled = false;
+
+                    if (Task.StatusTask == EStatusTask.TaskPaused)
+                    {
+                        btStopTask.Enabled = false;
+                        buttonPauseTask.Enabled = true;
+                    }
+                    else
+                    {
+                        btStopTask.Enabled = true;
+                        buttonPauseTask.Enabled = true;     
+                    }
+                }
+                else //таймер выполнения задания выключен
+                {
+                    buttonStartTask.Enabled = true;
+                    btStopTask.Enabled = false;
+                    buttonPauseTask.Enabled = false;
+                }
+
+                if (Task.StatusTask == EStatusTask.Waiting)
+                {
+                    buttonXtoZero.Enabled = true;
+                    buttonYtoZero.Enabled = true;
+                    buttonZtoZero.Enabled = true;
+                }
+                else
+                {
+                    buttonXtoZero.Enabled = false;
+                    buttonYtoZero.Enabled = false;
+                    buttonZtoZero.Enabled = false;
+                }
+
+
+
+                if (Task.StatusTask == EStatusTask.TaskWorking)
+                {
+                    toolStripProgressBar.Value = _cnc.NumberComleatedInstructions;
+                    //listGkodeForUser.Rows[_cnc.NumberComleatedInstructions].Selected = true;
+                    //TODO: переделать алгоритм, иначе это изменение сбивает выделенный диапазон
+                    //listGkodeCommand.SelectedIndex = _cnc.NumberComleatedInstructions;
+                }
+            }
         }
 
         //событие от колёсика мышки
@@ -638,7 +650,11 @@ namespace CNC_Controller
 
 
 
-
+        /// <summary>
+        /// Преобразование строки, в список строк, с разделением параметров
+        /// </summary>
+        /// <param name="value">Строка с командами</param>
+        /// <returns>Список команд в строке по раздельности</returns>
         private List<string> parserGkodeLine(string value)
         {
             
@@ -646,15 +662,22 @@ namespace CNC_Controller
 
             if (value.Trim() == "") return lcmd;
 
-            int inx = 0;
-            bool collectCommand = false;
-
-            // если строка начинается со скобки, то эту строку не анализируем!!!
+            // если строка начинается со скобки, то эту строку не анализируем, т.к. это комментарий!!!
             if (value.Substring(0, 1) == "(")
             {
                 lcmd.Add(value);
                 return lcmd;
             }
+
+            if (value.Substring(0, 1) == "%") //тоже пропускаем эту сторку
+            {
+                lcmd.Add(value);
+                return lcmd;
+            }
+
+            int inx = 0;
+
+            bool collectCommand = false;
 
             foreach (char symb in value)
             {
@@ -670,67 +693,96 @@ namespace CNC_Controller
                     lcmd.Add("");
                 }
 
-                if (collectCommand) lcmd[inx] += symb.ToString();
+                if (collectCommand && symb != ' ') lcmd[inx] += symb.ToString();
             }
 
             return lcmd;
         }
 
         /// <summary>
-        /// Парсинг строки с G-кодом
+        /// Быстрый парсинг строки с G-кодом (только для визуальной части, проверка кие коды выполняем, а какие нет) 
         /// </summary>
         /// <param name="value">строка с G-кодом</param>
-        public GKOD_raw parseStringCode(string value)
+        public GKOD_resultParse parseStringCode(string value)
         {
-            GKOD_raw result = null;
+            GKOD_resultParse result = null;
 
             // 1) распарсим строку
             List<string> lcmd = parserGkodeLine(value);
 
-            // 2) проанализируем список команд
-            //    //а так-же разберем команды на те которые знаем и не знаем
             string sGoodsCmd = "";
             string sBadCmd = "";
 
-            foreach (string ss in lcmd)
+            // 2) проанализируем список команд, и разберем команды на те которые знаем и не знаем
+            for (int i = 0; i < lcmd.Count; i++)
             {
-                string sCommd = ss.Substring(0, 1).Trim().ToUpper();
-                string sValue = ss.Substring(1).Trim().ToUpper();
+                string sCommd = lcmd[i].Substring(0, 1).Trim().ToUpper();
+                string sValue = lcmd[i].Substring(1).Trim().ToUpper();
 
                 bool good = false;
 
-                if (sCommd == "G") //скорости движения
+                if (sCommd == "G") 
                 {
-                    if (sValue == "0" || sValue == "1") good = true;
-                    if (sValue == "00" || sValue == "01") good = true;
+                    //скорости движения
+                    if (sValue == "0" || sValue == "00") good = true;
+                    if (sValue == "1" || sValue == "01") good = true;
+                    // пауза в работе
+                    if (sValue == "4" || sValue == "04")
+                    {
+                        if ((i + 1) < lcmd.Count)
+                        {
+                            //проверим что есть ещё параметр "P"
+                            if (lcmd[i + 1].Substring(0, 1).ToUpper() == "P")
+                            {
+                                sGoodsCmd += lcmd[i].Trim().ToUpper() + " " + lcmd[i + 1].Trim().ToUpper();
+                                continue;
+                            }
+                        }
+                    }
                 }
 
-                if (sCommd == "M") //вкл/выкл шпинделя
+                if (sCommd == "M") 
                 {
-                    if (sValue == "3" || sValue == "5") good = true;
-                    if (sValue == "03" || sValue == "05") good = true;
+                    //остановка до нажатия кнопки продолжить
+                    if (sValue == "0" || sValue == "00") good = true;
+                    //вкл/выкл шпинделя
+                    if (sValue == "3" || sValue == "03") good = true;
+                    if (sValue == "5" || sValue == "05") good = true;
+                    //смена инструмента
+                    if (sValue == "6" || sValue == "06")
+                    {
+                        if ((i + 2) < lcmd.Count)
+                        {
+                            //проверим что есть ещё параметр "T" и "D"
+                            if (lcmd[i + 1].Substring(0, 1).ToUpper() == "T" && lcmd[i + 2].Substring(0, 1).ToUpper() == "D")
+                            {
+                                sGoodsCmd += lcmd[i].Trim().ToUpper() + " " + lcmd[i + 1].Trim().ToUpper() + " " + lcmd[i + 2].Trim().ToUpper();
+                                continue;
+                            }                            
+                        }
+                    }
                 }
 
                 if (sCommd == "X" || sCommd == "Y" || sCommd == "Z")
                 {
                     //координаты 3-х осей 
                     good = true;
-                    //TODO: дальше могут быть некорректные данные
                 }
 
                 if (good)
                 {
-                    sGoodsCmd += ss + " ";
+                    sGoodsCmd += lcmd[i] + " ";
                 }
                 else
                 {
-                    sBadCmd += ss + " ";
+                    sBadCmd += lcmd[i] + " ";
                 }
-            }
+            } //for (int i = 0; i < lcmd.Count; i++)
+
 
             if (lcmd.Count == 0) sBadCmd = value;
 
-            result = new GKOD_raw(value, sGoodsCmd, sBadCmd);
+            result = new GKOD_resultParse(value, sGoodsCmd, sBadCmd);
 
             return result;
         }
@@ -738,143 +790,160 @@ namespace CNC_Controller
         /// <summary>
         /// Набор готовых инструкций для станка 
         /// </summary>
-        public static List<GKOD_ready> GKODready = new List<GKOD_ready>();
+        public static List<GKOD_Command> GKODS = new List<GKOD_Command>();
 
-        public void CalcData(List<string> listCode)
+        /// <summary>
+        /// Перезаполнение данных
+        /// </summary>
+        /// <param name="listCode"></param>
+        public void FillData(List<string> listCode)
         {
-            GKODready.Clear();
-            decimal posx = 0;
-            decimal posy = 0;
-            decimal posz = 0;
-            int CNC_speedNow = 100;
-            bool spindelOn = false;
-            bool workspeed = false;
-
-            int index = 0;
-
-            int maxIndex = listCode.Count.ToString().Length; //вычисление количества символов используемых для нумерации записей
-
-            //listGkodeForUser.Rows.Clear();
+            GKODS.Clear();
             listGkodeCommand.Items.Clear();
+
+            GKOD_Command tmpCommand = new GKOD_Command();
+            int maxIndexLen = listCode.Count.ToString().Length; //вычисление количества символов используемых для нумерации записей
 
             foreach (string valueStr in listCode)
             {
-                index++;
-
                 List<string> lcmd = parserGkodeLine(valueStr);
 
-                foreach (string ss in lcmd)
+                for (int i = 0; i < lcmd.Count; i++)
                 {
-                    string value = ss.Trim();
+                    string property = lcmd[i].Substring(0, 1).Trim().ToUpper();
+                    string value = lcmd[i].Substring(1).Trim().ToUpper();
 
-                    if (value == "G0" || value == "G00")
-                    {
-                        workspeed = false;
-                    }
+                    if (property == "" || value == "") continue; //ошибочная команда
 
-                    if (value == "G1" || value == "G01")
+                    if (property == "G")
                     {
-                        workspeed = true;
-                    }
+                        if (value == "0" || value == "00") tmpCommand.workspeed = false;
 
-                    if (value.Substring(0, 1) == "X")
-                    {
-                        string value1 = value.Substring(1).Trim().Replace('.', ',');
-                        if (value1.Trim() != "")
+                        if (value == "1" || value == "01") tmpCommand.workspeed = true;
+
+                        if (value == "4" || value == "04")
                         {
-                            try
+                            //нужен следующий параметр
+                            string property1 = lcmd[i+1].Substring(0, 1).Trim().ToUpper();
+                            string value1 = lcmd[i+1].Substring(1).Trim().ToUpper();
+
+                            if (property1 == "P")
                             {
-                                //защита при чтении неправильного файла
-                                posx = decimal.Parse(value1);
-                            }
-                            catch (Exception)
-                            {
-                                //throw;
+                                tmpCommand.needPause = true;
+                                tmpCommand.timeSeconds = int.Parse(value1);
+                                i++;
                             }
                         }
                     }
 
-                    if (value.Substring(0, 1) == "Y")
+                    if (property == "X")
                     {
-                        string value1 = value.Substring(1).Trim().Replace('.', ',');
-                        if (value1.Trim() != "")
+                        //из-за кодировок, пока так сделаю...
+                        string value1 = value.Trim().Replace('.', ',');
+
+                        try
                         {
-                            try
-                            {
-                                //защита при чтении неправильного файла
-                                posy = decimal.Parse(value1);
-                            }
-                            catch (Exception)
-                            {
-                                //throw;
-                            }
+                            //если вдруг не число было....
+                            tmpCommand.X = decimal.Parse(value1);
+                        }
+                        catch (Exception)
+                        {
+                            //throw;
                         }
                     }
 
-                    if (value.Substring(0, 1) == "Z")
+                    if (property == "Y")
                     {
-                        string value1 = value.Substring(1).Trim().Replace('.', ',');
-                        if (value1.Trim() != "")
+                        //из-за кодировок, пока так сделаю...
+                        string value1 = value.Trim().Replace('.', ',');
+
+                        try
                         {
-                            try
-                            {
-                                //защита при чтении неправильного файла
-                                posz = decimal.Parse(value1);
-                            }
-                            catch (Exception)
-                            {
-                                //throw;
-                            }
+                            //если вдруг не число было....
+                            tmpCommand.Y = decimal.Parse(value1);
+                        }
+                        catch (Exception)
+                        {
+                            //throw;
                         }
                     }
 
-                    if (value == "M3" || value == "M03") spindelOn = true;
+                    if (property == "Z")
+                    {
+                        //из-за кодировок, пока так сделаю...
+                        string value1 = value.Trim().Replace('.', ',');
 
-                    if (value == "M5" || value == "M05") spindelOn = false;
+                        try
+                        {
+                            //если вдруг не число было....
+                            tmpCommand.Z = decimal.Parse(value1);
+                        }
+                        catch (Exception)
+                        {
+                            //throw;
+                        }
+                    }
 
+                    if (property == "M")
+                    {
+                        if (value == "0" || value == "0") tmpCommand.needPause = true;
+
+                        if (value == "3" || value == "03") tmpCommand.spindelON = true;
+
+                        if (value == "5" || value == "05") tmpCommand.spindelON = false;
+
+                        if (value == "6" || value == "06")
+                        {
+                            //нужен следующий параметр
+                            string property1 = lcmd[i + 1].Substring(0, 1).Trim().ToUpper();
+                            string value1 = lcmd[i + 1].Substring(1).Trim().ToUpper();
+
+                            string property2 = lcmd[i + 2].Substring(0, 1).Trim().ToUpper();
+                            string value2 = lcmd[i + 2].Substring(1).Trim().ToUpper().Replace('.', ',');
+
+                            if (property1 == "T" && property2 == "D")
+                            {
+                                tmpCommand.changeInstrument = true;
+                                tmpCommand.numberInstrument = int.Parse(value1);
+                                tmpCommand.timeSeconds = int.Parse(value1);
+                                tmpCommand.diametr = decimal.Parse(value2);
+                                i+=2;
+                            }
+                        }
+                    }
                 }
 
-                GKODready.Add(new GKOD_ready(index, spindelOn, posx, posy, posz, CNC_speedNow, workspeed));
+                GKODS.Add(new GKOD_Command(tmpCommand));
 
-                //int p = listGkodeForUser.Rows.Add();
-                //listGkodeForUser.Rows[p].Cells[0].Value = "[" + index.ToString().PadLeft(maxIndex, '0') + "]" + " " + valueStr;
-                listGkodeCommand.Items.Add("[" + index.ToString().PadLeft(maxIndex, '0') + "]" + " " + valueStr);
+                tmpCommand.numberInstruct++;
+                tmpCommand.needPause = false;
+                tmpCommand.changeInstrument = false;
+                tmpCommand.timeSeconds = 0;
+
+                listGkodeCommand.Items.Add("[" + tmpCommand.numberInstruct.ToString().PadLeft(maxIndexLen, '0') + "]" + " " + valueStr);
             }
         }
 
 
-
-
-
-        public void LoadDataFromText(string textGcode)
+        /// <summary>
+        /// Парсинг G-кода
+        /// </summary>
+        /// <param name="lines">Массив строк с G-кодом</param>
+        public void LoadDataFromText(string[] lines)
         {
-            //GKODready.Clear();
-            //listGkodeCommand.Items.Clear();
-
-            //if (openFileDialog.ShowDialog() != DialogResult.OK) return;
-
-            Text = @"Управленец ЧПУ: * сгенерированный G-код *" ; //заголовок окна
-
-            listBoxLog.Items.Add(@"Загрузка данных из файла: " + openFileDialog.FileName);
-
-            //string[] sData = File.ReadAllLines(openFileDialog.FileName);
-
             toolStripProgressBar.Value = 0;
             toolStripProgressBar.Minimum = 0;
-            toolStripProgressBar.Maximum = textGcode.Length;
+            toolStripProgressBar.Maximum = lines.Length;
 
             int index = 0;
 
-            List<string> goodstr = new List<string>();
-
-            string[] lines = Regex.Split(textGcode, "\n");
+            List<string> goodstr = new List<string>(); //массив только для распознаных!!! G-кодов
 
             foreach (string str in lines)
             {
-                toolStripProgressBar.Value = index;
-                index++;
+                toolStripProgressBar.Value = index++;
 
-                GKOD_raw graw = parseStringCode(str.ToUpper());
+                GKOD_resultParse graw = parseStringCode(str.ToUpper());
 
                 if (graw.GoodStr.Trim().Length == 0)
                 {
@@ -885,13 +954,13 @@ namespace CNC_Controller
                 goodstr.Add(graw.GoodStr);
             }
 
-           ///запуск анализа нормальных команд
-            CalcData(goodstr);
+           //запуск анализа нормальных команд
+            FillData(goodstr);
         }
 
-
-
-
+        /// <summary>
+        /// Вызов диалога пользователя для выбора файла, и посылка данных в процедуру: LoadDataFromText(string[] lines)
+        /// </summary>
         private void OpenFile()
         {
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
@@ -902,32 +971,7 @@ namespace CNC_Controller
 
             string[] sData = File.ReadAllLines(openFileDialog.FileName);
 
-            toolStripProgressBar.Value = 0;
-            toolStripProgressBar.Minimum = 0;
-            toolStripProgressBar.Maximum = sData.Length;
-
-            int index = 0;
-
-            List<string> goodstr = new List<string>();
-
-            foreach (string str in sData)
-            {
-                toolStripProgressBar.Value = index;
-                index++;
-
-                GKOD_raw graw = parseStringCode(str.ToUpper());
-
-                if (graw.GoodStr.Trim().Length == 0)
-                {
-                    AddLog(@"В строке: " + index + " не распознаны команды: " + graw.BadStr);
-                    continue;
-                }
-
-                goodstr.Add(graw.GoodStr);
-            }
-
-            //запуск анализа нормальных команд
-            CalcData(goodstr);
+            LoadDataFromText(sData);
         }
 
         private void menuOpenFile_Click(object sender, EventArgs e)
@@ -1446,7 +1490,7 @@ namespace CNC_Controller
 
             Gl.glLineWidth(0.3f);
             Gl.glBegin(Gl.GL_LINE_STRIP);
-            foreach (GKOD_ready vv in GKODready)
+            foreach (GKOD_Command vv in GKODS)
             {
                 //Gl.glLineWidth(0.1f);
                 if (vv.workspeed) Gl.glColor3f(0, 255, 0); else Gl.glColor3f(255, 0, 0);
@@ -1486,7 +1530,7 @@ namespace CNC_Controller
             Gl.glLineWidth(3.0f);
             Gl.glColor3f(1, 1, 1);
             Gl.glBegin(Gl.GL_LINE_STRIP);
-            foreach (GKOD_ready vv in GKODready)
+            foreach (GKOD_Command vv in GKODS)
             {
 
                 //координаты следующей точки
@@ -1828,22 +1872,12 @@ namespace CNC_Controller
 
         public bool deltaFeed = false;
 
-        ////private void dataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
-        ////{
-        ////    if (Task.StatusTask == EStatusTask.Waiting)
-        ////    {
-        ////        //Task.indexLineTask = (listGkodeForUser.Rows.Count > 0) ? e.RowIndex + 1 : 0;
-                
-
-
-
-        ////        textBoxNumberLine.Text = Task.indexLineTask.ToString();
-        ////    }
-        ////}
-
         private void buttonStartTask_Click(object sender, EventArgs e)
         {
-            if (Task.StatusTask != EStatusTask.Waiting) return;
+            if (TaskTimer.Enabled)
+            {
+                return; //эта кнопка не может быть доступна если таймер включен
+            }
 
             if (!_cnc.Connected)
             {
@@ -1851,191 +1885,235 @@ namespace CNC_Controller
                 return;
             }
 
-            if (GKODready.Count == 0)
+            if (GKODS.Count == 0)
             {
                 // нет данных для выполнения
                 MessageBox.Show(@"Нет данных для выполнения!");
                 return;
             }
 
+            //если в списке команд не выбрана строчка, то спозиционируемся на первой
+            if (listGkodeCommand.SelectedIndex == -1) listGkodeCommand.SelectedIndex = 0;
 
-            //TODO: посмотрим что выделено в листбоксе
-
-            if (listGkodeCommand.SelectedIndex == -1) return; //не выделена строка с которой начать
-
-            Task.indexLineTask = listGkodeCommand.SelectedIndex;
+            Task.indexLineTask = listGkodeCommand.SelectedIndex; // в параметре задания "Начальная строка задания" установим значение
 
             if (listGkodeCommand.SelectedItems.Count == 1)
             {
                 //выбрана всего одна строка
 
-                DialogResult dlgres = MessageBox.Show(@"Будет выполнен код со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() + "\n Начать выполнение?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                DialogResult dlgres = MessageBox.Show(@"Будет выполнен код со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() + "\nНачать выполнение?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
                 if (dlgres == DialogResult.Cancel) return;
 
                 //сами установим границы выполнения
-                Task.countSelectLineTask = GKODready.Count - listGkodeCommand.SelectedIndex;
+                Task.countSelectLineTask = GKODS.Count - listGkodeCommand.SelectedIndex;
             }
             else
             {
                 //выбран диапазон строк
 
-                
+
 
                 DialogResult dlgr = MessageBox.Show(@"Будет выполнен код со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() + @" по строку №: " + (listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count).ToString() + "\n Начать выполнение?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
                 if (dlgr == DialogResult.Cancel) return;
 
 
-                //TODO: добавить поднятие по оси Z (что-бы тректорией подхода не испортить деталь
+            ////    //TODO: добавить поднятие по оси Z (что-бы тректорией подхода не испортить деталь
 
-                if (!_cnc.TestAllowActions()) return;
+            ////    if (!_cnc.TestAllowActions()) return;
 
-                _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
-                _cnc.SendBinaryData(BinaryData.pack_BF(200, 200, 200));
-                _cnc.SendBinaryData(BinaryData.pack_C0());
+            ////    _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
+            ////    _cnc.SendBinaryData(BinaryData.pack_BF(200, 200, 200));
+            ////    _cnc.SendBinaryData(BinaryData.pack_C0());
 
-                _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z",10), 100, 0));
-                
-                
-                //TODO: добавить ещё движение только по XY до точки старта
-                //_cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0));
-                
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_9D());
-                _cnc.SendBinaryData(BinaryData.pack_9E(0x02));
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_FF());
+            ////    _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z",10), 100, 0));
 
 
+            ////    //TODO: добавить ещё движение только по XY до точки старта
+            ////    //_cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0));
+
+            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
+            ////    _cnc.SendBinaryData(BinaryData.pack_9D());
+            ////    _cnc.SendBinaryData(BinaryData.pack_9E(0x02));
+            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
+            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
+            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
+            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
+            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
 
 
 
 
-                if (listGkodeCommand.SelectedIndex > 0) Task.indexLineTask = listGkodeCommand.SelectedIndex - 1;
 
-                Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count+1
-                    ;
+
+                if (listGkodeCommand.SelectedIndex > 0) Task.indexLineTask = listGkodeCommand.SelectedIndex - 1; //для правильного позиционирования
+
+                Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count+1;
             }
+
+
+            TaskTimer.Enabled = true;
 
             checkBoxManualMove.Checked = false;
             Task.StatusTask = EStatusTask.TaskStart;
+             
+            RefreshElementsForms();
+ 
         }
 
         private void buttonPauseTask_Click(object sender, EventArgs e)
         {
+            if (Task.StatusTask == EStatusTask.TaskStart) return; //пока задание не запустилось, нет смысла ставить паузу
+
             if (Task.StatusTask == EStatusTask.TaskWorking || Task.StatusTask == EStatusTask.TaskPaused)
             {
                 Task.StatusTask = (Task.StatusTask == EStatusTask.TaskPaused) ? EStatusTask.TaskWorking : EStatusTask.TaskPaused;
             }
+            RefreshElementsForms();
         }
 
         private void btStopTask_Click(object sender, EventArgs e)
         {
-            if (Task.StatusTask != EStatusTask.TaskWorking) return;
-
+            if (Task.StatusTask == EStatusTask.Waiting) return;
             Task.StatusTask = EStatusTask.TaskStop;
+            RefreshElementsForms();
         }
 
         private void TaskTimer_Tick(object sender, EventArgs e)
         {
-            if (!_cnc.Connected) return;
-
-            if (Task.StatusTask == EStatusTask.TaskStart) toolStripStatusLabel1.Text = @"Запуск задания";
-            if (Task.StatusTask == EStatusTask.TaskPaused) toolStripStatusLabel1.Text = @"Пауза выполнения";
-            if (Task.StatusTask == EStatusTask.TaskStop) toolStripStatusLabel1.Text = @"Остановка задания";
-            if (Task.StatusTask == EStatusTask.TaskWorking) toolStripStatusLabel1.Text = @"Выполнение задания";
-            if (Task.StatusTask == EStatusTask.Waiting) toolStripStatusLabel1.Text = @"ожидание";
-            
-            
-            
-            //TODO: вот тут основная поссылка данных
+            if (!_cnc.Connected)
+            {
+                TaskTimer.Enabled = false;
+                return;
+            }
 
             int speedG1 = (int)numericUpDown1.Value;
             int speedG0 = (int)numericUpDown2.Value;
 
-            if (Task.StatusTask == EStatusTask.TaskStart)
-            {
-                AddLog("Запуск задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
 
-                int MaxSpeedX = 100;
-                int MaxSpeedY = 100;
-                int MaxSpeedZ = 100;
+            #region TaskStart
+                if (Task.StatusTask == EStatusTask.TaskStart)
+                {
+                    AddLog("Запуск задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
 
-                _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
-                _cnc.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
-                _cnc.SendBinaryData(BinaryData.pack_C0());
+                    int MaxSpeedX = 100;
+                    int MaxSpeedY = 100;
+                    int MaxSpeedZ = 100;
 
-                Task.StatusTask = EStatusTask.TaskWorking;
+                    _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
+                    _cnc.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
+                    _cnc.SendBinaryData(BinaryData.pack_C0());
 
-                return;
-            }
+                    Task.StatusTask = EStatusTask.TaskWorking;
+                    RefreshElementsForms();
 
+                    return; //после запуска дальше код пропустим...
+                }
+            #endregion
 
-            //TODO: переделать
+            ////////TODO: переделать
+            #region TaskWorking
             if (Task.StatusTask == EStatusTask.TaskWorking)
             {
-
-
-                //TODO: Выполняем до нужной строки
-
-                if (Task.countSelectLineTask == 0)
+                if (Task.countSelectLineTask == 0) 
                 {
                     Task.StatusTask = EStatusTask.TaskStop;
                     return;
                 }
 
+                if (_cnc.AvailableBufferSize < 5) return; // откажемся от посылки контроллеру, пока буфер не освободиться
 
-                if (_cnc.AvailableBufferSize < 5) return;
 
+
+                // Так-же не будем много посылать команд, пока контроллер не выполнит -3 команды
                 if (Task.indexLineTask > (_cnc.NumberComleatedInstructions + 3)) return;
 
-                //TODO: Добавим паузу для продолжения
 
-                GKOD_ready gr = GKODready[Task.indexLineTask];
+                GKOD_Command gr = GKODS[Task.indexLineTask];
 
-                double pointX = (double)gr.X;
-                double pointY = (double)gr.Y;
-                double pointZ = (double)gr.Z;
-
-                //добавление смещения G-кода
-                if (Correction)
+                if (gr.needPause)  //команда остановки
                 {
-                    // применение пропорций
-                    pointX *= koeffSizeX;
-                    pointY *= koeffSizeY;
+                    
 
-                    //применение смещения
-                    pointX += deltaX;
-                    pointY += deltaY;
-                    pointZ += deltaZ;
-
-                    //применение матрицы поверхности детали
-                    if (deltaFeed)
-                    {
-                        pointZ += GetDeltaZ(pointX, pointY);
-                    }
+            //////        if (gr.timeSeconds == 0)
+            //////        {
+            //////            //пауза до клика пользователя
+            //////            MessageBox.Show(@"Получена команда остановки! для дальнейшей обработки нажмите ОК", "Внимание",
+            //////                MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            //////        }
+            //////        else
+            //////        {
+            //////            // пауза в мсек.
+            //////            System.Threading.Thread.Sleep(gr.timeSeconds);
+            //////        }
                 }
 
-                int posX = deviceInfo.CalcPosPulse("X", (decimal)pointX);
-                int posY = deviceInfo.CalcPosPulse("Y", (decimal)pointY);
-                int posZ = deviceInfo.CalcPosPulse("Z", (decimal)pointZ);
-
-                int speed = (gr.workspeed) ? speedG1 : speedG0;
-
-                _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.indexLineTask));
 
 
 
-                //TODO: распарсим и выполним
+
+            //////    //TODO: Добавим паузу для продолжения
+
+
+
+
+
+            //////    if (gr.changeInstrument)
+            //////    {
+            //////        //команда остановки
+
+            //////            //пауза до клика пользователя
+            //////            MessageBox.Show(@"Активирована ПАУЗА! Установите инструмент №:" + gr.numberInstrument + " с диаметром: " + gr.diametr + " мм.", "Внимание",
+            //////                MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
+            //////        Task.StatusTask = EStatusTask.TaskPaused;
+
+            //////    }
+
+            //////    double pointX = (double)gr.X;
+            //////    double pointY = (double)gr.Y;
+            //////    double pointZ = (double)gr.Z;
+
+            //////    //добавление смещения G-кода
+            //////    if (Correction)
+            //////    {
+            //////        // применение пропорций
+            //////        pointX *= koeffSizeX;
+            //////        pointY *= koeffSizeY;
+
+            //////        //применение смещения
+            //////        pointX += deltaX;
+            //////        pointY += deltaY;
+            //////        pointZ += deltaZ;
+
+            //////        //применение матрицы поверхности детали
+            //////        if (deltaFeed)
+            //////        {
+            //////            pointZ += GetDeltaZ(pointX, pointY);
+            //////        }
+            //////    }
+
+            //////    int posX = deviceInfo.CalcPosPulse("X", (decimal)pointX);
+            //////    int posY = deviceInfo.CalcPosPulse("Y", (decimal)pointY);
+            //////    int posZ = deviceInfo.CalcPosPulse("Z", (decimal)pointZ);
+
+            //////    int speed = (gr.workspeed) ? speedG1 : speedG0;
+
+            //////    _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.indexLineTask));
+
+
+
                 Task.indexLineTask++;
                 Task.countSelectLineTask--;
                 textBoxNumberLine.Text = Task.indexLineTask.ToString();
 
             }
+
+
+            #endregion
+
+            #region TaskStop
 
             if (Task.StatusTask == EStatusTask.TaskStop)
             {
@@ -2050,7 +2128,15 @@ namespace CNC_Controller
 
                 AddLog("Завершение задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
                 Task.StatusTask = EStatusTask.Waiting;
+                TaskTimer.Enabled = false;
+                RefreshElementsForms();
             }
+
+            #endregion
+
+
+
+
         }
 
         #endregion
@@ -2238,19 +2324,46 @@ namespace CNC_Controller
 
 
     /// <summary>
-    /// Готовые данные из G-кода для станка
+    /// Инструкция для станка
     /// </summary>
-    public class GKOD_ready
+    public class GKOD_Command
     {
+        public bool changeInstrument; // если true - то необходима остановка, для смены инструмента
+        public int numberInstrument;  // собственно номер инструмента
+
+        public bool needPause;        // необходимость паузы
+        public int timeSeconds;       // длительность паузы, если 0 - то ожидание от пользователя о продолжении
+
         public decimal X;       // координата в мм
         public decimal Y;       // координата в мм
         public decimal Z;       // координата в мм
         public int speed;       // скорость
         public bool spindelON;  // вкл. шпинделя
-        public int numberInstruct; //номер инструкции
-        public bool workspeed = false;
+        public int numberInstruct;     // номер инструкции
+        public bool workspeed; // true=G1 false=G0
+        public decimal diametr; // диаметр инструмента
+        
+        /// <summary>
+        /// Пустой конструктор
+        /// </summary>
+        public GKOD_Command()
+        {
+            changeInstrument = false;
+            numberInstrument = 0;
+            needPause        = false;
+            timeSeconds      = 0;
 
-        public GKOD_ready(int _numberInstruct, bool _spindelON, decimal _X, decimal _Y, decimal _Z, int _speed, bool _workspeed)
+            X = 0;
+            Y = 0;
+            Z = 0;
+            spindelON      = false;
+            numberInstruct = 0;
+            speed          = 0;
+            workspeed      = false;
+            diametr = 0;
+        }
+
+        public GKOD_Command(int _numberInstruct, bool _spindelON, decimal _X, decimal _Y, decimal _Z, int _speed, bool _workspeed, bool _changeInstrument = false, int _numberInstrument = 0, bool _needPause = false, int _timeSeconds = 0, decimal _diametr = 0)
         {
             X = _X;
             Y = _Y;
@@ -2259,6 +2372,54 @@ namespace CNC_Controller
             numberInstruct = _numberInstruct;
             speed = _speed;
             workspeed = _workspeed;
+
+            changeInstrument = _changeInstrument;
+            numberInstrument = _numberInstrument;
+            needPause        = _needPause;
+            timeSeconds      = _timeSeconds;
+            diametr = _diametr;
+        }
+
+        //Конструктор на основе существующей команды
+        public GKOD_Command(GKOD_Command _cmd)
+        {
+            X = _cmd.X;
+            Y = _cmd.Y;
+            Z = _cmd.Z;
+            spindelON = _cmd.spindelON;
+            numberInstruct = _cmd.numberInstruct;
+            speed = _cmd.speed;
+            workspeed = _cmd.workspeed;
+
+            changeInstrument = _cmd.changeInstrument;
+            numberInstrument = _cmd.numberInstrument;
+            needPause = _cmd.needPause;
+            timeSeconds = _cmd.timeSeconds;
+            diametr = _cmd.diametr;
+        }
+
+
+    }
+
+
+    /// <summary>
+    /// Результат парсинга G-кода
+    /// </summary>
+    public class GKOD_resultParse
+    {
+        public string FullStr = "";
+        public string GoodStr = ""; //для распознанных
+        public string BadStr  = ""; //для нераспознанных
+
+        public GKOD_resultParse(string _FullStr, string _GoodStr, string _BadStr)
+        {
+            FullStr = _FullStr;
+            GoodStr = _GoodStr;
+            BadStr = _BadStr;
         }
     }
+
+
+
+
 }

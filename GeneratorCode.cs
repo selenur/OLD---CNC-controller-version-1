@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CNC_Controller
@@ -115,8 +116,7 @@ namespace CNC_Controller
             }
 
             //пошлем сгенерированный код
-            mf.LoadDataFromText(code);
-
+            mf.LoadDataFromText(Regex.Split(code, "\n"));
         }
 
 
