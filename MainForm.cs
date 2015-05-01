@@ -43,7 +43,7 @@ namespace CNC_Controller
         {
             Init3D();
 
-            Task.indexLineTask = -1; //пока нет никаких заданий
+            Task.posCodeNow = -1; //пока нет никаких заданий
             Task.StatusTask = EStatusTask.Waiting; //пока нет заданий для выполнения
 
             toolStripStatus.Text = @"";
@@ -1561,8 +1561,8 @@ namespace CNC_Controller
 
                 if (Task.StatusTask == EStatusTask.Waiting)
                 {
-                    int numSelectStart = Task.indexLineTask;
-                    int numSelectStop = Task.countSelectLineTask + numSelectStart;
+                    int numSelectStart = Task.posCodeStart-1;
+                    int numSelectStop = Task.posCodeEnd-1;
 
                     if (vv.numberInstruct >= numSelectStart && vv.numberInstruct <= numSelectStop)
                     {
@@ -1663,8 +1663,6 @@ namespace CNC_Controller
 
             #endregion
 
-
-
             #region Отображение границ рабочего поля
 
             if (ShowGrate)
@@ -1695,9 +1693,6 @@ namespace CNC_Controller
 
 
             #endregion
-
-
-
 
             #region Завершение отрисовки
 
@@ -1859,7 +1854,6 @@ namespace CNC_Controller
         #region Выполнение G-кода из таблицы
 
         //Для использования, корректировки положения
-
         /// <summary>
         /// Необходимость применения корректировки данных
         /// </summary>
@@ -1869,15 +1863,11 @@ namespace CNC_Controller
         public double deltaZ = 0;
         public double koeffSizeX = 1;
         public double koeffSizeY = 1;
-
         public bool deltaFeed = false;
 
         private void buttonStartTask_Click(object sender, EventArgs e)
         {
-            if (TaskTimer.Enabled)
-            {
-                return; //эта кнопка не может быть доступна если таймер включен
-            }
+            if (TaskTimer.Enabled) return; //нельзя дальше, если таймер включен
 
             if (!_cnc.Connected)
             {
@@ -1895,71 +1885,38 @@ namespace CNC_Controller
             //если в списке команд не выбрана строчка, то спозиционируемся на первой
             if (listGkodeCommand.SelectedIndex == -1) listGkodeCommand.SelectedIndex = 0;
 
-            Task.indexLineTask = listGkodeCommand.SelectedIndex; // в параметре задания "Начальная строка задания" установим значение
-
-            if (listGkodeCommand.SelectedItems.Count == 1)
+            if (listGkodeCommand.SelectedItems.Count == 1)   //выбрана всего одна строка, а значит для выполнения будет указан диапазон, от этой строки и до конца
             {
-                //выбрана всего одна строка
-
-                DialogResult dlgres = MessageBox.Show(@"Будет выполнен код со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() + "\nНачать выполнение?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                DialogResult dlgres = MessageBox.Show(@"Запустить выполнение G-кода со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() 
+                    + "\n и до последней?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
                 if (dlgres == DialogResult.Cancel) return;
 
-                //сами установим границы выполнения
-                Task.countSelectLineTask = GKODS.Count - listGkodeCommand.SelectedIndex;
+                //установим границы выполнения
+                Task.posCodeStart = listGkodeCommand.SelectedIndex;
+                Task.posCodeEnd = listGkodeCommand.Items.Count;
+                Task.posCodeNow = Task.posCodeStart;
             }
-            else
+            else   //выбран диапазон строк
             {
-                //выбран диапазон строк
-
-
-
-                DialogResult dlgr = MessageBox.Show(@"Будет выполнен код со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() + @" по строку №: " + (listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count).ToString() + "\n Начать выполнение?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                DialogResult dlgr = MessageBox.Show(@"Запустить выполнение G-кода со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString() 
+                    + @" по строку №: " + (listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count).ToString() 
+                    + "?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
 
                 if (dlgr == DialogResult.Cancel) return;
 
-
-            ////    //TODO: добавить поднятие по оси Z (что-бы тректорией подхода не испортить деталь
-
-            ////    if (!_cnc.TestAllowActions()) return;
-
-            ////    _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
-            ////    _cnc.SendBinaryData(BinaryData.pack_BF(200, 200, 200));
-            ////    _cnc.SendBinaryData(BinaryData.pack_C0());
-
-            ////    _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z",10), 100, 0));
-
-
-            ////    //TODO: добавить ещё движение только по XY до точки старта
-            ////    //_cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0));
-
-            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
-            ////    _cnc.SendBinaryData(BinaryData.pack_9D());
-            ////    _cnc.SendBinaryData(BinaryData.pack_9E(0x02));
-            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
-            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
-            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
-            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
-            ////    _cnc.SendBinaryData(BinaryData.pack_FF());
-
-
-
-
-
-
-                if (listGkodeCommand.SelectedIndex > 0) Task.indexLineTask = listGkodeCommand.SelectedIndex - 1; //для правильного позиционирования
-
-                Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count+1;
+                //установим границы выполнения
+                Task.posCodeStart = listGkodeCommand.SelectedIndex;
+                Task.posCodeEnd = listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count;
+                Task.posCodeNow = Task.posCodeStart;
             }
 
+            checkBoxManualMove.Checked = false; // отключим реакцию на нажатие NUM-pad
 
-            TaskTimer.Enabled = true;
-
-            checkBoxManualMove.Checked = false;
             Task.StatusTask = EStatusTask.TaskStart;
+            TaskTimer.Enabled = true;
              
             RefreshElementsForms();
- 
         }
 
         private void buttonPauseTask_Click(object sender, EventArgs e)
@@ -1988,135 +1945,47 @@ namespace CNC_Controller
                 return;
             }
 
-            int speedG1 = (int)numericUpDown1.Value;
-            int speedG0 = (int)numericUpDown2.Value;
+            // скорость с главной формы
+            int UserSpeedG1 = (int)numericUpDown1.Value;
+            int UserSpeedG0 = (int)numericUpDown2.Value;
 
+            GKOD_Command gcodeNow = GKODS[Task.posCodeNow];
 
             #region TaskStart
-                if (Task.StatusTask == EStatusTask.TaskStart)
-                {
-                    AddLog("Запуск задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
 
-                    int MaxSpeedX = 100;
-                    int MaxSpeedY = 100;
-                    int MaxSpeedZ = 100;
-
-                    _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
-                    _cnc.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
-                    _cnc.SendBinaryData(BinaryData.pack_C0());
-
-                    Task.StatusTask = EStatusTask.TaskWorking;
-                    RefreshElementsForms();
-
-                    return; //после запуска дальше код пропустим...
-                }
-            #endregion
-
-            ////////TODO: переделать
-            #region TaskWorking
-            if (Task.StatusTask == EStatusTask.TaskWorking)
+            if (Task.StatusTask == EStatusTask.TaskStart)
             {
-                if (Task.countSelectLineTask == 0) 
-                {
-                    Task.StatusTask = EStatusTask.TaskStop;
-                    return;
-                }
+                AddLog("Запуск задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
 
-                if (_cnc.AvailableBufferSize < 5) return; // откажемся от посылки контроллеру, пока буфер не освободиться
+                int MaxSpeedX = 100;
+                int MaxSpeedY = 100;
+                int MaxSpeedZ = 100;
 
+                _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
+                _cnc.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
+                _cnc.SendBinaryData(BinaryData.pack_C0());
 
+                //так-же спозиционируемся, над первой точкой по оси X и Y
+                //TODO: нужно ещё и поднять повыше шпиндель, а пока на 10 мм (продумать реализацию)
+                _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z",10), UserSpeedG0, 0));
 
-                // Так-же не будем много посылать команд, пока контроллер не выполнит -3 команды
-                if (Task.indexLineTask > (_cnc.NumberComleatedInstructions + 3)) return;
+                //TODO: И продумать реализацию к подходу к точке
+                _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", gcodeNow.X), deviceInfo.CalcPosPulse("Y", gcodeNow.Y), deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z", 10), UserSpeedG0, 0));
 
+                Task.StatusTask = EStatusTask.TaskWorking;
+                RefreshElementsForms();
 
-                GKOD_Command gr = GKODS[Task.indexLineTask];
-
-                if (gr.needPause)  //команда остановки
-                {
-                    
-
-            //////        if (gr.timeSeconds == 0)
-            //////        {
-            //////            //пауза до клика пользователя
-            //////            MessageBox.Show(@"Получена команда остановки! для дальнейшей обработки нажмите ОК", "Внимание",
-            //////                MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-            //////        }
-            //////        else
-            //////        {
-            //////            // пауза в мсек.
-            //////            System.Threading.Thread.Sleep(gr.timeSeconds);
-            //////        }
-                }
-
-
-
-
-
-            //////    //TODO: Добавим паузу для продолжения
-
-
-
-
-
-            //////    if (gr.changeInstrument)
-            //////    {
-            //////        //команда остановки
-
-            //////            //пауза до клика пользователя
-            //////            MessageBox.Show(@"Активирована ПАУЗА! Установите инструмент №:" + gr.numberInstrument + " с диаметром: " + gr.diametr + " мм.", "Внимание",
-            //////                MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-
-            //////        Task.StatusTask = EStatusTask.TaskPaused;
-
-            //////    }
-
-            //////    double pointX = (double)gr.X;
-            //////    double pointY = (double)gr.Y;
-            //////    double pointZ = (double)gr.Z;
-
-            //////    //добавление смещения G-кода
-            //////    if (Correction)
-            //////    {
-            //////        // применение пропорций
-            //////        pointX *= koeffSizeX;
-            //////        pointY *= koeffSizeY;
-
-            //////        //применение смещения
-            //////        pointX += deltaX;
-            //////        pointY += deltaY;
-            //////        pointZ += deltaZ;
-
-            //////        //применение матрицы поверхности детали
-            //////        if (deltaFeed)
-            //////        {
-            //////            pointZ += GetDeltaZ(pointX, pointY);
-            //////        }
-            //////    }
-
-            //////    int posX = deviceInfo.CalcPosPulse("X", (decimal)pointX);
-            //////    int posY = deviceInfo.CalcPosPulse("Y", (decimal)pointY);
-            //////    int posZ = deviceInfo.CalcPosPulse("Z", (decimal)pointZ);
-
-            //////    int speed = (gr.workspeed) ? speedG1 : speedG0;
-
-            //////    _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.indexLineTask));
-
-
-
-                Task.indexLineTask++;
-                Task.countSelectLineTask--;
-                textBoxNumberLine.Text = Task.indexLineTask.ToString();
-
+                return; //после запуска дальше код пропустим...
             }
 
-
             #endregion
-
+            
             #region TaskStop
 
             if (Task.StatusTask == EStatusTask.TaskStop)
             {
+                //TODO: добавить поднятие фрезы, возможное позиционирование в home
+
                 _cnc.SendBinaryData(BinaryData.pack_FF());
                 _cnc.SendBinaryData(BinaryData.pack_9D());
                 _cnc.SendBinaryData(BinaryData.pack_9E(0x02));
@@ -2133,11 +2002,96 @@ namespace CNC_Controller
             }
 
             #endregion
+            
+            #region TaskWorking
+
+            if (Task.StatusTask != EStatusTask.TaskWorking) return;
+
+            //Все необходимые команды завершены, пора всё завершить
+            if (Task.posCodeNow > Task.posCodeEnd) 
+            {
+                Task.StatusTask = EStatusTask.TaskStop;
+                return;
+            }
+
+            //TODO: добавить в параметр значение
+            if (_cnc.AvailableBufferSize < 5) return; // откажемся от посылки контроллеру, пока буфер не освободиться
+
+
+            //TODO: добавить в параметр и это значение
+            if (Task.posCodeNow > (_cnc.NumberComleatedInstructions + 3)) return; // Так-же не будем много посылать команд, т.е. далеко убегать
+
+            //команда остановки G4 или M0
+            if (gcodeNow.needPause)  
+            {
+                if (gcodeNow.timeSeconds == 0) // M0 - команда ожидания от пользователя
+                {
+                    Task.StatusTask = EStatusTask.TaskPaused;
+                    RefreshElementsForms();
+                    //пауза до клика пользователя
+                    MessageBox.Show(@"Получена команда M0 для остановки! для дальнейшего выполнения нужно нажать на кнопку 'пауза'", "Пауза",
+                        MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                else
+                {
+                    toolStripStatus.Text = "Пауза " + gcodeNow.timeSeconds + " мсек. по команде G4";
+                    
+                    System.Threading.Thread.Sleep(gcodeNow.timeSeconds); // пауза в мсек.
+
+                    toolStripStatus.Text = "";
+                }
+            }
+
+            //команда смены инструмента
+            if (gcodeNow.changeInstrument)
+            {
+                Task.StatusTask = EStatusTask.TaskPaused;
+                RefreshElementsForms();
+
+                //пауза до клика пользователя
+                MessageBox.Show(@"Активирована ПАУЗА! Установите инструмент №:" + gcodeNow.numberInstrument + " имеющий диаметр: " + gcodeNow.diametr + " мм. и нажмите для продолжения кнопку 'пауза'", "Пауза",
+                    MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
 
 
 
+            double pointX = (double)gcodeNow.X;
+            double pointY = (double)gcodeNow.Y;
+            double pointZ = (double)gcodeNow.Z;
 
-        }
+            //добавление смещения G-кода
+            if (Correction)
+            {
+                // применение пропорций
+                pointX *= koeffSizeX;
+                pointY *= koeffSizeY;
+
+                //применение смещения
+                pointX += deltaX;
+                pointY += deltaY;
+                pointZ += deltaZ;
+
+                //применение матрицы поверхности детали
+                if (deltaFeed)
+                {
+                    pointZ += GetDeltaZ(pointX, pointY);
+                }
+            }
+
+            int posX = deviceInfo.CalcPosPulse("X", (decimal)pointX);
+            int posY = deviceInfo.CalcPosPulse("Y", (decimal)pointY);
+            int posZ = deviceInfo.CalcPosPulse("Z", (decimal)pointZ);
+
+            //TODO: доделать управление скоростью ручая/по программе
+            int speed = (gcodeNow.workspeed) ? UserSpeedG1 : UserSpeedG0;
+
+            _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow));
+
+            Task.posCodeNow++;
+            textBoxNumberLine.Text = Task.posCodeNow.ToString();
+
+            #endregion
+        } //void TaskTimer_Tick
 
         #endregion
 
@@ -2231,7 +2185,7 @@ namespace CNC_Controller
             
             if (Task.StatusTask == EStatusTask.Waiting)
             {
-                Task.indexLineTask = listGkodeCommand.SelectedIndex;
+                Task.posCodeStart = listGkodeCommand.SelectedIndex;
                 textBoxNumberLine.Text = (listGkodeCommand.SelectedIndex +1).ToString();
             }
 
@@ -2247,8 +2201,8 @@ namespace CNC_Controller
         {
             if (Task.StatusTask == EStatusTask.Waiting)
             {
-                Task.indexLineTask = listGkodeCommand.SelectedIndex;
-                Task.countSelectLineTask = listGkodeCommand.SelectedItems.Count;
+                Task.posCodeStart = listGkodeCommand.SelectedIndex;
+                Task.posCodeEnd = listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count;
                 textBoxNumberLine.Text = (listGkodeCommand.SelectedIndex + 1).ToString();
             }
         }
@@ -2308,17 +2262,29 @@ namespace CNC_Controller
         /// </summary>
         public static EStatusTask StatusTask = EStatusTask.Waiting;
 
-        /// <summary>
-        /// Номер строки с заданием для выполнения
-        /// </summary>
-        public static int indexLineTask = -1;
+        ///// <summary>
+        ///// Номер строки с заданием для выполнения
+        ///// </summary>
+        //public static int indexLineTask = -1;
+
+        ///// <summary>
+        ///// Количество выделенных строк (если выделено более 1-й строки, то нужно выполнить задание только по этим строкам)
+        ///// </summary>
+        //public static int countSelectLineTask = 0;
+
 
         /// <summary>
-        /// Количество выделенных строк (если выделено более 1-й строки, то нужно выполнить задание только по этим строкам)
+        /// Начальная позиция для выполнения
         /// </summary>
-        public static int countSelectLineTask = 0;
-
-
+        public static int posCodeStart = -1;
+        /// <summary>
+        /// Конечная позиция для выполнения
+        /// </summary>
+        public static int posCodeEnd = -1;
+        /// <summary>
+        /// Текущая позиция выполнения
+        /// </summary>
+        public static int posCodeNow = -1;
     }
 
 
@@ -2334,9 +2300,19 @@ namespace CNC_Controller
         public bool needPause;        // необходимость паузы
         public int timeSeconds;       // длительность паузы, если 0 - то ожидание от пользователя о продолжении
 
-        public decimal X;       // координата в мм
-        public decimal Y;       // координата в мм
-        public decimal Z;       // координата в мм
+        /// <summary>
+        /// координата в мм
+        /// </summary>
+        public decimal X;       
+        /// <summary>
+        /// координата в мм
+        /// </summary>
+        public decimal Y;        
+        /// <summary>
+        /// координата в мм
+        /// </summary>
+        public decimal Z;       
+ 
         public int speed;       // скорость
         public bool spindelON;  // вкл. шпинделя
         public int numberInstruct;     // номер инструкции
