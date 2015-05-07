@@ -1949,7 +1949,20 @@ namespace CNC_Controller
             int UserSpeedG1 = (int)numericUpDown1.Value;
             int UserSpeedG0 = (int)numericUpDown2.Value;
 
-            GKOD_Command gcodeNow = GKODS[Task.posCodeNow];
+            GKOD_Command gcodeNow = null;
+
+            if (Task.posCodeNow == GKODS.Count)
+            {
+                //уже дошли до конца
+                if (Task.StatusTask == EStatusTask.TaskWorking)
+                {
+                    Task.StatusTask = EStatusTask.TaskStop;
+                }
+            }
+            else
+            {
+                gcodeNow = GKODS[Task.posCodeNow];
+            }
 
             #region TaskStart
 
