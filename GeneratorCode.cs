@@ -132,5 +132,42 @@ namespace CNC_Controller
             RefreshData();
 
         }
+
+        private void btNewData_Click(object sender, EventArgs e)
+        {
+            //TODO: Если есть данные, то спросить о необходимости сохранения данных в файл
+
+            treeDataConstructor.Nodes.Clear();
+        }
+
+        private void btAddCatalog_Click(object sender, EventArgs e)
+        {
+            // Добавление группы элементов
+
+            if (treeDataConstructor.SelectedNode == null)
+            {
+                treeDataConstructor.Nodes.Add("catalog", "catalog", 1);
+            }
+            else
+            {
+                treeDataConstructor.SelectedNode.Nodes.Add("catalog", "catalog", 1);
+            }
+
+
+        }
+
+        private void btAddPoint_Click(object sender, EventArgs e)
+        {
+            if (treeDataConstructor.SelectedNode == null)
+            {
+                treeDataConstructor.Nodes.Add("point", "point", 2);
+
+            }
+            else
+            {
+                treeDataConstructor.SelectedNode.Nodes.Add("point", "point", 2);
+            }
+
+        }
     }
 }

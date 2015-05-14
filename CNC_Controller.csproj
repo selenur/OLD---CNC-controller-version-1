@@ -270,6 +270,11 @@
     <None Include="picture\google_webmaster_tools.png" />
     <None Include="picture\layer_grid.png" />
     <None Include="Resources\draw_vertex.png" />
+    <None Include="picture\bullet_blue.png" />
+    <None Include="picture\draw_line.png" />
+    <None Include="picture\folder.png" />
+    <None Include="picture\grid.png" />
+    <None Include="picture\draw_spiral.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup />

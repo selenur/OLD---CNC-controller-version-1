@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneratorCode));
             this.buttonGenerateCode = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageBox = new System.Windows.Forms.TabPage();
@@ -60,15 +62,6 @@
             this.labelposZ = new System.Windows.Forms.Label();
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.Page1 = new System.Windows.Forms.TabPage();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label11 = new System.Windows.Forms.Label();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.label12 = new System.Windows.Forms.Label();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -81,6 +74,32 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.numericUpDown11 = new System.Windows.Forms.NumericUpDown();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.treeDataConstructor = new System.Windows.Forms.TreeView();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.btSubMenu = new System.Windows.Forms.ToolStripDropDownButton();
+            this.btAddCatalog = new System.Windows.Forms.ToolStripMenuItem();
+            this.btAddPoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.btAddLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.btAddCircle = new System.Windows.Forms.ToolStripMenuItem();
+            this.btAddSpiral = new System.Windows.Forms.ToolStripMenuItem();
+            this.btAddBox = new System.Windows.Forms.ToolStripMenuItem();
+            this.btGenerateGCode = new System.Windows.Forms.ToolStripButton();
+            this.btNewData = new System.Windows.Forms.ToolStripButton();
+            this.btLoadFromFile = new System.Windows.Forms.ToolStripButton();
+            this.btSaveToFile = new System.Windows.Forms.ToolStripButton();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPageBox.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -97,22 +116,23 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
             this.Page1.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonGenerateCode
             // 
             this.buttonGenerateCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonGenerateCode.Location = new System.Drawing.Point(261, 463);
+            this.buttonGenerateCode.Location = new System.Drawing.Point(198, 436);
             this.buttonGenerateCode.Name = "buttonGenerateCode";
             this.buttonGenerateCode.Size = new System.Drawing.Size(125, 28);
             this.buttonGenerateCode.TabIndex = 0;
@@ -122,19 +142,18 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tabControl1.Controls.Add(this.tabPageBox);
             this.tabControl1.Controls.Add(this.Page1);
-            this.tabControl1.Location = new System.Drawing.Point(4, 3);
+            this.tabControl1.Location = new System.Drawing.Point(347, 161);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(382, 458);
+            this.tabControl1.Size = new System.Drawing.Size(374, 496);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPageBox
             // 
+            this.tabPageBox.Controls.Add(this.buttonGenerateCode);
             this.tabPageBox.Controls.Add(this.groupBox4);
             this.tabPageBox.Controls.Add(this.groupBox3);
             this.tabPageBox.Controls.Add(this.groupBox2);
@@ -142,7 +161,7 @@
             this.tabPageBox.Location = new System.Drawing.Point(4, 22);
             this.tabPageBox.Name = "tabPageBox";
             this.tabPageBox.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageBox.Size = new System.Drawing.Size(374, 432);
+            this.tabPageBox.Size = new System.Drawing.Size(366, 470);
             this.tabPageBox.TabIndex = 0;
             this.tabPageBox.Text = "Прямоугольник";
             this.tabPageBox.UseVisualStyleBackColor = true;
@@ -524,133 +543,10 @@
             this.Page1.Location = new System.Drawing.Point(4, 22);
             this.Page1.Name = "Page1";
             this.Page1.Padding = new System.Windows.Forms.Padding(3);
-            this.Page1.Size = new System.Drawing.Size(374, 432);
+            this.Page1.Size = new System.Drawing.Size(366, 470);
             this.Page1.TabIndex = 1;
             this.Page1.Text = "окружность";
             this.Page1.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.label10);
-            this.groupBox5.Controls.Add(this.button1);
-            this.groupBox5.Controls.Add(this.label11);
-            this.groupBox5.Controls.Add(this.numericUpDown4);
-            this.groupBox5.Controls.Add(this.label12);
-            this.groupBox5.Controls.Add(this.numericUpDown5);
-            this.groupBox5.Controls.Add(this.label13);
-            this.groupBox5.Controls.Add(this.numericUpDown6);
-            this.groupBox5.Location = new System.Drawing.Point(6, 6);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(362, 137);
-            this.groupBox5.TabIndex = 13;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "1) Точка старта (мм.)";
-            // 
-            // label10
-            // 
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label10.Location = new System.Drawing.Point(112, 16);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(244, 114);
-            this.label10.TabIndex = 13;
-            this.label10.Text = "При генерации кода, будет выполнено движение в кординату X,Y со скоростью G0. По " +
-    "достижению этой точки будет сгенерирована команда опускания по Z со скоростью G1" +
-    ".\r\n";
-            // 
-            // button1
-            // 
-            this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(6, 94);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(99, 36);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Получ. тек. положение";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 26);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(14, 13);
-            this.label11.TabIndex = 6;
-            this.label11.Text = "X";
-            // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.DecimalPlaces = 3;
-            this.numericUpDown4.Location = new System.Drawing.Point(33, 66);
-            this.numericUpDown4.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown4.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(73, 20);
-            this.numericUpDown4.TabIndex = 11;
-            this.numericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 48);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(14, 13);
-            this.label12.TabIndex = 7;
-            this.label12.Text = "Y";
-            // 
-            // numericUpDown5
-            // 
-            this.numericUpDown5.DecimalPlaces = 3;
-            this.numericUpDown5.Location = new System.Drawing.Point(33, 43);
-            this.numericUpDown5.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown5.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(73, 20);
-            this.numericUpDown5.TabIndex = 10;
-            this.numericUpDown5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(7, 71);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(14, 13);
-            this.label13.TabIndex = 8;
-            this.label13.Text = "Z";
-            // 
-            // numericUpDown6
-            // 
-            this.numericUpDown6.DecimalPlaces = 3;
-            this.numericUpDown6.Location = new System.Drawing.Point(33, 21);
-            this.numericUpDown6.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown6.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.Size = new System.Drawing.Size(73, 20);
-            this.numericUpDown6.TabIndex = 9;
-            this.numericUpDown6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // groupBox6
             // 
@@ -809,14 +705,282 @@
             0,
             0});
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label10);
+            this.groupBox5.Controls.Add(this.button1);
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Controls.Add(this.numericUpDown4);
+            this.groupBox5.Controls.Add(this.label12);
+            this.groupBox5.Controls.Add(this.numericUpDown5);
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.numericUpDown6);
+            this.groupBox5.Location = new System.Drawing.Point(6, 6);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(362, 137);
+            this.groupBox5.TabIndex = 13;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "1) Точка старта (мм.)";
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label10.Location = new System.Drawing.Point(112, 16);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(244, 114);
+            this.label10.TabIndex = 13;
+            this.label10.Text = "При генерации кода, будет выполнено движение в кординату X,Y со скоростью G0. По " +
+    "достижению этой точки будет сгенерирована команда опускания по Z со скоростью G1" +
+    ".\r\n";
+            // 
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(6, 94);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(99, 36);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Получ. тек. положение";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 26);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(14, 13);
+            this.label11.TabIndex = 6;
+            this.label11.Text = "X";
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.DecimalPlaces = 3;
+            this.numericUpDown4.Location = new System.Drawing.Point(33, 66);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(73, 20);
+            this.numericUpDown4.TabIndex = 11;
+            this.numericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 48);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(14, 13);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "Y";
+            // 
+            // numericUpDown5
+            // 
+            this.numericUpDown5.DecimalPlaces = 3;
+            this.numericUpDown5.Location = new System.Drawing.Point(33, 43);
+            this.numericUpDown5.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown5.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown5.Name = "numericUpDown5";
+            this.numericUpDown5.Size = new System.Drawing.Size(73, 20);
+            this.numericUpDown5.TabIndex = 10;
+            this.numericUpDown5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(7, 71);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(14, 13);
+            this.label13.TabIndex = 8;
+            this.label13.Text = "Z";
+            // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.DecimalPlaces = 3;
+            this.numericUpDown6.Location = new System.Drawing.Point(33, 21);
+            this.numericUpDown6.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(73, 20);
+            this.numericUpDown6.TabIndex = 9;
+            this.numericUpDown6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // treeDataConstructor
+            // 
+            this.treeDataConstructor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeDataConstructor.ImageIndex = 0;
+            this.treeDataConstructor.ImageList = this.imageList1;
+            this.treeDataConstructor.Location = new System.Drawing.Point(4, 27);
+            this.treeDataConstructor.Name = "treeDataConstructor";
+            this.treeDataConstructor.SelectedImageIndex = 0;
+            this.treeDataConstructor.Size = new System.Drawing.Size(743, 649);
+            this.treeDataConstructor.TabIndex = 0;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btSubMenu,
+            this.toolStripSeparator2,
+            this.btGenerateGCode,
+            this.toolStripSeparator1,
+            this.btNewData,
+            this.toolStripSeparator3,
+            this.btLoadFromFile,
+            this.btSaveToFile});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(752, 25);
+            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btSubMenu
+            // 
+            this.btSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btAddCatalog,
+            this.btAddPoint,
+            this.btAddLine,
+            this.btAddSpiral,
+            this.btAddCircle,
+            this.btAddBox});
+            this.btSubMenu.Image = ((System.Drawing.Image)(resources.GetObject("btSubMenu.Image")));
+            this.btSubMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btSubMenu.Name = "btSubMenu";
+            this.btSubMenu.Size = new System.Drawing.Size(137, 22);
+            this.btSubMenu.Text = "Добавить элемент";
+            // 
+            // btAddCatalog
+            // 
+            this.btAddCatalog.Image = global::CNC_Controller.Properties.Resources.folder;
+            this.btAddCatalog.Name = "btAddCatalog";
+            this.btAddCatalog.Size = new System.Drawing.Size(163, 22);
+            this.btAddCatalog.Text = "Группа";
+            this.btAddCatalog.Click += new System.EventHandler(this.btAddCatalog_Click);
+            // 
+            // btAddPoint
+            // 
+            this.btAddPoint.Image = global::CNC_Controller.Properties.Resources.bullet_blue;
+            this.btAddPoint.Name = "btAddPoint";
+            this.btAddPoint.Size = new System.Drawing.Size(163, 22);
+            this.btAddPoint.Text = "Точка";
+            this.btAddPoint.Click += new System.EventHandler(this.btAddPoint_Click);
+            // 
+            // btAddLine
+            // 
+            this.btAddLine.Image = global::CNC_Controller.Properties.Resources.draw_line;
+            this.btAddLine.Name = "btAddLine";
+            this.btAddLine.Size = new System.Drawing.Size(163, 22);
+            this.btAddLine.Text = "Линия";
+            // 
+            // btAddCircle
+            // 
+            this.btAddCircle.Image = global::CNC_Controller.Properties.Resources.draw_ellipse1;
+            this.btAddCircle.Name = "btAddCircle";
+            this.btAddCircle.Size = new System.Drawing.Size(163, 22);
+            this.btAddCircle.Text = "Окружность";
+            // 
+            // btAddSpiral
+            // 
+            this.btAddSpiral.Image = global::CNC_Controller.Properties.Resources.draw_spiral;
+            this.btAddSpiral.Name = "btAddSpiral";
+            this.btAddSpiral.Size = new System.Drawing.Size(163, 22);
+            this.btAddSpiral.Text = "спираль";
+            // 
+            // btAddBox
+            // 
+            this.btAddBox.Image = global::CNC_Controller.Properties.Resources.grid;
+            this.btAddBox.Name = "btAddBox";
+            this.btAddBox.Size = new System.Drawing.Size(163, 22);
+            this.btAddBox.Text = "Прямоугольник";
+            // 
+            // btGenerateGCode
+            // 
+            this.btGenerateGCode.Image = ((System.Drawing.Image)(resources.GetObject("btGenerateGCode.Image")));
+            this.btGenerateGCode.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btGenerateGCode.Name = "btGenerateGCode";
+            this.btGenerateGCode.Size = new System.Drawing.Size(126, 22);
+            this.btGenerateGCode.Text = "Генерация G-кода";
+            // 
+            // btNewData
+            // 
+            this.btNewData.Image = ((System.Drawing.Image)(resources.GetObject("btNewData.Image")));
+            this.btNewData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btNewData.Name = "btNewData";
+            this.btNewData.Size = new System.Drawing.Size(137, 22);
+            this.btNewData.Text = "Очистить от данных";
+            this.btNewData.Click += new System.EventHandler(this.btNewData_Click);
+            // 
+            // btLoadFromFile
+            // 
+            this.btLoadFromFile.Image = ((System.Drawing.Image)(resources.GetObject("btLoadFromFile.Image")));
+            this.btLoadFromFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btLoadFromFile.Name = "btLoadFromFile";
+            this.btLoadFromFile.Size = new System.Drawing.Size(128, 22);
+            this.btLoadFromFile.Text = "Загрузка из файла";
+            // 
+            // btSaveToFile
+            // 
+            this.btSaveToFile.Image = ((System.Drawing.Image)(resources.GetObject("btSaveToFile.Image")));
+            this.btSaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btSaveToFile.Name = "btSaveToFile";
+            this.btSaveToFile.Size = new System.Drawing.Size(134, 22);
+            this.btSaveToFile.Text = "Сохранение в файл";
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "asterisk_orange.png");
+            this.imageList1.Images.SetKeyName(1, "folder.png");
+            this.imageList1.Images.SetKeyName(2, "bullet_blue.png");
+            // 
             // GeneratorCode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(389, 494);
+            this.ClientSize = new System.Drawing.Size(752, 679);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.buttonGenerateCode);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.treeDataConstructor);
             this.Name = "GeneratorCode";
             this.Text = "Генератор G-кода";
             this.Load += new System.EventHandler(this.GeneratorCode_Load);
@@ -840,11 +1004,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
             this.Page1.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
@@ -853,7 +1012,15 @@
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -912,5 +1079,22 @@
         private System.Windows.Forms.NumericUpDown numericUpDown5;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown numericUpDown6;
+        private System.Windows.Forms.TreeView treeDataConstructor;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton btNewData;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton btGenerateGCode;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripDropDownButton btSubMenu;
+        private System.Windows.Forms.ToolStripMenuItem btAddPoint;
+        private System.Windows.Forms.ToolStripMenuItem btAddLine;
+        private System.Windows.Forms.ToolStripMenuItem btAddCatalog;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem btAddBox;
+        private System.Windows.Forms.ToolStripMenuItem btAddCircle;
+        private System.Windows.Forms.ToolStripMenuItem btAddSpiral;
+        private System.Windows.Forms.ToolStripButton btLoadFromFile;
+        private System.Windows.Forms.ToolStripButton btSaveToFile;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
