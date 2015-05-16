@@ -84,22 +84,28 @@
             this.label13 = new System.Windows.Forms.Label();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.treeDataConstructor = new System.Windows.Forms.TreeView();
+            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btSubMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.btAddCatalog = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddPoint = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddLine = new System.Windows.Forms.ToolStripMenuItem();
-            this.btAddCircle = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddSpiral = new System.Windows.Forms.ToolStripMenuItem();
+            this.btAddCircle = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddBox = new System.Windows.Forms.ToolStripMenuItem();
             this.btGenerateGCode = new System.Windows.Forms.ToolStripButton();
             this.btNewData = new System.Windows.Forms.ToolStripButton();
             this.btLoadFromFile = new System.Windows.Forms.ToolStripButton();
             this.btSaveToFile = new System.Windows.Forms.ToolStripButton();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.toolStripMenuAddGroupe = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuAddPoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuAddLine = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPageBox.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -126,6 +132,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.contextMenu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -833,6 +840,7 @@
             this.treeDataConstructor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeDataConstructor.ContextMenuStrip = this.contextMenu;
             this.treeDataConstructor.ImageIndex = 0;
             this.treeDataConstructor.ImageList = this.imageList1;
             this.treeDataConstructor.Location = new System.Drawing.Point(4, 27);
@@ -840,6 +848,41 @@
             this.treeDataConstructor.SelectedImageIndex = 0;
             this.treeDataConstructor.Size = new System.Drawing.Size(743, 649);
             this.treeDataConstructor.TabIndex = 0;
+            this.treeDataConstructor.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeDataConstructor_AfterSelect);
+            this.treeDataConstructor.Click += new System.EventHandler(this.treeDataConstructor_Click);
+            // 
+            // contextMenu
+            // 
+            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBox1,
+            this.toolStripSeparator4,
+            this.toolStripMenuAddGroupe,
+            this.toolStripMenuAddPoint,
+            this.toolStripMenuAddLine});
+            this.contextMenu.Name = "contextMenu";
+            this.contextMenu.Size = new System.Drawing.Size(211, 101);
+            // 
+            // toolStripTextBox1
+            // 
+            this.toolStripTextBox1.AutoSize = false;
+            this.toolStripTextBox1.Name = "toolStripTextBox1";
+            this.toolStripTextBox1.ReadOnly = true;
+            this.toolStripTextBox1.Size = new System.Drawing.Size(150, 23);
+            this.toolStripTextBox1.Text = "Добавление примитивов:";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(207, 6);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "asterisk_orange.png");
+            this.imageList1.Images.SetKeyName(1, "folder.png");
+            this.imageList1.Images.SetKeyName(2, "bullet_blue.png");
+            this.imageList1.Images.SetKeyName(3, "draw_line.png");
             // 
             // toolStrip1
             // 
@@ -858,15 +901,15 @@
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripSeparator3
             // 
@@ -910,13 +953,7 @@
             this.btAddLine.Name = "btAddLine";
             this.btAddLine.Size = new System.Drawing.Size(163, 22);
             this.btAddLine.Text = "Линия";
-            // 
-            // btAddCircle
-            // 
-            this.btAddCircle.Image = global::CNC_Controller.Properties.Resources.draw_ellipse1;
-            this.btAddCircle.Name = "btAddCircle";
-            this.btAddCircle.Size = new System.Drawing.Size(163, 22);
-            this.btAddCircle.Text = "Окружность";
+            this.btAddLine.Click += new System.EventHandler(this.btAddLine_Click);
             // 
             // btAddSpiral
             // 
@@ -924,6 +961,13 @@
             this.btAddSpiral.Name = "btAddSpiral";
             this.btAddSpiral.Size = new System.Drawing.Size(163, 22);
             this.btAddSpiral.Text = "спираль";
+            // 
+            // btAddCircle
+            // 
+            this.btAddCircle.Image = global::CNC_Controller.Properties.Resources.draw_ellipse1;
+            this.btAddCircle.Name = "btAddCircle";
+            this.btAddCircle.Size = new System.Drawing.Size(163, 22);
+            this.btAddCircle.Text = "Окружность";
             // 
             // btAddBox
             // 
@@ -965,13 +1009,29 @@
             this.btSaveToFile.Size = new System.Drawing.Size(134, 22);
             this.btSaveToFile.Text = "Сохранение в файл";
             // 
-            // imageList1
+            // toolStripMenuAddGroupe
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "asterisk_orange.png");
-            this.imageList1.Images.SetKeyName(1, "folder.png");
-            this.imageList1.Images.SetKeyName(2, "bullet_blue.png");
+            this.toolStripMenuAddGroupe.Image = global::CNC_Controller.Properties.Resources.folder;
+            this.toolStripMenuAddGroupe.Name = "toolStripMenuAddGroupe";
+            this.toolStripMenuAddGroupe.Size = new System.Drawing.Size(210, 22);
+            this.toolStripMenuAddGroupe.Text = "Группа";
+            this.toolStripMenuAddGroupe.Click += new System.EventHandler(this.toolStripMenuAddGroupe_Click);
+            // 
+            // toolStripMenuAddPoint
+            // 
+            this.toolStripMenuAddPoint.Image = global::CNC_Controller.Properties.Resources.bullet_blue;
+            this.toolStripMenuAddPoint.Name = "toolStripMenuAddPoint";
+            this.toolStripMenuAddPoint.Size = new System.Drawing.Size(210, 22);
+            this.toolStripMenuAddPoint.Text = "Точка";
+            this.toolStripMenuAddPoint.Click += new System.EventHandler(this.toolStripMenuAddPoint_Click);
+            // 
+            // toolStripMenuAddLine
+            // 
+            this.toolStripMenuAddLine.Image = global::CNC_Controller.Properties.Resources.draw_line;
+            this.toolStripMenuAddLine.Name = "toolStripMenuAddLine";
+            this.toolStripMenuAddLine.Size = new System.Drawing.Size(210, 22);
+            this.toolStripMenuAddLine.Text = "Линия";
+            this.toolStripMenuAddLine.Click += new System.EventHandler(this.toolStripMenuAddLine_Click);
             // 
             // GeneratorCode
             // 
@@ -1017,6 +1077,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.contextMenu.ResumeLayout(false);
+            this.contextMenu.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1096,5 +1158,11 @@
         private System.Windows.Forms.ToolStripButton btLoadFromFile;
         private System.Windows.Forms.ToolStripButton btSaveToFile;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ContextMenuStrip contextMenu;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuAddGroupe;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuAddPoint;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuAddLine;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }

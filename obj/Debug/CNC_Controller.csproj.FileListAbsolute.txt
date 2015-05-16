@@ -65,3 +65,4 @@ D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.ManualControl.resource
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.EditGkode.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.LikePointForm.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.GeneratorCode.resources
+D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.primitiv.Catalog.resources

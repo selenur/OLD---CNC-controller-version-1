@@ -99,6 +99,12 @@
     <Compile Include="LikePointForm.Designer.cs">
       <DependentUpon>LikePointForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="primitiv\Catalog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="primitiv\Catalog.Designer.cs">
+      <DependentUpon>Catalog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScanSurface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LikePointForm.resx">
       <DependentUpon>LikePointForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="primitiv\Catalog.resx">
+      <DependentUpon>Catalog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScanSurface.resx">
       <DependentUpon>ScanSurface.cs</DependentUpon>
@@ -275,6 +284,9 @@
     <None Include="picture\folder.png" />
     <None Include="picture\grid.png" />
     <None Include="picture\draw_spiral.png" />
+    <None Include="picture\geolocation_sight.png" />
+    <None Include="picture\accept_button2.png" />
+    <None Include="picture\cancel2.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup />

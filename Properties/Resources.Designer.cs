@@ -73,6 +73,16 @@ namespace CNC_Controller.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap accept_button2 {
+            get {
+                object obj = ResourceManager.GetObject("accept_button2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ball_green {
             get {
                 object obj = ResourceManager.GetObject("ball_green", resourceCulture);
@@ -116,6 +126,16 @@ namespace CNC_Controller.Properties {
         internal static System.Drawing.Bitmap cancel1 {
             get {
                 object obj = ResourceManager.GetObject("cancel1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cancel2 {
+            get {
+                object obj = ResourceManager.GetObject("cancel2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -286,6 +306,16 @@ namespace CNC_Controller.Properties {
         internal static System.Drawing.Bitmap folder {
             get {
                 object obj = ResourceManager.GetObject("folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap geolocation_sight {
+            get {
+                object obj = ResourceManager.GetObject("geolocation_sight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

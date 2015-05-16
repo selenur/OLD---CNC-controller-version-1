@@ -48,6 +48,11 @@ namespace CNC_Controller
 
             toolStripStatus.Text = @"";
             RefreshElementsForms();
+
+
+            //TODO: DEBUG
+            GeneratorCode frm = new GeneratorCode(this);
+            frm.Show();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
