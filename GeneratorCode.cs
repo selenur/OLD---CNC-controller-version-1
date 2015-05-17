@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -11,6 +13,8 @@ namespace CNC_Controller
 
         private string code = "";
 
+        public List<primitivNode> ConstructorNodes = new List<primitivNode>();
+
         public GeneratorCode(MainForm _mf)
         {
             mf = _mf;
@@ -20,21 +24,81 @@ namespace CNC_Controller
 
         #region Добавление новых примитивов
 
+
+
+
+        public primitivNode findIncludeGUID(primitivNode _node, string _guid)
+        {
+            primitivNode result = null;
+
+            if (_node.GUID == _guid) return _node;
+
+            foreach (primitivNode VARIABLE in _node.nodes)
+            {
+                if (VARIABLE.GUID == _guid) return VARIABLE;
+
+                //так-же запустим поиск внутри подчиненных узлов
+                primitivNode ppn = findIncludeGUID(VARIABLE, _guid);
+
+                if (ppn != null) return ppn;
+            }
+            return result;
+        }
+
+        public primitivNode FindNodeToGUID(string _GUID)
+        {
+            primitivNode result = null;
+
+            foreach (primitivNode VARIABLE1 in ConstructorNodes)
+            {
+                if (VARIABLE1.GUID == _GUID) return VARIABLE1;
+
+                //так-же запустим поиск внутри подчиненных узлов
+                primitivNode ppn = findIncludeGUID(VARIABLE1, _GUID);
+
+                if (ppn != null) return ppn;
+            }
+            return result;
+        }
+
         // Добавление каталога в дерево
         public void AddNewCatalog(TreeNode _treeNode)
         {
+            // элемент из ConstructorNodes
+            primitivNode pnfind = null;
+
+            if (_treeNode != null)
+            {
+                pnfind = FindNodeToGUID(_treeNode.Name);
+            }
+
+            // Сразу проверим узел выше, т.к. каталог можно создавать в корне дерева, или внутри другого каталога, а создание каталога внутри других элементов нельзя
+            if (pnfind != null)
+            {
+                if (pnfind.typeNode != primitivType.catalog)
+                    MessageBox.Show("Создание каталога возможно только в корне, или внутри другого каталога!");
+                return;
+            }
+
+            primitivNode pn = new primitivNode(new primitivCatalog(0, 0, 0));
+
+            if (pnfind == null) ConstructorNodes.Add(pn);
+            else pnfind.nodes.Add(pn);
+
             TreeNodeCollection resultNode = null; // коллекция узлов в который добавим новый узел группы
 
-            if (_treeNode == null) resultNode = treeDataConstructor.Nodes;
-            else resultNode = _treeNode.Nodes;
+            if (_treeNode == null)
+            {
+                //находимся в самой верхушке иерархии дерева
+                resultNode = treeDataConstructor.Nodes;
+            }
+            else
+            {
+                //есть родитель выше
+                resultNode = _treeNode.Nodes;
+            }
 
-            //TODO: проверим родителя, т.к. родителем не может быть примитив
-
-
-            resultNode.Add("catalog", "catalog", 1);
-
-
-
+            resultNode.Add(pn.GUID, "catalog", 1);
         }
 
         // Добавление новой точки в дерево
@@ -275,6 +339,24 @@ namespace CNC_Controller
     }
 }
 
+
+
+public class primitivCatalog
+{
+    public double X;       // координата в мм
+    public double Y;       // координата в мм
+    public double Z;       // координата в мм
+
+    public primitivCatalog(double _x, double _y, double _z)
+    {
+        X = _x;
+        Y = _y;
+        Z = _z;
+    }
+
+}
+
+
 /// <summary>
 /// Примитив точка
 /// </summary>
@@ -306,4 +388,65 @@ public class primitivLine
         point1 = _p1;
         point2 = _p2;
     }
+}
+
+
+
+public enum primitivType
+{
+    catalog,
+    point,
+    line
+}
+
+
+/// <summary>
+/// Класс для хранения данных, конструктора
+/// </summary>
+public class primitivNode
+{
+    public string GUID;
+    public primitivType typeNode;
+    public primitivCatalog catalog;
+    public primitivPoint point;
+    public primitivLine line;
+    public List<primitivNode> nodes;
+
+    public primitivNode(primitivCatalog _catalog)
+    {
+        GUID = Guid.NewGuid().ToString();
+        typeNode = primitivType.catalog;
+        catalog = _catalog;
+        point = null;
+        line = null;
+        nodes = new List<primitivNode>();
+    }
+
+    public primitivNode(primitivPoint _point)
+    {
+        GUID = Guid.NewGuid().ToString();
+        typeNode = primitivType.point;
+        catalog = null;
+        point = _point;
+        line = null;
+        nodes = new List<primitivNode>();
+    }
+
+    public primitivNode(primitivLine _line)
+    {
+        GUID = Guid.NewGuid().ToString();
+        typeNode = primitivType.line;
+        catalog = null;
+        point = null;
+        line = _line;
+        nodes = new List<primitivNode>();
+    }
+
+
+
+
+    
+
+
+
 }
