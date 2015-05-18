@@ -99,11 +99,11 @@
     <Compile Include="LikePointForm.Designer.cs">
       <DependentUpon>LikePointForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="primitiv\Catalog.cs">
+    <Compile Include="primitiv\frmCatalog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="primitiv\Catalog.Designer.cs">
-      <DependentUpon>Catalog.cs</DependentUpon>
+    <Compile Include="primitiv\frmCatalog.Designer.cs">
+      <DependentUpon>frmCatalog.cs</DependentUpon>
     </Compile>
     <Compile Include="ScanSurface.cs">
       <SubType>Form</SubType>
@@ -150,8 +150,8 @@
     <EmbeddedResource Include="LikePointForm.resx">
       <DependentUpon>LikePointForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="primitiv\Catalog.resx">
-      <DependentUpon>Catalog.cs</DependentUpon>
+    <EmbeddedResource Include="primitiv\frmCatalog.resx">
+      <DependentUpon>frmCatalog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScanSurface.resx">
       <DependentUpon>ScanSurface.cs</DependentUpon>

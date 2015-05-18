@@ -1,6 +1,6 @@
 ﻿namespace CNC_Controller.primitiv
 {
-    partial class Catalog
+    partial class frmCatalog
     {
         /// <summary>
         /// Required designer variable.
@@ -36,10 +36,11 @@
             this.numPosX = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxName = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.cbAllowPoint = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
@@ -139,7 +140,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(5, 66);
+            this.label1.Location = new System.Drawing.Point(8, 69);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(249, 16);
             this.label1.TabIndex = 20;
@@ -155,14 +156,14 @@
             this.label2.TabIndex = 21;
             this.label2.Text = "Имя группы:";
             // 
-            // textBox1
+            // textBoxName
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(8, 28);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(249, 22);
-            this.textBox1.TabIndex = 22;
-            this.textBox1.Text = "каталог";
+            this.textBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxName.Location = new System.Drawing.Point(93, 6);
+            this.textBoxName.Name = "textBoxName";
+            this.textBoxName.Size = new System.Drawing.Size(164, 22);
+            this.textBoxName.TabIndex = 22;
+            this.textBoxName.Text = "каталог";
             // 
             // button3
             // 
@@ -175,6 +176,7 @@
             this.button3.TabIndex = 24;
             this.button3.Text = "Отмена";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button1
             // 
@@ -188,6 +190,7 @@
             this.button1.Text = "Применить";
             this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -203,14 +206,25 @@
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // Catalog
+            // cbAllowPoint
+            // 
+            this.cbAllowPoint.AutoSize = true;
+            this.cbAllowPoint.Location = new System.Drawing.Point(10, 41);
+            this.cbAllowPoint.Name = "cbAllowPoint";
+            this.cbAllowPoint.Size = new System.Drawing.Size(231, 17);
+            this.cbAllowPoint.TabIndex = 25;
+            this.cbAllowPoint.Text = "Учитывать данную точку, при генерации";
+            this.cbAllowPoint.UseVisualStyleBackColor = true;
+            // 
+            // frmCatalog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(269, 224);
+            this.Controls.Add(this.cbAllowPoint);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
@@ -221,7 +235,7 @@
             this.Controls.Add(this.labelposZ);
             this.Controls.Add(this.numPosX);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Catalog";
+            this.Name = "frmCatalog";
             this.Text = "Группа элементов";
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
@@ -235,15 +249,16 @@
 
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label labelposX;
-        private System.Windows.Forms.NumericUpDown numPosZ;
         private System.Windows.Forms.Label labelposY;
-        private System.Windows.Forms.NumericUpDown numPosY;
         private System.Windows.Forms.Label labelposZ;
-        private System.Windows.Forms.NumericUpDown numPosX;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
+        public System.Windows.Forms.NumericUpDown numPosZ;
+        public System.Windows.Forms.NumericUpDown numPosY;
+        public System.Windows.Forms.NumericUpDown numPosX;
+        public System.Windows.Forms.TextBox textBoxName;
+        public System.Windows.Forms.CheckBox cbAllowPoint;
     }
 }

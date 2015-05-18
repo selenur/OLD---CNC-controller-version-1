@@ -58,12 +58,12 @@ namespace CNC_Controller
             return result;
         }
 
-        // Добавление каталога в дерево
-        public void AddNewCatalog(TreeNode _treeNode)
+        // Добавление новой группы в "дерево данных"
+        public void AddNewGroup()
         {
-            TreeNode pNode = _treeNode;
+            TreeNode pNode = treeDataConstructor.SelectedNode;
 
-            // попытаемся найти первый нод в дереве
+            // попытаемся получить вышестоящий узел в дереве
             if (pNode == null) pNode = treeDataConstructor.Nodes[0];
 
             if (pNode == null) // всетаки неудалось.......
@@ -72,10 +72,8 @@ namespace CNC_Controller
                 return;
             }
 
-            //pNode.Expand();
-
-            // элемент который будем искать в ListPrimitives (ПОИСК РОДИТЕЛЬСКОГО ЭЛЕМЕНТА)
-            primitivNode pnfind = findNodeWithGUID(_treeNode.Name);
+            // найдем вышестоящий узел в ListPrimitives
+            primitivNode pnfind = findNodeWithGUID(pNode.Name);
 
             if (pnfind == null)
             {
@@ -86,18 +84,23 @@ namespace CNC_Controller
             // Сразу проверим узел выше, т.к. каталог можно создавать в корне дерева, или внутри другого каталога, а создание каталога внутри других элементов нелогично
             if (pnfind.typeNode != primitivType.catalog)
             {
-                MessageBox.Show(@"Создание каталога возможно только в корне, или внутри другого каталога!");
+                MessageBox.Show(@"Создание каталога в нутри данного примитива невозможно!");
                 return;                
             }
 
-            primitivNode pn = new primitivNode(new primitivCatalog(0, 0, 0));
+            // вызовем диалог добавления группы
+            frmCatalog fCatalog = new frmCatalog();
 
-            pnfind.nodes.Add(pn);
+            DialogResult dlResult = fCatalog.ShowDialog();
 
-            pNode.Nodes.Add(pn.GUID, "catalog", 1).Expand();
-
+            if (dlResult == DialogResult.OK)
+            {
+                primitivNode pn = new primitivNode(new primitivGroup((double)fCatalog.numPosX.Value, (double)fCatalog.numPosY.Value, (double)fCatalog.numPosZ.Value,fCatalog.textBoxName.Text,fCatalog.cbAllowPoint.Checked));
+                pnfind.nodes.Add(pn);
+                pNode.Nodes.Add(pn.GUID, fCatalog.textBoxName.Text, 1).Expand();
+            }
+            
             treeDataConstructor.ExpandAll();
-
         }
 
         // Добавление новой точки в дерево
@@ -230,7 +233,7 @@ namespace CNC_Controller
 
             ListPrimitives.Clear();
 
-            primitivNode pp = new primitivNode(new primitivCatalog(0, 0, 0));
+            primitivNode pp = new primitivNode(new primitivGroup(0, 0, 0));
             ListPrimitives.Add(pp);
 
             treeDataConstructor.Nodes.Add(pp.GUID, "Точка старта", 0);
@@ -247,11 +250,11 @@ namespace CNC_Controller
         private void btAddCatalog_Click(object sender, EventArgs e)
         {
             // Добавление группы элементов
-            AddNewCatalog(treeDataConstructor.SelectedNode);
+            AddNewGroup();
         }
         private void toolStripMenuAddGroupe_Click(object sender, EventArgs e)
         {
-            AddNewCatalog(treeDataConstructor.SelectedNode);
+            AddNewGroup();
         }
         // добавление новой точки
         private void btAddPoint_Click(object sender, EventArgs e)
@@ -440,8 +443,24 @@ namespace CNC_Controller
 
             if (pfind.typeNode == primitivType.catalog)
             {
-                Catalog catFrm = new Catalog();
-                catFrm.Show();
+                // вызовем диалог добавления группы
+                frmCatalog fCatalog = new frmCatalog();
+                fCatalog.numPosX.Value = (decimal)pfind.catalog.X;
+                fCatalog.numPosY.Value = (decimal)pfind.catalog.Y;
+                fCatalog.numPosZ.Value = (decimal)pfind.catalog.Z;
+                fCatalog.textBoxName.Text = pfind.catalog.Name;
+                fCatalog.cbAllowPoint.Checked = pfind.catalog.AllowPoint;
+
+                DialogResult dlResult = fCatalog.ShowDialog();
+
+                if (dlResult == DialogResult.OK)
+                {
+                    pfind.catalog.X = (double)fCatalog.numPosX.Value;
+                    pfind.catalog.Y = (double)fCatalog.numPosY.Value;
+                    pfind.catalog.Z = (double)fCatalog.numPosZ.Value;
+                    pfind.catalog.Name = fCatalog.textBoxName.Text;
+                    pfind.catalog.AllowPoint = fCatalog.cbAllowPoint.Checked;
+                }
             }
 
 
@@ -466,19 +485,26 @@ namespace CNC_Controller
 ////////////////    treeView1.EndUpdate();
 ////////////////}
 
-public class primitivCatalog
+
+/// <summary>
+/// Класс описания группы элементов
+/// </summary>
+public class primitivGroup
 {
     public double X;       // координата в мм
     public double Y;       // координата в мм
     public double Z;       // координата в мм
+    public string Name;   // для представления
+    public bool AllowPoint; // необходимость учитывать данную точку
 
-    public primitivCatalog(double _x, double _y, double _z)
+    public primitivGroup(double _x, double _y, double _z, string _name = "Группа", bool _allowPoint = false)
     {
         X = _x;
         Y = _y;
         Z = _z;
+        Name = _name;
+        AllowPoint = _allowPoint;
     }
-
 }
 
 
@@ -532,12 +558,12 @@ public class primitivNode
 {
     public string GUID;
     public primitivType typeNode;
-    public primitivCatalog catalog;
+    public primitivGroup catalog;
     public primitivPoint point;
     public primitivLine line;
     public List<primitivNode> nodes;
 
-    public primitivNode(primitivCatalog _catalog)
+    public primitivNode(primitivGroup _catalog)
     {
         GUID = Guid.NewGuid().ToString();
         typeNode = primitivType.catalog;
