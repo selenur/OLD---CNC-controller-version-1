@@ -51,8 +51,8 @@ namespace CNC_Controller
 
 
             //TODO: DEBUG
-            GeneratorCode frm = new GeneratorCode(this);
-            frm.Show();
+            //GeneratorCode frm = new GeneratorCode(this);
+            //frm.Show();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using System.Drawing.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using CNC_Controller.primitiv;
 
 namespace CNC_Controller
 {
     public partial class GeneratorCode : Form
     {
-
+        /// <summary>
+        /// Ссылка на основную форму
+        /// </summary>
         private MainForm mf;
 
-        private string code = "";
+        /// <summary>
+        /// текст G-кода формируемого конструктором
+        /// </summary>
+        private string Gcode = "";
 
-        public List<primitivNode> ConstructorNodes = new List<primitivNode>();
+        /// <summary>
+        /// Список примитивов
+        /// </summary>
+        public List<primitivNode> ListPrimitives = new List<primitivNode>();
 
         public GeneratorCode(MainForm _mf)
         {
@@ -26,35 +35,23 @@ namespace CNC_Controller
 
 
 
-
-        public primitivNode findIncludeGUID(primitivNode _node, string _guid)
+        // Рекурсивный поиск внутри примитивов, других примитивов
+        public primitivNode findNodeWithGUID(string _guid, primitivNode _node = null)
         {
             primitivNode result = null;
 
-            if (_node.GUID == _guid) return _node;
+            primitivNode RootNode = _node;
 
-            foreach (primitivNode VARIABLE in _node.nodes)
+            if (RootNode == null) RootNode = ListPrimitives[0];
+
+            if (RootNode.GUID == _guid) return RootNode;
+
+            foreach (primitivNode VARIABLE in RootNode.nodes)
             {
                 if (VARIABLE.GUID == _guid) return VARIABLE;
 
                 //так-же запустим поиск внутри подчиненных узлов
-                primitivNode ppn = findIncludeGUID(VARIABLE, _guid);
-
-                if (ppn != null) return ppn;
-            }
-            return result;
-        }
-
-        public primitivNode FindNodeToGUID(string _GUID)
-        {
-            primitivNode result = null;
-
-            foreach (primitivNode VARIABLE1 in ConstructorNodes)
-            {
-                if (VARIABLE1.GUID == _GUID) return VARIABLE1;
-
-                //так-же запустим поиск внутри подчиненных узлов
-                primitivNode ppn = findIncludeGUID(VARIABLE1, _GUID);
+                primitivNode ppn = findNodeWithGUID(_guid,VARIABLE);
 
                 if (ppn != null) return ppn;
             }
@@ -64,73 +61,155 @@ namespace CNC_Controller
         // Добавление каталога в дерево
         public void AddNewCatalog(TreeNode _treeNode)
         {
-            // элемент из ConstructorNodes
-            primitivNode pnfind = null;
+            TreeNode pNode = _treeNode;
 
-            if (_treeNode != null)
+            // попытаемся найти первый нод в дереве
+            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
+
+            if (pNode == null) // всетаки неудалось.......
             {
-                pnfind = FindNodeToGUID(_treeNode.Name);
+                MessageBox.Show(@"DANGER!!! Ошибка указания родителя?!?!");
+                return;
             }
 
-            // Сразу проверим узел выше, т.к. каталог можно создавать в корне дерева, или внутри другого каталога, а создание каталога внутри других элементов нельзя
-            if (pnfind != null)
+            //pNode.Expand();
+
+            // элемент который будем искать в ListPrimitives (ПОИСК РОДИТЕЛЬСКОГО ЭЛЕМЕНТА)
+            primitivNode pnfind = findNodeWithGUID(_treeNode.Name);
+
+            if (pnfind == null)
             {
-                if (pnfind.typeNode != primitivType.catalog)
-                    MessageBox.Show("Создание каталога возможно только в корне, или внутри другого каталога!");
+                MessageBox.Show(@"DANGER!!! Ошибка поиска родителя?!?!");
                 return;
+            }
+
+            // Сразу проверим узел выше, т.к. каталог можно создавать в корне дерева, или внутри другого каталога, а создание каталога внутри других элементов нелогично
+            if (pnfind.typeNode != primitivType.catalog)
+            {
+                MessageBox.Show(@"Создание каталога возможно только в корне, или внутри другого каталога!");
+                return;                
             }
 
             primitivNode pn = new primitivNode(new primitivCatalog(0, 0, 0));
 
-            if (pnfind == null) ConstructorNodes.Add(pn);
-            else pnfind.nodes.Add(pn);
+            pnfind.nodes.Add(pn);
 
-            TreeNodeCollection resultNode = null; // коллекция узлов в который добавим новый узел группы
+            pNode.Nodes.Add(pn.GUID, "catalog", 1).Expand();
 
-            if (_treeNode == null)
-            {
-                //находимся в самой верхушке иерархии дерева
-                resultNode = treeDataConstructor.Nodes;
-            }
-            else
-            {
-                //есть родитель выше
-                resultNode = _treeNode.Nodes;
-            }
+            treeDataConstructor.ExpandAll();
 
-            resultNode.Add(pn.GUID, "catalog", 1);
         }
 
         // Добавление новой точки в дерево
         public void AddNewPoint(TreeNode _treeNode)
         {
-            if (_treeNode == null)
+            TreeNode pNode = _treeNode;
+
+            // попытаемся найти первый нод в дереве
+            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
+
+            if (pNode == null) // всетаки неудалось.......
             {
-                treeDataConstructor.Nodes.Add("Point", "Point", 2);
+                MessageBox.Show(@"DANGER!!! Ошибка указания родителя?!?!");
+                return;
             }
-            else
+
+            //pNode.Expand();
+
+            // элемент который будем искать в ListPrimitives (ПОИСК РОДИТЕЛЬСКОГО ЭЛЕМЕНТА)
+            primitivNode pnfind = findNodeWithGUID(_treeNode.Name);
+
+            if (pnfind == null)
             {
-                _treeNode.Nodes.Add("Point", "Point", 2);
+                MessageBox.Show(@"DANGER!!! Ошибка поиска родителя?!?!");
+                return;
             }
+
+            // Сразу проверим узел выше, т.к. точку внутри точки создавать нелогично
+            if (pnfind.typeNode == primitivType.point || pnfind.typeNode == primitivType.line)
+            {
+                MessageBox.Show(@"Создание точки в нутри данного примитива невозможно!");
+                return;
+            }
+
+            primitivNode pn = new primitivNode(new primitivPoint(0, 0, 0));
+
+            pnfind.nodes.Add(pn);
+
+            pNode.Nodes.Add(pn.GUID, "point", 2).Expand();
+
+            treeDataConstructor.ExpandAll();
         }
 
         // Добавление новой линии в дерево
         public void AddNewLine(TreeNode _treeNode)
         {
-            if (_treeNode == null)
-            {
-                TreeNode tr = treeDataConstructor.Nodes.Add("Line", "Line", 3);
-                AddNewPoint(tr);
-                AddNewPoint(tr);
-            }
-            else
-            {
+            TreeNode pNode = _treeNode;
 
-                TreeNode tr = _treeNode.Nodes.Add("Line", "Line", 3);
-                // т.к. линия это набор из точек
-                AddNewPoint(tr);
-                AddNewPoint(tr);
+            // попытаемся найти первый нод в дереве
+            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
+
+            if (pNode == null) // всетаки неудалось.......
+            {
+                MessageBox.Show(@"DANGER!!! Ошибка указания родителя?!?!");
+                return;
             }
+
+            //pNode.Expand();
+
+            // элемент который будем искать в ListPrimitives (ПОИСК РОДИТЕЛЬСКОГО ЭЛЕМЕНТА)
+            primitivNode pnfind = findNodeWithGUID(_treeNode.Name);
+
+            if (pnfind == null)
+            {
+                MessageBox.Show(@"DANGER!!! Ошибка поиска родителя?!?!");
+                return;
+            }
+
+            // Сразу проверим узел выше, т.к. линию можно создавать в корне дерева, или внутри другого каталога, а создание линии внутри других элементов нелогично
+            if (pnfind.typeNode != primitivType.catalog)
+            {
+                MessageBox.Show(@"Создание линии возможно только в корне, или внутри другого каталога!");
+                return;
+            }
+
+            //точки у линии
+            primitivPoint pp1 = new primitivPoint(0, 0, 0);
+            primitivPoint pp2 = new primitivPoint(1,1,1);
+
+            primitivLine pline = new primitivLine(pp1,pp2);
+
+            primitivNode pn = new primitivNode(pline);
+
+            //pn.nodes.Add(new primitivNode(new primitivPoint(0,0,0)));
+
+            pnfind.nodes.Add(pn);
+
+            pNode.Nodes.Add(pn.GUID, "line", 3).Expand();
+
+            treeDataConstructor.ExpandAll();
+
+
+
+            //TreeNode tr = resultNode.Add(pn.GUID, "Line", 3);
+            //AddNewPoint(tr);
+            //AddNewPoint(tr);
+
+
+            //if (_treeNode == null)
+            //{
+            //    TreeNode tr = treeDataConstructor.Nodes.Add("Line", "Line", 3);
+            //    AddNewPoint(tr);
+            //    AddNewPoint(tr);
+            //}
+            //else
+            //{
+
+            //    TreeNode tr = _treeNode.Nodes.Add("Line", "Line", 3);
+            //    // т.к. линия это набор из точек
+            //    AddNewPoint(tr);
+            //    AddNewPoint(tr);
+            //}
 
 
         }
@@ -144,11 +223,24 @@ namespace CNC_Controller
 
         #region Элементы формы добавления данных
 
+
+        private void Clear_Tree()
+        {
+            treeDataConstructor.Nodes.Clear();
+
+            ListPrimitives.Clear();
+
+            primitivNode pp = new primitivNode(new primitivCatalog(0, 0, 0));
+            ListPrimitives.Add(pp);
+
+            treeDataConstructor.Nodes.Add(pp.GUID, "Точка старта", 0);
+        }
+
         private void btNewData_Click(object sender, EventArgs e)
         {
             //TODO: Если есть данные, то спросить о необходимости сохранения данных в файл
 
-            treeDataConstructor.Nodes.Clear();
+            Clear_Tree();
         }
 
         // добавление группы
@@ -309,7 +401,7 @@ namespace CNC_Controller
 
         private void GeneratorCode_Load(object sender, EventArgs e)
         {
-
+            Clear_Tree();
         }
 
         private void buttonGenerateCode_Click(object sender, EventArgs e)
@@ -320,6 +412,7 @@ namespace CNC_Controller
 
         private void treeDataConstructor_Click(object sender, EventArgs e)
         {
+            treeDataConstructor.ExpandAll();
             // что-бы не менялся значек
             //if (treeDataConstructor.SelectedNode != null)
             //{
@@ -336,10 +429,42 @@ namespace CNC_Controller
             }
         }
 
+        private void treeDataConstructor_DoubleClick(object sender, EventArgs e)
+        {
+            //открытие диалога примитива, тут
+            //MessageBox.Show(treeDataConstructor.SelectedNode.Name);
+
+            //получим примитив по гуиду
+            primitivNode pfind = findNodeWithGUID(treeDataConstructor.SelectedNode.Name);
+            //определим его тип, и откроем необходимый диалог
+
+            if (pfind.typeNode == primitivType.catalog)
+            {
+                Catalog catFrm = new Catalog();
+                catFrm.Show();
+            }
+
+
+
+
+        }
+
     }
 }
 
+// ПЕРЕЗАПОЛНЕНИЕ ДЕРЕВА БЕЗ ПЕРЕРИСОВКИ
 
+////////////////// Populates a TreeView control with example nodes. 
+////////////////private void InitializeTreeView()
+////////////////{
+////////////////    treeView1.BeginUpdate();
+////////////////    treeView1.Nodes.Add("Parent");
+////////////////    treeView1.Nodes[0].Nodes.Add("Child 1");
+////////////////    treeView1.Nodes[0].Nodes.Add("Child 2");
+////////////////    treeView1.Nodes[0].Nodes[1].Nodes.Add("Grandchild");
+////////////////    treeView1.Nodes[0].Nodes[1].Nodes[0].Nodes.Add("Great Grandchild");
+////////////////    treeView1.EndUpdate();
+////////////////}
 
 public class primitivCatalog
 {

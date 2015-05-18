@@ -87,11 +87,11 @@
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuAddGroupe = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuAddPoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuAddLine = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btSubMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.btAddCatalog = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddPoint = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,13 +99,13 @@
             this.btAddSpiral = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddCircle = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddBox = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btGenerateGCode = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btNewData = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btLoadFromFile = new System.Windows.Forms.ToolStripButton();
             this.btSaveToFile = new System.Windows.Forms.ToolStripButton();
-            this.toolStripMenuAddGroupe = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuAddPoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuAddLine = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPageBox.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -850,6 +850,7 @@
             this.treeDataConstructor.TabIndex = 0;
             this.treeDataConstructor.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeDataConstructor_AfterSelect);
             this.treeDataConstructor.Click += new System.EventHandler(this.treeDataConstructor_Click);
+            this.treeDataConstructor.DoubleClick += new System.EventHandler(this.treeDataConstructor_DoubleClick);
             // 
             // contextMenu
             // 
@@ -874,6 +875,30 @@
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(207, 6);
+            // 
+            // toolStripMenuAddGroupe
+            // 
+            this.toolStripMenuAddGroupe.Image = global::CNC_Controller.Properties.Resources.folder;
+            this.toolStripMenuAddGroupe.Name = "toolStripMenuAddGroupe";
+            this.toolStripMenuAddGroupe.Size = new System.Drawing.Size(210, 22);
+            this.toolStripMenuAddGroupe.Text = "Группа";
+            this.toolStripMenuAddGroupe.Click += new System.EventHandler(this.toolStripMenuAddGroupe_Click);
+            // 
+            // toolStripMenuAddPoint
+            // 
+            this.toolStripMenuAddPoint.Image = global::CNC_Controller.Properties.Resources.bullet_blue;
+            this.toolStripMenuAddPoint.Name = "toolStripMenuAddPoint";
+            this.toolStripMenuAddPoint.Size = new System.Drawing.Size(210, 22);
+            this.toolStripMenuAddPoint.Text = "Точка";
+            this.toolStripMenuAddPoint.Click += new System.EventHandler(this.toolStripMenuAddPoint_Click);
+            // 
+            // toolStripMenuAddLine
+            // 
+            this.toolStripMenuAddLine.Image = global::CNC_Controller.Properties.Resources.draw_line;
+            this.toolStripMenuAddLine.Name = "toolStripMenuAddLine";
+            this.toolStripMenuAddLine.Size = new System.Drawing.Size(210, 22);
+            this.toolStripMenuAddLine.Text = "Линия";
+            this.toolStripMenuAddLine.Click += new System.EventHandler(this.toolStripMenuAddLine_Click);
             // 
             // imageList1
             // 
@@ -900,21 +925,6 @@
             this.toolStrip1.Size = new System.Drawing.Size(752, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // btSubMenu
             // 
@@ -976,6 +986,11 @@
             this.btAddBox.Size = new System.Drawing.Size(163, 22);
             this.btAddBox.Text = "Прямоугольник";
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
             // btGenerateGCode
             // 
             this.btGenerateGCode.Image = ((System.Drawing.Image)(resources.GetObject("btGenerateGCode.Image")));
@@ -983,6 +998,11 @@
             this.btGenerateGCode.Name = "btGenerateGCode";
             this.btGenerateGCode.Size = new System.Drawing.Size(126, 22);
             this.btGenerateGCode.Text = "Генерация G-кода";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // btNewData
             // 
@@ -992,6 +1012,11 @@
             this.btNewData.Size = new System.Drawing.Size(137, 22);
             this.btNewData.Text = "Очистить от данных";
             this.btNewData.Click += new System.EventHandler(this.btNewData_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // btLoadFromFile
             // 
@@ -1008,30 +1033,6 @@
             this.btSaveToFile.Name = "btSaveToFile";
             this.btSaveToFile.Size = new System.Drawing.Size(134, 22);
             this.btSaveToFile.Text = "Сохранение в файл";
-            // 
-            // toolStripMenuAddGroupe
-            // 
-            this.toolStripMenuAddGroupe.Image = global::CNC_Controller.Properties.Resources.folder;
-            this.toolStripMenuAddGroupe.Name = "toolStripMenuAddGroupe";
-            this.toolStripMenuAddGroupe.Size = new System.Drawing.Size(210, 22);
-            this.toolStripMenuAddGroupe.Text = "Группа";
-            this.toolStripMenuAddGroupe.Click += new System.EventHandler(this.toolStripMenuAddGroupe_Click);
-            // 
-            // toolStripMenuAddPoint
-            // 
-            this.toolStripMenuAddPoint.Image = global::CNC_Controller.Properties.Resources.bullet_blue;
-            this.toolStripMenuAddPoint.Name = "toolStripMenuAddPoint";
-            this.toolStripMenuAddPoint.Size = new System.Drawing.Size(210, 22);
-            this.toolStripMenuAddPoint.Text = "Точка";
-            this.toolStripMenuAddPoint.Click += new System.EventHandler(this.toolStripMenuAddPoint_Click);
-            // 
-            // toolStripMenuAddLine
-            // 
-            this.toolStripMenuAddLine.Image = global::CNC_Controller.Properties.Resources.draw_line;
-            this.toolStripMenuAddLine.Name = "toolStripMenuAddLine";
-            this.toolStripMenuAddLine.Size = new System.Drawing.Size(210, 22);
-            this.toolStripMenuAddLine.Text = "Линия";
-            this.toolStripMenuAddLine.Click += new System.EventHandler(this.toolStripMenuAddLine_Click);
             // 
             // GeneratorCode
             // 
