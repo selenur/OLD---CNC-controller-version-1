@@ -105,6 +105,12 @@
     <Compile Include="primitiv\frmCatalog.Designer.cs">
       <DependentUpon>frmCatalog.cs</DependentUpon>
     </Compile>
+    <Compile Include="primitiv\frmPoint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="primitiv\frmPoint.Designer.cs">
+      <DependentUpon>frmPoint.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScanSurface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="primitiv\frmCatalog.resx">
       <DependentUpon>frmCatalog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="primitiv\frmPoint.resx">
+      <DependentUpon>frmPoint.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScanSurface.resx">
       <DependentUpon>ScanSurface.cs</DependentUpon>
@@ -287,6 +296,8 @@
     <None Include="picture\geolocation_sight.png" />
     <None Include="picture\accept_button2.png" />
     <None Include="picture\cancel2.png" />
+    <None Include="Resources\application.png" />
+    <None Include="Resources\delete.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup />

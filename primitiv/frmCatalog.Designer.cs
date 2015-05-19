@@ -170,11 +170,12 @@
             this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button3.Image = global::CNC_Controller.Properties.Resources.cancel2;
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(118, 162);
+            this.button3.Location = new System.Drawing.Point(157, 162);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(144, 57);
+            this.button3.Size = new System.Drawing.Size(105, 57);
             this.button3.TabIndex = 24;
             this.button3.Text = "Отмена";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -208,12 +209,11 @@
             // 
             // cbAllowPoint
             // 
-            this.cbAllowPoint.AutoSize = true;
-            this.cbAllowPoint.Location = new System.Drawing.Point(10, 41);
+            this.cbAllowPoint.Location = new System.Drawing.Point(17, 35);
             this.cbAllowPoint.Name = "cbAllowPoint";
-            this.cbAllowPoint.Size = new System.Drawing.Size(231, 17);
+            this.cbAllowPoint.Size = new System.Drawing.Size(231, 30);
             this.cbAllowPoint.TabIndex = 25;
-            this.cbAllowPoint.Text = "Учитывать данную точку, при генерации";
+            this.cbAllowPoint.Text = "Учитывать изменения начальной точки, на подчиненные примитивы";
             this.cbAllowPoint.UseVisualStyleBackColor = true;
             // 
             // frmCatalog

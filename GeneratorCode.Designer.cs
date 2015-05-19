@@ -85,17 +85,16 @@
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.treeDataConstructor = new System.Windows.Forms.TreeView();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuAddGroupe = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuAddPoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuAddLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.openDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.delPrimitivToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btSubMenu = new System.Windows.Forms.ToolStripDropDownButton();
             this.btAddCatalog = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddPoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.btAddLine = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddSpiral = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddCircle = new System.Windows.Forms.ToolStripMenuItem();
             this.btAddBox = new System.Windows.Forms.ToolStripMenuItem();
@@ -855,50 +854,48 @@
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox1,
-            this.toolStripSeparator4,
             this.toolStripMenuAddGroupe,
             this.toolStripMenuAddPoint,
-            this.toolStripMenuAddLine});
+            this.toolStripSeparator5,
+            this.openDialogToolStripMenuItem,
+            this.delPrimitivToolStripMenuItem});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(211, 101);
-            // 
-            // toolStripTextBox1
-            // 
-            this.toolStripTextBox1.AutoSize = false;
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.ReadOnly = true;
-            this.toolStripTextBox1.Size = new System.Drawing.Size(150, 23);
-            this.toolStripTextBox1.Text = "Добавление примитивов:";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(207, 6);
+            this.contextMenu.Size = new System.Drawing.Size(177, 98);
             // 
             // toolStripMenuAddGroupe
             // 
             this.toolStripMenuAddGroupe.Image = global::CNC_Controller.Properties.Resources.folder;
             this.toolStripMenuAddGroupe.Name = "toolStripMenuAddGroupe";
-            this.toolStripMenuAddGroupe.Size = new System.Drawing.Size(210, 22);
-            this.toolStripMenuAddGroupe.Text = "Группа";
+            this.toolStripMenuAddGroupe.Size = new System.Drawing.Size(176, 22);
+            this.toolStripMenuAddGroupe.Text = "Добавить группу";
             this.toolStripMenuAddGroupe.Click += new System.EventHandler(this.toolStripMenuAddGroupe_Click);
             // 
             // toolStripMenuAddPoint
             // 
             this.toolStripMenuAddPoint.Image = global::CNC_Controller.Properties.Resources.bullet_blue;
             this.toolStripMenuAddPoint.Name = "toolStripMenuAddPoint";
-            this.toolStripMenuAddPoint.Size = new System.Drawing.Size(210, 22);
-            this.toolStripMenuAddPoint.Text = "Точка";
+            this.toolStripMenuAddPoint.Size = new System.Drawing.Size(176, 22);
+            this.toolStripMenuAddPoint.Text = "Добавить точку";
             this.toolStripMenuAddPoint.Click += new System.EventHandler(this.toolStripMenuAddPoint_Click);
             // 
-            // toolStripMenuAddLine
+            // toolStripSeparator5
             // 
-            this.toolStripMenuAddLine.Image = global::CNC_Controller.Properties.Resources.draw_line;
-            this.toolStripMenuAddLine.Name = "toolStripMenuAddLine";
-            this.toolStripMenuAddLine.Size = new System.Drawing.Size(210, 22);
-            this.toolStripMenuAddLine.Text = "Линия";
-            this.toolStripMenuAddLine.Click += new System.EventHandler(this.toolStripMenuAddLine_Click);
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(173, 6);
+            // 
+            // openDialogToolStripMenuItem
+            // 
+            this.openDialogToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.application;
+            this.openDialogToolStripMenuItem.Name = "openDialogToolStripMenuItem";
+            this.openDialogToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.openDialogToolStripMenuItem.Text = "Открыть диалог";
+            // 
+            // delPrimitivToolStripMenuItem
+            // 
+            this.delPrimitivToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.delete;
+            this.delPrimitivToolStripMenuItem.Name = "delPrimitivToolStripMenuItem";
+            this.delPrimitivToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.delPrimitivToolStripMenuItem.Text = "Удалить примитив";
             // 
             // imageList1
             // 
@@ -931,7 +928,6 @@
             this.btSubMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btAddCatalog,
             this.btAddPoint,
-            this.btAddLine,
             this.btAddSpiral,
             this.btAddCircle,
             this.btAddBox});
@@ -956,14 +952,6 @@
             this.btAddPoint.Size = new System.Drawing.Size(163, 22);
             this.btAddPoint.Text = "Точка";
             this.btAddPoint.Click += new System.EventHandler(this.btAddPoint_Click);
-            // 
-            // btAddLine
-            // 
-            this.btAddLine.Image = global::CNC_Controller.Properties.Resources.draw_line;
-            this.btAddLine.Name = "btAddLine";
-            this.btAddLine.Size = new System.Drawing.Size(163, 22);
-            this.btAddLine.Text = "Линия";
-            this.btAddLine.Click += new System.EventHandler(this.btAddLine_Click);
             // 
             // btAddSpiral
             // 
@@ -1079,7 +1067,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             this.contextMenu.ResumeLayout(false);
-            this.contextMenu.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1150,7 +1137,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripDropDownButton btSubMenu;
         private System.Windows.Forms.ToolStripMenuItem btAddPoint;
-        private System.Windows.Forms.ToolStripMenuItem btAddLine;
         private System.Windows.Forms.ToolStripMenuItem btAddCatalog;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem btAddBox;
@@ -1162,8 +1148,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuAddGroupe;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuAddPoint;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuAddLine;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem openDialogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem delPrimitivToolStripMenuItem;
     }
 }
