@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using CNC_Controller.primitiv;
@@ -14,10 +13,11 @@ namespace CNC_Controller
         /// </summary>
         private MainForm mf;
 
-        /// <summary>
-        /// текст G-кода формируемого конструктором
-        /// </summary>
-        private string Gcode = "";
+        // последняя координата, при добавлении примитива
+        public double lastX;       // координата в мм
+        public double lastY;       // координата в мм
+        public double lastZ;       // координата в мм
+
 
         /// <summary>
         /// Список примитивов
@@ -138,11 +138,18 @@ namespace CNC_Controller
 
             // вызовем диалог добавления группы
             frmCatalog fCatalog = new frmCatalog();
+            fCatalog.numPosX.Value = (decimal)lastX;
+            fCatalog.numPosY.Value = (decimal)lastY;
+            fCatalog.numPosZ.Value = (decimal)lastZ;
 
             DialogResult dlResult = fCatalog.ShowDialog();
 
             if (dlResult == DialogResult.OK)
             {
+                lastX = (double)fCatalog.numPosX.Value;
+                lastY = (double)fCatalog.numPosY.Value;
+                lastZ = (double)fCatalog.numPosZ.Value;
+
                 primitivNode pn = new primitivNode(new primitivGroup((double)fCatalog.numPosX.Value, (double)fCatalog.numPosY.Value, (double)fCatalog.numPosZ.Value, fCatalog.textBoxName.Text, fCatalog.cbAllowPoint.Checked));
                 pnfind.nodes.Add(pn);
                 RefreshTree();
@@ -173,17 +180,25 @@ namespace CNC_Controller
             }
 
             // Сразу проверим узел выше, т.к. точку внутри точки создавать нелогично
-            if (pnfind.typeNode == primitivType.point || pnfind.typeNode == primitivType.line)
+            if (pnfind.typeNode == primitivType.point)
             {
                 MessageBox.Show(@"Создание точки в нутри данного примитива невозможно!");
                 return;
             }
 
             frmPoint fPoint = new frmPoint();
+            fPoint.numPosX.Value = (decimal)lastX;
+            fPoint.numPosY.Value = (decimal)lastY;
+            fPoint.numPosZ.Value = (decimal)lastZ;
+
             DialogResult dlResult = fPoint.ShowDialog();
 
             if (dlResult == DialogResult.OK)
             {
+                lastX = (double)fPoint.numPosX.Value;
+                lastY = (double)fPoint.numPosY.Value;
+                lastZ = (double)fPoint.numPosZ.Value;
+
                 primitivNode pn = new primitivNode(new primitivPoint((double)fPoint.numPosX.Value, (double)fPoint.numPosY.Value, (double)fPoint.numPosZ.Value));
                 pnfind.nodes.Add(pn);
                 RefreshTree();
@@ -194,9 +209,9 @@ namespace CNC_Controller
         #endregion
 
 
-        // Открытие диалогов у существующих примитивов
-        private void treeDataConstructor_DoubleClick(object sender, EventArgs e)
+        private void OpenFormDialog()
         {
+
             // Необходимость перезаполнения дерева обновленными данными
             bool NeedRefreshTree = false;
 
@@ -212,7 +227,7 @@ namespace CNC_Controller
                 fCatalog.numPosY.Value = (decimal)pfind.catalog.Y;
                 fCatalog.numPosZ.Value = (decimal)pfind.catalog.Z;
                 fCatalog.textBoxName.Text = pfind.catalog.Name;
-                fCatalog.cbAllowPoint.Checked = pfind.catalog.AllowPoint;
+                fCatalog.cbAllowPoint.Checked = pfind.catalog.AllowDelta;
 
                 DialogResult dlResult = fCatalog.ShowDialog();
 
@@ -222,7 +237,7 @@ namespace CNC_Controller
                     pfind.catalog.Y = (double)fCatalog.numPosY.Value;
                     pfind.catalog.Z = (double)fCatalog.numPosZ.Value;
                     pfind.catalog.Name = fCatalog.textBoxName.Text;
-                    pfind.catalog.AllowPoint = fCatalog.cbAllowPoint.Checked;
+                    pfind.catalog.AllowDelta = fCatalog.cbAllowPoint.Checked;
 
                     NeedRefreshTree = true;
                 }
@@ -249,6 +264,13 @@ namespace CNC_Controller
             }
 
             if (NeedRefreshTree) RefreshTree();
+        }
+
+
+        // Открытие диалогов у существующих примитивов
+        private void treeDataConstructor_DoubleClick(object sender, EventArgs e)
+        {
+            OpenFormDialog();
         }
 
         // рекурсивная функция для перерисовки дерева
@@ -278,14 +300,6 @@ namespace CNC_Controller
                 trNode.Name = _primitivNode.GUID;
                 trNode.Text = "Точка: (" + _primitivNode.point.X + ", " + _primitivNode.point.Y + ", "  + _primitivNode.point.Z + ")";
             }
-
-            if (_primitivNode.typeNode == primitivType.line)
-            {
-                trNode.ImageIndex = 3;
-                trNode.Name = _primitivNode.GUID;
-                trNode.Text = "Линия: xxxxxxx";
-            }
-
 
             if (_primitivNode.nodes.Count == 0) return;
 
@@ -318,16 +332,113 @@ namespace CNC_Controller
 
             treeDataConstructor.EndUpdate();
             treeDataConstructor.ExpandAll();
-        }
 
+            // и G-код сразу сгенерируем
+            CREATE_GKOD();
+        }
 
         private void buttonGenerateCode_Click(object sender, EventArgs e)
         {
-           // RefreshData();
+            CREATE_GKOD();
+        }
+
+
+
+
+
+        private void ParsePrimitivesToGkode(ref string _strCode, primitivNode _node, double deltaX = 0, double deltaY = 0, double deltaZ = 0)
+        {
+            if (_node.typeNode == primitivType.point)
+            {
+                _strCode += "G1 X" + (_node.point.X + deltaX) + " Y" + (_node.point.Y + deltaY) + " Z" + (_node.point.Z + deltaZ) + "\n";
+                return;
+            }
+
+            // иначе это группа
+
+            if (_node.typeNode == primitivType.catalog)
+            {
+
+
+                double dX = deltaX;       // координата в мм
+                double dY = deltaY;       // координата в мм
+                double dZ = deltaZ;       // координата в мм
+
+                if (_node.catalog.AllowDelta)
+                {
+                    dX += _node.catalog.X;
+                    dY += _node.catalog.Y;
+                    dZ += _node.catalog.Z;
+                }
+
+                foreach (primitivNode VARIABLE in _node.nodes)
+                {
+                    ParsePrimitivesToGkode(ref _strCode,VARIABLE,dX,dY,dZ);
+                }
+            }
+
+
+
+
+
+
+
+    
+
 
 
         }
 
+
+        private void CREATE_GKOD()
+        {
+            string code = "";
+
+            if (ListPrimitives.Count == 0) return;
+
+            ParsePrimitivesToGkode(ref code, ListPrimitives[0]);
+
+            //пошлем сгенерированный код
+            mf.LoadDataFromText(Regex.Split(code, "\n"));  
+
+ 
+         
+
+        }
+
+
+
+
+
+
+        private void DeleteNode(string _GUID, primitivNode _primitiv)
+        {
+            foreach (primitivNode VARIABLE in _primitiv.nodes)
+            {
+                if (VARIABLE.GUID == _GUID)
+                {
+                    _primitiv.nodes.Remove(VARIABLE);
+                    break; //дальше продолжать нельзя, т.к. сломали выборку
+                }
+                else DeleteNode(_GUID, VARIABLE);
+            }
+        }
+
+        private void delPrimitivToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeDataConstructor.SelectedNode == null) return;
+
+            if (MessageBox.Show("Удалить выделенный примитив?","Удаление",MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+
+            DeleteNode(treeDataConstructor.SelectedNode.Name, ListPrimitives[0]);
+
+            RefreshTree();
+        }
+
+        private void openDialogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFormDialog();
+        }
     }
 }
 
@@ -343,7 +454,7 @@ public class primitivGroup
     public double Y;       // координата в мм
     public double Z;       // координата в мм
     public string Name;   // для представления
-    public bool AllowPoint; // необходимость учитывать данную точку
+    public bool AllowDelta; // необходимость учитывать данную точку
 
     public primitivGroup(double _x, double _y, double _z, string _name = "Группа", bool _allowPoint = false)
     {
@@ -351,7 +462,7 @@ public class primitivGroup
         Y = _y;
         Z = _z;
         Name = _name;
-        AllowPoint = _allowPoint;
+        AllowDelta = _allowPoint;
     }
 }
 
@@ -374,28 +485,10 @@ public class primitivPoint
 
 }
 
-/////// <summary>
-/////// Примитив линия
-/////// </summary>
-////public class primitivLine
-////{
-////    public primitivPoint point1;       
-////    public primitivPoint point2;   
-
-////    public primitivLine(primitivPoint _p1, primitivPoint _p2)
-////    {
-////        point1 = _p1;
-////        point2 = _p2;
-////    }
-////}
-
-
-
 public enum primitivType
 {
     catalog,
-    point,
-    line
+    point
 }
 
 
@@ -408,7 +501,6 @@ public class primitivNode
     public primitivType typeNode;
     public primitivGroup catalog;
     public primitivPoint point;
-    //public primitivLine line;
     public List<primitivNode> nodes;
 
     public primitivNode(primitivGroup _catalog)
@@ -430,29 +522,7 @@ public class primitivNode
         //line = null;
         nodes = new List<primitivNode>();
     }
-
-    //public primitivNode(primitivLine _line)
-    //{
-    //    GUID = Guid.NewGuid().ToString();
-    //    typeNode = primitivType.line;
-    //    catalog = null;
-    //    point = null;
-    //    line = _line;
-    //    nodes = new List<primitivNode>();
-    //}
-
-
-
-
-    
-
-
-
 }
-
-
-
-
 
 
 //////// Добавление новой линии в дерево
@@ -531,15 +601,6 @@ public class primitivNode
 
 
 
-
-
-
-
-
-////Генерация, и посылка новых данных
-//private void RefreshData()
-//{
-//    string code = "";
 
 //    // 1. прямолинейное движение к начальной точке
 //    code += "G0 X" + numPosX.Value.ToString() + " Y" + numPosY.Value.ToString() + "\n";
@@ -633,8 +694,6 @@ public class primitivNode
 //        code += "G0 Z" + numericUpDown3.Value.ToString() + "\n";
 //    }
 
-//    //пошлем сгенерированный код
-//    mf.LoadDataFromText(Regex.Split(code, "\n"));
-//}
+
 
 

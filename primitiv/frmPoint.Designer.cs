@@ -188,7 +188,7 @@
             this.Controls.Add(this.numPosX);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmPoint";
-            this.Text = "frmPoint";
+            this.Text = "Параметры точки";
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();

@@ -213,7 +213,7 @@
             this.cbAllowPoint.Name = "cbAllowPoint";
             this.cbAllowPoint.Size = new System.Drawing.Size(231, 30);
             this.cbAllowPoint.TabIndex = 25;
-            this.cbAllowPoint.Text = "Учитывать изменения начальной точки, на подчиненные примитивы";
+            this.cbAllowPoint.Text = "Применить корректировку координат, примитивов, внутри данной группы";
             this.cbAllowPoint.UseVisualStyleBackColor = true;
             // 
             // frmCatalog

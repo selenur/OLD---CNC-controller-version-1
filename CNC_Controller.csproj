@@ -287,7 +287,7 @@
     <None Include="picture\cancel.png" />
     <None Include="picture\google_webmaster_tools.png" />
     <None Include="picture\layer_grid.png" />
-    <None Include="Resources\draw_vertex.png" />
+    <None Include="picture\draw_vertex.png" />
     <None Include="picture\bullet_blue.png" />
     <None Include="picture\draw_line.png" />
     <None Include="picture\folder.png" />
@@ -296,11 +296,13 @@
     <None Include="picture\geolocation_sight.png" />
     <None Include="picture\accept_button2.png" />
     <None Include="picture\cancel2.png" />
-    <None Include="Resources\application.png" />
-    <None Include="Resources\delete.png" />
+    <None Include="picture\application.png" />
+    <None Include="picture\delete.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
