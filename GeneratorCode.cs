@@ -339,6 +339,14 @@ namespace CNC_Controller
 
             // и G-код сразу сгенерируем
             CREATE_GKOD();
+
+
+            // установим активность на узле с GUIDselectedNode
+            TreeNode[] trArray = treeDataConstructor.Nodes.Find(GUIDselectedNode, true);
+
+            if (trArray.Length != 0) treeDataConstructor.SelectedNode = trArray[0];
+
+
         }
 
         private void buttonGenerateCode_Click(object sender, EventArgs e)
@@ -480,6 +488,16 @@ namespace CNC_Controller
         private void treeDataConstructor_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
             e.Cancel = true;
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            AddNewGroup();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            AddNewPoint();
         }
     }
 }
