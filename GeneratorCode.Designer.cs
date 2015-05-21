@@ -63,13 +63,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.treeDataConstructor.ContextMenuStrip = this.contextMenu;
             this.treeDataConstructor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.treeDataConstructor.FullRowSelect = true;
+            this.treeDataConstructor.HideSelection = false;
             this.treeDataConstructor.ImageIndex = 0;
             this.treeDataConstructor.ImageList = this.imageList1;
             this.treeDataConstructor.Location = new System.Drawing.Point(4, 27);
             this.treeDataConstructor.Name = "treeDataConstructor";
             this.treeDataConstructor.SelectedImageIndex = 0;
-            this.treeDataConstructor.Size = new System.Drawing.Size(743, 649);
+            this.treeDataConstructor.Size = new System.Drawing.Size(744, 649);
             this.treeDataConstructor.TabIndex = 0;
+            this.treeDataConstructor.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeDataConstructor_BeforeCollapse);
             this.treeDataConstructor.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeDataConstructor_AfterSelect);
             this.treeDataConstructor.Click += new System.EventHandler(this.treeDataConstructor_Click);
             this.treeDataConstructor.DoubleClick += new System.EventHandler(this.treeDataConstructor_DoubleClick);
@@ -83,13 +86,13 @@
             this.openDialogToolStripMenuItem,
             this.delPrimitivToolStripMenuItem});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(177, 98);
+            this.contextMenu.Size = new System.Drawing.Size(190, 98);
             // 
             // toolStripMenuAddGroupe
             // 
             this.toolStripMenuAddGroupe.Image = global::CNC_Controller.Properties.Resources.folder;
             this.toolStripMenuAddGroupe.Name = "toolStripMenuAddGroupe";
-            this.toolStripMenuAddGroupe.Size = new System.Drawing.Size(176, 22);
+            this.toolStripMenuAddGroupe.Size = new System.Drawing.Size(189, 22);
             this.toolStripMenuAddGroupe.Text = "Добавить группу";
             this.toolStripMenuAddGroupe.Click += new System.EventHandler(this.toolStripMenuAddGroupe_Click);
             // 
@@ -97,28 +100,28 @@
             // 
             this.toolStripMenuAddPoint.Image = global::CNC_Controller.Properties.Resources.bullet_blue;
             this.toolStripMenuAddPoint.Name = "toolStripMenuAddPoint";
-            this.toolStripMenuAddPoint.Size = new System.Drawing.Size(176, 22);
+            this.toolStripMenuAddPoint.Size = new System.Drawing.Size(189, 22);
             this.toolStripMenuAddPoint.Text = "Добавить точку";
             this.toolStripMenuAddPoint.Click += new System.EventHandler(this.toolStripMenuAddPoint_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(173, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(186, 6);
             // 
             // openDialogToolStripMenuItem
             // 
             this.openDialogToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.application;
             this.openDialogToolStripMenuItem.Name = "openDialogToolStripMenuItem";
-            this.openDialogToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.openDialogToolStripMenuItem.Text = "Открыть диалог";
+            this.openDialogToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.openDialogToolStripMenuItem.Text = "Свойства примитива";
             this.openDialogToolStripMenuItem.Click += new System.EventHandler(this.openDialogToolStripMenuItem_Click);
             // 
             // delPrimitivToolStripMenuItem
             // 
             this.delPrimitivToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.delete;
             this.delPrimitivToolStripMenuItem.Name = "delPrimitivToolStripMenuItem";
-            this.delPrimitivToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.delPrimitivToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.delPrimitivToolStripMenuItem.Text = "Удалить примитив";
             this.delPrimitivToolStripMenuItem.Click += new System.EventHandler(this.delPrimitivToolStripMenuItem_Click);
             // 
@@ -237,21 +240,21 @@
             // 
             // btLoadFromFile
             // 
-            this.btLoadFromFile.Enabled = false;
             this.btLoadFromFile.Image = ((System.Drawing.Image)(resources.GetObject("btLoadFromFile.Image")));
             this.btLoadFromFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btLoadFromFile.Name = "btLoadFromFile";
             this.btLoadFromFile.Size = new System.Drawing.Size(128, 22);
             this.btLoadFromFile.Text = "Загрузка из файла";
+            this.btLoadFromFile.Click += new System.EventHandler(this.btLoadFromFile_Click);
             // 
             // btSaveToFile
             // 
-            this.btSaveToFile.Enabled = false;
             this.btSaveToFile.Image = ((System.Drawing.Image)(resources.GetObject("btSaveToFile.Image")));
             this.btSaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btSaveToFile.Name = "btSaveToFile";
             this.btSaveToFile.Size = new System.Drawing.Size(134, 22);
             this.btSaveToFile.Text = "Сохранение в файл";
+            this.btSaveToFile.Click += new System.EventHandler(this.btSaveToFile_Click);
             // 
             // GeneratorCode
             // 

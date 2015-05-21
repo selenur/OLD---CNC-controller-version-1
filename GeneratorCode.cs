@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using CNC_Controller.primitiv;
+
 
 namespace CNC_Controller
 {
@@ -439,6 +443,44 @@ namespace CNC_Controller
         {
             OpenFormDialog();
         }
+
+        private void btSaveToFile_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = @"Данные конструктора (*.dat)|*.dat|Все файлы (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                BinaryFormatter binFormat = new BinaryFormatter();
+                using (Stream fStream = new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    binFormat.Serialize(fStream, ListPrimitives[0]);
+                }
+            }
+        }
+
+        private void btLoadFromFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "Данные конструктора (*.dat)|*.dat|Все файлы (*.*)|*.*";
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                BinaryFormatter binFormat = new BinaryFormatter();
+
+                using (Stream fStream = File.OpenRead(openFileDialog1.FileName))
+                {
+                    primitivNode pNode = (primitivNode)binFormat.Deserialize(fStream);
+                    ListPrimitives[0] = pNode;
+                }
+                RefreshTree();
+            }
+        }
+
+        private void treeDataConstructor_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            e.Cancel = true;
+        }
     }
 }
 
@@ -448,6 +490,7 @@ namespace CNC_Controller
 /// <summary>
 /// Класс описания группы элементов
 /// </summary>
+[Serializable]
 public class primitivGroup
 {
     public double X;       // координата в мм
@@ -470,6 +513,7 @@ public class primitivGroup
 /// <summary>
 /// Примитив точка
 /// </summary>
+[Serializable]
 public class primitivPoint
 {
     public double X;       // координата в мм
@@ -485,6 +529,7 @@ public class primitivPoint
 
 }
 
+[Serializable]
 public enum primitivType
 {
     catalog,
@@ -495,6 +540,7 @@ public enum primitivType
 /// <summary>
 /// Класс для хранения данных, конструктора
 /// </summary>
+[Serializable]
 public class primitivNode
 {
     public string GUID;
@@ -502,6 +548,16 @@ public class primitivNode
     public primitivGroup catalog;
     public primitivPoint point;
     public List<primitivNode> nodes;
+
+    public primitivNode()
+    {
+        GUID = "";
+        typeNode = primitivType.catalog;
+        catalog = null;
+        point = null;
+        nodes = new List<primitivNode>();
+    }
+
 
     public primitivNode(primitivGroup _catalog)
     {
@@ -521,6 +577,15 @@ public class primitivNode
         point = _point;
         //line = null;
         nodes = new List<primitivNode>();
+    }
+
+    public primitivNode(string _GUID, primitivType _typeNode, primitivGroup _catalog, primitivPoint _point, List<primitivNode> _nodes)
+    {
+        GUID = _GUID;
+        typeNode = _typeNode;
+        catalog = _catalog;
+        point = _point;
+        nodes = _nodes;
     }
 }
 
