@@ -654,7 +654,7 @@ namespace CNC_Controller
     /// </summary>
     public enum EStatusDevice { Connect = 0, Disconnect };
 
-    static class deviceInfo
+    public static class deviceInfo
     {
         /// <summary>
         /// —ырые данные от контроллера

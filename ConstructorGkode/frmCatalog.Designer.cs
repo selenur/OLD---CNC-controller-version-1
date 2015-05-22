@@ -39,7 +39,7 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btGetPosition = new System.Windows.Forms.Button();
             this.cbAllowPoint = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
@@ -193,19 +193,19 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btGetPosition
             // 
-            this.button2.Enabled = false;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Image = global::CNC_Controller.Properties.Resources.geolocation_sight;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(118, 88);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(144, 68);
-            this.button2.TabIndex = 19;
-            this.button2.Text = "Использовать текущее положение";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.UseVisualStyleBackColor = true;
+            this.btGetPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btGetPosition.Image = global::CNC_Controller.Properties.Resources.geolocation_sight;
+            this.btGetPosition.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btGetPosition.Location = new System.Drawing.Point(118, 88);
+            this.btGetPosition.Name = "btGetPosition";
+            this.btGetPosition.Size = new System.Drawing.Size(144, 68);
+            this.btGetPosition.TabIndex = 19;
+            this.btGetPosition.Text = "Использовать текущее положение";
+            this.btGetPosition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btGetPosition.UseVisualStyleBackColor = true;
+            this.btGetPosition.Click += new System.EventHandler(this.btGetPosition_Click);
             // 
             // cbAllowPoint
             // 
@@ -227,7 +227,7 @@
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btGetPosition);
             this.Controls.Add(this.labelposX);
             this.Controls.Add(this.numPosZ);
             this.Controls.Add(this.labelposY);
@@ -237,6 +237,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmCatalog";
             this.Text = "Группа элементов";
+            this.Load += new System.EventHandler(this.frmCatalog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
@@ -247,7 +248,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btGetPosition;
         private System.Windows.Forms.Label labelposX;
         private System.Windows.Forms.Label labelposY;
         private System.Windows.Forms.Label labelposZ;

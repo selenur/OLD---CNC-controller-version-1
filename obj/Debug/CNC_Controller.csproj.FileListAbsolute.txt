@@ -63,7 +63,7 @@ D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.csproj.GenerateResourc
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.ScanSurface.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.ManualControl.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.EditGkode.resources
-D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.LikePointForm.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.GeneratorCode.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.primitiv.frmCatalog.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.primitiv.frmPoint.resources
+D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.ConstructorGkode.frmCycler.resources

@@ -4,9 +4,8 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Xml.Serialization;
+using CNC_Controller.ConstructorGkode;
 using CNC_Controller.primitiv;
-
 
 namespace CNC_Controller
 {
@@ -15,36 +14,36 @@ namespace CNC_Controller
         /// <summary>
         /// Ссылка на основную форму
         /// </summary>
-        private MainForm mf;
+        private readonly MainForm _mf;
 
         // последняя координата, при добавлении примитива
-        public double lastX;       // координата в мм
-        public double lastY;       // координата в мм
-        public double lastZ;       // координата в мм
+        private double _lastX;       // координата в мм
+        private double _lastY;       // координата в мм
+        private double _lastZ;       // координата в мм
 
 
         /// <summary>
         /// Список примитивов
         /// </summary>
-        public List<primitivNode> ListPrimitives = new List<primitivNode>();
+        private List<primitivNode> _listPrimitives = new List<primitivNode>();
 
         #region Элементы формы добавления данных
 
         private void GeneratorCode_Load(object sender, EventArgs e)
         {
-            ListPrimitives.Clear();
+            _listPrimitives.Clear();
             RefreshTree();
         }
 
         public GeneratorCode(MainForm _mf)
         {
-            mf = _mf;
+            this._mf = _mf;
             InitializeComponent();
         }
 
         private void btNewData_Click(object sender, EventArgs e)
         {
-            ListPrimitives.Clear();
+            _listPrimitives.Clear();
             RefreshTree();
         }
 
@@ -70,7 +69,7 @@ namespace CNC_Controller
 
         private void treeDataConstructor_Click(object sender, EventArgs e)
         {
-            treeDataConstructor.ExpandAll();
+            //treeDataConstructor.ExpandAll();
         }
 
         private void treeDataConstructor_AfterSelect(object sender, TreeViewEventArgs e)
@@ -94,7 +93,7 @@ namespace CNC_Controller
 
             primitivNode RootNode = _node;
 
-            if (RootNode == null) RootNode = ListPrimitives[0];
+            if (RootNode == null) RootNode = _listPrimitives[0];
 
             if (RootNode.GUID == _guid) return RootNode;
 
@@ -134,25 +133,25 @@ namespace CNC_Controller
             }
 
             // Сразу проверим узел выше, т.к. каталог можно создавать в корне дерева, или внутри другого каталога, а создание каталога внутри других элементов нелогично
-            if (pnfind.typeNode != primitivType.catalog)
+            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler))
             {
                 MessageBox.Show(@"Создание каталога в нутри данного примитива невозможно!");
                 return;
             }
 
             // вызовем диалог добавления группы
-            frmCatalog fCatalog = new frmCatalog();
-            fCatalog.numPosX.Value = (decimal)lastX;
-            fCatalog.numPosY.Value = (decimal)lastY;
-            fCatalog.numPosZ.Value = (decimal)lastZ;
+            frmCatalog fCatalog = new frmCatalog(_mf);
+            fCatalog.numPosX.Value = (decimal)_lastX;
+            fCatalog.numPosY.Value = (decimal)_lastY;
+            fCatalog.numPosZ.Value = (decimal)_lastZ;
 
             DialogResult dlResult = fCatalog.ShowDialog();
 
             if (dlResult == DialogResult.OK)
             {
-                lastX = (double)fCatalog.numPosX.Value;
-                lastY = (double)fCatalog.numPosY.Value;
-                lastZ = (double)fCatalog.numPosZ.Value;
+                _lastX = (double)fCatalog.numPosX.Value;
+                _lastY = (double)fCatalog.numPosY.Value;
+                _lastZ = (double)fCatalog.numPosZ.Value;
 
                 primitivNode pn = new primitivNode(new primitivGroup((double)fCatalog.numPosX.Value, (double)fCatalog.numPosY.Value, (double)fCatalog.numPosZ.Value, fCatalog.textBoxName.Text, fCatalog.cbAllowPoint.Checked));
                 pnfind.nodes.Add(pn);
@@ -191,22 +190,66 @@ namespace CNC_Controller
             }
 
             frmPoint fPoint = new frmPoint();
-            fPoint.numPosX.Value = (decimal)lastX;
-            fPoint.numPosY.Value = (decimal)lastY;
-            fPoint.numPosZ.Value = (decimal)lastZ;
+            fPoint.numPosX.Value = (decimal)_lastX;
+            fPoint.numPosY.Value = (decimal)_lastY;
+            fPoint.numPosZ.Value = (decimal)_lastZ;
 
             DialogResult dlResult = fPoint.ShowDialog();
 
             if (dlResult == DialogResult.OK)
             {
-                lastX = (double)fPoint.numPosX.Value;
-                lastY = (double)fPoint.numPosY.Value;
-                lastZ = (double)fPoint.numPosZ.Value;
+                _lastX = (double)fPoint.numPosX.Value;
+                _lastY = (double)fPoint.numPosY.Value;
+                _lastZ = (double)fPoint.numPosZ.Value;
 
                 primitivNode pn = new primitivNode(new primitivPoint((double)fPoint.numPosX.Value, (double)fPoint.numPosY.Value, (double)fPoint.numPosZ.Value));
                 pnfind.nodes.Add(pn);
                 RefreshTree();
             }
+        }
+
+
+        public void AddNewCycle()
+        {
+            TreeNode pNode = treeDataConstructor.SelectedNode;
+
+            // попытаемся получить вышестоящий узел в дереве
+            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
+
+            if (pNode == null) // всетаки неудалось.......
+            {
+                MessageBox.Show(@"DANGER!!! Ошибка указания родителя?!?!");
+                return;
+            }
+
+            // найдем вышестоящий узел в ListPrimitives
+            primitivNode pnfind = findNodeWithGUID(pNode.Name);
+
+            if (pnfind == null)
+            {
+                MessageBox.Show(@"DANGER!!! Ошибка поиска родителя?!?!");
+                return;
+            }
+
+            // Сразу проверим узел выше, т.к. Циклёр можно создавать в корне дерева, или внутри другого каталога, а создание Циклёра внутри других элементов нелогично
+            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler))
+            {
+                MessageBox.Show(@"Создание циклёра в нутри данного примитива невозможно!");
+                return;
+            }
+
+            // вызовем диалог добавления циклёра
+            frmCycler fCycler = new frmCycler(_mf);
+
+            DialogResult dlResult = fCycler.ShowDialog();
+
+            if (dlResult == DialogResult.OK)
+            {
+                primitivNode pn = new primitivNode(new primitivCycle((double)fCycler.numStart.Value, (double)fCycler.numStop.Value, (double)fCycler.numStep.Value, fCycler.cbX.Checked, fCycler.cbY.Checked, fCycler.cbZ.Checked, fCycler.textBoxName.Text));
+                pnfind.nodes.Add(pn);
+                RefreshTree();
+            }
+
         }
 
 
@@ -226,7 +269,7 @@ namespace CNC_Controller
             if (pfind.typeNode == primitivType.catalog)
             {
                 // вызовем диалог добавления группы
-                frmCatalog fCatalog = new frmCatalog();
+                frmCatalog fCatalog = new frmCatalog(_mf);
                 fCatalog.numPosX.Value = (decimal)pfind.catalog.X;
                 fCatalog.numPosY.Value = (decimal)pfind.catalog.Y;
                 fCatalog.numPosZ.Value = (decimal)pfind.catalog.Z;
@@ -242,6 +285,36 @@ namespace CNC_Controller
                     pfind.catalog.Z = (double)fCatalog.numPosZ.Value;
                     pfind.catalog.Name = fCatalog.textBoxName.Text;
                     pfind.catalog.AllowDelta = fCatalog.cbAllowPoint.Checked;
+
+                    NeedRefreshTree = true;
+                }
+            }
+
+            if (pfind.typeNode == primitivType.cycler)
+            {
+                // вызовем диалог добавления группы
+                frmCycler fCycler = new frmCycler(_mf);
+
+                fCycler.numStart.Value = (decimal)pfind.cycler.cStart;
+                fCycler.numStop.Value = (decimal)pfind.cycler.cStop;
+                fCycler.numStep.Value = (decimal)pfind.cycler.cStep;
+                fCycler.textBoxName.Text = pfind.cycler.Name;
+                fCycler.cbX.Checked = pfind.cycler.AllowDeltaX;
+                fCycler.cbY.Checked = pfind.cycler.AllowDeltaY;
+                fCycler.cbZ.Checked = pfind.cycler.AllowDeltaZ;
+
+                DialogResult dlResult = fCycler.ShowDialog();
+
+                if (dlResult == DialogResult.OK)
+                {
+                    pfind.cycler.cStart = (double)fCycler.numStart.Value;
+                    pfind.cycler.cStop = (double)fCycler.numStop.Value;
+                    pfind.cycler.cStep = (double)fCycler.numStep.Value;
+
+                    pfind.cycler.Name = fCycler.textBoxName.Text;
+                    pfind.cycler.AllowDeltaX = fCycler.cbX.Checked;
+                    pfind.cycler.AllowDeltaY = fCycler.cbY.Checked;
+                    pfind.cycler.AllowDeltaZ = fCycler.cbZ.Checked;
 
                     NeedRefreshTree = true;
                 }
@@ -298,6 +371,14 @@ namespace CNC_Controller
                 trNode.Text = _primitivNode.catalog.Name;
             }
 
+            if (_primitivNode.typeNode == primitivType.cycler)
+            {
+                trNode.ImageIndex = 4;
+                trNode.Name = _primitivNode.GUID;
+
+                trNode.Text = _primitivNode.cycler.Name + "(с: " + _primitivNode.cycler.cStart + " по: " + _primitivNode.cycler.cStop + " шаг:" + +_primitivNode.cycler.cStep +")";
+            }
+
             if (_primitivNode.typeNode == primitivType.point)
             {
                 trNode.ImageIndex = 2;
@@ -322,17 +403,17 @@ namespace CNC_Controller
             treeDataConstructor.Nodes.Clear();
 
             //Если нет данных
-            if (ListPrimitives.Count == 0)
+            if (_listPrimitives.Count == 0)
             {
                 primitivNode pp = new primitivNode(new primitivGroup(0, 0, 0, "Точка старта"));
-                ListPrimitives.Add(pp);
+                _listPrimitives.Add(pp);
                 GUIDselectedNode = pp.GUID;
             }
 
             treeDataConstructor.BeginUpdate();
             treeDataConstructor.Nodes.Clear();
 
-            DrawPrimitivInTree(ListPrimitives[0]);
+            DrawPrimitivInTree(_listPrimitives[0]);
 
             treeDataConstructor.EndUpdate();
             treeDataConstructor.ExpandAll();
@@ -349,15 +430,6 @@ namespace CNC_Controller
 
         }
 
-        private void buttonGenerateCode_Click(object sender, EventArgs e)
-        {
-            CREATE_GKOD();
-        }
-
-
-
-
-
         private void ParsePrimitivesToGkode(ref string _strCode, primitivNode _node, double deltaX = 0, double deltaY = 0, double deltaZ = 0)
         {
             if (_node.typeNode == primitivType.point)
@@ -366,7 +438,6 @@ namespace CNC_Controller
                 return;
             }
 
-            // иначе это группа
 
             if (_node.typeNode == primitivType.catalog)
             {
@@ -391,6 +462,61 @@ namespace CNC_Controller
 
 
 
+            if (_node.typeNode == primitivType.cycler)
+            {
+                if (_node.cycler.cStart < _node.cycler.cStop)
+                {
+                    for (double i = _node.cycler.cStart; i < _node.cycler.cStop; i += _node.cycler.cStep)
+                    {
+                    
+                        double dX = deltaX;       // координата в мм
+                        double dY = deltaY;       // координата в мм
+                        double dZ = deltaZ;       // координата в мм
+
+                        if (_node.cycler.AllowDeltaX) dX += i;
+
+                        if (_node.cycler.AllowDeltaY) dY += i;
+
+                        if (_node.cycler.AllowDeltaZ) dZ += i;
+                    
+                        foreach (primitivNode VARIABLE in _node.nodes)
+                        {
+                            ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ);
+                        }
+                    }    
+                }
+                else
+                {
+                    for (double i = _node.cycler.cStart; i > _node.cycler.cStop; i -= _node.cycler.cStep)
+                    {
+
+                        double dX = deltaX;       // координата в мм
+                        double dY = deltaY;       // координата в мм
+                        double dZ = deltaZ;       // координата в мм
+
+                        if (_node.cycler.AllowDeltaX) dX += i;
+
+                        if (_node.cycler.AllowDeltaY) dY += i;
+
+                        if (_node.cycler.AllowDeltaZ) dZ += i;
+
+                        foreach (primitivNode VARIABLE in _node.nodes)
+                        {
+                            ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ);
+                        }
+                    }               
+
+                }
+
+
+
+
+
+
+
+            }
+
+
 
 
 
@@ -406,12 +532,12 @@ namespace CNC_Controller
         {
             string code = "";
 
-            if (ListPrimitives.Count == 0) return;
+            if (_listPrimitives.Count == 0) return;
 
-            ParsePrimitivesToGkode(ref code, ListPrimitives[0]);
+            ParsePrimitivesToGkode(ref code, _listPrimitives[0]);
 
             //пошлем сгенерированный код
-            mf.LoadDataFromText(Regex.Split(code, "\n"));  
+            _mf.LoadDataFromText(Regex.Split(code, "\n"));  
 
  
          
@@ -442,7 +568,7 @@ namespace CNC_Controller
 
             if (MessageBox.Show("Удалить выделенный примитив?","Удаление",MessageBoxButtons.OKCancel) != DialogResult.OK) return;
 
-            DeleteNode(treeDataConstructor.SelectedNode.Name, ListPrimitives[0]);
+            DeleteNode(treeDataConstructor.SelectedNode.Name, _listPrimitives[0]);
 
             RefreshTree();
         }
@@ -462,7 +588,7 @@ namespace CNC_Controller
                 BinaryFormatter binFormat = new BinaryFormatter();
                 using (Stream fStream = new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
-                    binFormat.Serialize(fStream, ListPrimitives[0]);
+                    binFormat.Serialize(fStream, _listPrimitives[0]);
                 }
             }
         }
@@ -479,7 +605,7 @@ namespace CNC_Controller
                 using (Stream fStream = File.OpenRead(openFileDialog1.FileName))
                 {
                     primitivNode pNode = (primitivNode)binFormat.Deserialize(fStream);
-                    ListPrimitives[0] = pNode;
+                    _listPrimitives[0] = pNode;
                 }
                 RefreshTree();
             }
@@ -498,6 +624,11 @@ namespace CNC_Controller
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             AddNewPoint();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            AddNewCycle();
         }
     }
 }
@@ -527,6 +658,28 @@ public class primitivGroup
     }
 }
 
+[Serializable]
+public class primitivCycle
+{
+    public double cStart;       // начальное значение цикла
+    public double cStop;       // конечное значение цикла
+    public double cStep;       // шаг
+    public string Name;   // для представления
+    public bool AllowDeltaX; // необходимость применять цикл к оси X
+    public bool AllowDeltaY; // необходимость применять цикл к оси Y
+    public bool AllowDeltaZ; // необходимость применять цикл к оси Z
+
+    public primitivCycle(double _cStart, double _cStop, double _cStep, bool _AllowDeltaX, bool _AllowDeltaY, bool _AllowDeltaZ, string _name = "Цикл")
+    {
+        cStart = _cStart;
+        cStop = _cStop;
+        cStep = _cStep;
+        Name = _name;
+        AllowDeltaX = _AllowDeltaX;
+        AllowDeltaY = _AllowDeltaY;
+        AllowDeltaZ = _AllowDeltaZ;
+    }
+}
 
 /// <summary>
 /// Примитив точка
@@ -551,7 +704,9 @@ public class primitivPoint
 public enum primitivType
 {
     catalog,
-    point
+    point,
+    cycler
+
 }
 
 
@@ -564,6 +719,7 @@ public class primitivNode
     public string GUID;
     public primitivType typeNode;
     public primitivGroup catalog;
+    public primitivCycle cycler;
     public primitivPoint point;
     public List<primitivNode> nodes;
 
@@ -584,6 +740,16 @@ public class primitivNode
         catalog = _catalog;
         point = null;
         //line = null;
+        nodes = new List<primitivNode>();
+    }
+
+    public primitivNode(primitivCycle _cycle)
+    {
+        GUID = Guid.NewGuid().ToString();
+        typeNode = primitivType.cycler;
+        cycler = _cycle;
+        point = null;
+        catalog = null;
         nodes = new List<primitivNode>();
     }
 

@@ -47,12 +47,13 @@
             this.btGenerateGCode = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.toolStripPrimitiv = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.contextMenu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -73,7 +74,7 @@
             this.treeDataConstructor.Location = new System.Drawing.Point(0, 0);
             this.treeDataConstructor.Name = "treeDataConstructor";
             this.treeDataConstructor.SelectedImageIndex = 0;
-            this.treeDataConstructor.Size = new System.Drawing.Size(652, 654);
+            this.treeDataConstructor.Size = new System.Drawing.Size(668, 629);
             this.treeDataConstructor.TabIndex = 0;
             this.treeDataConstructor.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeDataConstructor_BeforeCollapse);
             this.treeDataConstructor.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeDataConstructor_AfterSelect);
@@ -136,6 +137,8 @@
             this.imageList1.Images.SetKeyName(1, "folder.png");
             this.imageList1.Images.SetKeyName(2, "bullet_blue.png");
             this.imageList1.Images.SetKeyName(3, "draw_line.png");
+            this.imageList1.Images.SetKeyName(4, "arrow_repeat.png");
+            this.imageList1.Images.SetKeyName(5, "arrow_out.png");
             // 
             // toolStrip1
             // 
@@ -205,7 +208,7 @@
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.treeDataConstructor);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(652, 654);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(668, 629);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // toolStripContainer1.LeftToolStripPanel
@@ -226,18 +229,25 @@
             this.toolStripMenuItem2,
             this.toolStripSeparator4,
             this.toolStripLabel2,
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.toolStripButton2});
             this.toolStripPrimitiv.Location = new System.Drawing.Point(0, 3);
             this.toolStripPrimitiv.Name = "toolStripPrimitiv";
-            this.toolStripPrimitiv.Size = new System.Drawing.Size(100, 116);
+            this.toolStripPrimitiv.Size = new System.Drawing.Size(84, 139);
             this.toolStripPrimitiv.TabIndex = 0;
             this.toolStripPrimitiv.Text = "Примитив";
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(82, 15);
+            this.toolStripLabel1.Text = "-Примитивы-";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Image = global::CNC_Controller.Properties.Resources.folder;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(73, 20);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(82, 20);
             this.toolStripMenuItem1.Text = "Группа";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -245,34 +255,38 @@
             // 
             this.toolStripMenuItem2.Image = global::CNC_Controller.Properties.Resources.bullet_blue;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(73, 20);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(82, 20);
             this.toolStripMenuItem2.Text = "Точка";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(98, 15);
-            this.toolStripLabel1.Text = "-Примитивы-";
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(98, 15);
-            this.toolStripLabel2.Text = "-Утилиты-";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(98, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(82, 6);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(82, 15);
+            this.toolStripLabel2.Text = "-Операции-";
             // 
             // toolStripButton1
             // 
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(98, 20);
-            this.toolStripButton1.Text = "Повторитель";
+            this.toolStripButton1.Size = new System.Drawing.Size(82, 20);
+            this.toolStripButton1.Text = "Цикл";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.Enabled = false;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(82, 20);
+            this.toolStripButton2.Text = "Маштаб";
             // 
             // GeneratorCode
             // 
@@ -324,5 +338,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
     }
 }

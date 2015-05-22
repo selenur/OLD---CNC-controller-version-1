@@ -80,6 +80,12 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConstructorGkode\frmCycler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConstructorGkode\frmCycler.Designer.cs">
+      <DependentUpon>frmCycler.cs</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLLER.cs" />
     <Compile Include="EditGkode.cs">
       <SubType>Form</SubType>
@@ -87,28 +93,22 @@
     <Compile Include="EditGkode.Designer.cs">
       <DependentUpon>EditGkode.cs</DependentUpon>
     </Compile>
-    <Compile Include="GeneratorCode.cs">
+    <Compile Include="ConstructorGkode\GeneratorCode.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GeneratorCode.Designer.cs">
+    <Compile Include="ConstructorGkode\GeneratorCode.Designer.cs">
       <DependentUpon>GeneratorCode.cs</DependentUpon>
     </Compile>
-    <Compile Include="LikePointForm.cs">
+    <Compile Include="ConstructorGkode\frmCatalog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LikePointForm.Designer.cs">
-      <DependentUpon>LikePointForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="primitiv\frmCatalog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="primitiv\frmCatalog.Designer.cs">
+    <Compile Include="ConstructorGkode\frmCatalog.Designer.cs">
       <DependentUpon>frmCatalog.cs</DependentUpon>
     </Compile>
-    <Compile Include="primitiv\frmPoint.cs">
+    <Compile Include="ConstructorGkode\frmPoint.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="primitiv\frmPoint.Designer.cs">
+    <Compile Include="ConstructorGkode\frmPoint.Designer.cs">
       <DependentUpon>frmPoint.cs</DependentUpon>
     </Compile>
     <Compile Include="ScanSurface.cs">
@@ -147,19 +147,19 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConstructorGkode\frmCycler.resx">
+      <DependentUpon>frmCycler.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditGkode.resx">
       <DependentUpon>EditGkode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GeneratorCode.resx">
+    <EmbeddedResource Include="ConstructorGkode\GeneratorCode.resx">
       <DependentUpon>GeneratorCode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LikePointForm.resx">
-      <DependentUpon>LikePointForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="primitiv\frmCatalog.resx">
+    <EmbeddedResource Include="ConstructorGkode\frmCatalog.resx">
       <DependentUpon>frmCatalog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="primitiv\frmPoint.resx">
+    <EmbeddedResource Include="ConstructorGkode\frmPoint.resx">
       <DependentUpon>frmPoint.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScanSurface.resx">
