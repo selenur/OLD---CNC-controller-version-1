@@ -47,21 +47,12 @@ namespace CNC_Controller
             RefreshTree();
         }
 
-        // добавление группы
-        private void btAddCatalog_Click(object sender, EventArgs e)
-        {
-            // Добавление группы элементов
-            AddNewGroup();
-        }
+
         private void toolStripMenuAddGroupe_Click(object sender, EventArgs e)
         {
             AddNewGroup();
         }
-        // добавление новой точки
-        private void btAddPoint_Click(object sender, EventArgs e)
-        {
-            AddNewPoint();
-        }
+
         private void toolStripMenuAddPoint_Click(object sender, EventArgs e)
         {
             AddNewPoint();
@@ -441,8 +432,6 @@ namespace CNC_Controller
 
             if (_node.typeNode == primitivType.catalog)
             {
-
-
                 double dX = deltaX;       // координата в мм
                 double dY = deltaY;       // координата в мм
                 double dZ = deltaZ;       // координата в мм
@@ -504,29 +493,10 @@ namespace CNC_Controller
                         {
                             ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ);
                         }
-                    }               
-
+                    }
                 }
-
-
-
-
-
-
-
             }
-
-
-
-
-
-
-    
-
-
-
         }
-
 
         private void CREATE_GKOD()
         {
@@ -537,17 +507,8 @@ namespace CNC_Controller
             ParsePrimitivesToGkode(ref code, _listPrimitives[0]);
 
             //пошлем сгенерированный код
-            _mf.LoadDataFromText(Regex.Split(code, "\n"));  
-
- 
-         
-
+            _mf.LoadDataFromText(Regex.Split(code, "\n"));
         }
-
-
-
-
-
 
         private void DeleteNode(string _GUID, primitivNode _primitiv)
         {
