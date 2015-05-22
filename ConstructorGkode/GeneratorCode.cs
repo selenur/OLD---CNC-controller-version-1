@@ -16,16 +16,18 @@ namespace CNC_Controller
         /// </summary>
         private readonly MainForm _mf;
 
-        // последняя координата, при добавлении примитива
+        // Для упращения ввода новых данных, запоминается последняя введенная координата,
+        // и при добавлении нового примитива эти координаты устанавливаются
         private double _lastX;       // координата в мм
         private double _lastY;       // координата в мм
         private double _lastZ;       // координата в мм
-
 
         /// <summary>
         /// Список примитивов
         /// </summary>
         private List<primitivNode> _listPrimitives = new List<primitivNode>();
+
+
 
         #region Элементы формы добавления данных
 
@@ -45,22 +47,6 @@ namespace CNC_Controller
         {
             _listPrimitives.Clear();
             RefreshTree();
-        }
-
-
-        private void toolStripMenuAddGroupe_Click(object sender, EventArgs e)
-        {
-            AddNewGroup();
-        }
-
-        private void toolStripMenuAddPoint_Click(object sender, EventArgs e)
-        {
-            AddNewPoint();
-        }
-
-        private void treeDataConstructor_Click(object sender, EventArgs e)
-        {
-            //treeDataConstructor.ExpandAll();
         }
 
         private void treeDataConstructor_AfterSelect(object sender, TreeViewEventArgs e)
@@ -124,7 +110,7 @@ namespace CNC_Controller
             }
 
             // Сразу проверим узел выше, т.к. каталог можно создавать в корне дерева, или внутри другого каталога, а создание каталога внутри других элементов нелогично
-            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler))
+            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler || pnfind.typeNode == primitivType.rotate))
             {
                 MessageBox.Show(@"Создание каталога в нутри данного примитива невозможно!");
                 return;
@@ -144,7 +130,7 @@ namespace CNC_Controller
                 _lastY = (double)fCatalog.numPosY.Value;
                 _lastZ = (double)fCatalog.numPosZ.Value;
 
-                primitivNode pn = new primitivNode(new primitivGroup((double)fCatalog.numPosX.Value, (double)fCatalog.numPosY.Value, (double)fCatalog.numPosZ.Value, fCatalog.textBoxName.Text, fCatalog.cbAllowPoint.Checked));
+                primitivNode pn = new primitivNode(new primitivCatalog((double)fCatalog.numPosX.Value, (double)fCatalog.numPosY.Value, (double)fCatalog.numPosZ.Value, fCatalog.textBoxName.Text, fCatalog.cbAllowPoint.Checked));
                 pnfind.nodes.Add(pn);
                 RefreshTree();
             }
@@ -223,7 +209,7 @@ namespace CNC_Controller
             }
 
             // Сразу проверим узел выше, т.к. Циклёр можно создавать в корне дерева, или внутри другого каталога, а создание Циклёра внутри других элементов нелогично
-            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler))
+            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler || pnfind.typeNode == primitivType.rotate))
             {
                 MessageBox.Show(@"Создание циклёра в нутри данного примитива невозможно!");
                 return;
@@ -244,11 +230,54 @@ namespace CNC_Controller
         }
 
 
+        public void AddNewRotate()
+        {
+            TreeNode pNode = treeDataConstructor.SelectedNode;
+
+            // попытаемся получить вышестоящий узел в дереве
+            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
+
+            if (pNode == null) // всетаки неудалось.......
+            {
+                MessageBox.Show(@"DANGER!!! Ошибка указания родителя?!?!");
+                return;
+            }
+
+            // найдем вышестоящий узел в ListPrimitives
+            primitivNode pnfind = findNodeWithGUID(pNode.Name);
+
+            if (pnfind == null)
+            {
+                MessageBox.Show(@"DANGER!!! Ошибка поиска родителя?!?!");
+                return;
+            }
+
+            // Сразу проверим узел выше, т.к. Циклёр можно создавать в корне дерева, или внутри другого каталога, а создание Циклёра внутри других элементов нелогично
+            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler || pnfind.typeNode == primitivType.rotate))
+            {
+                MessageBox.Show(@"Создание циклёра в нутри данного примитива невозможно!");
+                return;
+            }
+
+            // вызовем диалог добавления циклёра
+            frmRotate frotate = new frmRotate(_mf);
+
+            DialogResult dlResult = frotate.ShowDialog();
+
+            if (dlResult == DialogResult.OK)
+            {
+                primitivNode pn = new primitivNode(new primitivRotate((double)frotate.numPosX.Value, (double)frotate.numPosY.Value, (double)frotate.numPosZ.Value, (double)frotate.numericStart.Value, (double)frotate.numericStop.Value, (double)frotate.numericStep.Value, (double)frotate.numericRadius.Value,frotate.cbDirectionRotateClock.Checked, frotate.textBoxName.Text));
+                pnfind.nodes.Add(pn);
+                RefreshTree();
+            }
+        }
+
         #endregion
 
 
         private void OpenFormDialog()
         {
+            if (treeDataConstructor.SelectedNode == null) return;
 
             // Необходимость перезаполнения дерева обновленными данными
             bool NeedRefreshTree = false;
@@ -312,6 +341,46 @@ namespace CNC_Controller
             }
 
 
+            if (pfind.typeNode == primitivType.rotate)
+            {
+                // вызовем диалог добавления группы
+                frmRotate frotate = new frmRotate(_mf);
+
+                frotate.numPosX.Value = (decimal)pfind.rotate.X;
+                frotate.numPosY.Value = (decimal)pfind.rotate.Y;
+                frotate.numPosZ.Value = (decimal)pfind.rotate.Z;
+
+                frotate.numericRadius.Value = (decimal)pfind.rotate.radius;
+                frotate.numericStart.Value = (decimal)pfind.rotate.angleStart;
+                frotate.numericStop.Value = (decimal)pfind.rotate.angleStop;
+                frotate.numericStep.Value = (decimal)pfind.rotate.angleStep;
+                frotate.cbDirectionRotateClock.Checked = pfind.rotate.directionClock;
+
+                frotate.textBoxName.Text = pfind.rotate.Name;
+
+
+                DialogResult dlResult = frotate.ShowDialog();
+
+                if (dlResult == DialogResult.OK)
+                {
+                    pfind.rotate.Name = frotate.textBoxName.Text;
+
+                    pfind.rotate.X = (double)frotate.numPosX.Value;
+                    pfind.rotate.Y=(double)frotate.numPosY.Value;
+                    pfind.rotate.Z=(double)frotate.numPosZ.Value;
+
+                    pfind.rotate.radius=(double)frotate.numericRadius.Value;
+                    pfind.rotate.angleStart=(double)frotate.numericStart.Value;
+                    pfind.rotate.angleStop=(double)frotate.numericStop.Value;
+                    pfind.rotate.angleStep=(double)frotate.numericStep.Value;
+                    pfind.rotate.directionClock = frotate.cbDirectionRotateClock.Checked;
+
+                    NeedRefreshTree = true;
+                }
+            }
+
+
+
             if (pfind.typeNode == primitivType.point)
             {
                 // вызовем диалог добавления группы
@@ -367,8 +436,18 @@ namespace CNC_Controller
                 trNode.ImageIndex = 4;
                 trNode.Name = _primitivNode.GUID;
 
-                trNode.Text = _primitivNode.cycler.Name + "(с: " + _primitivNode.cycler.cStart + " по: " + _primitivNode.cycler.cStop + " шаг:" + +_primitivNode.cycler.cStep +")";
+                trNode.Text = _primitivNode.cycler.Name + "(с: " + _primitivNode.cycler.cStart + " по: " + _primitivNode.cycler.cStop + " шаг:" + +_primitivNode.cycler.cStep + ")";
             }
+
+            if (_primitivNode.typeNode == primitivType.rotate)
+            {
+                trNode.ImageIndex = 6;
+                trNode.Name = _primitivNode.GUID;
+
+                trNode.Text = _primitivNode.rotate.Name;// + "(с: " + _primitivNode.cycler.cStart + " по: " + _primitivNode.cycler.cStop + " шаг:" + +_primitivNode.cycler.cStep + ")";
+            }
+
+
 
             if (_primitivNode.typeNode == primitivType.point)
             {
@@ -396,7 +475,7 @@ namespace CNC_Controller
             //Если нет данных
             if (_listPrimitives.Count == 0)
             {
-                primitivNode pp = new primitivNode(new primitivGroup(0, 0, 0, "Точка старта"));
+                primitivNode pp = new primitivNode(new primitivCatalog(0, 0, 0, "Точка старта"));
                 _listPrimitives.Add(pp);
                 GUIDselectedNode = pp.GUID;
             }
@@ -495,7 +574,31 @@ namespace CNC_Controller
                         }
                     }
                 }
-            }
+            }  
+            
+            if (_node.typeNode == primitivType.rotate)
+                {
+                    double dX = 0;       // координата в мм
+                    double dY = 0;       // координата в мм
+                    double dZ = deltaZ;       // координата в мм
+
+                    for (double angle = _node.rotate.angleStart; angle < _node.rotate.angleStop; angle += _node.rotate.angleStep)
+                    {
+                        double x1 = _node.rotate.X + _node.rotate.radius * Math.Cos(angle * (Math.PI / 180));
+                        double y1 = _node.rotate.Y + _node.rotate.radius * Math.Sin(angle * (Math.PI / 180));
+
+
+                        dX = x1+deltaX;
+                        dY = y1+deltaY;
+                        //dZ += _node.catalog.Z;
+
+
+                        foreach (primitivNode VARIABLE in _node.nodes)
+                        {
+                            ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ);
+                        }
+                    }
+                }
         }
 
         private void CREATE_GKOD()
@@ -523,16 +626,6 @@ namespace CNC_Controller
             }
         }
 
-        private void delPrimitivToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (treeDataConstructor.SelectedNode == null) return;
-
-            if (MessageBox.Show("Удалить выделенный примитив?","Удаление",MessageBoxButtons.OKCancel) != DialogResult.OK) return;
-
-            DeleteNode(treeDataConstructor.SelectedNode.Name, _listPrimitives[0]);
-
-            RefreshTree();
-        }
 
         private void openDialogToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -591,17 +684,84 @@ namespace CNC_Controller
         {
             AddNewCycle();
         }
+
+        /// <summary>
+        /// Буфер для хранения промежуточных данных
+        /// </summary>
+        private primitivNode clipboardPrimitivNode = null;
+
+        // контекст меню копировать
+        private void ToolStripMenuCopyDATA_Click(object sender, EventArgs e)
+        {
+            if (treeDataConstructor.SelectedNode == null) return;
+
+            clipboardPrimitivNode = findNodeWithGUID(treeDataConstructor.SelectedNode.Name);
+        }
+        // контекст меню вставить
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeDataConstructor.SelectedNode == null) return;
+
+            primitivNode tmp = findNodeWithGUID(treeDataConstructor.SelectedNode.Name);
+
+            tmp.nodes.Add(clipboardPrimitivNode);
+
+            clipboardPrimitivNode = null;
+
+            RefreshTree();
+        }
+        // контекст меню вырезать
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeDataConstructor.SelectedNode == null) return;
+
+            clipboardPrimitivNode = findNodeWithGUID(treeDataConstructor.SelectedNode.Name);
+
+            DeleteNode(treeDataConstructor.SelectedNode.Name, _listPrimitives[0]);
+
+            RefreshTree();
+        }
+        // контекст меню удалить
+        private void delPrimitivToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeDataConstructor.SelectedNode == null) return;
+
+            if (MessageBox.Show("Удалить выделенный примитив?", "Удаление", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+
+            DeleteNode(treeDataConstructor.SelectedNode.Name, _listPrimitives[0]);
+
+            RefreshTree();
+        }
+
+        private void contextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            pasteToolStripMenuItem.Enabled = (clipboardPrimitivNode != null);
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            AddNewRotate();
+        }
     }
 }
 
-
-
+/// <summary>
+/// Типы примитивов
+/// </summary>
+[Serializable]
+public enum primitivType
+{
+    catalog,
+    point,
+    cycler,
+    rotate
+}
 
 /// <summary>
 /// Класс описания группы элементов
 /// </summary>
 [Serializable]
-public class primitivGroup
+public class primitivCatalog
 {
     public double X;       // координата в мм
     public double Y;       // координата в мм
@@ -609,7 +769,7 @@ public class primitivGroup
     public string Name;   // для представления
     public bool AllowDelta; // необходимость учитывать данную точку
 
-    public primitivGroup(double _x, double _y, double _z, string _name = "Группа", bool _allowPoint = false)
+    public primitivCatalog(double _x, double _y, double _z, string _name = "Группа", bool _allowPoint = false)
     {
         X = _x;
         Y = _y;
@@ -619,6 +779,45 @@ public class primitivGroup
     }
 }
 
+/// <summary>
+/// Класс описания вращения (пока на плоскости xy)
+/// </summary>
+[Serializable]
+public class primitivRotate
+{
+    //центр вращения
+    public double X;  // координата в мм
+    public double Y;  // координата в мм
+    public double Z;  // координата в мм
+    // шаг вращения
+    public double angleStart;  // градус начала
+    public double angleStop;   // градус окончания
+    public double angleStep;   // градус шага
+    public double radius;      // радиус окружности
+
+    public bool directionClock; //направление вращения
+
+    public string Name;   // для представления
+
+    public primitivRotate(double _x, double _y, double _z,double _angleStart,double _angleStop,double _angleStep, double _radius,bool _directionClock, string _name = "Вращение")
+    {
+        X = _x;
+        Y = _y;
+        Z = _z;
+
+        angleStart = _angleStart;
+        angleStop = _angleStop;
+        angleStep = _angleStep;
+        radius = _radius;
+        directionClock = directionClock;
+
+        Name = _name;
+    }
+}
+
+/// <summary>
+/// Класс описания цикла
+/// </summary>
 [Serializable]
 public class primitivCycle
 {
@@ -658,18 +857,7 @@ public class primitivPoint
         Y = _y;
         Z = _z;
     }
-
 }
-
-[Serializable]
-public enum primitivType
-{
-    catalog,
-    point,
-    cycler
-
-}
-
 
 /// <summary>
 /// Класс для хранения данных, конструктора
@@ -679,28 +867,37 @@ public class primitivNode
 {
     public string GUID;
     public primitivType typeNode;
-    public primitivGroup catalog;
-    public primitivCycle cycler;
+
+    public primitivCatalog catalog;
     public primitivPoint point;
+    public primitivCycle cycler;
+    public primitivRotate rotate;
+
     public List<primitivNode> nodes;
 
     public primitivNode()
     {
         GUID = "";
         typeNode = primitivType.catalog;
+
         catalog = null;
         point = null;
+        cycler = null;
+        rotate = null;
+
         nodes = new List<primitivNode>();
     }
 
-
-    public primitivNode(primitivGroup _catalog)
+    public primitivNode(primitivCatalog _catalog)
     {
         GUID = Guid.NewGuid().ToString();
         typeNode = primitivType.catalog;
+
         catalog = _catalog;
         point = null;
-        //line = null;
+        cycler = null;
+        rotate = null;
+
         nodes = new List<primitivNode>();
     }
 
@@ -708,9 +905,12 @@ public class primitivNode
     {
         GUID = Guid.NewGuid().ToString();
         typeNode = primitivType.cycler;
+
+        catalog = null;    
+        point = null;   
         cycler = _cycle;
-        point = null;
-        catalog = null;
+        rotate = null;
+
         nodes = new List<primitivNode>();
     }
 
@@ -718,192 +918,25 @@ public class primitivNode
     {
         GUID = Guid.NewGuid().ToString();
         typeNode = primitivType.point;
+
         catalog = null;
         point = _point;
-        //line = null;
+        cycler = null;
+        rotate = null;
+
         nodes = new List<primitivNode>();
     }
 
-    public primitivNode(string _GUID, primitivType _typeNode, primitivGroup _catalog, primitivPoint _point, List<primitivNode> _nodes)
+    public primitivNode(primitivRotate _rotate)
     {
-        GUID = _GUID;
-        typeNode = _typeNode;
-        catalog = _catalog;
-        point = _point;
-        nodes = _nodes;
+        GUID = Guid.NewGuid().ToString();
+        typeNode = primitivType.rotate;
+
+        catalog = null;
+        point = null;
+        cycler = null;
+        rotate = _rotate;
+
+        nodes = new List<primitivNode>();
     }
 }
-
-
-//////// Добавление новой линии в дерево
-//////public void AddNewLine()
-//////{
-//////    TreeNode pNode = treeDataConstructor.SelectedNode;
-
-//////    // попытаемся получить вышестоящий узел в дереве
-//////    if (pNode == null) pNode = treeDataConstructor.Nodes[0];
-
-//////    if (pNode == null) // всетаки неудалось.......
-//////    {
-//////        MessageBox.Show(@"DANGER!!! Ошибка указания родителя?!?!");
-//////        return;
-//////    }
-
-
-//////    // найдем вышестоящий узел в ListPrimitives
-//////    primitivNode pnfind = findNodeWithGUID(pNode.Name);
-
-//////    if (pnfind == null)
-//////    {
-//////        MessageBox.Show(@"DANGER!!! Ошибка поиска родителя?!?!");
-//////        return;
-//////    }
-
-//////    // Сразу проверим узел выше, т.к. линию можно создавать в корне дерева, или внутри другого каталога, а создание линии внутри других элементов нелогично
-//////    if (pnfind.typeNode != primitivType.catalog)
-//////    {
-//////        MessageBox.Show(@"Создание линии возможно только в корне, или внутри другого каталога!");
-//////        return;
-//////    }
-
-//////    //TODO: !!!????
-
-//////    ////////////////точки у линии
-//////    //////////////primitivPoint pp1 = new primitivPoint(0, 0, 0);
-//////    //////////////primitivPoint pp2 = new primitivPoint(1, 1, 1);
-
-//////    //////////////primitivLine pline = new primitivLine(pp1, pp2);
-
-//////    //////////////primitivNode pn = new primitivNode(pline);
-
-//////    ////////////////pn.nodes.Add(new primitivNode(new primitivPoint(0,0,0)));
-
-//////    //////////////pnfind.nodes.Add(pn);
-
-//////    //////////////pNode.Nodes.Add(pn.GUID, "line", 3).Expand();
-
-//////    //////////////treeDataConstructor.ExpandAll();
-
-
-
-//////    //TreeNode tr = resultNode.Add(pn.GUID, "Line", 3);
-//////    //AddNewPoint(tr);
-//////    //AddNewPoint(tr);
-
-
-//////    //if (_treeNode == null)
-//////    //{
-//////    //    TreeNode tr = treeDataConstructor.Nodes.Add("Line", "Line", 3);
-//////    //    AddNewPoint(tr);
-//////    //    AddNewPoint(tr);
-//////    //}
-//////    //else
-//////    //{
-
-//////    //    TreeNode tr = _treeNode.Nodes.Add("Line", "Line", 3);
-//////    //    // т.к. линия это набор из точек
-//////    //    AddNewPoint(tr);
-//////    //    AddNewPoint(tr);
-//////    //}
-
-
-//////}
-
-
-
-
-//    // 1. прямолинейное движение к начальной точке
-//    code += "G0 X" + numPosX.Value.ToString() + " Y" + numPosY.Value.ToString() + "\n";
-//    code += "G1 Z" + numPosZ.Value.ToString() + "\n";
-
-//    // 2. движение змейкой
-
-
-//    bool toLeft = true; // направление движения змейки
-
-
-//    int countTask = (int)numericUpDown1.Value + 1;
-
-//    decimal posZ = numPosZ.Value;
-
-//    while (countTask > 0)
-//    {
-
-
-//        decimal posYNow = numPosY.Value;
-//        decimal posYMax = numPosY.Value + numericUpDownSizeY.Value;
-//        decimal posXMax = numPosX.Value + numericUpDownSizeX.Value;
-
-
-//        while (posYNow != posYMax)
-//        {
-//            if (toLeft)
-//            {
-//                toLeft = false;
-//                code += "G1 X" + posXMax.ToString() + "\n";
-//            }
-//            else
-//            {
-//                toLeft = true;
-//                code += "G1 X" + numPosX.Value.ToString() + "\n";
-//            }
-
-//            if ((posYNow + numericUpDownDelta.Value) > (numPosY.Value + numericUpDownSizeY.Value))
-//            {
-//                posYNow = posYMax;
-//            }
-//            else
-//            {
-//                posYNow += numericUpDownDelta.Value;
-//            }
-
-//            code += "G1 Y" + posYNow.ToString() + "\n";
-//        }
-
-
-//        if (toLeft)
-//        {
-//            code += "G1 X" + posXMax.ToString() + "\n";
-//        }
-//        else
-//        {
-//            code += "G1 X" + numPosX.Value.ToString() + "\n";
-//        }
-
-//        posZ -= numericUpDown2.Value;
-
-//        code += "G0 Z" + posZ + "\n";
-
-
-
-//        countTask--;
-//    }
-
-
-
-
-//    //for (decimal y = numPosY.Value; y < (numPosY.Value + numericUpDownSizeY.Value); y += numericUpDownDelta.Value)
-//    //{
-
-//    //    
-
-//    //    //
-
-
-
-
-
-//    //}
-
-
-
-
-//    if (radioButton2.Checked)
-//    {
-//        // 3. Поднятие вверх
-//        code += "G0 Z" + numericUpDown3.Value.ToString() + "\n";
-//    }
-
-
-
-

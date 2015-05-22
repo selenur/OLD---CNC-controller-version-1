@@ -67,3 +67,4 @@ D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.GeneratorCode.resource
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.primitiv.frmCatalog.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.primitiv.frmPoint.resources
 D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.ConstructorGkode.frmCycler.resources
+D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_Controller.ConstructorGkode.frmRotate.resources

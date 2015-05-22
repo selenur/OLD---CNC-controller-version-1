@@ -86,6 +86,12 @@
     <Compile Include="ConstructorGkode\frmCycler.Designer.cs">
       <DependentUpon>frmCycler.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConstructorGkode\frmRotate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConstructorGkode\frmRotate.Designer.cs">
+      <DependentUpon>frmRotate.cs</DependentUpon>
+    </Compile>
     <Compile Include="CONTROLLER.cs" />
     <Compile Include="EditGkode.cs">
       <SubType>Form</SubType>
@@ -149,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConstructorGkode\frmCycler.resx">
       <DependentUpon>frmCycler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstructorGkode\frmRotate.resx">
+      <DependentUpon>frmRotate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditGkode.resx">
       <DependentUpon>EditGkode.cs</DependentUpon>
@@ -299,11 +308,15 @@
     <None Include="picture\cancel2.png" />
     <None Include="picture\application.png" />
     <None Include="picture\delete.png" />
+    <None Include="Resources\cut_red.png" />
+    <None Include="Resources\page_paste.png" />
+    <None Include="Resources\page_copy.png" />
+    <None Include="Resources\arrow_up.png" />
+    <None Include="Resources\arrow_down.png" />
+    <None Include="Resources\cross.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
