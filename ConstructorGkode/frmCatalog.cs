@@ -13,21 +13,21 @@ namespace CNC_Controller.primitiv
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btAppy_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
 
         private void btGetPosition_Click(object sender, EventArgs e)
         {
-            numPosX.Value = deviceInfo.AxesX_PositionMM;
-            numPosY.Value = deviceInfo.AxesY_PositionMM;
-            numPosZ.Value = deviceInfo.AxesZ_PositionMM;
+            deltaX.Value = deviceInfo.AxesX_PositionMM;
+            deltaY.Value = deviceInfo.AxesY_PositionMM;
+            deltaZ.Value = deviceInfo.AxesZ_PositionMM;
         }
 
         private void frmCatalog_Load(object sender, EventArgs e)

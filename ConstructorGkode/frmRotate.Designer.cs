@@ -58,7 +58,11 @@
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.cbDirectionRotateClock = new System.Windows.Forms.CheckBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
@@ -73,6 +77,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // button3
@@ -80,7 +86,7 @@
             this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button3.Image = global::CNC_Controller.Properties.Resources.cancel2;
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(150, 379);
+            this.button3.Location = new System.Drawing.Point(150, 633);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(105, 57);
             this.button3.TabIndex = 42;
@@ -93,7 +99,7 @@
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Image = global::CNC_Controller.Properties.Resources.accept_button2;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(5, 379);
+            this.button1.Location = new System.Drawing.Point(5, 633);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 57);
             this.button1.TabIndex = 41;
@@ -310,11 +316,11 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(147, 215);
+            this.label4.Location = new System.Drawing.Point(25, 215);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(36, 16);
+            this.label4.Size = new System.Drawing.Size(158, 16);
             this.label4.TabIndex = 48;
-            this.label4.Text = "Шаг:";
+            this.label4.Text = "Шаг поворота (градус):";
             // 
             // numericRadius
             // 
@@ -363,7 +369,7 @@
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.numericUpDown6);
-            this.groupBox1.Location = new System.Drawing.Point(15, 266);
+            this.groupBox1.Location = new System.Drawing.Point(15, 520);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(243, 107);
             this.groupBox1.TabIndex = 52;
@@ -545,22 +551,86 @@
             this.label9.TabIndex = 53;
             this.label9.Text = "Имя:";
             // 
-            // cbDirectionRotateClock
+            // numericUpDown1
             // 
-            this.cbDirectionRotateClock.AutoSize = true;
-            this.cbDirectionRotateClock.Location = new System.Drawing.Point(41, 245);
-            this.cbDirectionRotateClock.Name = "cbDirectionRotateClock";
-            this.cbDirectionRotateClock.Size = new System.Drawing.Size(181, 17);
-            this.cbDirectionRotateClock.TabIndex = 55;
-            this.cbDirectionRotateClock.Text = "Вращение по часовой стрелке";
-            this.cbDirectionRotateClock.UseVisualStyleBackColor = true;
+            this.numericUpDown1.DecimalPlaces = 3;
+            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numericUpDown1.Location = new System.Drawing.Point(165, 417);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown1.TabIndex = 56;
+            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.Location = new System.Drawing.Point(9, 398);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(198, 16);
+            this.label10.TabIndex = 55;
+            this.label10.Text = "Шаг изменения радиуса (мм):";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.DecimalPlaces = 3;
+            this.numericUpDown2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.numericUpDown2.Location = new System.Drawing.Point(165, 478);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown2.TabIndex = 58;
+            this.numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.Location = new System.Drawing.Point(10, 459);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(205, 16);
+            this.label11.TabIndex = 57;
+            this.label11.Text = "Шаг поворота груупы(градус):";
+            // 
+            // label12
+            // 
+            this.label12.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.label12.Location = new System.Drawing.Point(12, 270);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(241, 47);
+            this.label12.TabIndex = 59;
+            this.label12.Text = "При положительном угле данные поворачиваются против часовой стрелки, при отрицате" +
+    "льном угле по часовой стрелке";
             // 
             // frmRotate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(265, 443);
-            this.Controls.Add(this.cbDirectionRotateClock);
+            this.ClientSize = new System.Drawing.Size(265, 700);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.numericUpDown2);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.groupBox1);
@@ -601,6 +671,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -638,6 +710,10 @@
         public System.Windows.Forms.NumericUpDown numericUpDown6;
         public System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.Label label9;
-        public System.Windows.Forms.CheckBox cbDirectionRotateClock;
+        public System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label10;
+        public System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
     }
 }

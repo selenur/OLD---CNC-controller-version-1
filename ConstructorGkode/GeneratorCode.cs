@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
@@ -118,19 +119,19 @@ namespace CNC_Controller
 
             // вызовем диалог добавления группы
             frmCatalog fCatalog = new frmCatalog(_mf);
-            fCatalog.numPosX.Value = (decimal)_lastX;
-            fCatalog.numPosY.Value = (decimal)_lastY;
-            fCatalog.numPosZ.Value = (decimal)_lastZ;
+            fCatalog.deltaX.Value = (decimal)_lastX;
+            fCatalog.deltaY.Value = (decimal)_lastY;
+            fCatalog.deltaZ.Value = (decimal)_lastZ;
 
             DialogResult dlResult = fCatalog.ShowDialog();
 
             if (dlResult == DialogResult.OK)
             {
-                _lastX = (double)fCatalog.numPosX.Value;
-                _lastY = (double)fCatalog.numPosY.Value;
-                _lastZ = (double)fCatalog.numPosZ.Value;
+                _lastX = (double)fCatalog.deltaX.Value;
+                _lastY = (double)fCatalog.deltaY.Value;
+                _lastZ = (double)fCatalog.deltaZ.Value;
 
-                primitivNode pn = new primitivNode(new primitivCatalog((double)fCatalog.numPosX.Value, (double)fCatalog.numPosY.Value, (double)fCatalog.numPosZ.Value, fCatalog.textBoxName.Text, fCatalog.cbAllowPoint.Checked));
+                primitivNode pn = new primitivNode(new primitivCatalog((double)fCatalog.deltaX.Value, (double)fCatalog.deltaY.Value, (double)fCatalog.deltaZ.Value, (double)fCatalog.deltaRotate.Value, fCatalog.textBoxName.Text));
                 pnfind.nodes.Add(pn);
                 RefreshTree();
             }
@@ -266,7 +267,7 @@ namespace CNC_Controller
 
             if (dlResult == DialogResult.OK)
             {
-                primitivNode pn = new primitivNode(new primitivRotate((double)frotate.numPosX.Value, (double)frotate.numPosY.Value, (double)frotate.numPosZ.Value, (double)frotate.numericStart.Value, (double)frotate.numericStop.Value, (double)frotate.numericStep.Value, (double)frotate.numericRadius.Value,frotate.cbDirectionRotateClock.Checked, frotate.textBoxName.Text));
+                primitivNode pn = new primitivNode(new primitivRotate((double)frotate.numPosX.Value, (double)frotate.numPosY.Value, (double)frotate.numPosZ.Value, (double)frotate.numericStart.Value, (double)frotate.numericStop.Value, (double)frotate.numericStep.Value, (double)frotate.numericRadius.Value, frotate.textBoxName.Text));
                 pnfind.nodes.Add(pn);
                 RefreshTree();
             }
@@ -290,21 +291,21 @@ namespace CNC_Controller
             {
                 // вызовем диалог добавления группы
                 frmCatalog fCatalog = new frmCatalog(_mf);
-                fCatalog.numPosX.Value = (decimal)pfind.catalog.X;
-                fCatalog.numPosY.Value = (decimal)pfind.catalog.Y;
-                fCatalog.numPosZ.Value = (decimal)pfind.catalog.Z;
+                fCatalog.deltaX.Value = (decimal)pfind.catalog.deltaX;
+                fCatalog.deltaY.Value = (decimal)pfind.catalog.deltaY;
+                fCatalog.deltaZ.Value = (decimal)pfind.catalog.deltaZ;
                 fCatalog.textBoxName.Text = pfind.catalog.Name;
-                fCatalog.cbAllowPoint.Checked = pfind.catalog.AllowDelta;
+                fCatalog.deltaRotate.Value = (decimal)pfind.catalog.deltaRotate;
 
                 DialogResult dlResult = fCatalog.ShowDialog();
 
                 if (dlResult == DialogResult.OK)
                 {
-                    pfind.catalog.X = (double)fCatalog.numPosX.Value;
-                    pfind.catalog.Y = (double)fCatalog.numPosY.Value;
-                    pfind.catalog.Z = (double)fCatalog.numPosZ.Value;
+                    pfind.catalog.deltaX = (double)fCatalog.deltaX.Value;
+                    pfind.catalog.deltaY = (double)fCatalog.deltaY.Value;
+                    pfind.catalog.deltaZ = (double)fCatalog.deltaZ.Value;
                     pfind.catalog.Name = fCatalog.textBoxName.Text;
-                    pfind.catalog.AllowDelta = fCatalog.cbAllowPoint.Checked;
+                    pfind.catalog.deltaRotate = (double)fCatalog.deltaRotate.Value;
 
                     NeedRefreshTree = true;
                 }
@@ -354,7 +355,6 @@ namespace CNC_Controller
                 frotate.numericStart.Value = (decimal)pfind.rotate.angleStart;
                 frotate.numericStop.Value = (decimal)pfind.rotate.angleStop;
                 frotate.numericStep.Value = (decimal)pfind.rotate.angleStep;
-                frotate.cbDirectionRotateClock.Checked = pfind.rotate.directionClock;
 
                 frotate.textBoxName.Text = pfind.rotate.Name;
 
@@ -373,7 +373,6 @@ namespace CNC_Controller
                     pfind.rotate.angleStart=(double)frotate.numericStart.Value;
                     pfind.rotate.angleStop=(double)frotate.numericStop.Value;
                     pfind.rotate.angleStep=(double)frotate.numericStep.Value;
-                    pfind.rotate.directionClock = frotate.cbDirectionRotateClock.Checked;
 
                     NeedRefreshTree = true;
                 }
@@ -475,7 +474,7 @@ namespace CNC_Controller
             //Если нет данных
             if (_listPrimitives.Count == 0)
             {
-                primitivNode pp = new primitivNode(new primitivCatalog(0, 0, 0, "Точка старта"));
+                primitivNode pp = new primitivNode(new primitivCatalog(0, 0, 0, 0, "Точка старта"));
                 _listPrimitives.Add(pp);
                 GUIDselectedNode = pp.GUID;
             }
@@ -500,11 +499,36 @@ namespace CNC_Controller
 
         }
 
-        private void ParsePrimitivesToGkode(ref string _strCode, primitivNode _node, double deltaX = 0, double deltaY = 0, double deltaZ = 0)
+
+        // Получение G-кода из данных конструктора
+        private void ParsePrimitivesToGkode(ref string _strCode, primitivNode _node, double deltaX = 0, double deltaY = 0, double deltaZ = 0, double deltaRotate = 0)
         {
             if (_node.typeNode == primitivType.point)
             {
-                _strCode += "G1 X" + (_node.point.X + deltaX) + " Y" + (_node.point.Y + deltaY) + " Z" + (_node.point.Z + deltaZ) + "\n";
+
+                //TODO: тут нужно пересчитать координаты, с учетом вращения
+
+                //vec2 rotate(vec2 point, float angle){
+                       //vec2 rotated_point;
+                       //rotated_point.x = point.x * cos(angle) - point.y * sin(angle);
+                       //rotated_point.y = point.x * sin(angle) + point.y * cos(angle);
+                //return rotated_point;
+
+
+                //double anleNow = Math.Atan(_node.point.Y/_node.point.X);
+
+
+                double rotatedX = _node.point.X * Math.Cos(deltaRotate * (Math.PI / 180)) - _node.point.Y * Math.Sin(deltaRotate * (Math.PI / 180));
+                double rotatedY = _node.point.X * Math.Sin(deltaRotate * (Math.PI / 180)) + _node.point.Y * Math.Cos(deltaRotate * (Math.PI / 180));
+
+
+
+                double xpp = rotatedX + deltaX;
+                double ypp = rotatedY + deltaY;
+                double zpp = _node.point.Z + deltaZ;
+
+                _strCode += "G1 X" + (Math.Round(xpp,3)) + " Y" + (Math.Round(ypp,3)) + " Z" + (zpp) + "\n";
+                //_strCode += "G1 X" + (_node.point.X + deltaX) + " Y" + (_node.point.Y + deltaY) + " Z" + (_node.point.Z + deltaZ) + "\n";
                 return;
             }
 
@@ -514,17 +538,16 @@ namespace CNC_Controller
                 double dX = deltaX;       // координата в мм
                 double dY = deltaY;       // координата в мм
                 double dZ = deltaZ;       // координата в мм
+                double dR = deltaRotate;  // значение в градусах
 
-                if (_node.catalog.AllowDelta)
-                {
-                    dX += _node.catalog.X;
-                    dY += _node.catalog.Y;
-                    dZ += _node.catalog.Z;
-                }
+                dX += _node.catalog.deltaX;
+                dY += _node.catalog.deltaY;
+                dZ += _node.catalog.deltaZ;
+                dR += _node.catalog.deltaRotate;
 
                 foreach (primitivNode VARIABLE in _node.nodes)
                 {
-                    ParsePrimitivesToGkode(ref _strCode,VARIABLE,dX,dY,dZ);
+                    ParsePrimitivesToGkode(ref _strCode,VARIABLE,dX,dY,dZ,dR);
                 }
             }
 
@@ -763,19 +786,24 @@ public enum primitivType
 [Serializable]
 public class primitivCatalog
 {
-    public double X;       // координата в мм
-    public double Y;       // координата в мм
-    public double Z;       // координата в мм
-    public string Name;   // для представления
-    public bool AllowDelta; // необходимость учитывать данную точку
+    //Смещения елементов в нутри данной группы
+    public double deltaX;       // координата в мм
+    public double deltaY;       // координата в мм
+    public double deltaZ;       // координата в мм
 
-    public primitivCatalog(double _x, double _y, double _z, string _name = "Группа", bool _allowPoint = false)
+    //угол поворота
+    public double deltaRotate;       // координата в мм
+    
+    // для представления
+    public string Name;
+
+    public primitivCatalog(double _deltaX, double _deltaY, double _deltaZ, double _deltaRotate, string _name = "Группа")
     {
-        X = _x;
-        Y = _y;
-        Z = _z;
+        deltaX = _deltaX;
+        deltaY = _deltaY;
+        deltaZ = _deltaZ;
+        deltaRotate = _deltaRotate;
         Name = _name;
-        AllowDelta = _allowPoint;
     }
 }
 
@@ -795,11 +823,10 @@ public class primitivRotate
     public double angleStep;   // градус шага
     public double radius;      // радиус окружности
 
-    public bool directionClock; //направление вращения
 
     public string Name;   // для представления
 
-    public primitivRotate(double _x, double _y, double _z,double _angleStart,double _angleStop,double _angleStep, double _radius,bool _directionClock, string _name = "Вращение")
+    public primitivRotate(double _x, double _y, double _z,double _angleStart,double _angleStop,double _angleStep, double _radius, string _name = "Вращение")
     {
         X = _x;
         Y = _y;
@@ -809,7 +836,6 @@ public class primitivRotate
         angleStop = _angleStop;
         angleStep = _angleStep;
         radius = _radius;
-        directionClock = directionClock;
 
         Name = _name;
     }

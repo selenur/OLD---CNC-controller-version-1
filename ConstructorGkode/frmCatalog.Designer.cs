@@ -29,122 +29,124 @@
         private void InitializeComponent()
         {
             this.labelposX = new System.Windows.Forms.Label();
-            this.numPosZ = new System.Windows.Forms.NumericUpDown();
+            this.deltaZ = new System.Windows.Forms.NumericUpDown();
             this.labelposY = new System.Windows.Forms.Label();
-            this.numPosY = new System.Windows.Forms.NumericUpDown();
+            this.deltaY = new System.Windows.Forms.NumericUpDown();
             this.labelposZ = new System.Windows.Forms.Label();
-            this.numPosX = new System.Windows.Forms.NumericUpDown();
+            this.deltaX = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
+            this.btAppy = new System.Windows.Forms.Button();
             this.btGetPosition = new System.Windows.Forms.Button();
-            this.cbAllowPoint = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
+            this.deltaRotate = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaRotate)).BeginInit();
             this.SuspendLayout();
             // 
             // labelposX
             // 
             this.labelposX.AutoSize = true;
             this.labelposX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposX.Location = new System.Drawing.Point(12, 92);
+            this.labelposX.Location = new System.Drawing.Point(8, 73);
             this.labelposX.Name = "labelposX";
-            this.labelposX.Size = new System.Drawing.Size(16, 16);
+            this.labelposX.Size = new System.Drawing.Size(31, 16);
             this.labelposX.TabIndex = 13;
-            this.labelposX.Text = "X";
+            this.labelposX.Text = "∆ X:";
             // 
-            // numPosZ
+            // deltaZ
             // 
-            this.numPosZ.DecimalPlaces = 3;
-            this.numPosZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosZ.Location = new System.Drawing.Point(39, 134);
-            this.numPosZ.Maximum = new decimal(new int[] {
+            this.deltaZ.DecimalPlaces = 3;
+            this.deltaZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.deltaZ.Location = new System.Drawing.Point(44, 115);
+            this.deltaZ.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numPosZ.Minimum = new decimal(new int[] {
+            this.deltaZ.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numPosZ.Name = "numPosZ";
-            this.numPosZ.Size = new System.Drawing.Size(73, 22);
-            this.numPosZ.TabIndex = 18;
-            this.numPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.deltaZ.Name = "deltaZ";
+            this.deltaZ.Size = new System.Drawing.Size(73, 22);
+            this.deltaZ.TabIndex = 18;
+            this.deltaZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // labelposY
             // 
             this.labelposY.AutoSize = true;
             this.labelposY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposY.Location = new System.Drawing.Point(12, 115);
+            this.labelposY.Location = new System.Drawing.Point(8, 96);
             this.labelposY.Name = "labelposY";
-            this.labelposY.Size = new System.Drawing.Size(17, 16);
+            this.labelposY.Size = new System.Drawing.Size(32, 16);
             this.labelposY.TabIndex = 14;
-            this.labelposY.Text = "Y";
+            this.labelposY.Text = "∆ Y:";
             // 
-            // numPosY
+            // deltaY
             // 
-            this.numPosY.DecimalPlaces = 3;
-            this.numPosY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosY.Location = new System.Drawing.Point(39, 111);
-            this.numPosY.Maximum = new decimal(new int[] {
+            this.deltaY.DecimalPlaces = 3;
+            this.deltaY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.deltaY.Location = new System.Drawing.Point(44, 92);
+            this.deltaY.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numPosY.Minimum = new decimal(new int[] {
+            this.deltaY.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numPosY.Name = "numPosY";
-            this.numPosY.Size = new System.Drawing.Size(73, 22);
-            this.numPosY.TabIndex = 17;
-            this.numPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.deltaY.Name = "deltaY";
+            this.deltaY.Size = new System.Drawing.Size(73, 22);
+            this.deltaY.TabIndex = 17;
+            this.deltaY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // labelposZ
             // 
             this.labelposZ.AutoSize = true;
             this.labelposZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposZ.Location = new System.Drawing.Point(13, 137);
+            this.labelposZ.Location = new System.Drawing.Point(8, 118);
             this.labelposZ.Name = "labelposZ";
-            this.labelposZ.Size = new System.Drawing.Size(16, 16);
+            this.labelposZ.Size = new System.Drawing.Size(31, 16);
             this.labelposZ.TabIndex = 15;
-            this.labelposZ.Text = "Z";
+            this.labelposZ.Text = "∆ Z:";
             // 
-            // numPosX
+            // deltaX
             // 
-            this.numPosX.DecimalPlaces = 3;
-            this.numPosX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosX.Location = new System.Drawing.Point(39, 88);
-            this.numPosX.Maximum = new decimal(new int[] {
+            this.deltaX.DecimalPlaces = 3;
+            this.deltaX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.deltaX.Location = new System.Drawing.Point(44, 69);
+            this.deltaX.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numPosX.Minimum = new decimal(new int[] {
+            this.deltaX.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numPosX.Name = "numPosX";
-            this.numPosX.Size = new System.Drawing.Size(73, 22);
-            this.numPosX.TabIndex = 16;
-            this.numPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.deltaX.Name = "deltaX";
+            this.deltaX.Size = new System.Drawing.Size(73, 22);
+            this.deltaX.TabIndex = 16;
+            this.deltaX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(8, 69);
+            this.label1.Location = new System.Drawing.Point(8, 31);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(249, 16);
+            this.label1.Size = new System.Drawing.Size(249, 38);
             this.label1.TabIndex = 20;
-            this.label1.Text = "Начальная точка, группы элементов";
+            this.label1.Text = "Корректировка данных у примитивов внутри данной группы";
             // 
             // label2
             // 
@@ -163,42 +165,42 @@
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(164, 22);
             this.textBoxName.TabIndex = 22;
-            this.textBoxName.Text = "каталог";
+            this.textBoxName.Text = "Группа";
             // 
-            // button3
+            // btCancel
             // 
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button3.Image = global::CNC_Controller.Properties.Resources.cancel2;
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(157, 162);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(105, 57);
-            this.button3.TabIndex = 24;
-            this.button3.Text = "Отмена";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btCancel.Image = global::CNC_Controller.Properties.Resources.cancel2;
+            this.btCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btCancel.Location = new System.Drawing.Point(157, 250);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(105, 57);
+            this.btCancel.TabIndex = 24;
+            this.btCancel.Text = "Отмена";
+            this.btCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
             // 
-            // button1
+            // btAppy
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Image = global::CNC_Controller.Properties.Resources.accept_button2;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(8, 162);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(104, 57);
-            this.button1.TabIndex = 23;
-            this.button1.Text = "Применить";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btAppy.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btAppy.Image = global::CNC_Controller.Properties.Resources.accept_button2;
+            this.btAppy.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btAppy.Location = new System.Drawing.Point(8, 250);
+            this.btAppy.Name = "btAppy";
+            this.btAppy.Size = new System.Drawing.Size(104, 57);
+            this.btAppy.TabIndex = 23;
+            this.btAppy.Text = "Применить";
+            this.btAppy.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btAppy.UseVisualStyleBackColor = true;
+            this.btAppy.Click += new System.EventHandler(this.btAppy_Click);
             // 
             // btGetPosition
             // 
             this.btGetPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btGetPosition.Image = global::CNC_Controller.Properties.Resources.geolocation_sight;
             this.btGetPosition.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btGetPosition.Location = new System.Drawing.Point(118, 88);
+            this.btGetPosition.Location = new System.Drawing.Point(118, 69);
             this.btGetPosition.Name = "btGetPosition";
             this.btGetPosition.Size = new System.Drawing.Size(144, 68);
             this.btGetPosition.TabIndex = 19;
@@ -207,40 +209,72 @@
             this.btGetPosition.UseVisualStyleBackColor = true;
             this.btGetPosition.Click += new System.EventHandler(this.btGetPosition_Click);
             // 
-            // cbAllowPoint
+            // deltaRotate
             // 
-            this.cbAllowPoint.Location = new System.Drawing.Point(17, 35);
-            this.cbAllowPoint.Name = "cbAllowPoint";
-            this.cbAllowPoint.Size = new System.Drawing.Size(231, 30);
-            this.cbAllowPoint.TabIndex = 25;
-            this.cbAllowPoint.Text = "Применить корректировку координат, примитивов, внутри данной группы";
-            this.cbAllowPoint.UseVisualStyleBackColor = true;
+            this.deltaRotate.DecimalPlaces = 3;
+            this.deltaRotate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.deltaRotate.Location = new System.Drawing.Point(189, 155);
+            this.deltaRotate.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.deltaRotate.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.deltaRotate.Name = "deltaRotate";
+            this.deltaRotate.Size = new System.Drawing.Size(73, 22);
+            this.deltaRotate.TabIndex = 25;
+            this.deltaRotate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(12, 145);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(171, 45);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "Угол поворота, всех элементов относительно точки 0,0,0 в плоскости XY";
+            // 
+            // label4
+            // 
+            this.label4.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.label4.Location = new System.Drawing.Point(15, 193);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(241, 47);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "При положительном угле данные поворачиваются против часовой стрелки, при отрицате" +
+    "льном угле по часовой стрелке";
             // 
             // frmCatalog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(269, 224);
-            this.Controls.Add(this.cbAllowPoint);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(269, 314);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.deltaRotate);
+            this.Controls.Add(this.btCancel);
+            this.Controls.Add(this.btAppy);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btGetPosition);
             this.Controls.Add(this.labelposX);
-            this.Controls.Add(this.numPosZ);
+            this.Controls.Add(this.deltaZ);
             this.Controls.Add(this.labelposY);
-            this.Controls.Add(this.numPosY);
+            this.Controls.Add(this.deltaY);
             this.Controls.Add(this.labelposZ);
-            this.Controls.Add(this.numPosX);
+            this.Controls.Add(this.deltaX);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmCatalog";
             this.Text = "Группа элементов";
             this.Load += new System.EventHandler(this.frmCatalog_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaRotate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -254,12 +288,14 @@
         private System.Windows.Forms.Label labelposZ;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button3;
-        public System.Windows.Forms.NumericUpDown numPosZ;
-        public System.Windows.Forms.NumericUpDown numPosY;
-        public System.Windows.Forms.NumericUpDown numPosX;
+        private System.Windows.Forms.Button btAppy;
+        private System.Windows.Forms.Button btCancel;
+        public System.Windows.Forms.NumericUpDown deltaZ;
+        public System.Windows.Forms.NumericUpDown deltaY;
+        public System.Windows.Forms.NumericUpDown deltaX;
         public System.Windows.Forms.TextBox textBoxName;
-        public System.Windows.Forms.CheckBox cbAllowPoint;
+        public System.Windows.Forms.NumericUpDown deltaRotate;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
