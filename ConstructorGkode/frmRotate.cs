@@ -25,9 +25,9 @@ namespace CNC_Controller.ConstructorGkode
 
         private void btGetPosition_Click(object sender, EventArgs e)
         {
-            numPosX.Value = deviceInfo.AxesX_PositionMM;
-            numPosY.Value = deviceInfo.AxesY_PositionMM;
-            numPosZ.Value = deviceInfo.AxesZ_PositionMM;
+            centerX.Value = deviceInfo.AxesX_PositionMM;
+            centerY.Value = deviceInfo.AxesY_PositionMM;
+            centerZ.Value = deviceInfo.AxesZ_PositionMM;
             CalculatePos();
         }
 
@@ -71,15 +71,17 @@ namespace CNC_Controller.ConstructorGkode
         // Вычисление начальной и конечной точки
         private void CalculatePos()
         {
-            numericUpDown7.Value =(decimal)( (double)numPosX.Value + (double)numericRadius.Value * Math.Cos((double)numericStart.Value * (Math.PI / 180)));
-            numericUpDown6.Value = (decimal)( (double)numPosY.Value + (double)numericRadius.Value * Math.Sin((double)numericStart.Value * (Math.PI / 180)));
+            arcStartX.Value =(decimal)( (double)centerX.Value + (double)rotateRadius.Value * Math.Cos((double)rotateStartAngle.Value * (Math.PI / 180)));
+            arcStartY.Value = (decimal)( (double)centerY.Value + (double)rotateRadius.Value * Math.Sin((double)rotateStartAngle.Value * (Math.PI / 180)));
 
-            numericUpDown8.Value =(decimal)(  (double)numPosX.Value + (double)numericRadius.Value * Math.Cos((double)numericStop.Value * (Math.PI / 180)));
-            numericUpDown10.Value =(decimal)(  (double)numPosY.Value + (double)numericRadius.Value * Math.Sin((double)numericStop.Value * (Math.PI / 180)));
+            arcStopX.Value =(decimal)(  (double)centerX.Value + (double)rotateRadius.Value * Math.Cos((double)rotateStopAngle.Value * (Math.PI / 180)));
+            arcStopY.Value =(decimal)(  (double)centerY.Value + (double)rotateRadius.Value * Math.Sin((double)rotateStopAngle.Value * (Math.PI / 180)));
 
-            numericUpDown5.Value = numPosZ.Value;
-            numericUpDown9.Value = numPosZ.Value;
+            arcStartZ.Value = centerZ.Value;
+            arcStopZ.Value = centerZ.Value;
 
-        }   
+        }
+
+ 
     }
 }

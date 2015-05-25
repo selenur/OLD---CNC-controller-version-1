@@ -32,53 +32,55 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btGetPosition = new System.Windows.Forms.Button();
             this.labelposX = new System.Windows.Forms.Label();
-            this.numPosZ = new System.Windows.Forms.NumericUpDown();
+            this.centerZ = new System.Windows.Forms.NumericUpDown();
             this.labelposY = new System.Windows.Forms.Label();
-            this.numPosY = new System.Windows.Forms.NumericUpDown();
+            this.centerY = new System.Windows.Forms.NumericUpDown();
             this.labelposZ = new System.Windows.Forms.Label();
-            this.numPosX = new System.Windows.Forms.NumericUpDown();
+            this.centerX = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.numericStart = new System.Windows.Forms.NumericUpDown();
+            this.rotateStartAngle = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.numericStop = new System.Windows.Forms.NumericUpDown();
+            this.rotateStopAngle = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericStep = new System.Windows.Forms.NumericUpDown();
+            this.rotateStepAngle = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
-            this.numericRadius = new System.Windows.Forms.NumericUpDown();
+            this.rotateRadius = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
+            this.arcStopX = new System.Windows.Forms.NumericUpDown();
+            this.arcStopZ = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.arcStopY = new System.Windows.Forms.NumericUpDown();
+            this.arcStartX = new System.Windows.Forms.NumericUpDown();
+            this.arcStartZ = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.arcStartY = new System.Windows.Forms.NumericUpDown();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.deltaStepRadius = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.RotateRotates = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericStart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericStop)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericStep)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericRadius)).BeginInit();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            ((System.ComponentModel.ISupportInitialize)(this.centerZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.centerY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.centerX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateStartAngle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateStopAngle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateStepAngle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateRadius)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStopX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStopZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStopY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStartX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStartZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStartY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaStepRadius)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RotateRotates)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button3
@@ -86,7 +88,7 @@
             this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button3.Image = global::CNC_Controller.Properties.Resources.cancel2;
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(150, 633);
+            this.button3.Location = new System.Drawing.Point(153, 522);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(105, 57);
             this.button3.TabIndex = 42;
@@ -99,7 +101,7 @@
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Image = global::CNC_Controller.Properties.Resources.accept_button2;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(5, 633);
+            this.button1.Location = new System.Drawing.Point(5, 522);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 57);
             this.button1.TabIndex = 41;
@@ -131,26 +133,26 @@
             this.labelposX.TabIndex = 34;
             this.labelposX.Text = "X";
             // 
-            // numPosZ
+            // centerZ
             // 
-            this.numPosZ.DecimalPlaces = 3;
-            this.numPosZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosZ.Location = new System.Drawing.Point(36, 101);
-            this.numPosZ.Maximum = new decimal(new int[] {
+            this.centerZ.DecimalPlaces = 3;
+            this.centerZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.centerZ.Location = new System.Drawing.Point(36, 101);
+            this.centerZ.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numPosZ.Minimum = new decimal(new int[] {
+            this.centerZ.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numPosZ.Name = "numPosZ";
-            this.numPosZ.Size = new System.Drawing.Size(73, 22);
-            this.numPosZ.TabIndex = 39;
-            this.numPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numPosZ.ValueChanged += new System.EventHandler(this.numPosZ_ValueChanged);
+            this.centerZ.Name = "centerZ";
+            this.centerZ.Size = new System.Drawing.Size(73, 22);
+            this.centerZ.TabIndex = 39;
+            this.centerZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.centerZ.ValueChanged += new System.EventHandler(this.numPosZ_ValueChanged);
             // 
             // labelposY
             // 
@@ -162,26 +164,26 @@
             this.labelposY.TabIndex = 35;
             this.labelposY.Text = "Y";
             // 
-            // numPosY
+            // centerY
             // 
-            this.numPosY.DecimalPlaces = 3;
-            this.numPosY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosY.Location = new System.Drawing.Point(36, 78);
-            this.numPosY.Maximum = new decimal(new int[] {
+            this.centerY.DecimalPlaces = 3;
+            this.centerY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.centerY.Location = new System.Drawing.Point(36, 78);
+            this.centerY.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numPosY.Minimum = new decimal(new int[] {
+            this.centerY.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numPosY.Name = "numPosY";
-            this.numPosY.Size = new System.Drawing.Size(73, 22);
-            this.numPosY.TabIndex = 38;
-            this.numPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numPosY.ValueChanged += new System.EventHandler(this.numPosY_ValueChanged);
+            this.centerY.Name = "centerY";
+            this.centerY.Size = new System.Drawing.Size(73, 22);
+            this.centerY.TabIndex = 38;
+            this.centerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.centerY.ValueChanged += new System.EventHandler(this.numPosY_ValueChanged);
             // 
             // labelposZ
             // 
@@ -193,26 +195,26 @@
             this.labelposZ.TabIndex = 36;
             this.labelposZ.Text = "Z";
             // 
-            // numPosX
+            // centerX
             // 
-            this.numPosX.DecimalPlaces = 3;
-            this.numPosX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosX.Location = new System.Drawing.Point(36, 55);
-            this.numPosX.Maximum = new decimal(new int[] {
+            this.centerX.DecimalPlaces = 3;
+            this.centerX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.centerX.Location = new System.Drawing.Point(36, 55);
+            this.centerX.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numPosX.Minimum = new decimal(new int[] {
+            this.centerX.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numPosX.Name = "numPosX";
-            this.numPosX.Size = new System.Drawing.Size(73, 22);
-            this.numPosX.TabIndex = 37;
-            this.numPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numPosX.ValueChanged += new System.EventHandler(this.numPosX_ValueChanged);
+            this.centerX.Name = "centerX";
+            this.centerX.Size = new System.Drawing.Size(73, 22);
+            this.centerX.TabIndex = 37;
+            this.centerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.centerX.ValueChanged += new System.EventHandler(this.numPosX_ValueChanged);
             // 
             // label1
             // 
@@ -224,26 +226,26 @@
             this.label1.TabIndex = 43;
             this.label1.Text = "Центр вращения";
             // 
-            // numericStart
+            // rotateStartAngle
             // 
-            this.numericStart.DecimalPlaces = 3;
-            this.numericStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericStart.Location = new System.Drawing.Point(186, 165);
-            this.numericStart.Maximum = new decimal(new int[] {
+            this.rotateStartAngle.DecimalPlaces = 3;
+            this.rotateStartAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rotateStartAngle.Location = new System.Drawing.Point(186, 165);
+            this.rotateStartAngle.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericStart.Minimum = new decimal(new int[] {
+            this.rotateStartAngle.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericStart.Name = "numericStart";
-            this.numericStart.Size = new System.Drawing.Size(73, 22);
-            this.numericStart.TabIndex = 45;
-            this.numericStart.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numericStart.ValueChanged += new System.EventHandler(this.numericStart_ValueChanged);
+            this.rotateStartAngle.Name = "rotateStartAngle";
+            this.rotateStartAngle.Size = new System.Drawing.Size(73, 22);
+            this.rotateStartAngle.TabIndex = 45;
+            this.rotateStartAngle.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.rotateStartAngle.ValueChanged += new System.EventHandler(this.numericStart_ValueChanged);
             // 
             // label2
             // 
@@ -255,31 +257,31 @@
             this.label2.TabIndex = 44;
             this.label2.Text = "Начальный угол:";
             // 
-            // numericStop
+            // rotateStopAngle
             // 
-            this.numericStop.DecimalPlaces = 3;
-            this.numericStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericStop.Location = new System.Drawing.Point(186, 189);
-            this.numericStop.Maximum = new decimal(new int[] {
+            this.rotateStopAngle.DecimalPlaces = 3;
+            this.rotateStopAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rotateStopAngle.Location = new System.Drawing.Point(186, 189);
+            this.rotateStopAngle.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericStop.Minimum = new decimal(new int[] {
+            this.rotateStopAngle.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericStop.Name = "numericStop";
-            this.numericStop.Size = new System.Drawing.Size(73, 22);
-            this.numericStop.TabIndex = 47;
-            this.numericStop.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numericStop.Value = new decimal(new int[] {
+            this.rotateStopAngle.Name = "rotateStopAngle";
+            this.rotateStopAngle.Size = new System.Drawing.Size(73, 22);
+            this.rotateStopAngle.TabIndex = 47;
+            this.rotateStopAngle.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.rotateStopAngle.Value = new decimal(new int[] {
             180,
             0,
             0,
             0});
-            this.numericStop.ValueChanged += new System.EventHandler(this.numericStop_ValueChanged);
+            this.rotateStopAngle.ValueChanged += new System.EventHandler(this.numericStop_ValueChanged);
             // 
             // label3
             // 
@@ -291,26 +293,26 @@
             this.label3.TabIndex = 46;
             this.label3.Text = "Конечный угол:";
             // 
-            // numericStep
+            // rotateStepAngle
             // 
-            this.numericStep.DecimalPlaces = 3;
-            this.numericStep.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericStep.Location = new System.Drawing.Point(186, 213);
-            this.numericStep.Maximum = new decimal(new int[] {
+            this.rotateStepAngle.DecimalPlaces = 3;
+            this.rotateStepAngle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rotateStepAngle.Location = new System.Drawing.Point(186, 213);
+            this.rotateStepAngle.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericStep.Minimum = new decimal(new int[] {
+            this.rotateStepAngle.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericStep.Name = "numericStep";
-            this.numericStep.Size = new System.Drawing.Size(73, 22);
-            this.numericStep.TabIndex = 49;
-            this.numericStep.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numericStep.ValueChanged += new System.EventHandler(this.numericStep_ValueChanged);
+            this.rotateStepAngle.Name = "rotateStepAngle";
+            this.rotateStepAngle.Size = new System.Drawing.Size(73, 22);
+            this.rotateStepAngle.TabIndex = 49;
+            this.rotateStepAngle.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.rotateStepAngle.ValueChanged += new System.EventHandler(this.numericStep_ValueChanged);
             // 
             // label4
             // 
@@ -322,31 +324,31 @@
             this.label4.TabIndex = 48;
             this.label4.Text = "Шаг поворота (градус):";
             // 
-            // numericRadius
+            // rotateRadius
             // 
-            this.numericRadius.DecimalPlaces = 3;
-            this.numericRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericRadius.Location = new System.Drawing.Point(186, 141);
-            this.numericRadius.Maximum = new decimal(new int[] {
+            this.rotateRadius.DecimalPlaces = 3;
+            this.rotateRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rotateRadius.Location = new System.Drawing.Point(186, 141);
+            this.rotateRadius.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericRadius.Minimum = new decimal(new int[] {
+            this.rotateRadius.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             196608});
-            this.numericRadius.Name = "numericRadius";
-            this.numericRadius.Size = new System.Drawing.Size(73, 22);
-            this.numericRadius.TabIndex = 51;
-            this.numericRadius.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numericRadius.Value = new decimal(new int[] {
+            this.rotateRadius.Name = "rotateRadius";
+            this.rotateRadius.Size = new System.Drawing.Size(73, 22);
+            this.rotateRadius.TabIndex = 51;
+            this.rotateRadius.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.rotateRadius.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericRadius.ValueChanged += new System.EventHandler(this.numericRadius_ValueChanged);
+            this.rotateRadius.ValueChanged += new System.EventHandler(this.numericRadius_ValueChanged);
             // 
             // label5
             // 
@@ -360,63 +362,63 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.numericUpDown8);
-            this.groupBox1.Controls.Add(this.numericUpDown9);
+            this.groupBox1.Controls.Add(this.arcStopX);
+            this.groupBox1.Controls.Add(this.arcStopZ);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.numericUpDown10);
-            this.groupBox1.Controls.Add(this.numericUpDown7);
-            this.groupBox1.Controls.Add(this.numericUpDown5);
+            this.groupBox1.Controls.Add(this.arcStopY);
+            this.groupBox1.Controls.Add(this.arcStartX);
+            this.groupBox1.Controls.Add(this.arcStartZ);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.numericUpDown6);
-            this.groupBox1.Location = new System.Drawing.Point(15, 520);
+            this.groupBox1.Controls.Add(this.arcStartY);
+            this.groupBox1.Location = new System.Drawing.Point(5, 237);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(243, 107);
+            this.groupBox1.Size = new System.Drawing.Size(254, 107);
             this.groupBox1.TabIndex = 52;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Координаты начала, и окончания дуги:";
             // 
-            // numericUpDown8
+            // arcStopX
             // 
-            this.numericUpDown8.DecimalPlaces = 3;
-            this.numericUpDown8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown8.Location = new System.Drawing.Point(117, 25);
-            this.numericUpDown8.Maximum = new decimal(new int[] {
+            this.arcStopX.DecimalPlaces = 3;
+            this.arcStopX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.arcStopX.Location = new System.Drawing.Point(117, 25);
+            this.arcStopX.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown8.Minimum = new decimal(new int[] {
+            this.arcStopX.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericUpDown8.Name = "numericUpDown8";
-            this.numericUpDown8.ReadOnly = true;
-            this.numericUpDown8.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown8.TabIndex = 59;
-            this.numericUpDown8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.arcStopX.Name = "arcStopX";
+            this.arcStopX.ReadOnly = true;
+            this.arcStopX.Size = new System.Drawing.Size(73, 22);
+            this.arcStopX.TabIndex = 59;
+            this.arcStopX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // numericUpDown9
+            // arcStopZ
             // 
-            this.numericUpDown9.DecimalPlaces = 3;
-            this.numericUpDown9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown9.Location = new System.Drawing.Point(117, 71);
-            this.numericUpDown9.Maximum = new decimal(new int[] {
+            this.arcStopZ.DecimalPlaces = 3;
+            this.arcStopZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.arcStopZ.Location = new System.Drawing.Point(117, 71);
+            this.arcStopZ.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown9.Minimum = new decimal(new int[] {
+            this.arcStopZ.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericUpDown9.Name = "numericUpDown9";
-            this.numericUpDown9.ReadOnly = true;
-            this.numericUpDown9.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown9.TabIndex = 61;
-            this.numericUpDown9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.arcStopZ.Name = "arcStopZ";
+            this.arcStopZ.ReadOnly = true;
+            this.arcStopZ.Size = new System.Drawing.Size(73, 22);
+            this.arcStopZ.TabIndex = 61;
+            this.arcStopZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label6
             // 
@@ -428,68 +430,68 @@
             this.label6.TabIndex = 53;
             this.label6.Text = "X";
             // 
-            // numericUpDown10
+            // arcStopY
             // 
-            this.numericUpDown10.DecimalPlaces = 3;
-            this.numericUpDown10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown10.Location = new System.Drawing.Point(117, 48);
-            this.numericUpDown10.Maximum = new decimal(new int[] {
+            this.arcStopY.DecimalPlaces = 3;
+            this.arcStopY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.arcStopY.Location = new System.Drawing.Point(117, 48);
+            this.arcStopY.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown10.Minimum = new decimal(new int[] {
+            this.arcStopY.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericUpDown10.Name = "numericUpDown10";
-            this.numericUpDown10.ReadOnly = true;
-            this.numericUpDown10.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown10.TabIndex = 60;
-            this.numericUpDown10.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.arcStopY.Name = "arcStopY";
+            this.arcStopY.ReadOnly = true;
+            this.arcStopY.Size = new System.Drawing.Size(73, 22);
+            this.arcStopY.TabIndex = 60;
+            this.arcStopY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // numericUpDown7
+            // arcStartX
             // 
-            this.numericUpDown7.DecimalPlaces = 3;
-            this.numericUpDown7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown7.Location = new System.Drawing.Point(38, 25);
-            this.numericUpDown7.Maximum = new decimal(new int[] {
+            this.arcStartX.DecimalPlaces = 3;
+            this.arcStartX.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.arcStartX.Location = new System.Drawing.Point(38, 25);
+            this.arcStartX.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown7.Minimum = new decimal(new int[] {
+            this.arcStartX.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.ReadOnly = true;
-            this.numericUpDown7.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown7.TabIndex = 56;
-            this.numericUpDown7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.arcStartX.Name = "arcStartX";
+            this.arcStartX.ReadOnly = true;
+            this.arcStartX.Size = new System.Drawing.Size(73, 22);
+            this.arcStartX.TabIndex = 56;
+            this.arcStartX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // numericUpDown5
+            // arcStartZ
             // 
-            this.numericUpDown5.DecimalPlaces = 3;
-            this.numericUpDown5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown5.Location = new System.Drawing.Point(38, 71);
-            this.numericUpDown5.Maximum = new decimal(new int[] {
+            this.arcStartZ.DecimalPlaces = 3;
+            this.arcStartZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.arcStartZ.Location = new System.Drawing.Point(38, 71);
+            this.arcStartZ.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown5.Minimum = new decimal(new int[] {
+            this.arcStartZ.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.ReadOnly = true;
-            this.numericUpDown5.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown5.TabIndex = 58;
-            this.numericUpDown5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.arcStartZ.Name = "arcStartZ";
+            this.arcStartZ.ReadOnly = true;
+            this.arcStartZ.Size = new System.Drawing.Size(73, 22);
+            this.arcStartZ.TabIndex = 58;
+            this.arcStartZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label8
             // 
@@ -511,26 +513,26 @@
             this.label7.TabIndex = 54;
             this.label7.Text = "Y";
             // 
-            // numericUpDown6
+            // arcStartY
             // 
-            this.numericUpDown6.DecimalPlaces = 3;
-            this.numericUpDown6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown6.Location = new System.Drawing.Point(38, 48);
-            this.numericUpDown6.Maximum = new decimal(new int[] {
+            this.arcStartY.DecimalPlaces = 3;
+            this.arcStartY.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.arcStartY.Location = new System.Drawing.Point(38, 48);
+            this.arcStartY.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown6.Minimum = new decimal(new int[] {
+            this.arcStartY.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericUpDown6.Name = "numericUpDown6";
-            this.numericUpDown6.ReadOnly = true;
-            this.numericUpDown6.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown6.TabIndex = 57;
-            this.numericUpDown6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.arcStartY.Name = "arcStartY";
+            this.arcStartY.ReadOnly = true;
+            this.arcStartY.Size = new System.Drawing.Size(73, 22);
+            this.arcStartY.TabIndex = 57;
+            this.arcStartY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textBoxName
             // 
@@ -539,7 +541,7 @@
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(164, 22);
             this.textBoxName.TabIndex = 54;
-            this.textBoxName.Text = "вращение";
+            this.textBoxName.Text = "Вращение";
             // 
             // label9
             // 
@@ -551,128 +553,137 @@
             this.label9.TabIndex = 53;
             this.label9.Text = "Имя:";
             // 
-            // numericUpDown1
+            // deltaStepRadius
             // 
-            this.numericUpDown1.DecimalPlaces = 3;
-            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown1.Location = new System.Drawing.Point(165, 417);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.deltaStepRadius.DecimalPlaces = 3;
+            this.deltaStepRadius.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.deltaStepRadius.Location = new System.Drawing.Point(90, 33);
+            this.deltaStepRadius.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.deltaStepRadius.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown1.TabIndex = 56;
-            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.deltaStepRadius.Name = "deltaStepRadius";
+            this.deltaStepRadius.Size = new System.Drawing.Size(73, 22);
+            this.deltaStepRadius.TabIndex = 56;
+            this.deltaStepRadius.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(9, 398);
+            this.label10.Location = new System.Drawing.Point(7, 15);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(198, 16);
+            this.label10.Size = new System.Drawing.Size(241, 33);
             this.label10.TabIndex = 55;
-            this.label10.Text = "Шаг изменения радиуса (мм):";
+            this.label10.Text = "∆ изменения радиуса с каждым шагом (мм):";
             // 
-            // numericUpDown2
+            // RotateRotates
             // 
-            this.numericUpDown2.DecimalPlaces = 3;
-            this.numericUpDown2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown2.Location = new System.Drawing.Point(165, 478);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
+            this.RotateRotates.DecimalPlaces = 3;
+            this.RotateRotates.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.RotateRotates.Location = new System.Drawing.Point(175, 85);
+            this.RotateRotates.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
+            this.RotateRotates.Minimum = new decimal(new int[] {
             10000,
             0,
             0,
             -2147483648});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(73, 22);
-            this.numericUpDown2.TabIndex = 58;
-            this.numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.RotateRotates.Name = "RotateRotates";
+            this.RotateRotates.Size = new System.Drawing.Size(73, 22);
+            this.RotateRotates.TabIndex = 58;
+            this.RotateRotates.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label11.Location = new System.Drawing.Point(10, 459);
+            this.label11.Location = new System.Drawing.Point(5, 68);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(205, 16);
+            this.label11.Size = new System.Drawing.Size(243, 36);
             this.label11.TabIndex = 57;
-            this.label11.Text = "Шаг поворота груупы(градус):";
+            this.label11.Text = "На сколько градусов вращать данные, с каждым шагом:";
             // 
             // label12
             // 
             this.label12.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.label12.Location = new System.Drawing.Point(12, 270);
+            this.label12.Location = new System.Drawing.Point(7, 112);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(241, 47);
             this.label12.TabIndex = 59;
             this.label12.Text = "При положительном угле данные поворачиваются против часовой стрелки, при отрицате" +
     "льном угле по часовой стрелке";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.deltaStepRadius);
+            this.groupBox2.Controls.Add(this.RotateRotates);
+            this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Location = new System.Drawing.Point(5, 350);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(254, 164);
+            this.groupBox2.TabIndex = 60;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "дополнительно";
+            // 
             // frmRotate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(265, 700);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.label10);
+            this.ClientSize = new System.Drawing.Size(265, 582);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.numericRadius);
+            this.Controls.Add(this.rotateRadius);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.numericStep);
+            this.Controls.Add(this.rotateStepAngle);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.numericStop);
+            this.Controls.Add(this.rotateStopAngle);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.numericStart);
+            this.Controls.Add(this.rotateStartAngle);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btGetPosition);
             this.Controls.Add(this.labelposX);
-            this.Controls.Add(this.numPosZ);
+            this.Controls.Add(this.centerZ);
             this.Controls.Add(this.labelposY);
-            this.Controls.Add(this.numPosY);
+            this.Controls.Add(this.centerY);
             this.Controls.Add(this.labelposZ);
-            this.Controls.Add(this.numPosX);
+            this.Controls.Add(this.centerX);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmRotate";
             this.Text = "Вращение";
             this.Load += new System.EventHandler(this.frmRotate_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericStart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericStop)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericStep)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericRadius)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.centerZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.centerY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.centerX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateStartAngle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateStopAngle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateStepAngle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rotateRadius)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStopX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStopZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStopY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStartX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStartZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arcStartY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deltaStepRadius)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RotateRotates)).EndInit();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -684,36 +695,37 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btGetPosition;
         private System.Windows.Forms.Label labelposX;
-        public System.Windows.Forms.NumericUpDown numPosZ;
+        public System.Windows.Forms.NumericUpDown centerZ;
         private System.Windows.Forms.Label labelposY;
-        public System.Windows.Forms.NumericUpDown numPosY;
+        public System.Windows.Forms.NumericUpDown centerY;
         private System.Windows.Forms.Label labelposZ;
-        public System.Windows.Forms.NumericUpDown numPosX;
+        public System.Windows.Forms.NumericUpDown centerX;
         private System.Windows.Forms.Label label1;
-        public System.Windows.Forms.NumericUpDown numericStart;
+        public System.Windows.Forms.NumericUpDown rotateStartAngle;
         private System.Windows.Forms.Label label2;
-        public System.Windows.Forms.NumericUpDown numericStop;
+        public System.Windows.Forms.NumericUpDown rotateStopAngle;
         private System.Windows.Forms.Label label3;
-        public System.Windows.Forms.NumericUpDown numericStep;
+        public System.Windows.Forms.NumericUpDown rotateStepAngle;
         private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.NumericUpDown numericRadius;
+        public System.Windows.Forms.NumericUpDown rotateRadius;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox1;
-        public System.Windows.Forms.NumericUpDown numericUpDown8;
-        public System.Windows.Forms.NumericUpDown numericUpDown9;
+        public System.Windows.Forms.NumericUpDown arcStopX;
+        public System.Windows.Forms.NumericUpDown arcStopZ;
         private System.Windows.Forms.Label label6;
-        public System.Windows.Forms.NumericUpDown numericUpDown10;
-        public System.Windows.Forms.NumericUpDown numericUpDown7;
-        public System.Windows.Forms.NumericUpDown numericUpDown5;
+        public System.Windows.Forms.NumericUpDown arcStopY;
+        public System.Windows.Forms.NumericUpDown arcStartX;
+        public System.Windows.Forms.NumericUpDown arcStartZ;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        public System.Windows.Forms.NumericUpDown numericUpDown6;
+        public System.Windows.Forms.NumericUpDown arcStartY;
         public System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.Label label9;
-        public System.Windows.Forms.NumericUpDown numericUpDown1;
+        public System.Windows.Forms.NumericUpDown deltaStepRadius;
         private System.Windows.Forms.Label label10;
-        public System.Windows.Forms.NumericUpDown numericUpDown2;
+        public System.Windows.Forms.NumericUpDown RotateRotates;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }

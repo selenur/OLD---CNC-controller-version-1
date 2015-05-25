@@ -314,6 +314,7 @@
     <None Include="Resources\arrow_up.png" />
     <None Include="Resources\arrow_down.png" />
     <None Include="Resources\cross.png" />
+    <None Include="Resources\save_as.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup />

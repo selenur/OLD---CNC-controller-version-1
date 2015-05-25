@@ -267,7 +267,7 @@ namespace CNC_Controller
 
             if (dlResult == DialogResult.OK)
             {
-                primitivNode pn = new primitivNode(new primitivRotate((double)frotate.numPosX.Value, (double)frotate.numPosY.Value, (double)frotate.numPosZ.Value, (double)frotate.numericStart.Value, (double)frotate.numericStop.Value, (double)frotate.numericStep.Value, (double)frotate.numericRadius.Value, frotate.textBoxName.Text));
+                primitivNode pn = new primitivNode(new primitivRotate((double)frotate.centerX.Value, (double)frotate.centerY.Value, (double)frotate.centerZ.Value, (double)frotate.rotateStartAngle.Value, (double)frotate.rotateStopAngle.Value, (double)frotate.rotateStepAngle.Value, (double)frotate.rotateRadius.Value, (double)frotate.deltaStepRadius.Value, (double)frotate.RotateRotates.Value, frotate.textBoxName.Text));
                 pnfind.nodes.Add(pn);
                 RefreshTree();
             }
@@ -347,14 +347,18 @@ namespace CNC_Controller
                 // вызовем диалог добавления группы
                 frmRotate frotate = new frmRotate(_mf);
 
-                frotate.numPosX.Value = (decimal)pfind.rotate.X;
-                frotate.numPosY.Value = (decimal)pfind.rotate.Y;
-                frotate.numPosZ.Value = (decimal)pfind.rotate.Z;
+                frotate.centerX.Value = (decimal)pfind.rotate.X;
+                frotate.centerY.Value = (decimal)pfind.rotate.Y;
+                frotate.centerZ.Value = (decimal)pfind.rotate.Z;
 
-                frotate.numericRadius.Value = (decimal)pfind.rotate.radius;
-                frotate.numericStart.Value = (decimal)pfind.rotate.angleStart;
-                frotate.numericStop.Value = (decimal)pfind.rotate.angleStop;
-                frotate.numericStep.Value = (decimal)pfind.rotate.angleStep;
+                frotate.rotateRadius.Value = (decimal)pfind.rotate.radius;
+                frotate.rotateStartAngle.Value = (decimal)pfind.rotate.angleStart;
+                frotate.rotateStopAngle.Value = (decimal)pfind.rotate.angleStop;
+                frotate.rotateStepAngle.Value = (decimal)pfind.rotate.angleStep;
+
+
+                frotate.deltaStepRadius.Value = (decimal)pfind.rotate.deltaStepRadius;
+                frotate.RotateRotates.Value = (decimal)pfind.rotate.RotateRotates;
 
                 frotate.textBoxName.Text = pfind.rotate.Name;
 
@@ -365,14 +369,17 @@ namespace CNC_Controller
                 {
                     pfind.rotate.Name = frotate.textBoxName.Text;
 
-                    pfind.rotate.X = (double)frotate.numPosX.Value;
-                    pfind.rotate.Y=(double)frotate.numPosY.Value;
-                    pfind.rotate.Z=(double)frotate.numPosZ.Value;
+                    pfind.rotate.X = (double)frotate.centerX.Value;
+                    pfind.rotate.Y=(double)frotate.centerY.Value;
+                    pfind.rotate.Z=(double)frotate.centerZ.Value;
 
-                    pfind.rotate.radius=(double)frotate.numericRadius.Value;
-                    pfind.rotate.angleStart=(double)frotate.numericStart.Value;
-                    pfind.rotate.angleStop=(double)frotate.numericStop.Value;
-                    pfind.rotate.angleStep=(double)frotate.numericStep.Value;
+                    pfind.rotate.radius=(double)frotate.rotateRadius.Value;
+                    pfind.rotate.angleStart=(double)frotate.rotateStartAngle.Value;
+                    pfind.rotate.angleStop=(double)frotate.rotateStopAngle.Value;
+                    pfind.rotate.angleStep=(double)frotate.rotateStepAngle.Value;
+
+                    pfind.rotate.deltaStepRadius = (double)frotate.deltaStepRadius.Value;
+                    pfind.rotate.RotateRotates = (double)frotate.RotateRotates.Value;
 
                     NeedRefreshTree = true;
                 }
@@ -505,23 +512,8 @@ namespace CNC_Controller
         {
             if (_node.typeNode == primitivType.point)
             {
-
-                //TODO: тут нужно пересчитать координаты, с учетом вращения
-
-                //vec2 rotate(vec2 point, float angle){
-                       //vec2 rotated_point;
-                       //rotated_point.x = point.x * cos(angle) - point.y * sin(angle);
-                       //rotated_point.y = point.x * sin(angle) + point.y * cos(angle);
-                //return rotated_point;
-
-
-                //double anleNow = Math.Atan(_node.point.Y/_node.point.X);
-
-
                 double rotatedX = _node.point.X * Math.Cos(deltaRotate * (Math.PI / 180)) - _node.point.Y * Math.Sin(deltaRotate * (Math.PI / 180));
                 double rotatedY = _node.point.X * Math.Sin(deltaRotate * (Math.PI / 180)) + _node.point.Y * Math.Cos(deltaRotate * (Math.PI / 180));
-
-
 
                 double xpp = rotatedX + deltaX;
                 double ypp = rotatedY + deltaY;
@@ -603,23 +595,33 @@ namespace CNC_Controller
                 {
                     double dX = 0;       // координата в мм
                     double dY = 0;       // координата в мм
-                    double dZ = deltaZ;       // координата в мм
+                    double dZ = deltaZ;  // координата в мм
+
+                    double dSR = _node.rotate.deltaStepRadius; // дельта изменения радиуса с каждым шагом
+                    double dRO = _node.rotate.RotateRotates;   // угол дополнительного вращения объекта
+                    double nowdRO = 0;
+
+                    double dRadius = _node.rotate.radius;
 
                     for (double angle = _node.rotate.angleStart; angle < _node.rotate.angleStop; angle += _node.rotate.angleStep)
                     {
-                        double x1 = _node.rotate.X + _node.rotate.radius * Math.Cos(angle * (Math.PI / 180));
-                        double y1 = _node.rotate.Y + _node.rotate.radius * Math.Sin(angle * (Math.PI / 180));
+                        double x1 = _node.rotate.X + dRadius * Math.Cos(angle * (Math.PI / 180));
+                        double y1 = _node.rotate.Y + dRadius * Math.Sin(angle * (Math.PI / 180));
 
 
                         dX = x1+deltaX;
                         dY = y1+deltaY;
                         //dZ += _node.catalog.Z;
 
-
                         foreach (primitivNode VARIABLE in _node.nodes)
                         {
-                            ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ);
+                            ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ, nowdRO);
+                            nowdRO += dRO;
+
                         }
+
+                        dRadius += dSR;
+
                     }
                 }
         }
@@ -765,6 +767,24 @@ namespace CNC_Controller
         {
             AddNewRotate();
         }
+
+        private void SaveToFile_Click(object sender, EventArgs e)
+        {
+            if (_listPrimitives.Count == 0) return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = @"G-код (*.txt)|*.txt|Все файлы (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string code = "";
+                ParsePrimitivesToGkode(ref code, _listPrimitives[0]);
+
+                StreamWriter SW = new StreamWriter(new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write));
+                SW.Write(code);
+                SW.Close();
+            }
+        }
     }
 }
 
@@ -823,10 +843,12 @@ public class primitivRotate
     public double angleStep;   // градус шага
     public double radius;      // радиус окружности
 
+    public double deltaStepRadius; // изменение радиуса с каждым шагом
+    public double RotateRotates; //градус на который вращать данные
 
     public string Name;   // для представления
 
-    public primitivRotate(double _x, double _y, double _z,double _angleStart,double _angleStop,double _angleStep, double _radius, string _name = "Вращение")
+    public primitivRotate(double _x, double _y, double _z, double _angleStart, double _angleStop, double _angleStep, double _radius, double _deltaStepRadius, double _RotateRotates, string _name = "Вращение")
     {
         X = _x;
         Y = _y;
@@ -836,6 +858,8 @@ public class primitivRotate
         angleStop = _angleStop;
         angleStep = _angleStep;
         radius = _radius;
+        deltaStepRadius = _deltaStepRadius;
+        RotateRotates = _RotateRotates;
 
         Name = _name;
     }
