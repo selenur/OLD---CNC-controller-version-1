@@ -94,11 +94,11 @@ namespace CNC_Controller
             //сдвинем границы
             if (ShowGrate)
             {
-                if ((double)deviceInfo.AxesX_PositionMM < grateXmin) grateXmin = (double)deviceInfo.AxesX_PositionMM;
-                if ((double)deviceInfo.AxesX_PositionMM > grateXmax) grateXmax = (double)deviceInfo.AxesX_PositionMM;
+                if ((double)deviceInfo.AxesX_PositionMM < GrateXmin) GrateXmin = (double)deviceInfo.AxesX_PositionMM;
+                if ((double)deviceInfo.AxesX_PositionMM > GrateXmax) GrateXmax = (double)deviceInfo.AxesX_PositionMM;
 
-                if ((double)deviceInfo.AxesY_PositionMM < grateYmin) grateYmin = (double)deviceInfo.AxesY_PositionMM;
-                if ((double)deviceInfo.AxesY_PositionMM > grateYmax) grateYmax = (double)deviceInfo.AxesY_PositionMM;
+                if ((double)deviceInfo.AxesY_PositionMM < GrateYmin) GrateYmin = (double)deviceInfo.AxesY_PositionMM;
+                if ((double)deviceInfo.AxesY_PositionMM > GrateYmax) GrateYmax = (double)deviceInfo.AxesY_PositionMM;
             }
         }
 
@@ -322,6 +322,7 @@ namespace CNC_Controller
         /// </summary>
         private bool _manualMoveButtonPressed;
 
+        // ReSharper disable once FunctionComplexityOverflow
         private void timerKeyHooks_Tick(object sender, EventArgs e)
         {
 
@@ -691,7 +692,6 @@ namespace CNC_Controller
                     if (collectCommand)
                     {
                         inx++;
-                        collectCommand = false;
                     }
 
                     collectCommand = true;
@@ -708,9 +708,9 @@ namespace CNC_Controller
         /// Быстрый парсинг строки с G-кодом (только для визуальной части, проверка кие коды выполняем, а какие нет) 
         /// </summary>
         /// <param name="value">строка с G-кодом</param>
-        public GKOD_resultParse parseStringCode(string value)
+        public GKOD_resultParse ParseStringCode(string value)
         {
-            GKOD_resultParse result = null;
+            GKOD_resultParse result;
 
             // 1) распарсим строку
             List<string> lcmd = parserGkodeLine(value);
@@ -948,7 +948,7 @@ namespace CNC_Controller
             {
                 toolStripProgressBar.Value = index++;
 
-                GKOD_resultParse graw = parseStringCode(str.ToUpper());
+                GKOD_resultParse graw = ParseStringCode(str.ToUpper());
 
                 if (graw.GoodStr.Trim().Length == 0)
                 {
@@ -1092,11 +1092,11 @@ namespace CNC_Controller
         int _oldPosX;
         int _oldPosY;
 
-        public bool ShowGrate = false;
-        public double grateXmin = 0;
-        public double grateXmax = 0;
-        public double grateYmin = 0;
-        public double grateYmax = 0;
+        public bool ShowGrate;
+        public double GrateXmin;
+        public double GrateXmax;
+        public double GrateYmin;
+        public double GrateYmax;
 
 
         /// <summary>
@@ -1685,11 +1685,11 @@ namespace CNC_Controller
 
                 Gl.glBegin(Gl.GL_LINE_STRIP); //РИСОВАНИЕ ОБЫЧНОЙ ЛИНИИ
 
-                Gl.glVertex3d(grateXmin, grateYmin, 0);
-                Gl.glVertex3d(grateXmax, grateYmin, 0);
-                Gl.glVertex3d(grateXmax, grateYmax, 0);
-                Gl.glVertex3d(grateXmin, grateYmax, 0);
-                Gl.glVertex3d(grateXmin, grateYmin, 0);
+                Gl.glVertex3d(GrateXmin, GrateYmin, 0);
+                Gl.glVertex3d(GrateXmax, GrateYmin, 0);
+                Gl.glVertex3d(GrateXmax, GrateYmax, 0);
+                Gl.glVertex3d(GrateXmin, GrateYmax, 0);
+                Gl.glVertex3d(GrateXmin, GrateYmin, 0);
 
                 Gl.glEnd();
 

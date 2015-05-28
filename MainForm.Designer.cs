@@ -56,7 +56,6 @@
             this.scansurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generatorCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripButtonEditData = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonLikePoint = new System.Windows.Forms.ToolStripButton();
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -327,8 +326,7 @@
             this.buttonESTOP,
             this.toolStripSeparator4,
             this.toolStripDropDownadditionally,
-            this.toolStripButtonEditData,
-            this.toolStripButtonLikePoint});
+            this.toolStripButtonEditData});
             this.MainToolStrip.Location = new System.Drawing.Point(0, 24);
             this.MainToolStrip.Name = "MainToolStrip";
             this.MainToolStrip.Size = new System.Drawing.Size(910, 39);
@@ -457,7 +455,7 @@
             this.generatorCodeToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.generatorCodeToolStripMenuItem.Name = "generatorCodeToolStripMenuItem";
             this.generatorCodeToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
-            this.generatorCodeToolStripMenuItem.Text = "Модуль генерации кода";
+            this.generatorCodeToolStripMenuItem.Text = "Генератор G-кода";
             this.generatorCodeToolStripMenuItem.Click += new System.EventHandler(this.generatorCodeToolStripMenuItem_Click);
             // 
             // toolStripButtonEditData
@@ -469,18 +467,6 @@
             this.toolStripButtonEditData.Size = new System.Drawing.Size(179, 36);
             this.toolStripButtonEditData.Text = "манипуляции с G-кодом";
             this.toolStripButtonEditData.Click += new System.EventHandler(this.toolStripButtonEditData_Click);
-            // 
-            // toolStripButtonLikePoint
-            // 
-            this.toolStripButtonLikePoint.Enabled = false;
-            this.toolStripButtonLikePoint.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLikePoint.Image")));
-            this.toolStripButtonLikePoint.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButtonLikePoint.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonLikePoint.Name = "toolStripButtonLikePoint";
-            this.toolStripButtonLikePoint.Size = new System.Drawing.Size(113, 36);
-            this.toolStripButtonLikePoint.Text = "Набор точек";
-            this.toolStripButtonLikePoint.Visible = false;
-            this.toolStripButtonLikePoint.Click += new System.EventHandler(this.toolStripButtonLikePoint_Click);
             // 
             // MainStatusStrip
             // 
@@ -2154,7 +2140,6 @@
         private System.Windows.Forms.ToolStripMenuItem settingControllerToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripButtonEditData;
-        private System.Windows.Forms.ToolStripButton toolStripButtonLikePoint;
         private System.Windows.Forms.ListBox listGkodeCommand;
         private System.Windows.Forms.ToolStripMenuItem generatorCodeToolStripMenuItem;
     }

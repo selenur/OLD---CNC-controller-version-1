@@ -29,10 +29,10 @@ namespace CNC_Controller
             numericUpDown5.Value=mf.PreviewSetting.GridYend;
 
             checkBoxShowGrate.Checked = mf.ShowGrate;
-            numPosXmin.Value = (decimal)mf.grateXmin;
-            numPosXmax.Value = (decimal)mf.grateXmax;
-            numPosYmin.Value = (decimal)mf.grateYmin;
-            numPosYmax.Value = (decimal)mf.grateYmax;
+            numPosXmin.Value = (decimal)mf.GrateXmin;
+            numPosXmax.Value = (decimal)mf.GrateXmax;
+            numPosYmin.Value = (decimal)mf.GrateYmin;
+            numPosYmax.Value = (decimal)mf.GrateYmax;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -88,30 +88,30 @@ namespace CNC_Controller
 
         private void numPosXmin_ValueChanged(object sender, EventArgs e)
         {
-            mf.grateXmin = (double)numPosXmin.Value;
+            mf.GrateXmin = (double)numPosXmin.Value;
         }
 
         private void numPosXmax_ValueChanged(object sender, EventArgs e)
         {
-            mf.grateXmax = (double)numPosXmax.Value;
+            mf.GrateXmax = (double)numPosXmax.Value;
         }
 
         private void numPosYmin_ValueChanged(object sender, EventArgs e)
         {
-            mf.grateYmin = (double)numPosYmin.Value;
+            mf.GrateYmin = (double)numPosYmin.Value;
         }
 
         private void numPosYmax_ValueChanged(object sender, EventArgs e)
         {
-            mf.grateYmax = (double)numPosYmax.Value;
+            mf.GrateYmax = (double)numPosYmax.Value;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            mf.grateXmin = (double)deviceInfo.AxesX_PositionMM;
-            mf.grateXmax = (double)deviceInfo.AxesX_PositionMM;
-            mf.grateYmin = (double)deviceInfo.AxesY_PositionMM;
-            mf.grateYmax = (double)deviceInfo.AxesY_PositionMM;
+            mf.GrateXmin = (double)deviceInfo.AxesX_PositionMM;
+            mf.GrateXmax = (double)deviceInfo.AxesX_PositionMM;
+            mf.GrateYmin = (double)deviceInfo.AxesY_PositionMM;
+            mf.GrateYmax = (double)deviceInfo.AxesY_PositionMM;
         }
     }
 }

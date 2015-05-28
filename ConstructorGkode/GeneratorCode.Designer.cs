@@ -32,33 +32,33 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneratorCode));
             this.treeDataConstructor = new System.Windows.Forms.TreeView();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.toolStripPrimitiv = new System.Windows.Forms.ToolStrip();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.openDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolStripMenuCopyDATA = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.delPrimitivToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.moveupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.movedownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.btLoadFromFile = new System.Windows.Forms.ToolStripButton();
+            this.btSaveToFile = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btNewData = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.SaveToFile = new System.Windows.Forms.ToolStripButton();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.toolStripPrimitiv = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.btLoadFromFile = new System.Windows.Forms.ToolStripButton();
-            this.btSaveToFile = new System.Windows.Forms.ToolStripButton();
-            this.btNewData = new System.Windows.Forms.ToolStripButton();
-            this.SaveToFile = new System.Windows.Forms.ToolStripButton();
             this.contextMenu.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -101,107 +101,6 @@
             this.contextMenu.Size = new System.Drawing.Size(190, 170);
             this.contextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenu_Opening);
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(186, 6);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(186, 6);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "asterisk_orange.png");
-            this.imageList1.Images.SetKeyName(1, "folder.png");
-            this.imageList1.Images.SetKeyName(2, "bullet_blue.png");
-            this.imageList1.Images.SetKeyName(3, "draw_line.png");
-            this.imageList1.Images.SetKeyName(4, "arrow_repeat.png");
-            this.imageList1.Images.SetKeyName(5, "arrow_out.png");
-            this.imageList1.Images.SetKeyName(6, "arrow_rotate_clockwise.png");
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btLoadFromFile,
-            this.btSaveToFile,
-            this.toolStripSeparator1,
-            this.btNewData,
-            this.toolStripSeparator2,
-            this.SaveToFile});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(752, 25);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripContainer1
-            // 
-            // 
-            // toolStripContainer1.ContentPanel
-            // 
-            this.toolStripContainer1.ContentPanel.Controls.Add(this.treeDataConstructor);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(667, 629);
-            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            // 
-            // toolStripContainer1.LeftToolStripPanel
-            // 
-            this.toolStripContainer1.LeftToolStripPanel.Controls.Add(this.toolStripPrimitiv);
-            this.toolStripContainer1.Location = new System.Drawing.Point(0, 25);
-            this.toolStripContainer1.Name = "toolStripContainer1";
-            this.toolStripContainer1.Size = new System.Drawing.Size(752, 654);
-            this.toolStripContainer1.TabIndex = 3;
-            this.toolStripContainer1.Text = "toolStripContainer1";
-            // 
-            // toolStripPrimitiv
-            // 
-            this.toolStripPrimitiv.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStripPrimitiv.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabel1,
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2,
-            this.toolStripSeparator4,
-            this.toolStripLabel2,
-            this.toolStripButton1,
-            this.toolStripButton3,
-            this.toolStripButton2});
-            this.toolStripPrimitiv.Location = new System.Drawing.Point(0, 3);
-            this.toolStripPrimitiv.Name = "toolStripPrimitiv";
-            this.toolStripPrimitiv.Size = new System.Drawing.Size(85, 162);
-            this.toolStripPrimitiv.TabIndex = 0;
-            this.toolStripPrimitiv.Text = "Примитив";
-            // 
-            // toolStripLabel1
-            // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(83, 15);
-            this.toolStripLabel1.Text = "-Примитивы-";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(83, 6);
-            // 
-            // toolStripLabel2
-            // 
-            this.toolStripLabel2.Name = "toolStripLabel2";
-            this.toolStripLabel2.Size = new System.Drawing.Size(83, 15);
-            this.toolStripLabel2.Text = "-Операции-";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
             // openDialogToolStripMenuItem
             // 
             this.openDialogToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.application;
@@ -209,6 +108,11 @@
             this.openDialogToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.openDialogToolStripMenuItem.Text = "Свойства примитива";
             this.openDialogToolStripMenuItem.Click += new System.EventHandler(this.openDialogToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(186, 6);
             // 
             // ToolStripMenuCopyDATA
             // 
@@ -242,6 +146,11 @@
             this.delPrimitivToolStripMenuItem.Text = "Удалить";
             this.delPrimitivToolStripMenuItem.Click += new System.EventHandler(this.delPrimitivToolStripMenuItem_Click);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(186, 6);
+            // 
             // moveupToolStripMenuItem
             // 
             this.moveupToolStripMenuItem.Enabled = false;
@@ -258,6 +167,122 @@
             this.movedownToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.movedownToolStripMenuItem.Text = "Сдвинуть вниз";
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "asterisk_orange.png");
+            this.imageList1.Images.SetKeyName(1, "folder.png");
+            this.imageList1.Images.SetKeyName(2, "bullet_blue.png");
+            this.imageList1.Images.SetKeyName(3, "draw_line.png");
+            this.imageList1.Images.SetKeyName(4, "arrow_repeat.png");
+            this.imageList1.Images.SetKeyName(5, "arrow_out.png");
+            this.imageList1.Images.SetKeyName(6, "arrow_rotate_clockwise.png");
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btLoadFromFile,
+            this.btSaveToFile,
+            this.toolStripSeparator1,
+            this.SaveToFile,
+            this.toolStripSeparator2,
+            this.btNewData});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.toolStrip1.Size = new System.Drawing.Size(752, 25);
+            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // btLoadFromFile
+            // 
+            this.btLoadFromFile.Image = ((System.Drawing.Image)(resources.GetObject("btLoadFromFile.Image")));
+            this.btLoadFromFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btLoadFromFile.Name = "btLoadFromFile";
+            this.btLoadFromFile.Size = new System.Drawing.Size(119, 22);
+            this.btLoadFromFile.Text = "Чтение из файла";
+            this.btLoadFromFile.Click += new System.EventHandler(this.btLoadFromFile_Click);
+            // 
+            // btSaveToFile
+            // 
+            this.btSaveToFile.Image = ((System.Drawing.Image)(resources.GetObject("btSaveToFile.Image")));
+            this.btSaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btSaveToFile.Name = "btSaveToFile";
+            this.btSaveToFile.Size = new System.Drawing.Size(126, 22);
+            this.btSaveToFile.Text = "Сохранить в файл";
+            this.btSaveToFile.Click += new System.EventHandler(this.btSaveToFile_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btNewData
+            // 
+            this.btNewData.Image = ((System.Drawing.Image)(resources.GetObject("btNewData.Image")));
+            this.btNewData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btNewData.Name = "btNewData";
+            this.btNewData.Size = new System.Drawing.Size(137, 22);
+            this.btNewData.Text = "Очистить от данных";
+            this.btNewData.Click += new System.EventHandler(this.btNewData_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // SaveToFile
+            // 
+            this.SaveToFile.Image = global::CNC_Controller.Properties.Resources.save_as;
+            this.SaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveToFile.Name = "SaveToFile";
+            this.SaveToFile.Size = new System.Drawing.Size(161, 22);
+            this.SaveToFile.Text = "Сохранить G-код в файл";
+            this.SaveToFile.Click += new System.EventHandler(this.SaveToFile_Click);
+            // 
+            // toolStripContainer1
+            // 
+            // 
+            // toolStripContainer1.ContentPanel
+            // 
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.treeDataConstructor);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(667, 629);
+            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            // 
+            // toolStripContainer1.LeftToolStripPanel
+            // 
+            this.toolStripContainer1.LeftToolStripPanel.Controls.Add(this.toolStripPrimitiv);
+            this.toolStripContainer1.Location = new System.Drawing.Point(0, 25);
+            this.toolStripContainer1.Name = "toolStripContainer1";
+            this.toolStripContainer1.Size = new System.Drawing.Size(752, 654);
+            this.toolStripContainer1.TabIndex = 3;
+            this.toolStripContainer1.Text = "toolStripContainer1";
+            // 
+            // toolStripPrimitiv
+            // 
+            this.toolStripPrimitiv.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripPrimitiv.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel1,
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2,
+            this.toolStripSeparator4,
+            this.toolStripLabel2,
+            this.toolStripButton1,
+            this.toolStripButton3,
+            this.toolStripButton2});
+            this.toolStripPrimitiv.Location = new System.Drawing.Point(0, 3);
+            this.toolStripPrimitiv.Name = "toolStripPrimitiv";
+            this.toolStripPrimitiv.Size = new System.Drawing.Size(85, 139);
+            this.toolStripPrimitiv.TabIndex = 0;
+            this.toolStripPrimitiv.Text = "Примитив";
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(83, 15);
+            this.toolStripLabel1.Text = "-Примитивы-";
+            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Image = global::CNC_Controller.Properties.Resources.folder;
@@ -273,6 +298,17 @@
             this.toolStripMenuItem2.Size = new System.Drawing.Size(83, 20);
             this.toolStripMenuItem2.Text = "Точка";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(83, 6);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(83, 15);
+            this.toolStripLabel2.Text = "-Функции-";
             // 
             // toolStripButton1
             // 
@@ -300,42 +336,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(83, 20);
             this.toolStripButton2.Text = "Маштаб";
-            // 
-            // btLoadFromFile
-            // 
-            this.btLoadFromFile.Image = ((System.Drawing.Image)(resources.GetObject("btLoadFromFile.Image")));
-            this.btLoadFromFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btLoadFromFile.Name = "btLoadFromFile";
-            this.btLoadFromFile.Size = new System.Drawing.Size(128, 22);
-            this.btLoadFromFile.Text = "Загрузка из файла";
-            this.btLoadFromFile.Click += new System.EventHandler(this.btLoadFromFile_Click);
-            // 
-            // btSaveToFile
-            // 
-            this.btSaveToFile.Image = ((System.Drawing.Image)(resources.GetObject("btSaveToFile.Image")));
-            this.btSaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btSaveToFile.Name = "btSaveToFile";
-            this.btSaveToFile.Size = new System.Drawing.Size(134, 22);
-            this.btSaveToFile.Text = "Сохранение в файл";
-            this.btSaveToFile.Click += new System.EventHandler(this.btSaveToFile_Click);
-            // 
-            // btNewData
-            // 
-            this.btNewData.Image = ((System.Drawing.Image)(resources.GetObject("btNewData.Image")));
-            this.btNewData.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btNewData.Name = "btNewData";
-            this.btNewData.Size = new System.Drawing.Size(137, 22);
-            this.btNewData.Text = "Очистить от данных";
-            this.btNewData.Click += new System.EventHandler(this.btNewData_Click);
-            // 
-            // SaveToFile
-            // 
-            this.SaveToFile.Image = global::CNC_Controller.Properties.Resources.save_as;
-            this.SaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveToFile.Name = "SaveToFile";
-            this.SaveToFile.Size = new System.Drawing.Size(161, 22);
-            this.SaveToFile.Text = "Сохранить G-код в файл";
-            this.SaveToFile.Click += new System.EventHandler(this.SaveToFile_Click);
+            this.toolStripButton2.Visible = false;
             // 
             // GeneratorCode
             // 

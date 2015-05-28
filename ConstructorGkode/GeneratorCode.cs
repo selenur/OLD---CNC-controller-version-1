@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
@@ -26,7 +26,7 @@ namespace CNC_Controller
         /// <summary>
         /// Список примитивов
         /// </summary>
-        private List<primitivNode> _listPrimitives = new List<primitivNode>();
+        private readonly List<PrimitivNode> _listPrimitives = new List<PrimitivNode>();
 
 
 
@@ -38,6 +38,7 @@ namespace CNC_Controller
             RefreshTree();
         }
 
+        // ReSharper disable once InconsistentNaming
         public GeneratorCode(MainForm _mf)
         {
             this._mf = _mf;
@@ -65,35 +66,33 @@ namespace CNC_Controller
         #region Добавление новых примитивов
 
         // Рекурсивный поиск внутри примитивов, других примитивов
-        public primitivNode findNodeWithGUID(string _guid, primitivNode _node = null)
+        private PrimitivNode FindNodeWithGuid(string guid, PrimitivNode node = null)
         {
-            primitivNode result = null;
+            // ReSharper disable once SuggestVarOrType_SimpleTypes
+            PrimitivNode rootNode = node ?? _listPrimitives[0];
 
-            primitivNode RootNode = _node;
+            if (rootNode.Guid == guid) return rootNode;
 
-            if (RootNode == null) RootNode = _listPrimitives[0];
-
-            if (RootNode.GUID == _guid) return RootNode;
-
-            foreach (primitivNode VARIABLE in RootNode.nodes)
+            foreach (PrimitivNode variable in rootNode.Nodes)
             {
-                if (VARIABLE.GUID == _guid) return VARIABLE;
+                if (variable.Guid == guid) return variable;
 
                 //так-же запустим поиск внутри подчиненных узлов
-                primitivNode ppn = findNodeWithGUID(_guid, VARIABLE);
+                // ReSharper disable once SuggestVarOrType_SimpleTypes
+                PrimitivNode ppn = FindNodeWithGuid(guid, variable);
 
                 if (ppn != null) return ppn;
             }
-            return result;
+            return null;
         }
 
         // Добавление новой группы в "дерево данных"
-        public void AddNewGroup()
+        private void AddNewGroup()
         {
-            TreeNode pNode = treeDataConstructor.SelectedNode;
-
             // попытаемся получить вышестоящий узел в дереве
-            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
+            // ReSharper disable once SuggestVarOrType_SimpleTypes
+            TreeNode pNode = treeDataConstructor.SelectedNode ?? treeDataConstructor.Nodes[0];
+
 
             if (pNode == null) // всетаки неудалось.......
             {
@@ -102,7 +101,7 @@ namespace CNC_Controller
             }
 
             // найдем вышестоящий узел в ListPrimitives
-            primitivNode pnfind = findNodeWithGUID(pNode.Name);
+            PrimitivNode pnfind = FindNodeWithGuid(pNode.Name);
 
             if (pnfind == null)
             {
@@ -111,17 +110,19 @@ namespace CNC_Controller
             }
 
             // Сразу проверим узел выше, т.к. каталог можно создавать в корне дерева, или внутри другого каталога, а создание каталога внутри других элементов нелогично
-            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler || pnfind.typeNode == primitivType.rotate))
+            if (!(pnfind.TypeNode == PrimitivType.Catalog || pnfind.TypeNode == PrimitivType.Cycler || pnfind.TypeNode == PrimitivType.Rotate))
             {
                 MessageBox.Show(@"Создание каталога в нутри данного примитива невозможно!");
                 return;
             }
 
             // вызовем диалог добавления группы
-            frmCatalog fCatalog = new frmCatalog(_mf);
-            fCatalog.deltaX.Value = (decimal)_lastX;
-            fCatalog.deltaY.Value = (decimal)_lastY;
-            fCatalog.deltaZ.Value = (decimal)_lastZ;
+            frmCatalog fCatalog = new frmCatalog(_mf)
+            {
+                deltaX = {Value = (decimal) _lastX},
+                deltaY = {Value = (decimal) _lastY},
+                deltaZ = {Value = (decimal) _lastZ}
+            };
 
             DialogResult dlResult = fCatalog.ShowDialog();
 
@@ -131,19 +132,18 @@ namespace CNC_Controller
                 _lastY = (double)fCatalog.deltaY.Value;
                 _lastZ = (double)fCatalog.deltaZ.Value;
 
-                primitivNode pn = new primitivNode(new primitivCatalog((double)fCatalog.deltaX.Value, (double)fCatalog.deltaY.Value, (double)fCatalog.deltaZ.Value, (double)fCatalog.deltaRotate.Value, fCatalog.textBoxName.Text));
-                pnfind.nodes.Add(pn);
+                PrimitivNode pn = new PrimitivNode(new PrimitivCatalog((double)fCatalog.deltaX.Value, (double)fCatalog.deltaY.Value, (double)fCatalog.deltaZ.Value, (double)fCatalog.deltaRotate.Value, fCatalog.textBoxName.Text));
+                pnfind.Nodes.Add(pn);
                 RefreshTree();
             }
         }
 
         // Добавление новой точки в дерево
-        public void AddNewPoint()
+        private void AddNewPoint()
         {
-            TreeNode pNode = treeDataConstructor.SelectedNode;
+            TreeNode pNode = treeDataConstructor.SelectedNode ?? treeDataConstructor.Nodes[0];
 
             // попытаемся получить вышестоящий узел в дереве
-            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
 
             if (pNode == null) // всетаки неудалось.......
             {
@@ -152,7 +152,7 @@ namespace CNC_Controller
             }
 
             // найдем вышестоящий узел в ListPrimitives
-            primitivNode pnfind = findNodeWithGUID(pNode.Name);
+            PrimitivNode pnfind = FindNodeWithGuid(pNode.Name);
 
             if (pnfind == null)
             {
@@ -161,16 +161,18 @@ namespace CNC_Controller
             }
 
             // Сразу проверим узел выше, т.к. точку внутри точки создавать нелогично
-            if (pnfind.typeNode == primitivType.point)
+            if (pnfind.TypeNode == PrimitivType.Point)
             {
                 MessageBox.Show(@"Создание точки в нутри данного примитива невозможно!");
                 return;
             }
 
-            frmPoint fPoint = new frmPoint();
-            fPoint.numPosX.Value = (decimal)_lastX;
-            fPoint.numPosY.Value = (decimal)_lastY;
-            fPoint.numPosZ.Value = (decimal)_lastZ;
+            frmPoint fPoint = new frmPoint
+            {
+                numPosX = {Value = (decimal) _lastX},
+                numPosY = {Value = (decimal) _lastY},
+                numPosZ = {Value = (decimal) _lastZ}
+            };
 
             DialogResult dlResult = fPoint.ShowDialog();
 
@@ -180,19 +182,18 @@ namespace CNC_Controller
                 _lastY = (double)fPoint.numPosY.Value;
                 _lastZ = (double)fPoint.numPosZ.Value;
 
-                primitivNode pn = new primitivNode(new primitivPoint((double)fPoint.numPosX.Value, (double)fPoint.numPosY.Value, (double)fPoint.numPosZ.Value));
-                pnfind.nodes.Add(pn);
+                PrimitivNode pn = new PrimitivNode(new PrimitivPoint((double)fPoint.numPosX.Value, (double)fPoint.numPosY.Value, (double)fPoint.numPosZ.Value));
+                pnfind.Nodes.Add(pn);
                 RefreshTree();
             }
         }
 
 
-        public void AddNewCycle()
+        private void AddNewCycle()
         {
-            TreeNode pNode = treeDataConstructor.SelectedNode;
+            TreeNode pNode = treeDataConstructor.SelectedNode ?? treeDataConstructor.Nodes[0];
 
             // попытаемся получить вышестоящий узел в дереве
-            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
 
             if (pNode == null) // всетаки неудалось.......
             {
@@ -201,7 +202,7 @@ namespace CNC_Controller
             }
 
             // найдем вышестоящий узел в ListPrimitives
-            primitivNode pnfind = findNodeWithGUID(pNode.Name);
+            PrimitivNode pnfind = FindNodeWithGuid(pNode.Name);
 
             if (pnfind == null)
             {
@@ -210,7 +211,7 @@ namespace CNC_Controller
             }
 
             // Сразу проверим узел выше, т.к. Циклёр можно создавать в корне дерева, или внутри другого каталога, а создание Циклёра внутри других элементов нелогично
-            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler || pnfind.typeNode == primitivType.rotate))
+            if (!(pnfind.TypeNode == PrimitivType.Catalog || pnfind.TypeNode == PrimitivType.Cycler || pnfind.TypeNode == PrimitivType.Rotate))
             {
                 MessageBox.Show(@"Создание циклёра в нутри данного примитива невозможно!");
                 return;
@@ -223,20 +224,19 @@ namespace CNC_Controller
 
             if (dlResult == DialogResult.OK)
             {
-                primitivNode pn = new primitivNode(new primitivCycle((double)fCycler.numStart.Value, (double)fCycler.numStop.Value, (double)fCycler.numStep.Value, fCycler.cbX.Checked, fCycler.cbY.Checked, fCycler.cbZ.Checked, fCycler.textBoxName.Text));
-                pnfind.nodes.Add(pn);
+                PrimitivNode pn = new PrimitivNode(new PrimitivCycle((double)fCycler.numStart.Value, (double)fCycler.numStop.Value, (double)fCycler.numStep.Value, fCycler.cbX.Checked, fCycler.cbY.Checked, fCycler.cbZ.Checked, fCycler.textBoxName.Text));
+                pnfind.Nodes.Add(pn);
                 RefreshTree();
             }
 
         }
 
 
-        public void AddNewRotate()
+        private void AddNewRotate()
         {
-            TreeNode pNode = treeDataConstructor.SelectedNode;
+            TreeNode pNode = treeDataConstructor.SelectedNode ?? treeDataConstructor.Nodes[0];
 
             // попытаемся получить вышестоящий узел в дереве
-            if (pNode == null) pNode = treeDataConstructor.Nodes[0];
 
             if (pNode == null) // всетаки неудалось.......
             {
@@ -245,7 +245,7 @@ namespace CNC_Controller
             }
 
             // найдем вышестоящий узел в ListPrimitives
-            primitivNode pnfind = findNodeWithGUID(pNode.Name);
+            PrimitivNode pnfind = FindNodeWithGuid(pNode.Name);
 
             if (pnfind == null)
             {
@@ -254,7 +254,7 @@ namespace CNC_Controller
             }
 
             // Сразу проверим узел выше, т.к. Циклёр можно создавать в корне дерева, или внутри другого каталога, а создание Циклёра внутри других элементов нелогично
-            if (!(pnfind.typeNode == primitivType.catalog || pnfind.typeNode == primitivType.cycler || pnfind.typeNode == primitivType.rotate))
+            if (!(pnfind.TypeNode == PrimitivType.Catalog || pnfind.TypeNode == PrimitivType.Cycler || pnfind.TypeNode == PrimitivType.Rotate))
             {
                 MessageBox.Show(@"Создание циклёра в нутри данного примитива невозможно!");
                 return;
@@ -267,146 +267,160 @@ namespace CNC_Controller
 
             if (dlResult == DialogResult.OK)
             {
-                primitivNode pn = new primitivNode(new primitivRotate((double)frotate.centerX.Value, (double)frotate.centerY.Value, (double)frotate.centerZ.Value, (double)frotate.rotateStartAngle.Value, (double)frotate.rotateStopAngle.Value, (double)frotate.rotateStepAngle.Value, (double)frotate.rotateRadius.Value, (double)frotate.deltaStepRadius.Value, (double)frotate.RotateRotates.Value, frotate.textBoxName.Text));
-                pnfind.nodes.Add(pn);
+                PrimitivNode pn = new PrimitivNode(new PrimitivRotate((double)frotate.centerX.Value, (double)frotate.centerY.Value, (double)frotate.centerZ.Value, (double)frotate.rotateStartAngle.Value, (double)frotate.rotateStopAngle.Value, (double)frotate.rotateStepAngle.Value, (double)frotate.rotateRadius.Value, (double)frotate.deltaStepRadius.Value, (double)frotate.RotateRotates.Value, frotate.textBoxName.Text));
+                pnfind.Nodes.Add(pn);
                 RefreshTree();
             }
         }
 
         #endregion
 
-
+        // ReSharper disable once FunctionComplexityOverflow
         private void OpenFormDialog()
         {
             if (treeDataConstructor.SelectedNode == null) return;
 
             // Необходимость перезаполнения дерева обновленными данными
-            bool NeedRefreshTree = false;
+            bool needRefreshTree = false;
 
             //получим примитив по гуиду
-            primitivNode pfind = findNodeWithGUID(treeDataConstructor.SelectedNode.Name);
+            // ReSharper disable once SuggestVarOrType_SimpleTypes
+            PrimitivNode pfind = FindNodeWithGuid(treeDataConstructor.SelectedNode.Name);
             //определим его тип, и откроем необходимый диалог
 
-            if (pfind.typeNode == primitivType.catalog)
+            if (pfind.TypeNode == PrimitivType.Catalog)
             {
                 // вызовем диалог добавления группы
-                frmCatalog fCatalog = new frmCatalog(_mf);
-                fCatalog.deltaX.Value = (decimal)pfind.catalog.deltaX;
-                fCatalog.deltaY.Value = (decimal)pfind.catalog.deltaY;
-                fCatalog.deltaZ.Value = (decimal)pfind.catalog.deltaZ;
-                fCatalog.textBoxName.Text = pfind.catalog.Name;
-                fCatalog.deltaRotate.Value = (decimal)pfind.catalog.deltaRotate;
+                // ReSharper disable once SuggestVarOrType_SimpleTypes
+                frmCatalog fCatalog = new frmCatalog(_mf)
+                {
+                    deltaX = {Value = (decimal) pfind.Catalog.DeltaX},
+                    deltaY = {Value = (decimal) pfind.Catalog.DeltaY},
+                    deltaZ = {Value = (decimal) pfind.Catalog.DeltaZ},
+                    textBoxName = {Text = pfind.Catalog.Name},
+                    deltaRotate = {Value = (decimal) pfind.Catalog.DeltaRotate}
+                };
 
+                // ReSharper disable once SuggestVarOrType_SimpleTypes
                 DialogResult dlResult = fCatalog.ShowDialog();
 
                 if (dlResult == DialogResult.OK)
                 {
-                    pfind.catalog.deltaX = (double)fCatalog.deltaX.Value;
-                    pfind.catalog.deltaY = (double)fCatalog.deltaY.Value;
-                    pfind.catalog.deltaZ = (double)fCatalog.deltaZ.Value;
-                    pfind.catalog.Name = fCatalog.textBoxName.Text;
-                    pfind.catalog.deltaRotate = (double)fCatalog.deltaRotate.Value;
+                    pfind.Catalog.DeltaX = (double)fCatalog.deltaX.Value;
+                    pfind.Catalog.DeltaY = (double)fCatalog.deltaY.Value;
+                    pfind.Catalog.DeltaZ = (double)fCatalog.deltaZ.Value;
+                    pfind.Catalog.Name = fCatalog.textBoxName.Text;
+                    pfind.Catalog.DeltaRotate = (double)fCatalog.deltaRotate.Value;
 
-                    NeedRefreshTree = true;
+                    needRefreshTree = true;
                 }
             }
 
-            if (pfind.typeNode == primitivType.cycler)
+            if (pfind.TypeNode == PrimitivType.Cycler)
             {
                 // вызовем диалог добавления группы
-                frmCycler fCycler = new frmCycler(_mf);
+                // ReSharper disable once SuggestVarOrType_SimpleTypes
+                frmCycler fCycler = new frmCycler(_mf)
+                {
+                    numStart = {Value = (decimal) pfind.Cycler.CStart},
+                    numStop = {Value = (decimal) pfind.Cycler.CStop},
+                    numStep = {Value = (decimal) pfind.Cycler.CStep},
+                    textBoxName = {Text = pfind.Cycler.Name},
+                    cbX = {Checked = pfind.Cycler.AllowDeltaX},
+                    cbY = {Checked = pfind.Cycler.AllowDeltaY},
+                    cbZ = {Checked = pfind.Cycler.AllowDeltaZ}
+                };
 
-                fCycler.numStart.Value = (decimal)pfind.cycler.cStart;
-                fCycler.numStop.Value = (decimal)pfind.cycler.cStop;
-                fCycler.numStep.Value = (decimal)pfind.cycler.cStep;
-                fCycler.textBoxName.Text = pfind.cycler.Name;
-                fCycler.cbX.Checked = pfind.cycler.AllowDeltaX;
-                fCycler.cbY.Checked = pfind.cycler.AllowDeltaY;
-                fCycler.cbZ.Checked = pfind.cycler.AllowDeltaZ;
 
+                // ReSharper disable once SuggestVarOrType_SimpleTypes
                 DialogResult dlResult = fCycler.ShowDialog();
 
                 if (dlResult == DialogResult.OK)
                 {
-                    pfind.cycler.cStart = (double)fCycler.numStart.Value;
-                    pfind.cycler.cStop = (double)fCycler.numStop.Value;
-                    pfind.cycler.cStep = (double)fCycler.numStep.Value;
+                    pfind.Cycler.CStart = (double)fCycler.numStart.Value;
+                    pfind.Cycler.CStop = (double)fCycler.numStop.Value;
+                    pfind.Cycler.CStep = (double)fCycler.numStep.Value;
 
-                    pfind.cycler.Name = fCycler.textBoxName.Text;
-                    pfind.cycler.AllowDeltaX = fCycler.cbX.Checked;
-                    pfind.cycler.AllowDeltaY = fCycler.cbY.Checked;
-                    pfind.cycler.AllowDeltaZ = fCycler.cbZ.Checked;
+                    pfind.Cycler.Name = fCycler.textBoxName.Text;
+                    pfind.Cycler.AllowDeltaX = fCycler.cbX.Checked;
+                    pfind.Cycler.AllowDeltaY = fCycler.cbY.Checked;
+                    pfind.Cycler.AllowDeltaZ = fCycler.cbZ.Checked;
 
-                    NeedRefreshTree = true;
+                    needRefreshTree = true;
                 }
             }
 
 
-            if (pfind.typeNode == primitivType.rotate)
+            if (pfind.TypeNode == PrimitivType.Rotate)
             {
                 // вызовем диалог добавления группы
-                frmRotate frotate = new frmRotate(_mf);
+                // ReSharper disable once SuggestVarOrType_SimpleTypes
+                frmRotate frotate = new frmRotate(_mf)
+                {
+                    centerX = {Value = (decimal) pfind.Rotate.X},
+                    centerY = {Value = (decimal) pfind.Rotate.Y},
+                    centerZ = {Value = (decimal) pfind.Rotate.Z},
+                    rotateRadius = {Value = (decimal) pfind.Rotate.Radius},
+                    rotateStartAngle = {Value = (decimal) pfind.Rotate.AngleStart},
+                    rotateStopAngle = {Value = (decimal) pfind.Rotate.AngleStop},
+                    rotateStepAngle = {Value = (decimal) pfind.Rotate.AngleStep},
+                    deltaStepRadius = {Value = (decimal) pfind.Rotate.DeltaStepRadius},
+                    RotateRotates = {Value = (decimal) pfind.Rotate.RotateRotates},
+                    textBoxName = {Text = pfind.Rotate.Name}
+                };
 
-                frotate.centerX.Value = (decimal)pfind.rotate.X;
-                frotate.centerY.Value = (decimal)pfind.rotate.Y;
-                frotate.centerZ.Value = (decimal)pfind.rotate.Z;
-
-                frotate.rotateRadius.Value = (decimal)pfind.rotate.radius;
-                frotate.rotateStartAngle.Value = (decimal)pfind.rotate.angleStart;
-                frotate.rotateStopAngle.Value = (decimal)pfind.rotate.angleStop;
-                frotate.rotateStepAngle.Value = (decimal)pfind.rotate.angleStep;
 
 
-                frotate.deltaStepRadius.Value = (decimal)pfind.rotate.deltaStepRadius;
-                frotate.RotateRotates.Value = (decimal)pfind.rotate.RotateRotates;
 
-                frotate.textBoxName.Text = pfind.rotate.Name;
+
 
 
                 DialogResult dlResult = frotate.ShowDialog();
 
                 if (dlResult == DialogResult.OK)
                 {
-                    pfind.rotate.Name = frotate.textBoxName.Text;
+                    pfind.Rotate.Name = frotate.textBoxName.Text;
 
-                    pfind.rotate.X = (double)frotate.centerX.Value;
-                    pfind.rotate.Y=(double)frotate.centerY.Value;
-                    pfind.rotate.Z=(double)frotate.centerZ.Value;
+                    pfind.Rotate.X = (double)frotate.centerX.Value;
+                    pfind.Rotate.Y=(double)frotate.centerY.Value;
+                    pfind.Rotate.Z=(double)frotate.centerZ.Value;
 
-                    pfind.rotate.radius=(double)frotate.rotateRadius.Value;
-                    pfind.rotate.angleStart=(double)frotate.rotateStartAngle.Value;
-                    pfind.rotate.angleStop=(double)frotate.rotateStopAngle.Value;
-                    pfind.rotate.angleStep=(double)frotate.rotateStepAngle.Value;
+                    pfind.Rotate.Radius=(double)frotate.rotateRadius.Value;
+                    pfind.Rotate.AngleStart=(double)frotate.rotateStartAngle.Value;
+                    pfind.Rotate.AngleStop=(double)frotate.rotateStopAngle.Value;
+                    pfind.Rotate.AngleStep=(double)frotate.rotateStepAngle.Value;
 
-                    pfind.rotate.deltaStepRadius = (double)frotate.deltaStepRadius.Value;
-                    pfind.rotate.RotateRotates = (double)frotate.RotateRotates.Value;
+                    pfind.Rotate.DeltaStepRadius = (double)frotate.deltaStepRadius.Value;
+                    pfind.Rotate.RotateRotates = (double)frotate.RotateRotates.Value;
 
-                    NeedRefreshTree = true;
+                    needRefreshTree = true;
                 }
             }
 
 
 
-            if (pfind.typeNode == primitivType.point)
+            if (pfind.TypeNode == PrimitivType.Point)
             {
                 // вызовем диалог добавления группы
-                frmPoint fPoint = new frmPoint();
-                fPoint.numPosX.Value = (decimal)pfind.point.X;
-                fPoint.numPosY.Value = (decimal)pfind.point.Y;
-                fPoint.numPosZ.Value = (decimal)pfind.point.Z;
+                frmPoint fPoint = new frmPoint
+                {
+                    numPosX = {Value = (decimal) pfind.Point.X},
+                    numPosY = {Value = (decimal) pfind.Point.Y},
+                    numPosZ = {Value = (decimal) pfind.Point.Z}
+                };
 
                 DialogResult dlResult = fPoint.ShowDialog();
 
                 if (dlResult == DialogResult.OK)
                 {
-                    pfind.point.X = (double)fPoint.numPosX.Value;
-                    pfind.point.Y = (double)fPoint.numPosY.Value;
-                    pfind.point.Z = (double)fPoint.numPosZ.Value;
-                    NeedRefreshTree = true;
+                    pfind.Point.X = (double)fPoint.numPosX.Value;
+                    pfind.Point.Y = (double)fPoint.numPosY.Value;
+                    pfind.Point.Z = (double)fPoint.numPosZ.Value;
+                    needRefreshTree = true;
                 }
             }
 
-            if (NeedRefreshTree) RefreshTree();
+            if (needRefreshTree) RefreshTree();
         }
 
 
@@ -417,73 +431,64 @@ namespace CNC_Controller
         }
 
         // рекурсивная функция для перерисовки дерева
-        private void DrawPrimitivInTree(primitivNode _primitivNode, TreeNode _rootNode = null)
+        private void DrawPrimitivInTree(PrimitivNode primitivNode, TreeNode rootNode = null)
         {
-            TreeNode trNode = null;
+            var trNode = rootNode == null ? treeDataConstructor.Nodes.Add("") : rootNode.Nodes.Add("");
 
-            if (_rootNode == null)
-            {
-                trNode = treeDataConstructor.Nodes.Add("");
-            }
-            else
-            {
-                trNode = _rootNode.Nodes.Add("");
-            }
-
-            if (_primitivNode.typeNode == primitivType.catalog)
+            if (primitivNode.TypeNode == PrimitivType.Catalog)
             {
                 trNode.ImageIndex = 1;
-                trNode.Name = _primitivNode.GUID;
-                trNode.Text = _primitivNode.catalog.Name;
+                trNode.Name = primitivNode.Guid;
+                trNode.Text = primitivNode.Catalog.Name;
             }
 
-            if (_primitivNode.typeNode == primitivType.cycler)
+            if (primitivNode.TypeNode == PrimitivType.Cycler)
             {
                 trNode.ImageIndex = 4;
-                trNode.Name = _primitivNode.GUID;
+                trNode.Name = primitivNode.Guid;
 
-                trNode.Text = _primitivNode.cycler.Name + "(с: " + _primitivNode.cycler.cStart + " по: " + _primitivNode.cycler.cStop + " шаг:" + +_primitivNode.cycler.cStep + ")";
+                trNode.Text = primitivNode.Cycler.Name + @"(с: " + primitivNode.Cycler.CStart + @" по: " + primitivNode.Cycler.CStop + @" шаг:" + +primitivNode.Cycler.CStep + @")";
             }
 
-            if (_primitivNode.typeNode == primitivType.rotate)
+            if (primitivNode.TypeNode == PrimitivType.Rotate)
             {
                 trNode.ImageIndex = 6;
-                trNode.Name = _primitivNode.GUID;
+                trNode.Name = primitivNode.Guid;
 
-                trNode.Text = _primitivNode.rotate.Name;// + "(с: " + _primitivNode.cycler.cStart + " по: " + _primitivNode.cycler.cStop + " шаг:" + +_primitivNode.cycler.cStep + ")";
+                trNode.Text = primitivNode.Rotate.Name;// + "(с: " + _primitivNode.cycler.cStart + " по: " + _primitivNode.cycler.cStop + " шаг:" + +_primitivNode.cycler.cStep + ")";
             }
 
 
 
-            if (_primitivNode.typeNode == primitivType.point)
+            if (primitivNode.TypeNode == PrimitivType.Point)
             {
                 trNode.ImageIndex = 2;
-                trNode.Name = _primitivNode.GUID;
-                trNode.Text = "Точка: (" + _primitivNode.point.X + ", " + _primitivNode.point.Y + ", "  + _primitivNode.point.Z + ")";
+                trNode.Name = primitivNode.Guid;
+                trNode.Text = @"Точка: (" + primitivNode.Point.X + @", " + primitivNode.Point.Y + @", "  + primitivNode.Point.Z + @")";
             }
 
-            if (_primitivNode.nodes.Count == 0) return;
+            if (primitivNode.Nodes.Count == 0) return;
 
-            foreach (primitivNode VARIABLE in _primitivNode.nodes)
-                DrawPrimitivInTree(VARIABLE, trNode);
+            foreach (PrimitivNode variable in primitivNode.Nodes)
+                DrawPrimitivInTree(variable, trNode);
         }
         
         // перерисовка данных
         private void RefreshTree()
         {
             //элемент на котом нужно будет спозиционироваться
-            string GUIDselectedNode = "";
+            string guiDselectedNode = "";
 
-            if (treeDataConstructor.SelectedNode != null) GUIDselectedNode = treeDataConstructor.SelectedNode.Name;
+            if (treeDataConstructor.SelectedNode != null) guiDselectedNode = treeDataConstructor.SelectedNode.Name;
 
             treeDataConstructor.Nodes.Clear();
 
             //Если нет данных
             if (_listPrimitives.Count == 0)
             {
-                primitivNode pp = new primitivNode(new primitivCatalog(0, 0, 0, 0, "Точка старта"));
+                PrimitivNode pp = new PrimitivNode(new PrimitivCatalog(0, 0, 0, 0, "Точка старта"));
                 _listPrimitives.Add(pp);
-                GUIDselectedNode = pp.GUID;
+                guiDselectedNode = pp.Guid;
             }
 
             treeDataConstructor.BeginUpdate();
@@ -499,7 +504,7 @@ namespace CNC_Controller
 
 
             // установим активность на узле с GUIDselectedNode
-            TreeNode[] trArray = treeDataConstructor.Nodes.Find(GUIDselectedNode, true);
+            TreeNode[] trArray = treeDataConstructor.Nodes.Find(guiDselectedNode, true);
 
             if (trArray.Length != 0) treeDataConstructor.SelectedNode = trArray[0];
 
@@ -508,119 +513,116 @@ namespace CNC_Controller
 
 
         // Получение G-кода из данных конструктора
-        private void ParsePrimitivesToGkode(ref string _strCode, primitivNode _node, double deltaX = 0, double deltaY = 0, double deltaZ = 0, double deltaRotate = 0)
+        private void ParsePrimitivesToGkode(ref string strCode, PrimitivNode node, double deltaX = 0, double deltaY = 0, double deltaZ = 0, double deltaRotate = 0)
         {
-            if (_node.typeNode == primitivType.point)
+            if (node.TypeNode == PrimitivType.Point)
             {
-                double rotatedX = _node.point.X * Math.Cos(deltaRotate * (Math.PI / 180)) - _node.point.Y * Math.Sin(deltaRotate * (Math.PI / 180));
-                double rotatedY = _node.point.X * Math.Sin(deltaRotate * (Math.PI / 180)) + _node.point.Y * Math.Cos(deltaRotate * (Math.PI / 180));
+                double rotatedX = node.Point.X * Math.Cos(deltaRotate * (Math.PI / 180)) - node.Point.Y * Math.Sin(deltaRotate * (Math.PI / 180));
+                double rotatedY = node.Point.X * Math.Sin(deltaRotate * (Math.PI / 180)) + node.Point.Y * Math.Cos(deltaRotate * (Math.PI / 180));
 
                 double xpp = rotatedX + deltaX;
                 double ypp = rotatedY + deltaY;
-                double zpp = _node.point.Z + deltaZ;
+                double zpp = node.Point.Z + deltaZ;
 
-                _strCode += "G1 X" + (Math.Round(xpp,3)) + " Y" + (Math.Round(ypp,3)) + " Z" + (zpp) + "\n";
-                //_strCode += "G1 X" + (_node.point.X + deltaX) + " Y" + (_node.point.Y + deltaY) + " Z" + (_node.point.Z + deltaZ) + "\n";
+                strCode += "G1 X" + (Math.Round(xpp,3)) + " Y" + (Math.Round(ypp,3)) + " Z" + (zpp) + "\n";
                 return;
             }
 
 
-            if (_node.typeNode == primitivType.catalog)
+            if (node.TypeNode == PrimitivType.Catalog)
             {
                 double dX = deltaX;       // координата в мм
                 double dY = deltaY;       // координата в мм
                 double dZ = deltaZ;       // координата в мм
                 double dR = deltaRotate;  // значение в градусах
 
-                dX += _node.catalog.deltaX;
-                dY += _node.catalog.deltaY;
-                dZ += _node.catalog.deltaZ;
-                dR += _node.catalog.deltaRotate;
+                dX += node.Catalog.DeltaX;
+                dY += node.Catalog.DeltaY;
+                dZ += node.Catalog.DeltaZ;
+                dR += node.Catalog.DeltaRotate;
 
-                foreach (primitivNode VARIABLE in _node.nodes)
+                foreach (PrimitivNode variable in node.Nodes)
                 {
-                    ParsePrimitivesToGkode(ref _strCode,VARIABLE,dX,dY,dZ,dR);
+                    ParsePrimitivesToGkode(ref strCode,variable,dX,dY,dZ,dR);
                 }
             }
 
 
 
-            if (_node.typeNode == primitivType.cycler)
+            if (node.TypeNode == PrimitivType.Cycler)
             {
-                if (_node.cycler.cStart < _node.cycler.cStop)
+                if (node.Cycler.CStart < node.Cycler.CStop)
                 {
-                    for (double i = _node.cycler.cStart; i < _node.cycler.cStop; i += _node.cycler.cStep)
+                    for (double i = node.Cycler.CStart; i < node.Cycler.CStop; i += node.Cycler.CStep)
                     {
                     
                         double dX = deltaX;       // координата в мм
                         double dY = deltaY;       // координата в мм
                         double dZ = deltaZ;       // координата в мм
 
-                        if (_node.cycler.AllowDeltaX) dX += i;
+                        if (node.Cycler.AllowDeltaX) dX += i;
 
-                        if (_node.cycler.AllowDeltaY) dY += i;
+                        if (node.Cycler.AllowDeltaY) dY += i;
 
-                        if (_node.cycler.AllowDeltaZ) dZ += i;
+                        if (node.Cycler.AllowDeltaZ) dZ += i;
                     
-                        foreach (primitivNode VARIABLE in _node.nodes)
+                        foreach (PrimitivNode variable in node.Nodes)
                         {
-                            ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ);
+                            ParsePrimitivesToGkode(ref strCode, variable, dX, dY, dZ);
                         }
                     }    
                 }
                 else
                 {
-                    for (double i = _node.cycler.cStart; i > _node.cycler.cStop; i -= _node.cycler.cStep)
+                    for (double i = node.Cycler.CStart; i > node.Cycler.CStop; i -= node.Cycler.CStep)
                     {
 
                         double dX = deltaX;       // координата в мм
                         double dY = deltaY;       // координата в мм
                         double dZ = deltaZ;       // координата в мм
 
-                        if (_node.cycler.AllowDeltaX) dX += i;
+                        if (node.Cycler.AllowDeltaX) dX += i;
 
-                        if (_node.cycler.AllowDeltaY) dY += i;
+                        if (node.Cycler.AllowDeltaY) dY += i;
 
-                        if (_node.cycler.AllowDeltaZ) dZ += i;
+                        if (node.Cycler.AllowDeltaZ) dZ += i;
 
-                        foreach (primitivNode VARIABLE in _node.nodes)
+                        foreach (PrimitivNode variable in node.Nodes)
                         {
-                            ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ);
+                            ParsePrimitivesToGkode(ref strCode, variable, dX, dY, dZ);
                         }
                     }
                 }
             }  
             
-            if (_node.typeNode == primitivType.rotate)
+            if (node.TypeNode == PrimitivType.Rotate)
                 {
-                    double dX = 0;       // координата в мм
-                    double dY = 0;       // координата в мм
                     double dZ = deltaZ;  // координата в мм
 
-                    double dSR = _node.rotate.deltaStepRadius; // дельта изменения радиуса с каждым шагом
-                    double dRO = _node.rotate.RotateRotates;   // угол дополнительного вращения объекта
-                    double nowdRO = 0;
+                    double dSr = node.Rotate.DeltaStepRadius; // дельта изменения радиуса с каждым шагом
+                    double dRo = node.Rotate.RotateRotates;   // угол дополнительного вращения объекта
+                    double nowdRo = 0;
 
-                    double dRadius = _node.rotate.radius;
+                    double dRadius = node.Rotate.Radius;
 
-                    for (double angle = _node.rotate.angleStart; angle < _node.rotate.angleStop; angle += _node.rotate.angleStep)
+                    for (double angle = node.Rotate.AngleStart; angle < node.Rotate.AngleStop; angle += node.Rotate.AngleStep)
                     {
-                        double x1 = _node.rotate.X + dRadius * Math.Cos(angle * (Math.PI / 180));
-                        double y1 = _node.rotate.Y + dRadius * Math.Sin(angle * (Math.PI / 180));
+                        double x1 = node.Rotate.X + dRadius * Math.Cos(angle * (Math.PI / 180));
+                        double y1 = node.Rotate.Y + dRadius * Math.Sin(angle * (Math.PI / 180));
 
 
-                        dX = x1+deltaX;
-                        dY = y1+deltaY;
+                        var dX = x1+deltaX;       // координата в мм
+                        var dY = y1+deltaY;       // координата в мм
                         //dZ += _node.catalog.Z;
 
-                        foreach (primitivNode VARIABLE in _node.nodes)
+                        foreach (PrimitivNode variable in node.Nodes)
                         {
-                            ParsePrimitivesToGkode(ref _strCode, VARIABLE, dX, dY, dZ, nowdRO);
-                            nowdRO += dRO;
+                            ParsePrimitivesToGkode(ref strCode, variable, dX, dY, dZ, nowdRo);
+                            nowdRo += dRo;
 
                         }
 
-                        dRadius += dSR;
+                        dRadius += dSr;
 
                     }
                 }
@@ -638,16 +640,16 @@ namespace CNC_Controller
             _mf.LoadDataFromText(Regex.Split(code, "\n"));
         }
 
-        private void DeleteNode(string _GUID, primitivNode _primitiv)
+        private void DeleteNode(string guid, PrimitivNode primitiv)
         {
-            foreach (primitivNode VARIABLE in _primitiv.nodes)
+            foreach (PrimitivNode variable in primitiv.Nodes)
             {
-                if (VARIABLE.GUID == _GUID)
+                if (variable.Guid == guid)
                 {
-                    _primitiv.nodes.Remove(VARIABLE);
+                    primitiv.Nodes.Remove(variable);
                     break; //дальше продолжать нельзя, т.к. сломали выборку
                 }
-                else DeleteNode(_GUID, VARIABLE);
+                else DeleteNode(guid, variable);
             }
         }
 
@@ -659,8 +661,10 @@ namespace CNC_Controller
 
         private void btSaveToFile_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = @"Данные конструктора (*.dat)|*.dat|Все файлы (*.*)|*.*";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = @"Данные конструктора (*.dat)|*.dat|Все файлы (*.*)|*.*"
+            };
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -674,19 +678,29 @@ namespace CNC_Controller
 
         private void btLoadFromFile_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "Данные конструктора (*.dat)|*.dat|Все файлы (*.*)|*.*";
-
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            try
             {
-                BinaryFormatter binFormat = new BinaryFormatter();
-
-                using (Stream fStream = File.OpenRead(openFileDialog1.FileName))
+                OpenFileDialog openFileDialog1 = new OpenFileDialog
                 {
-                    primitivNode pNode = (primitivNode)binFormat.Deserialize(fStream);
-                    _listPrimitives[0] = pNode;
+                    Filter = @"Данные конструктора (*.dat)|*.dat|Все файлы (*.*)|*.*"
+                };
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    BinaryFormatter binFormat = new BinaryFormatter();
+
+                    using (Stream fStream = File.OpenRead(openFileDialog1.FileName))
+                    {
+                        PrimitivNode pNode = (PrimitivNode)binFormat.Deserialize(fStream);
+                        _listPrimitives[0] = pNode;
+                    }
+                    RefreshTree();
                 }
-                RefreshTree();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка парсинга файла с данными! " + ex.Message);
+
             }
         }
 
@@ -713,25 +727,25 @@ namespace CNC_Controller
         /// <summary>
         /// Буфер для хранения промежуточных данных
         /// </summary>
-        private primitivNode clipboardPrimitivNode = null;
+        private PrimitivNode _clipboardPrimitivNode;
 
         // контекст меню копировать
         private void ToolStripMenuCopyDATA_Click(object sender, EventArgs e)
         {
             if (treeDataConstructor.SelectedNode == null) return;
 
-            clipboardPrimitivNode = findNodeWithGUID(treeDataConstructor.SelectedNode.Name);
+            _clipboardPrimitivNode = FindNodeWithGuid(treeDataConstructor.SelectedNode.Name);
         }
         // контекст меню вставить
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (treeDataConstructor.SelectedNode == null) return;
 
-            primitivNode tmp = findNodeWithGUID(treeDataConstructor.SelectedNode.Name);
+            PrimitivNode tmp = FindNodeWithGuid(treeDataConstructor.SelectedNode.Name);
 
-            tmp.nodes.Add(clipboardPrimitivNode);
+            tmp.Nodes.Add(_clipboardPrimitivNode);
 
-            clipboardPrimitivNode = null;
+            _clipboardPrimitivNode = null;
 
             RefreshTree();
         }
@@ -740,7 +754,7 @@ namespace CNC_Controller
         {
             if (treeDataConstructor.SelectedNode == null) return;
 
-            clipboardPrimitivNode = findNodeWithGUID(treeDataConstructor.SelectedNode.Name);
+            _clipboardPrimitivNode = FindNodeWithGuid(treeDataConstructor.SelectedNode.Name);
 
             DeleteNode(treeDataConstructor.SelectedNode.Name, _listPrimitives[0]);
 
@@ -758,9 +772,9 @@ namespace CNC_Controller
             RefreshTree();
         }
 
-        private void contextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void contextMenu_Opening(object sender, CancelEventArgs e)
         {
-            pasteToolStripMenuItem.Enabled = (clipboardPrimitivNode != null);
+            pasteToolStripMenuItem.Enabled = (_clipboardPrimitivNode != null);
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
@@ -772,17 +786,16 @@ namespace CNC_Controller
         {
             if (_listPrimitives.Count == 0) return;
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = @"G-код (*.txt)|*.txt|Все файлы (*.*)|*.*";
+            SaveFileDialog saveFileDialog = new SaveFileDialog {Filter = @"G-код (*.txt)|*.txt|Все файлы (*.*)|*.*"};
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string code = "";
                 ParsePrimitivesToGkode(ref code, _listPrimitives[0]);
 
-                StreamWriter SW = new StreamWriter(new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write));
-                SW.Write(code);
-                SW.Close();
+                StreamWriter sw = new StreamWriter(new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write));
+                sw.Write(code);
+                sw.Close();
             }
         }
     }
@@ -792,38 +805,38 @@ namespace CNC_Controller
 /// Типы примитивов
 /// </summary>
 [Serializable]
-public enum primitivType
+public enum PrimitivType
 {
-    catalog,
-    point,
-    cycler,
-    rotate
+    Catalog,
+    Point,
+    Cycler,
+    Rotate
 }
 
 /// <summary>
 /// Класс описания группы элементов
 /// </summary>
 [Serializable]
-public class primitivCatalog
+public class PrimitivCatalog
 {
     //Смещения елементов в нутри данной группы
-    public double deltaX;       // координата в мм
-    public double deltaY;       // координата в мм
-    public double deltaZ;       // координата в мм
+    public double DeltaX;       // координата в мм
+    public double DeltaY;       // координата в мм
+    public double DeltaZ;       // координата в мм
 
     //угол поворота
-    public double deltaRotate;       // координата в мм
+    public double DeltaRotate;       // координата в мм
     
     // для представления
     public string Name;
 
-    public primitivCatalog(double _deltaX, double _deltaY, double _deltaZ, double _deltaRotate, string _name = "Группа")
+    public PrimitivCatalog(double deltaX, double deltaY, double deltaZ, double deltaRotate, string name = "Группа")
     {
-        deltaX = _deltaX;
-        deltaY = _deltaY;
-        deltaZ = _deltaZ;
-        deltaRotate = _deltaRotate;
-        Name = _name;
+        DeltaX = deltaX;
+        DeltaY = deltaY;
+        DeltaZ = deltaZ;
+        DeltaRotate = deltaRotate;
+        Name = name;
     }
 }
 
@@ -831,37 +844,37 @@ public class primitivCatalog
 /// Класс описания вращения (пока на плоскости xy)
 /// </summary>
 [Serializable]
-public class primitivRotate
+public class PrimitivRotate
 {
     //центр вращения
     public double X;  // координата в мм
     public double Y;  // координата в мм
     public double Z;  // координата в мм
     // шаг вращения
-    public double angleStart;  // градус начала
-    public double angleStop;   // градус окончания
-    public double angleStep;   // градус шага
-    public double radius;      // радиус окружности
+    public double AngleStart;  // градус начала
+    public double AngleStop;   // градус окончания
+    public double AngleStep;   // градус шага
+    public double Radius;      // радиус окружности
 
-    public double deltaStepRadius; // изменение радиуса с каждым шагом
+    public double DeltaStepRadius; // изменение радиуса с каждым шагом
     public double RotateRotates; //градус на который вращать данные
 
     public string Name;   // для представления
 
-    public primitivRotate(double _x, double _y, double _z, double _angleStart, double _angleStop, double _angleStep, double _radius, double _deltaStepRadius, double _RotateRotates, string _name = "Вращение")
+    public PrimitivRotate(double x, double y, double z, double angleStart, double angleStop, double angleStep, double radius, double deltaStepRadius, double rotateRotates, string name = "Вращение")
     {
-        X = _x;
-        Y = _y;
-        Z = _z;
+        X = x;
+        Y = y;
+        Z = z;
 
-        angleStart = _angleStart;
-        angleStop = _angleStop;
-        angleStep = _angleStep;
-        radius = _radius;
-        deltaStepRadius = _deltaStepRadius;
-        RotateRotates = _RotateRotates;
+        AngleStart = angleStart;
+        AngleStop = angleStop;
+        AngleStep = angleStep;
+        Radius = radius;
+        DeltaStepRadius = deltaStepRadius;
+        RotateRotates = rotateRotates;
 
-        Name = _name;
+        Name = name;
     }
 }
 
@@ -869,25 +882,25 @@ public class primitivRotate
 /// Класс описания цикла
 /// </summary>
 [Serializable]
-public class primitivCycle
+public class PrimitivCycle
 {
-    public double cStart;       // начальное значение цикла
-    public double cStop;       // конечное значение цикла
-    public double cStep;       // шаг
+    public double CStart;       // начальное значение цикла
+    public double CStop;       // конечное значение цикла
+    public double CStep;       // шаг
     public string Name;   // для представления
     public bool AllowDeltaX; // необходимость применять цикл к оси X
     public bool AllowDeltaY; // необходимость применять цикл к оси Y
     public bool AllowDeltaZ; // необходимость применять цикл к оси Z
 
-    public primitivCycle(double _cStart, double _cStop, double _cStep, bool _AllowDeltaX, bool _AllowDeltaY, bool _AllowDeltaZ, string _name = "Цикл")
+    public PrimitivCycle(double cStart, double cStop, double cStep, bool allowDeltaX, bool allowDeltaY, bool allowDeltaZ, string name = "Цикл")
     {
-        cStart = _cStart;
-        cStop = _cStop;
-        cStep = _cStep;
-        Name = _name;
-        AllowDeltaX = _AllowDeltaX;
-        AllowDeltaY = _AllowDeltaY;
-        AllowDeltaZ = _AllowDeltaZ;
+        CStart = cStart;
+        CStop = cStop;
+        CStep = cStep;
+        Name = name;
+        AllowDeltaX = allowDeltaX;
+        AllowDeltaY = allowDeltaY;
+        AllowDeltaZ = allowDeltaZ;
     }
 }
 
@@ -895,17 +908,17 @@ public class primitivCycle
 /// Примитив точка
 /// </summary>
 [Serializable]
-public class primitivPoint
+public class PrimitivPoint
 {
     public double X;       // координата в мм
     public double Y;       // координата в мм
     public double Z;       // координата в мм
 
-    public primitivPoint(double _x, double _y, double _z)
+    public PrimitivPoint(double x, double y, double z)
     {
-        X = _x;
-        Y = _y;
-        Z = _z;
+        X = x;
+        Y = y;
+        Z = z;
     }
 }
 
@@ -913,80 +926,83 @@ public class primitivPoint
 /// Класс для хранения данных, конструктора
 /// </summary>
 [Serializable]
-public class primitivNode
+public class PrimitivNode
 {
-    public string GUID;
-    public primitivType typeNode;
+    public readonly string Guid;
+    public readonly PrimitivType TypeNode;
 
-    public primitivCatalog catalog;
-    public primitivPoint point;
-    public primitivCycle cycler;
-    public primitivRotate rotate;
+    public readonly PrimitivCatalog Catalog;
+    public readonly PrimitivPoint Point;
+    public readonly PrimitivCycle Cycler;
+    public readonly PrimitivRotate Rotate;
 
-    public List<primitivNode> nodes;
+    public readonly List<PrimitivNode> Nodes;
 
-    public primitivNode()
+    private PrimitivNode()
     {
-        GUID = "";
-        typeNode = primitivType.catalog;
+        Guid = "";
+        TypeNode = PrimitivType.Catalog;
 
-        catalog = null;
-        point = null;
-        cycler = null;
-        rotate = null;
+        Catalog = null;
+        Point = null;
+        Cycler = null;
+        Rotate = null;
 
-        nodes = new List<primitivNode>();
+        Nodes = new List<PrimitivNode>();
     }
 
-    public primitivNode(primitivCatalog _catalog)
+    // ReSharper disable once InconsistentNaming
+    public PrimitivNode(PrimitivCatalog _catalog)
     {
-        GUID = Guid.NewGuid().ToString();
-        typeNode = primitivType.catalog;
+        Guid = System.Guid.NewGuid().ToString();
+        TypeNode = PrimitivType.Catalog;
 
-        catalog = _catalog;
-        point = null;
-        cycler = null;
-        rotate = null;
+        Catalog = _catalog;
+        Point = null;
+        Cycler = null;
+        Rotate = null;
 
-        nodes = new List<primitivNode>();
+        Nodes = new List<PrimitivNode>();
     }
 
-    public primitivNode(primitivCycle _cycle)
+    public PrimitivNode(PrimitivCycle cycle)
     {
-        GUID = Guid.NewGuid().ToString();
-        typeNode = primitivType.cycler;
+        Guid = System.Guid.NewGuid().ToString();
+        TypeNode = PrimitivType.Cycler;
 
-        catalog = null;    
-        point = null;   
-        cycler = _cycle;
-        rotate = null;
+        Catalog = null;    
+        Point = null;   
+        Cycler = cycle;
+        Rotate = null;
 
-        nodes = new List<primitivNode>();
+        Nodes = new List<PrimitivNode>();
     }
 
-    public primitivNode(primitivPoint _point)
+    // ReSharper disable once InconsistentNaming
+    public PrimitivNode(PrimitivPoint _point)
     {
-        GUID = Guid.NewGuid().ToString();
-        typeNode = primitivType.point;
+        Guid = System.Guid.NewGuid().ToString();
+        TypeNode = PrimitivType.Point;
 
-        catalog = null;
-        point = _point;
-        cycler = null;
-        rotate = null;
+        Catalog = null;
+        Point = _point;
+        Cycler = null;
+        Rotate = null;
 
-        nodes = new List<primitivNode>();
+        Nodes = new List<PrimitivNode>();
     }
 
-    public primitivNode(primitivRotate _rotate)
+    // ReSharper disable once InconsistentNaming
+    public PrimitivNode(PrimitivRotate _rotate)
     {
-        GUID = Guid.NewGuid().ToString();
-        typeNode = primitivType.rotate;
+        Guid = System.Guid.NewGuid().ToString();
+        TypeNode = PrimitivType.Rotate;
 
-        catalog = null;
-        point = null;
-        cycler = null;
-        rotate = _rotate;
+        Catalog = null;
+        Point = null;
+        Cycler = null;
+        Rotate = _rotate;
 
-        nodes = new List<primitivNode>();
+        Nodes = new List<PrimitivNode>();
     }
 }
