@@ -41,16 +41,16 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.moveupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.movedownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.mainMenu = new System.Windows.Forms.ToolStrip();
             this.btLoadFromFile = new System.Windows.Forms.ToolStripButton();
             this.btSaveToFile = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btNewData = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.SaveToFile = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btNewData = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.toolStripPrimitiv = new System.Windows.Forms.ToolStrip();
+            this.MenuPrimitivAndFunc = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,11 +60,11 @@
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.contextMenu.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.mainMenu.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.LeftToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
-            this.toolStripPrimitiv.SuspendLayout();
+            this.MenuPrimitivAndFunc.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeDataConstructor
@@ -75,7 +75,7 @@
             this.treeDataConstructor.FullRowSelect = true;
             this.treeDataConstructor.HideSelection = false;
             this.treeDataConstructor.ImageIndex = 0;
-            this.treeDataConstructor.ImageList = this.imageList1;
+            this.treeDataConstructor.ImageList = this.imageList;
             this.treeDataConstructor.Location = new System.Drawing.Point(0, 0);
             this.treeDataConstructor.Name = "treeDataConstructor";
             this.treeDataConstructor.SelectedImageIndex = 0;
@@ -167,33 +167,33 @@
             this.movedownToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.movedownToolStripMenuItem.Text = "Сдвинуть вниз";
             // 
-            // imageList1
+            // imageList
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "asterisk_orange.png");
-            this.imageList1.Images.SetKeyName(1, "folder.png");
-            this.imageList1.Images.SetKeyName(2, "bullet_blue.png");
-            this.imageList1.Images.SetKeyName(3, "draw_line.png");
-            this.imageList1.Images.SetKeyName(4, "arrow_repeat.png");
-            this.imageList1.Images.SetKeyName(5, "arrow_out.png");
-            this.imageList1.Images.SetKeyName(6, "arrow_rotate_clockwise.png");
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "asterisk_orange.png");
+            this.imageList.Images.SetKeyName(1, "folder.png");
+            this.imageList.Images.SetKeyName(2, "bullet_blue.png");
+            this.imageList.Images.SetKeyName(3, "draw_line.png");
+            this.imageList.Images.SetKeyName(4, "arrow_repeat.png");
+            this.imageList.Images.SetKeyName(5, "arrow_out.png");
+            this.imageList.Images.SetKeyName(6, "arrow_rotate_clockwise.png");
             // 
-            // toolStrip1
+            // mainMenu
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btLoadFromFile,
             this.btSaveToFile,
             this.toolStripSeparator1,
             this.SaveToFile,
             this.toolStripSeparator2,
             this.btNewData});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(752, 25);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "toolStrip1";
+            this.mainMenu.Location = new System.Drawing.Point(0, 0);
+            this.mainMenu.Name = "mainMenu";
+            this.mainMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.mainMenu.Size = new System.Drawing.Size(752, 25);
+            this.mainMenu.TabIndex = 2;
+            this.mainMenu.Text = "toolStrip1";
             // 
             // btLoadFromFile
             // 
@@ -218,20 +218,6 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // btNewData
-            // 
-            this.btNewData.Image = ((System.Drawing.Image)(resources.GetObject("btNewData.Image")));
-            this.btNewData.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btNewData.Name = "btNewData";
-            this.btNewData.Size = new System.Drawing.Size(137, 22);
-            this.btNewData.Text = "Очистить от данных";
-            this.btNewData.Click += new System.EventHandler(this.btNewData_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
             // SaveToFile
             // 
             this.SaveToFile.Image = global::CNC_Controller.Properties.Resources.save_as;
@@ -240,6 +226,20 @@
             this.SaveToFile.Size = new System.Drawing.Size(161, 22);
             this.SaveToFile.Text = "Сохранить G-код в файл";
             this.SaveToFile.Click += new System.EventHandler(this.SaveToFile_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btNewData
+            // 
+            this.btNewData.Image = ((System.Drawing.Image)(resources.GetObject("btNewData.Image")));
+            this.btNewData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btNewData.Name = "btNewData";
+            this.btNewData.Size = new System.Drawing.Size(137, 22);
+            this.btNewData.Text = "Очистить от данных";
+            this.btNewData.Click += new System.EventHandler(this.btNewData_Click);
             // 
             // toolStripContainer1
             // 
@@ -252,17 +252,17 @@
             // 
             // toolStripContainer1.LeftToolStripPanel
             // 
-            this.toolStripContainer1.LeftToolStripPanel.Controls.Add(this.toolStripPrimitiv);
+            this.toolStripContainer1.LeftToolStripPanel.Controls.Add(this.MenuPrimitivAndFunc);
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 25);
             this.toolStripContainer1.Name = "toolStripContainer1";
             this.toolStripContainer1.Size = new System.Drawing.Size(752, 654);
             this.toolStripContainer1.TabIndex = 3;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
-            // toolStripPrimitiv
+            // MenuPrimitivAndFunc
             // 
-            this.toolStripPrimitiv.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStripPrimitiv.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuPrimitivAndFunc.Dock = System.Windows.Forms.DockStyle.None;
+            this.MenuPrimitivAndFunc.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.toolStripMenuItem1,
             this.toolStripMenuItem2,
@@ -271,11 +271,11 @@
             this.toolStripButton1,
             this.toolStripButton3,
             this.toolStripButton2});
-            this.toolStripPrimitiv.Location = new System.Drawing.Point(0, 3);
-            this.toolStripPrimitiv.Name = "toolStripPrimitiv";
-            this.toolStripPrimitiv.Size = new System.Drawing.Size(85, 139);
-            this.toolStripPrimitiv.TabIndex = 0;
-            this.toolStripPrimitiv.Text = "Примитив";
+            this.MenuPrimitivAndFunc.Location = new System.Drawing.Point(0, 3);
+            this.MenuPrimitivAndFunc.Name = "MenuPrimitivAndFunc";
+            this.MenuPrimitivAndFunc.Size = new System.Drawing.Size(85, 139);
+            this.MenuPrimitivAndFunc.TabIndex = 0;
+            this.MenuPrimitivAndFunc.Text = "Примитив";
             // 
             // toolStripLabel1
             // 
@@ -344,20 +344,20 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(752, 679);
             this.Controls.Add(this.toolStripContainer1);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.mainMenu);
             this.Name = "GeneratorCode";
             this.Text = "Генератор G-кода";
             this.Load += new System.EventHandler(this.GeneratorCode_Load);
             this.contextMenu.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.mainMenu.ResumeLayout(false);
+            this.mainMenu.PerformLayout();
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.LeftToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.LeftToolStripPanel.PerformLayout();
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();
-            this.toolStripPrimitiv.ResumeLayout(false);
-            this.toolStripPrimitiv.PerformLayout();
+            this.MenuPrimitivAndFunc.ResumeLayout(false);
+            this.MenuPrimitivAndFunc.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,17 +366,17 @@
         #endregion
 
         private System.Windows.Forms.TreeView treeDataConstructor;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip mainMenu;
         private System.Windows.Forms.ToolStripButton btNewData;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton btLoadFromFile;
         private System.Windows.Forms.ToolStripButton btSaveToFile;
-        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem openDialogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem delPrimitivToolStripMenuItem;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
-        private System.Windows.Forms.ToolStrip toolStripPrimitiv;
+        private System.Windows.Forms.ToolStrip MenuPrimitivAndFunc;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;

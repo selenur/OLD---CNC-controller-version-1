@@ -26,7 +26,8 @@ namespace CNC_Controller
         /// <summary>
         /// Список примитивов
         /// </summary>
-        private readonly List<PrimitivNode> _listPrimitives = new List<PrimitivNode>();
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        private List<PrimitivNode> _listPrimitives = new List<PrimitivNode>();
 
 
 
@@ -654,6 +655,29 @@ namespace CNC_Controller
         }
 
 
+
+        ///////// <summary>
+        ///////// Функция заменяет все гуиды на новые.
+        ///////// </summary>
+        ///////// <param name="_primitives"></param>
+        ///////// <returns></returns>
+        //////private PrimitivNode SetNewGUID(PrimitivNode _primitives)
+        //////{
+        //////    PrimitivNode returnValue = _primitives;
+
+        //////    returnValue.Guid = System.Guid.NewGuid().ToString();
+
+        //////    foreach (PrimitivNode variable in returnValue.Nodes)
+        //////    {
+        //////        variable = SetNewGUID(variable);
+        //////    }
+
+
+
+        //////    return returnValue;
+        //////}
+
+
         private void openDialogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFormDialog();
@@ -743,6 +767,10 @@ namespace CNC_Controller
 
             PrimitivNode tmp = FindNodeWithGuid(treeDataConstructor.SelectedNode.Name);
 
+            // надо перед вставкой все гуиды поменять на новые
+            _clipboardPrimitivNode.SetNewGUID();
+
+            // а теперь вставляем
             tmp.Nodes.Add(_clipboardPrimitivNode);
 
             _clipboardPrimitivNode = null;
@@ -928,15 +956,15 @@ public class PrimitivPoint
 [Serializable]
 public class PrimitivNode
 {
-    public readonly string Guid;
-    public readonly PrimitivType TypeNode;
+    public string Guid;
+    public PrimitivType TypeNode;
 
-    public readonly PrimitivCatalog Catalog;
-    public readonly PrimitivPoint Point;
-    public readonly PrimitivCycle Cycler;
-    public readonly PrimitivRotate Rotate;
+    public PrimitivCatalog Catalog;
+    public PrimitivPoint Point;
+    public PrimitivCycle Cycler;
+    public PrimitivRotate Rotate;
 
-    public readonly List<PrimitivNode> Nodes;
+    public List<PrimitivNode> Nodes;
 
     private PrimitivNode()
     {
@@ -1005,4 +1033,15 @@ public class PrimitivNode
 
         Nodes = new List<PrimitivNode>();
     }
+
+
+    public void SetNewGUID()
+    {
+        Guid = System.Guid.NewGuid().ToString();
+        foreach (PrimitivNode _nodes in Nodes)
+        {
+            _nodes.SetNewGUID();
+        }
+    }
+
 }
