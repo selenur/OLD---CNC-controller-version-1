@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace CNC_Controller
+namespace CNC_App
 {
     partial class AboutBox : Form
     {

@@ -5,10 +5,10 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using CNC_Controller.ConstructorGkode;
-using CNC_Controller.primitiv;
+using CNC_App.ConstructorGkode;
+using CNC_App.primitiv;
 
-namespace CNC_Controller
+namespace CNC_App
 {
     public partial class GeneratorCode : Form
     {

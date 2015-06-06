@@ -1,4 +1,4 @@
-﻿namespace CNC_Controller
+﻿namespace CNC_App
 {
     partial class MainForm
     {
@@ -243,7 +243,7 @@
             // 
             // menuOpenFile
             // 
-            this.menuOpenFile.Image = global::CNC_Controller.Properties.Resources.open_folder;
+            this.menuOpenFile.Image = global::CNC_App.Properties.Resources.open_folder;
             this.menuOpenFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuOpenFile.Name = "menuOpenFile";
             this.menuOpenFile.Size = new System.Drawing.Size(203, 38);
@@ -252,7 +252,7 @@
             // 
             // bt_exit
             // 
-            this.bt_exit.Image = global::CNC_Controller.Properties.Resources.door_in;
+            this.bt_exit.Image = global::CNC_App.Properties.Resources.door_in;
             this.bt_exit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.bt_exit.Name = "bt_exit";
             this.bt_exit.Size = new System.Drawing.Size(203, 38);
@@ -271,7 +271,7 @@
             // 
             // btConnect
             // 
-            this.btConnect.Image = global::CNC_Controller.Properties.Resources.connect;
+            this.btConnect.Image = global::CNC_App.Properties.Resources.connect;
             this.btConnect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btConnect.Name = "btConnect";
             this.btConnect.Size = new System.Drawing.Size(225, 38);
@@ -280,7 +280,7 @@
             // 
             // bt_disconnect
             // 
-            this.bt_disconnect.Image = global::CNC_Controller.Properties.Resources.disconnect;
+            this.bt_disconnect.Image = global::CNC_App.Properties.Resources.disconnect;
             this.bt_disconnect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.bt_disconnect.Name = "bt_disconnect";
             this.bt_disconnect.Size = new System.Drawing.Size(225, 38);
@@ -289,7 +289,7 @@
             // 
             // settingToolStripMenuItem
             // 
-            this.settingToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.pci;
+            this.settingToolStripMenuItem.Image = global::CNC_App.Properties.Resources.pci;
             this.settingToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
             this.settingToolStripMenuItem.Size = new System.Drawing.Size(225, 38);
@@ -306,7 +306,7 @@
             // 
             // aboutToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.contact_email;
+            this.aboutToolStripMenuItem.Image = global::CNC_App.Properties.Resources.contact_email;
             this.aboutToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(165, 38);
@@ -336,7 +336,7 @@
             // bt_ConnDiskonect
             // 
             this.bt_ConnDiskonect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bt_ConnDiskonect.Image = global::CNC_Controller.Properties.Resources.disconnect;
+            this.bt_ConnDiskonect.Image = global::CNC_App.Properties.Resources.disconnect;
             this.bt_ConnDiskonect.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.bt_ConnDiskonect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.bt_ConnDiskonect.Name = "bt_ConnDiskonect";
@@ -352,7 +352,7 @@
             // btOpenFile
             // 
             this.btOpenFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btOpenFile.Image = global::CNC_Controller.Properties.Resources.open_folder;
+            this.btOpenFile.Image = global::CNC_App.Properties.Resources.open_folder;
             this.btOpenFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.btOpenFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btOpenFile.Name = "btOpenFile";
@@ -368,7 +368,7 @@
             // bt_exit2
             // 
             this.bt_exit2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bt_exit2.Image = global::CNC_Controller.Properties.Resources.door_in;
+            this.bt_exit2.Image = global::CNC_App.Properties.Resources.door_in;
             this.bt_exit2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.bt_exit2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.bt_exit2.Name = "bt_exit2";
@@ -424,7 +424,7 @@
             // 
             // settingControllerToolStripMenuItem
             // 
-            this.settingControllerToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.pci;
+            this.settingControllerToolStripMenuItem.Image = global::CNC_App.Properties.Resources.pci;
             this.settingControllerToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.settingControllerToolStripMenuItem.Name = "settingControllerToolStripMenuItem";
             this.settingControllerToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
@@ -433,7 +433,7 @@
             // 
             // additionallyToolStripMenuItem
             // 
-            this.additionallyToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.google_webmaster_tools;
+            this.additionallyToolStripMenuItem.Image = global::CNC_App.Properties.Resources.google_webmaster_tools;
             this.additionallyToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.additionallyToolStripMenuItem.Name = "additionallyToolStripMenuItem";
             this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
@@ -442,7 +442,7 @@
             // 
             // scansurfaceToolStripMenuItem
             // 
-            this.scansurfaceToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.layer_grid;
+            this.scansurfaceToolStripMenuItem.Image = global::CNC_App.Properties.Resources.layer_grid;
             this.scansurfaceToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.scansurfaceToolStripMenuItem.Name = "scansurfaceToolStripMenuItem";
             this.scansurfaceToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
@@ -451,7 +451,7 @@
             // 
             // generatorCodeToolStripMenuItem
             // 
-            this.generatorCodeToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.draw_vertex;
+            this.generatorCodeToolStripMenuItem.Image = global::CNC_App.Properties.Resources.draw_vertex;
             this.generatorCodeToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.generatorCodeToolStripMenuItem.Name = "generatorCodeToolStripMenuItem";
             this.generatorCodeToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
@@ -549,7 +549,7 @@
             // buttonZtoZero
             // 
             this.buttonZtoZero.Enabled = false;
-            this.buttonZtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
+            this.buttonZtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
             this.buttonZtoZero.Location = new System.Drawing.Point(1, 81);
             this.buttonZtoZero.Name = "buttonZtoZero";
             this.buttonZtoZero.Size = new System.Drawing.Size(26, 28);
@@ -560,7 +560,7 @@
             // buttonYtoZero
             // 
             this.buttonYtoZero.Enabled = false;
-            this.buttonYtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
+            this.buttonYtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
             this.buttonYtoZero.Location = new System.Drawing.Point(1, 47);
             this.buttonYtoZero.Name = "buttonYtoZero";
             this.buttonYtoZero.Size = new System.Drawing.Size(26, 28);
@@ -571,7 +571,7 @@
             // buttonXtoZero
             // 
             this.buttonXtoZero.Enabled = false;
-            this.buttonXtoZero.Image = global::CNC_Controller.Properties.Resources.digit_separator;
+            this.buttonXtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
             this.buttonXtoZero.Location = new System.Drawing.Point(1, 14);
             this.buttonXtoZero.Name = "buttonXtoZero";
             this.buttonXtoZero.Size = new System.Drawing.Size(26, 28);
@@ -1049,7 +1049,7 @@
             // 
             this.posAngleXm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.posAngleXm.ForeColor = System.Drawing.Color.Yellow;
-            this.posAngleXm.Image = global::CNC_Controller.Properties.Resources.undo;
+            this.posAngleXm.Image = global::CNC_App.Properties.Resources.undo;
             this.posAngleXm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.posAngleXm.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.posAngleXm.Name = "posAngleXm";
@@ -1067,7 +1067,7 @@
             // 
             this.posAngleXp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.posAngleXp.ForeColor = System.Drawing.Color.Yellow;
-            this.posAngleXp.Image = global::CNC_Controller.Properties.Resources.redo;
+            this.posAngleXp.Image = global::CNC_App.Properties.Resources.redo;
             this.posAngleXp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.posAngleXp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.posAngleXp.Name = "posAngleXp";
@@ -1089,7 +1089,7 @@
             // 
             this.posAngleYp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.posAngleYp.ForeColor = System.Drawing.Color.Yellow;
-            this.posAngleYp.Image = global::CNC_Controller.Properties.Resources.undo;
+            this.posAngleYp.Image = global::CNC_App.Properties.Resources.undo;
             this.posAngleYp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.posAngleYp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.posAngleYp.Name = "posAngleYp";
@@ -1107,7 +1107,7 @@
             // 
             this.posAngleYm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.posAngleYm.ForeColor = System.Drawing.Color.Yellow;
-            this.posAngleYm.Image = global::CNC_Controller.Properties.Resources.redo;
+            this.posAngleYm.Image = global::CNC_App.Properties.Resources.redo;
             this.posAngleYm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.posAngleYm.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.posAngleYm.Name = "posAngleYm";
@@ -1128,7 +1128,7 @@
             // posAngleZp
             // 
             this.posAngleZp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.posAngleZp.Image = global::CNC_Controller.Properties.Resources.undo;
+            this.posAngleZp.Image = global::CNC_App.Properties.Resources.undo;
             this.posAngleZp.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.posAngleZp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.posAngleZp.Name = "posAngleZp";
@@ -1145,7 +1145,7 @@
             // posAngleZm
             // 
             this.posAngleZm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.posAngleZm.Image = global::CNC_Controller.Properties.Resources.redo;
+            this.posAngleZm.Image = global::CNC_App.Properties.Resources.redo;
             this.posAngleZm.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.posAngleZm.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.posAngleZm.Name = "posAngleZm";
@@ -1808,7 +1808,7 @@
             // buttonPauseTask
             // 
             this.buttonPauseTask.Enabled = false;
-            this.buttonPauseTask.Image = global::CNC_Controller.Properties.Resources.control_pause_blue;
+            this.buttonPauseTask.Image = global::CNC_App.Properties.Resources.control_pause_blue;
             this.buttonPauseTask.Location = new System.Drawing.Point(78, 58);
             this.buttonPauseTask.Name = "buttonPauseTask";
             this.buttonPauseTask.Size = new System.Drawing.Size(50, 46);
@@ -1829,7 +1829,7 @@
             // btStopTask
             // 
             this.btStopTask.Enabled = false;
-            this.btStopTask.Image = global::CNC_Controller.Properties.Resources.control_stop_blue;
+            this.btStopTask.Image = global::CNC_App.Properties.Resources.control_stop_blue;
             this.btStopTask.Location = new System.Drawing.Point(134, 58);
             this.btStopTask.Name = "btStopTask";
             this.btStopTask.Size = new System.Drawing.Size(50, 46);
@@ -1840,7 +1840,7 @@
             // buttonStartTask
             // 
             this.buttonStartTask.Enabled = false;
-            this.buttonStartTask.Image = global::CNC_Controller.Properties.Resources.control_play_blue;
+            this.buttonStartTask.Image = global::CNC_App.Properties.Resources.control_play_blue;
             this.buttonStartTask.Location = new System.Drawing.Point(22, 58);
             this.buttonStartTask.Name = "buttonStartTask";
             this.buttonStartTask.Size = new System.Drawing.Size(50, 46);

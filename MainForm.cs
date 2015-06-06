@@ -4,15 +4,22 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
+using CNC_App.Controllers;
 using Tao.FreeGlut;
 using Tao.OpenGl;
 
-namespace CNC_Controller
+namespace CNC_App
 {
     public partial class MainForm : Form
     {
+
+        /// <summary>
+        /// Настройки контроллера, с которым будем работать
+        /// </summary>
+        private Setting _setting;
+
         /// <summary>
         /// Главный класс для работы со станком
         /// </summary>
@@ -24,15 +31,19 @@ namespace CNC_Controller
         {
             InitializeComponent();
 
-            // 1 Подключение событий от контроллера
-            _cnc = new CONTROLLER();
-            _cnc.LoadSetting();
+            // Получаем настройки
+            _setting = new Setting();
+            _setting.LoadSetting();
+            // инициализируем класс контроллера с данными настройками
+            _cnc = new CONTROLLER(_setting);
+            // Подключение событий от контроллера
+            //_cnc.LoadSetting(); //загрузка данных из файла настроек, если он есть
             _cnc.WasConnected += CncConnect;
             _cnc.WasDisconnected += CncDisconnect;
             _cnc.NewDataFromController += CncNewData;
             _cnc.Message += CncMessage;
 
-            // 2
+            // 3d инициализация
             OpenGL_preview.InitializeContexts();
 
             // подключение обработчика, колесика мышки
@@ -49,10 +60,6 @@ namespace CNC_Controller
             toolStripStatus.Text = @"";
             RefreshElementsForms();
 
-
-            //TODO: DEBUG
-            //GeneratorCode frm = new GeneratorCode(this);
-            //frm.Show();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -1006,10 +1013,11 @@ namespace CNC_Controller
 
         private void ShowSetting()
         {
-            setting setfrm = new setting(ref _cnc);
+            setting setfrm = new setting();
+            setfrm._setting = _setting;
             DialogResult dlgResult = setfrm.ShowDialog();
-            
-            if (dlgResult == DialogResult.OK) _cnc.SaveSetting();
+
+            if (dlgResult == DialogResult.OK) _cnc.AppyNewSetting(setfrm._setting);
         }
 
         private void settingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2054,7 +2062,7 @@ namespace CNC_Controller
                 {
                     toolStripStatus.Text = "Пауза " + gcodeNow.timeSeconds + " мсек. по команде G4";
                     
-                    System.Threading.Thread.Sleep(gcodeNow.timeSeconds); // пауза в мсек.
+                    Thread.Sleep(gcodeNow.timeSeconds); // пауза в мсек.
 
                     toolStripStatus.Text = "";
                 }

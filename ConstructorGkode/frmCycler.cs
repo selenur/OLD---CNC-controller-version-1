@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CNC_Controller.ConstructorGkode
+namespace CNC_App.ConstructorGkode
 {
     public partial class frmCycler : Form
     {

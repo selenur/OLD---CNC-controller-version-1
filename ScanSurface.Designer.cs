@@ -1,4 +1,4 @@
-﻿namespace CNC_Controller
+﻿namespace CNC_App
 {
     partial class ScanSurface
     {

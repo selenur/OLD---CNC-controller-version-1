@@ -1,32 +1,73 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace CNC_Controller
+﻿namespace CNC_App
 {
-    public partial class setting : Form
+    /// <summary>
+    ///  Класс для храненения настроек контроллеров
+    /// </summary>
+    public class Setting
     {
-        CONTROLLER _cnc;
+        /// <summary>
+        /// Тип контроллера
+        /// </summary>
+        public KindControllers kind;
 
-        public setting(ref CONTROLLER cnc)
-        {
-            InitializeComponent();
-            _cnc = cnc;
-        }       
+        /// <summary>
+        /// Количество импульсов для посылки в контроллер
+        /// </summary>
+        public int pulseX;
+        /// <summary>
+        /// Количество импульсов для посылки в контроллер
+        /// </summary>
+        public int pulseY;
+        /// <summary>
+        /// Количество импульсов для посылки в контроллер
+        /// </summary>
+        public int pulseZ;
 
-        private void setting_Load(object sender, EventArgs e)
+
+        public Setting()
         {
-            numPulseX.Value = (decimal)deviceInfo.AxesX_PulsePerMm;
-            numPulseY.Value = (decimal)deviceInfo.AxesY_PulsePerMm;
-            numPulseZ.Value = (decimal)deviceInfo.AxesZ_PulsePerMm;
-            checkBoxDemoController.Checked = deviceInfo.DEMO_DEVICE;
+            kind = KindControllers.Emulator;
+            pulseX = 400;
+            pulseY = 400;
+            pulseZ = 400;
+
+
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Загрузка из файла настроек
+        /// </summary>
+        /// <returns></returns>
+        public bool LoadSetting()
         {
-            deviceInfo.AxesX_PulsePerMm = (int)numPulseX.Value;
-            deviceInfo.AxesY_PulsePerMm = (int)numPulseY.Value;
-            deviceInfo.AxesZ_PulsePerMm = (int)numPulseZ.Value;
-            deviceInfo.DEMO_DEVICE      = checkBoxDemoController.Checked;
+
+            return true;
         }
+
+
+        /// <summary>
+        /// Сохранение в файл настроек
+        /// </summary>
+        /// <returns></returns>
+        public bool SaveSetting()
+        {
+
+            return true;
+        }
+
+    }
+
+
+
+
+
+    /// <summary>
+    /// Виды поддерживаемых контроллеров
+    /// </summary>
+    public enum KindControllers
+    {
+        Emulator,
+        MK1,
+        MK2
     }
 }

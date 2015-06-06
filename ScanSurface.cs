@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace CNC_Controller
+namespace CNC_App
 {
     // ReSharper disable once InconsistentNaming
     public partial class ScanSurface : Form

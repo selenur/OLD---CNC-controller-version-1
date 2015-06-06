@@ -1,4 +1,4 @@
-﻿namespace CNC_Controller
+﻿namespace CNC_App
 {
     partial class ManualControl
     {
@@ -67,7 +67,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::CNC_Controller.Properties.Resources.Numpad1;
+            this.pictureBox1.Image = global::CNC_App.Properties.Resources.Numpad1;
             this.pictureBox1.Location = new System.Drawing.Point(13, 17);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(205, 266);

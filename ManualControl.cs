@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace CNC_Controller
+namespace CNC_App
 {
     public partial class ManualControl : Form
     {

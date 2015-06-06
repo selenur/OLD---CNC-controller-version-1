@@ -1,4 +1,4 @@
-﻿namespace CNC_Controller
+﻿namespace CNC_App
 {
     partial class GeneratorCode
     {
@@ -103,7 +103,7 @@
             // 
             // openDialogToolStripMenuItem
             // 
-            this.openDialogToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.application;
+            this.openDialogToolStripMenuItem.Image = global::CNC_App.Properties.Resources.application;
             this.openDialogToolStripMenuItem.Name = "openDialogToolStripMenuItem";
             this.openDialogToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.openDialogToolStripMenuItem.Text = "Свойства примитива";
@@ -116,7 +116,7 @@
             // 
             // ToolStripMenuCopyDATA
             // 
-            this.ToolStripMenuCopyDATA.Image = global::CNC_Controller.Properties.Resources.page_copy;
+            this.ToolStripMenuCopyDATA.Image = global::CNC_App.Properties.Resources.page_copy;
             this.ToolStripMenuCopyDATA.Name = "ToolStripMenuCopyDATA";
             this.ToolStripMenuCopyDATA.Size = new System.Drawing.Size(189, 22);
             this.ToolStripMenuCopyDATA.Text = "Копировать";
@@ -124,7 +124,7 @@
             // 
             // pasteToolStripMenuItem
             // 
-            this.pasteToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.page_paste;
+            this.pasteToolStripMenuItem.Image = global::CNC_App.Properties.Resources.page_paste;
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.pasteToolStripMenuItem.Text = "Вставить";
@@ -132,7 +132,7 @@
             // 
             // cutToolStripMenuItem
             // 
-            this.cutToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.cut_red;
+            this.cutToolStripMenuItem.Image = global::CNC_App.Properties.Resources.cut_red;
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
             this.cutToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.cutToolStripMenuItem.Text = "Вырезать";
@@ -140,7 +140,7 @@
             // 
             // delPrimitivToolStripMenuItem
             // 
-            this.delPrimitivToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.cross;
+            this.delPrimitivToolStripMenuItem.Image = global::CNC_App.Properties.Resources.cross;
             this.delPrimitivToolStripMenuItem.Name = "delPrimitivToolStripMenuItem";
             this.delPrimitivToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.delPrimitivToolStripMenuItem.Text = "Удалить";
@@ -154,7 +154,7 @@
             // moveupToolStripMenuItem
             // 
             this.moveupToolStripMenuItem.Enabled = false;
-            this.moveupToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.arrow_up;
+            this.moveupToolStripMenuItem.Image = global::CNC_App.Properties.Resources.arrow_up;
             this.moveupToolStripMenuItem.Name = "moveupToolStripMenuItem";
             this.moveupToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.moveupToolStripMenuItem.Text = "Сдвинуть вверх";
@@ -162,7 +162,7 @@
             // movedownToolStripMenuItem
             // 
             this.movedownToolStripMenuItem.Enabled = false;
-            this.movedownToolStripMenuItem.Image = global::CNC_Controller.Properties.Resources.arrow_down;
+            this.movedownToolStripMenuItem.Image = global::CNC_App.Properties.Resources.arrow_down;
             this.movedownToolStripMenuItem.Name = "movedownToolStripMenuItem";
             this.movedownToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.movedownToolStripMenuItem.Text = "Сдвинуть вниз";
@@ -220,7 +220,7 @@
             // 
             // SaveToFile
             // 
-            this.SaveToFile.Image = global::CNC_Controller.Properties.Resources.save_as;
+            this.SaveToFile.Image = global::CNC_App.Properties.Resources.save_as;
             this.SaveToFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveToFile.Name = "SaveToFile";
             this.SaveToFile.Size = new System.Drawing.Size(161, 22);
@@ -285,7 +285,7 @@
             // 
             // toolStripMenuItem1
             // 
-            this.toolStripMenuItem1.Image = global::CNC_Controller.Properties.Resources.folder;
+            this.toolStripMenuItem1.Image = global::CNC_App.Properties.Resources.folder;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(83, 20);
             this.toolStripMenuItem1.Text = "Группа";
@@ -293,7 +293,7 @@
             // 
             // toolStripMenuItem2
             // 
-            this.toolStripMenuItem2.Image = global::CNC_Controller.Properties.Resources.bullet_blue;
+            this.toolStripMenuItem2.Image = global::CNC_App.Properties.Resources.bullet_blue;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(83, 20);
             this.toolStripMenuItem2.Text = "Точка";

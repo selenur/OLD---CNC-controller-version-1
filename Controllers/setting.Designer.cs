@@ -1,4 +1,4 @@
-﻿namespace CNC_Controller
+﻿namespace CNC_App
 {
     partial class setting
     {
@@ -35,14 +35,17 @@
             this.numPulseZ = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBoxDemoController = new System.Windows.Forms.CheckBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbType_MK2 = new System.Windows.Forms.RadioButton();
+            this.rbType_MK1 = new System.Windows.Forms.RadioButton();
+            this.rbType_Emulator = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.numPulseX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPulseY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPulseZ)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -56,7 +59,7 @@
             // 
             // numPulseX
             // 
-            this.numPulseX.Location = new System.Drawing.Point(39, 24);
+            this.numPulseX.Location = new System.Drawing.Point(6, 42);
             this.numPulseX.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -78,7 +81,7 @@
             // 
             // numPulseY
             // 
-            this.numPulseY.Location = new System.Drawing.Point(39, 50);
+            this.numPulseY.Location = new System.Drawing.Point(89, 42);
             this.numPulseY.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -101,7 +104,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 52);
+            this.label2.Location = new System.Drawing.Point(93, 26);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(14, 13);
             this.label2.TabIndex = 5;
@@ -109,7 +112,7 @@
             // 
             // numPulseZ
             // 
-            this.numPulseZ.Location = new System.Drawing.Point(39, 76);
+            this.numPulseZ.Location = new System.Drawing.Point(172, 42);
             this.numPulseZ.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -132,7 +135,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 78);
+            this.label3.Location = new System.Drawing.Point(179, 26);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(14, 13);
             this.label3.TabIndex = 7;
@@ -146,40 +149,20 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.numPulseY);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(7, 107);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(145, 104);
+            this.groupBox1.Size = new System.Drawing.Size(355, 77);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Кол.импульсов на 1 мм";
-            // 
-            // checkBoxDemoController
-            // 
-            this.checkBoxDemoController.Location = new System.Drawing.Point(164, 12);
-            this.checkBoxDemoController.Name = "checkBoxDemoController";
-            this.checkBoxDemoController.Size = new System.Drawing.Size(184, 54);
-            this.checkBoxDemoController.TabIndex = 10;
-            this.checkBoxDemoController.Text = "Имитация устройства (виртуальный контроллер)";
-            this.checkBoxDemoController.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(165, 62);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(197, 72);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "В режиме имитации, при наличии настоящего контроллера, использоваться будет вирту" +
-    "альный контроллер!!!";
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Image = global::CNC_Controller.Properties.Resources.cancelPic;
+            this.button2.Image = global::CNC_App.Properties.Resources.cancelPic;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(286, 175);
+            this.button2.Location = new System.Drawing.Point(286, 204);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 28);
             this.button2.TabIndex = 2;
@@ -191,9 +174,9 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Image = global::CNC_Controller.Properties.Resources.accept_button;
+            this.button1.Image = global::CNC_App.Properties.Resources.accept_button;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(189, 175);
+            this.button1.Location = new System.Drawing.Point(189, 204);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(91, 28);
             this.button1.TabIndex = 1;
@@ -202,13 +185,56 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rbType_MK2);
+            this.groupBox2.Controls.Add(this.rbType_MK1);
+            this.groupBox2.Controls.Add(this.rbType_Emulator);
+            this.groupBox2.Location = new System.Drawing.Point(7, 9);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(355, 92);
+            this.groupBox2.TabIndex = 12;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Вид контроллера";
+            // 
+            // rbType_MK2
+            // 
+            this.rbType_MK2.AutoSize = true;
+            this.rbType_MK2.Location = new System.Drawing.Point(18, 68);
+            this.rbType_MK2.Name = "rbType_MK2";
+            this.rbType_MK2.Size = new System.Drawing.Size(89, 17);
+            this.rbType_MK2.TabIndex = 2;
+            this.rbType_MK2.Text = "Модель MK2";
+            this.rbType_MK2.UseVisualStyleBackColor = true;
+            // 
+            // rbType_MK1
+            // 
+            this.rbType_MK1.AutoSize = true;
+            this.rbType_MK1.Location = new System.Drawing.Point(18, 44);
+            this.rbType_MK1.Name = "rbType_MK1";
+            this.rbType_MK1.Size = new System.Drawing.Size(89, 17);
+            this.rbType_MK1.TabIndex = 1;
+            this.rbType_MK1.Text = "Модель MK1";
+            this.rbType_MK1.UseVisualStyleBackColor = true;
+            // 
+            // rbType_Emulator
+            // 
+            this.rbType_Emulator.AutoSize = true;
+            this.rbType_Emulator.Checked = true;
+            this.rbType_Emulator.Location = new System.Drawing.Point(18, 21);
+            this.rbType_Emulator.Name = "rbType_Emulator";
+            this.rbType_Emulator.Size = new System.Drawing.Size(142, 17);
+            this.rbType_Emulator.TabIndex = 0;
+            this.rbType_Emulator.TabStop = true;
+            this.rbType_Emulator.Text = "Эмулятор контроллера";
+            this.rbType_Emulator.UseVisualStyleBackColor = true;
+            // 
             // setting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(374, 217);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.checkBoxDemoController);
+            this.ClientSize = new System.Drawing.Size(374, 246);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -223,6 +249,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPulseZ)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -238,8 +266,10 @@
         private System.Windows.Forms.NumericUpDown numPulseZ;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox checkBoxDemoController;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton rbType_MK2;
+        private System.Windows.Forms.RadioButton rbType_MK1;
+        private System.Windows.Forms.RadioButton rbType_Emulator;
 
     }
 }

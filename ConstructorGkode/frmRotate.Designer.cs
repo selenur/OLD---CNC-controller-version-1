@@ -1,4 +1,4 @@
-﻿namespace CNC_Controller.ConstructorGkode
+﻿namespace CNC_App.ConstructorGkode
 {
     partial class frmRotate
     {
@@ -86,7 +86,7 @@
             // button3
             // 
             this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button3.Image = global::CNC_Controller.Properties.Resources.cancel2;
+            this.button3.Image = global::CNC_App.Properties.Resources.cancel2;
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button3.Location = new System.Drawing.Point(153, 522);
             this.button3.Name = "button3";
@@ -99,7 +99,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Image = global::CNC_Controller.Properties.Resources.accept_button2;
+            this.button1.Image = global::CNC_App.Properties.Resources.accept_button2;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button1.Location = new System.Drawing.Point(5, 522);
             this.button1.Name = "button1";
@@ -112,7 +112,7 @@
             // btGetPosition
             // 
             this.btGetPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btGetPosition.Image = global::CNC_Controller.Properties.Resources.geolocation_sight;
+            this.btGetPosition.Image = global::CNC_App.Properties.Resources.geolocation_sight;
             this.btGetPosition.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btGetPosition.Location = new System.Drawing.Point(115, 55);
             this.btGetPosition.Name = "btGetPosition";

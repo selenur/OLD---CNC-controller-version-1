@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CNC_Controller.primitiv
+namespace CNC_App.primitiv
 {
     public partial class frmCatalog : Form
     {
