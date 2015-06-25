@@ -1983,6 +1983,10 @@ namespace CNC_App
             {
                 AddLog("Запуск задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
 
+                // 
+                deviceInfo.NuberCompleatedInstruction = Task.posCodeNow;
+                //_cnc.NumberComleatedInstructions = Task.posCodeNow;
+
                 int MaxSpeedX = 100;
                 int MaxSpeedY = 100;
                 int MaxSpeedZ = 100;
