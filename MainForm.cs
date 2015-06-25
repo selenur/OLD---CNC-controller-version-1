@@ -37,7 +37,8 @@ namespace CNC_App
             // инициализируем класс контроллера с данными настройками
             _cnc = new CONTROLLER(_setting);
             // Подключение событий от контроллера
-            //_cnc.LoadSetting(); //загрузка данных из файла настроек, если он есть
+            //TODO: старый код
+            _cnc.LoadSetting(); //загрузка данных из файла настроек, если он есть
             _cnc.WasConnected += CncConnect;
             _cnc.WasDisconnected += CncDisconnect;
             _cnc.NewDataFromController += CncNewData;
