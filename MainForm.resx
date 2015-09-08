@@ -274,7 +274,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACC
-        CwAAAk1TRnQBSQFMAgEBAwEAAdgBAwHYAQMBEAEAARABAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        CwAAAk1TRnQBSQFMAgEBAwEAAeABAwHgAQMBEAEAARABAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABEAMAAQEBAAEQBgABCBoAAd4BewG9AXcBvQF3Ab0BdwG9AXcBvQF3Ad4BexIAAd4BewG9AXcBvQF3
         Ab0BdwG9AXcBvQF3Ad4BexAAAf8BfwG9AXcBvQF3Ab0BdwG9AXcBvQF3Ab0BdwG9AXcB/wF/LAAB/wF/
         Ab0BdwHWAVoBEAFCAe8BPQHvAT0B7wE9ARABQgHWAVoBvQF3Af8BfwoAAf8BfwG9AXcB8AFSAUEBJgFA
@@ -326,9 +326,6 @@
         AfABHwHgAQ8CAAs=
 </value>
   </data>
-  <metadata name="menu3Dview.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>647, 17</value>
-  </metadata>
   <metadata name="menu3Dview.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>647, 17</value>
   </metadata>

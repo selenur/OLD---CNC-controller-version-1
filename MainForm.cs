@@ -817,6 +817,8 @@ namespace CNC_App
             GKOD_Command tmpCommand = new GKOD_Command();
             int maxIndexLen = listCode.Count.ToString().Length; //вычисление количества символов используемых для нумерации записей
 
+            listBoxLog.Items.Add("Преобразование текста в спец-формат...");
+
             foreach (string valueStr in listCode)
             {
                 List<string> lcmd = parserGkodeLine(valueStr);
@@ -849,51 +851,70 @@ namespace CNC_App
                         }
                     }
 
+
+                    string symbSeparatorDec = CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator.ToString();
+                    //string symbSeparatorGroup = CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator.ToString(); 
+
+                    char Csourse = '.';
+                    char Cdestination = ',';
+
+                    if (symbSeparatorDec == ".")
+                    {
+                        Csourse = ',';
+                        Cdestination = '.';
+                    }
+
                     if (property == "X")
                     {
                         //из-за кодировок, пока так сделаю...
-                        string value1 = value.Trim().Replace('.', ',');
+                        string value1 = value.Trim().Replace(Csourse, Cdestination);
 
                         try
                         {
                             //если вдруг не число было....
                             tmpCommand.X = decimal.Parse(value1);
+                            listBoxLog.Items.Add("Преобразование значения X: " + value1 + @" -> " + tmpCommand.X.ToString());
                         }
-                        catch (Exception)
+                        catch (Exception eEx)
                         {
                             //throw;
+                            listBoxLog.Items.Add("Ошибка парсинга числа " + value1 + " -> " + eEx.ToString());
                         }
                     }
 
                     if (property == "Y")
                     {
                         //из-за кодировок, пока так сделаю...
-                        string value1 = value.Trim().Replace('.', ',');
+                        string value1 = value.Trim().Replace(Csourse, Cdestination);
 
                         try
                         {
                             //если вдруг не число было....
                             tmpCommand.Y = decimal.Parse(value1);
+                            listBoxLog.Items.Add("Преобразование значения Y: " + value1 + @" -> " + tmpCommand.Y.ToString());
                         }
-                        catch (Exception)
+                        catch (Exception eEx)
                         {
                             //throw;
+                            listBoxLog.Items.Add("Ошибка парсинга числа " + value1 + " -> " + eEx.ToString());
                         }
                     }
 
                     if (property == "Z")
                     {
                         //из-за кодировок, пока так сделаю...
-                        string value1 = value.Trim().Replace('.', ',');
+                        string value1 = value.Trim().Replace(Csourse, Cdestination);
 
                         try
                         {
                             //если вдруг не число было....
                             tmpCommand.Z = decimal.Parse(value1);
+                            listBoxLog.Items.Add("Преобразование значения Z: " + value1 + @" -> " + tmpCommand.Z.ToString());
                         }
-                        catch (Exception)
+                        catch (Exception eEx)
                         {
                             //throw;
+                            listBoxLog.Items.Add("Ошибка парсинга числа " + value1 + " -> " + eEx.ToString());
                         }
                     }
 
@@ -928,6 +949,8 @@ namespace CNC_App
 
                 GKODS.Add(new GKOD_Command(tmpCommand));
 
+                
+
                 tmpCommand.numberInstruct++;
                 tmpCommand.needPause = false;
                 tmpCommand.changeInstrument = false;
@@ -946,7 +969,9 @@ namespace CNC_App
         {
             toolStripProgressBar.Value = 0;
             toolStripProgressBar.Minimum = 0;
-            toolStripProgressBar.Maximum = lines.Length;
+            toolStripProgressBar.Maximum = lines.Length-1;
+
+            listBoxLog.Items.Add(@"Анализ " + (toolStripProgressBar.Maximum.ToString()) + " строк текста.");
 
             int index = 0;
 
@@ -957,6 +982,12 @@ namespace CNC_App
                 toolStripProgressBar.Value = index++;
 
                 GKOD_resultParse graw = ParseStringCode(str.ToUpper());
+
+
+                if (graw.BadStr.Trim().Length != 0)
+                {
+                    listBoxLog.Items.Add("Не распознано: " + graw.BadStr);
+                }
 
                 if (graw.GoodStr.Trim().Length == 0)
                 {
@@ -2243,6 +2274,19 @@ namespace CNC_App
 
             GeneratorCode frm = new GeneratorCode(this);
             frm.Show();
+        }
+
+        private void btToBuffer_Click(object sender, EventArgs e)
+        {
+            string ttx = "";
+
+            foreach (var item in listBoxLog.Items)
+            {
+                ttx += item.ToString() + "\r\n";
+            }
+
+            Clipboard.SetText(ttx);
+
         }
    
     }

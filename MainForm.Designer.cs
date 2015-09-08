@@ -179,6 +179,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listGkodeCommand = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btToBuffer = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -1181,6 +1182,7 @@
             // 
             // tabPageSupp
             // 
+            this.tabPageSupp.Controls.Add(this.btToBuffer);
             this.tabPageSupp.Controls.Add(this.trackBar1);
             this.tabPageSupp.Controls.Add(this.groupBox9);
             this.tabPageSupp.Controls.Add(this.groupBox7);
@@ -1919,6 +1921,16 @@
             this.splitContainer1.SplitterDistance = 476;
             this.splitContainer1.TabIndex = 6;
             // 
+            // btToBuffer
+            // 
+            this.btToBuffer.Location = new System.Drawing.Point(95, 3);
+            this.btToBuffer.Name = "btToBuffer";
+            this.btToBuffer.Size = new System.Drawing.Size(209, 22);
+            this.btToBuffer.TabIndex = 9;
+            this.btToBuffer.Text = "Лог сохранить в буфер обмена";
+            this.btToBuffer.UseVisualStyleBackColor = true;
+            this.btToBuffer.Click += new System.EventHandler(this.btToBuffer_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2142,6 +2154,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonEditData;
         private System.Windows.Forms.ListBox listGkodeCommand;
         private System.Windows.Forms.ToolStripMenuItem generatorCodeToolStripMenuItem;
+        private System.Windows.Forms.Button btToBuffer;
     }
 }
 
