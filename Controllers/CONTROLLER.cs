@@ -333,7 +333,7 @@ namespace CNC_App
             deviceInfo.AxesZ_LimitMax = (readBuffer[15] & (1 << 4)) != 0;
             deviceInfo.AxesZ_LimitMin = (readBuffer[15] & (1 << 5)) != 0;
 
-            deviceInfo.NuberCompleatedInstruction = (int)(readBuffer[9] * 4294967296) + (readBuffer[8] * 65536) + (readBuffer[7] * 256) + (readBuffer[6]);
+            deviceInfo.NuberCompleatedInstruction = (int)(readBuffer[9] * 16777216) + (readBuffer[8] * 65536) + (readBuffer[7] * 256) + (readBuffer[6]);
 
             SuperByte bb = new SuperByte(readBuffer[19]);
 
