@@ -44,10 +44,10 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -131,6 +131,7 @@
             this.button6.TabIndex = 7;
             this.button6.Text = "X-";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             this.button6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button6_MouseDown);
             this.button6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button6_MouseUp);
             // 
@@ -143,6 +144,7 @@
             this.button7.TabIndex = 8;
             this.button7.Text = "X+";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             this.button7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button7_MouseDown);
             this.button7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button7_MouseUp);
             // 
@@ -155,6 +157,7 @@
             this.button8.TabIndex = 9;
             this.button8.Text = "X- Y+";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             this.button8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button8_MouseDown);
             this.button8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button8_MouseUp);
             // 
@@ -252,6 +255,33 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Управление мышкой";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(460, 189);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(53, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "1000 мм.";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(462, 105);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "2000 мм.";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(462, 273);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "1 мм.";
+            // 
             // trackBar1
             // 
             this.trackBar1.AutoSize = false;
@@ -268,33 +298,6 @@
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.trackBar1.Value = 200;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(462, 273);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "1 мм.";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(462, 105);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 13);
-            this.label3.TabIndex = 17;
-            this.label3.Text = "2000 мм.";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(460, 189);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 13);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "1000 мм.";
             // 
             // ManualControl
             // 

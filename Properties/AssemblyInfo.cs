@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
 [assembly: AssemblyTitle("CNC_Controller")]
-[assembly: AssemblyDescription("Программа для управления контроллерами MK1, информация о контроллере доступна тут: www.planet-cnc.com, информация о данной программе доступна тут: selenur.ru и тут: http://www.cnc-club.ru/forum/viewtopic.php?f=16&t=7078&p=175365#p175365")]
+[assembly: AssemblyDescription("Программа для управления контроллерами, planet-cnc")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("zheigurov@gmail.com")]
+[assembly: AssemblyCompany("Free developers")]
 [assembly: AssemblyProduct("CNC_Controller")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("zheigurov@gmail.com + eduard_kalinowski@yahoo.de")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

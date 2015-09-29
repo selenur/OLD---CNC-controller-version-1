@@ -116,6 +116,7 @@
             this.posAngleZm = new System.Windows.Forms.ToolStripButton();
             this.OpenGL_preview = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.tabPageSupp = new System.Windows.Forms.TabPage();
+            this.btToBuffer = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.radioButton_RC = new System.Windows.Forms.RadioButton();
@@ -179,7 +180,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listGkodeCommand = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btToBuffer = new System.Windows.Forms.Button();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -428,16 +428,16 @@
             this.settingControllerToolStripMenuItem.Image = global::CNC_App.Properties.Resources.pci;
             this.settingControllerToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.settingControllerToolStripMenuItem.Name = "settingControllerToolStripMenuItem";
-            this.settingControllerToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.settingControllerToolStripMenuItem.Size = new System.Drawing.Size(259, 54);
             this.settingControllerToolStripMenuItem.Text = "Настройка контроллера";
             this.settingControllerToolStripMenuItem.Click += new System.EventHandler(this.settingControllerToolStripMenuItem_Click);
             // 
             // additionallyToolStripMenuItem
             // 
-            this.additionallyToolStripMenuItem.Image = global::CNC_App.Properties.Resources.google_webmaster_tools;
+            this.additionallyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("additionallyToolStripMenuItem.Image")));
             this.additionallyToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.additionallyToolStripMenuItem.Name = "additionallyToolStripMenuItem";
-            this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(259, 54);
             this.additionallyToolStripMenuItem.Text = "Настройка 3D отображения";
             this.additionallyToolStripMenuItem.Click += new System.EventHandler(this.additionallyToolStripMenuItem_Click);
             // 
@@ -446,7 +446,7 @@
             this.scansurfaceToolStripMenuItem.Image = global::CNC_App.Properties.Resources.layer_grid;
             this.scansurfaceToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.scansurfaceToolStripMenuItem.Name = "scansurfaceToolStripMenuItem";
-            this.scansurfaceToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.scansurfaceToolStripMenuItem.Size = new System.Drawing.Size(259, 54);
             this.scansurfaceToolStripMenuItem.Text = "Сканирование поверхности";
             this.scansurfaceToolStripMenuItem.Click += new System.EventHandler(this.scansurfaceToolStripMenuItem_Click);
             // 
@@ -455,7 +455,7 @@
             this.generatorCodeToolStripMenuItem.Image = global::CNC_App.Properties.Resources.draw_vertex;
             this.generatorCodeToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.generatorCodeToolStripMenuItem.Name = "generatorCodeToolStripMenuItem";
-            this.generatorCodeToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.generatorCodeToolStripMenuItem.Size = new System.Drawing.Size(259, 54);
             this.generatorCodeToolStripMenuItem.Text = "Генератор G-кода";
             this.generatorCodeToolStripMenuItem.Click += new System.EventHandler(this.generatorCodeToolStripMenuItem_Click);
             // 
@@ -1199,6 +1199,16 @@
             this.tabPageSupp.Text = "Дополнительно";
             this.tabPageSupp.UseVisualStyleBackColor = true;
             // 
+            // btToBuffer
+            // 
+            this.btToBuffer.Location = new System.Drawing.Point(95, 3);
+            this.btToBuffer.Name = "btToBuffer";
+            this.btToBuffer.Size = new System.Drawing.Size(209, 22);
+            this.btToBuffer.TabIndex = 9;
+            this.btToBuffer.Text = "Лог сохранить в буфер обмена";
+            this.btToBuffer.UseVisualStyleBackColor = true;
+            this.btToBuffer.Click += new System.EventHandler(this.btToBuffer_Click);
+            // 
             // trackBar1
             // 
             this.trackBar1.Location = new System.Drawing.Point(6, 435);
@@ -1920,16 +1930,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(692, 512);
             this.splitContainer1.SplitterDistance = 476;
             this.splitContainer1.TabIndex = 6;
-            // 
-            // btToBuffer
-            // 
-            this.btToBuffer.Location = new System.Drawing.Point(95, 3);
-            this.btToBuffer.Name = "btToBuffer";
-            this.btToBuffer.Size = new System.Drawing.Size(209, 22);
-            this.btToBuffer.TabIndex = 9;
-            this.btToBuffer.Text = "Лог сохранить в буфер обмена";
-            this.btToBuffer.UseVisualStyleBackColor = true;
-            this.btToBuffer.Click += new System.EventHandler(this.btToBuffer_Click);
             // 
             // MainForm
             // 

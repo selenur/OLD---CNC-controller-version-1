@@ -143,5 +143,20 @@ namespace CNC_App
         {
             numericUpDown1.Value = trackBar1.Value;
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
