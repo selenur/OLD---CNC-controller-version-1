@@ -22,7 +22,7 @@ namespace CNC_App
         private void button8_MouseDown(object sender, MouseEventArgs e)
         {
             button8.BackColor = Color.DarkGreen;
-            _cnc.StartManualMove("+","-","0", (int)numericUpDown1.Value);
+            _cnc.StartManualMove("-","+","0", (int)numericUpDown1.Value);
         }
 
         private void button8_MouseUp(object sender, MouseEventArgs e)

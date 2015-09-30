@@ -596,7 +596,7 @@ namespace CNC_App
 
             //DataClear();
             //DataAdd(BinaryData.pack_BE(axesDirection.valueByte, speed));
-            SendBinaryData(BinaryData.pack_BE(axesDirection.ValueByte, speed));
+            SendBinaryData(BinaryData.pack_BE(axesDirection.ValueByte, speed,x,y,z));
             //Task_Start();
         }
 
@@ -984,8 +984,10 @@ namespace CNC_App
         /// <param name="direction">Направление по осям в байте</param>
         /// <param name="speed">Скорость движения</param>
         /// <returns></returns>
-        public static byte[] pack_BE(byte direction, int speed)
+        public static byte[] pack_BE(byte direction, int speed, string x = "_", string y="_", string z = "_")
         {
+            //TODO: переделать определения с направлениями движения
+
             byte[] buf = new byte[64];
 
             buf[0] = 0xBE;
@@ -1006,6 +1008,108 @@ namespace CNC_App
             buf[10] = (byte)(inewSpd);
             buf[11] = (byte)(inewSpd >> 8);
             buf[12] = (byte)(inewSpd >> 16);
+
+
+            //TODO: Для МК2 немного иные посылки данных
+
+            if (speed != 0)
+            {
+                double dnewSpd = (9000 / (double)speed) * 1000;
+                inewSpd = (int)dnewSpd;
+            }
+
+            //скорость
+            buf[10] = (byte)(inewSpd);
+            buf[11] = (byte)(inewSpd >> 8);
+            buf[12] = (byte)(inewSpd >> 16);
+
+            if (speed == 0)
+            {
+                buf[14] = 0x00;
+                buf[18] = 0x01;
+                buf[22] = 0x01;
+
+                //x
+                buf[26] = 0x00;
+                buf[27] = 0x00;
+                buf[28] = 0x00;
+                buf[29] = 0x00;
+
+                //y
+                buf[30] = 0x00;
+                buf[31] = 0x00;
+                buf[32] = 0x00;
+                buf[33] = 0x00;
+
+                //z
+                buf[34] = 0x00;
+                buf[35] = 0x00;
+                buf[36] = 0x00;
+                buf[37] = 0x00;
+
+
+            }
+            else
+            {
+                buf[14] = 0xC8; //TODO: WTF?? 
+                buf[18] = 0x14; //TODO: WTF??
+                buf[22] = 0x14; //TODO: WTF??
+
+
+
+
+                if (x == "+")
+                {
+                    buf[26] = 0x40;
+                    buf[27] = 0x0D;
+                    buf[28] = 0x03;
+                    buf[29] = 0x00;
+                }
+
+                if (x == "-")
+                {
+                    buf[26] = 0xC0;
+                    buf[27] = 0xF2;
+                    buf[28] = 0xFC;
+                    buf[29] = 0xFF;
+                }
+
+                if (y == "+")
+                {
+                    buf[30] = 0x40;
+                    buf[31] = 0x0D;
+                    buf[32] = 0x03;
+                    buf[33] = 0x00;
+                }
+
+                if (y == "-")
+                {
+                    buf[30] = 0xC0;
+                    buf[31] = 0xF2;
+                    buf[32] = 0xFC;
+                    buf[33] = 0xFF;
+                }
+
+                if (z == "+")
+                {
+                    buf[34] = 0x40;
+                    buf[35] = 0x0D;
+                    buf[36] = 0x03;
+                    buf[37] = 0x00;
+                }
+
+                if (z == "-")
+                {
+                    buf[34] = 0xC0;
+                    buf[35] = 0xF2;
+                    buf[36] = 0xFC;
+                    buf[37] = 0xFF;
+                }
+            }
+
+
+
+
 
             return buf;
         }
@@ -1068,16 +1172,21 @@ namespace CNC_App
             byte[] buf = new byte[64];
 
             buf[0] = 0xbf;
-            buf[4] = 0x80; //TODO: непонятный байт
+
+            // Для МК2 не нужен байт....
+            //buf[4] = 0x80; //TODO: непонятный байт
 
 
-            double dnewSpdX = (3600 / (double)speedLimitX) * 1000;
+            //double koef = 3600; //for MK1
+            double koef = 4500; //for MK2
+
+            double dnewSpdX = (koef / (double)speedLimitX) * 1000;
             int inewSpdX = (int)dnewSpdX;
 
-            double dnewSpdY = (3600 / (double)speedLimitY) * 1000;
+            double dnewSpdY = (koef / (double)speedLimitY) * 1000;
             int inewSpdY = (int)dnewSpdY;
 
-            double dnewSpdZ = (3600 / (double)speedLimitZ) * 1000;
+            double dnewSpdZ = (koef / (double)speedLimitZ) * 1000;
             int inewSpdZ = (int)dnewSpdZ;
 
             buf[07] = (byte)(inewSpdX);
