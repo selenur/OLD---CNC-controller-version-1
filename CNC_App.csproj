@@ -92,9 +92,7 @@
     <Compile Include="ConstructorGkode\frmRotate.Designer.cs">
       <DependentUpon>frmRotate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\contrEmulator.cs" />
-    <Compile Include="Controllers\contrMK1.cs" />
-    <Compile Include="Controllers\CONTROLLER.cs" />
+    <Compile Include="CONTROLLER.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="EditGkode.cs">
       <SubType>Form</SubType>
@@ -146,11 +144,11 @@
     <Compile Include="sett3D.Designer.cs">
       <DependentUpon>sett3D.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\setting.cs">
+    <Compile Include="settingDlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controllers\setting.Designer.cs">
-      <DependentUpon>setting.cs</DependentUpon>
+    <Compile Include="settingDlg.Designer.cs">
+      <DependentUpon>settingDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="SuperByte.cs" />
     <EmbeddedResource Include="AboutBox.resx">
@@ -191,8 +189,8 @@
     <EmbeddedResource Include="sett3D.resx">
       <DependentUpon>sett3D.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controllers\setting.resx">
-      <DependentUpon>setting.cs</DependentUpon>
+    <EmbeddedResource Include="settingDlg.resx">
+      <DependentUpon>settingDlg.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />

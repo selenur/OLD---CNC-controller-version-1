@@ -1,42 +1,38 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using CNC_App.Controllers;
 using LibUsbDotNet;
 using LibUsbDotNet.Main;
 
 namespace CNC_App
 {
     /// <summary>
-    /// Класс работы с контроллером MK1
+    /// Класс работы с контроллером
     /// </summary>
-    // ReSharper disable once InconsistentNaming
-    public class CONTROLLER
+    public static class Controller
     {
         #region Инициализация событий контроллера
 
-        public delegate void DeviceEventConnect(object sender); //уведомление об установки связи
-        public delegate void DeviceEventDisconnect(object sender, DeviceEventArgsMessage e); //уведомление об обрыве/прекращении связи
-        public delegate void DeviceEventNewData(object sender); //уведомление что получены новые данные контроллером
-        public delegate void DeviceEventNewMessage(object sender, DeviceEventArgsMessage e); //для посылки управляющей программе сообщений о действиях
+        public delegate void DeviceEventConnect(object sender);                              // уведомление об установки связи
+        public delegate void DeviceEventDisconnect(object sender, DeviceEventArgsMessage e); // уведомление об обрыве/прекращении связи
+        public delegate void DeviceEventNewData(object sender);                              // уведомление что получены новые данные контроллером
+        public delegate void DeviceEventNewMessage(object sender, DeviceEventArgsMessage e); // для посылки управляющей программе сообщений о действиях
 
         /// <summary>
         /// Событие при успешном подключении к контроллеру
         /// </summary>
-        public event DeviceEventConnect WasConnected;
+        public static event DeviceEventConnect WasConnected;
         /// <summary>
         /// Событие при отключении от контроллера, или разрыве связи с контроллером
         /// </summary>
-        public event DeviceEventDisconnect WasDisconnected;
+        public static event DeviceEventDisconnect WasDisconnected;
         /// <summary>
         /// Получены новые данные от контроллера
         /// </summary>
-        public event DeviceEventNewData NewDataFromController;
+        public static event DeviceEventNewData NewDataFromController;
         /// <summary>
         /// Посылка строки описания (для ведения логов)
         /// </summary>
-        public event DeviceEventNewMessage Message;
+        public static event DeviceEventNewMessage Message;
 
         #endregion
         
@@ -45,189 +41,26 @@ namespace CNC_App
         /// <summary>
         /// Наличие связи с контроллером
         /// </summary>
-        private bool _connected;
+        private static bool _connected;
 
         /// <summary>
         /// Поток для получения, посылки данных в контроллер
         /// </summary>
-        private BackgroundWorker _theads;
+        private static BackgroundWorker _theads;
 
-        private UsbDevice _myUsbDevice;
-        private ErrorCode _ec;
-        private UsbEndpointReader _usbReader;
-        private UsbEndpointWriter _usbWriter;
-
-        #endregion
-
-        /// <summary>
-        /// Конструктор класса
-        /// </summary>
-        public CONTROLLER(Setting _setting)
-        {
-            deviceInfo.AxesX_PulsePerMm = _setting.pulseX;
-            deviceInfo.AxesY_PulsePerMm = _setting.pulseY;
-            deviceInfo.AxesZ_PulsePerMm = _setting.pulseZ;
-
-            _connected = false;
-            //Создаем поток, и подключаем к нему процедуру
-            _theads = new BackgroundWorker();
-            _theads.DoWork += TheadsStart;
-        }
-
-        #region Работа с настройками программы
-
-        /// <summary>
-        /// Файл настроек программы
-        /// </summary>
-        private readonly string _filesetting = string.Format("{0}\\setting.ini", Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
-
-        /// <summary>
-        /// Функция для сохранения параметров в файле настроек
-        /// Сохраненные данные в файле будут выглядеть следующим образом:
-        /// параметр = значение
-        /// !!! Поэтому знак равно нельзя использовать ни в параметре ни в значении
-        /// </summary>
-        /// <param name="property">Имя параметра (строка)</param>
-        /// <param name="value">Значение параметра (Строка)</param>
-        private void SaveProperty(string property, string value)
-        {
-            List<string> listProperty = new List<string>();
-
-            // Запись параметра в файл
-
-            // В начале получим все параметры
-            if (File.Exists(_filesetting))
-            {
-
-                StreamReader sr = new StreamReader(_filesetting);
-                string[] arr = sr.ReadToEnd().Split('\n');
-                sr.Close();
-
-                foreach (string ss in arr)
-                {
-                    // ReSharper disable once RedundantAssignment
-                    var sformat = ss.Replace('\n', ' ').Trim();
-                    sformat = ss.Replace('\r', ' ').Trim();
-
-                    if (sformat.Length < 3) continue;
-                    //проверим наш ли это параметр
-                    int posSymbol = sformat.IndexOf('=');
-
-                    if (posSymbol == 0) continue; //странный параметр, такой не нужен нам
-
-                    string sProperty = sformat.Substring(0, posSymbol);
-                    string sValue = sformat.Substring(posSymbol + 1);
-
-                    if (property.Trim() == sProperty.Trim()) continue; //нужный параметр пропустим
-
-                    listProperty.Add(sProperty + "=" + sValue);
-                }
-            }
-
-            //если в существующем файле такого параметра нет, то добавим новый
-            listProperty.Add(property + "=" + value);
-
-            try
-            {
-                string sOut = "";
-
-                foreach (string ss in listProperty)
-                {
-                    sOut += ss + Environment.NewLine;
-
-                    //OutputFile.WriteLine(ss);
-                }
-
-                StreamWriter sw = new StreamWriter(_filesetting);
-                sw.WriteLine(sOut);
-                sw.Close();
-            }
-            catch (Exception)
-            {
-                //addLog(e.ToString(), true);
-            }
-        }
-
-        /// <summary>
-        /// Функция извлечения параметра из файла настроек
-        /// </summary>
-        /// <param name="property">Имя параметра (строка)</param>
-        /// <returns>Значение параметра (Строка), если будет отсутствовать файл настроек, или указанный параметр, то вернется ""</returns>
-        private string LoadProperty(string property)
-        {
-            if (!File.Exists(_filesetting)) return "";
-            var sr = new StreamReader(_filesetting);
-            var arr = sr.ReadToEnd().Split('\n');
-            sr.Close();
-
-            foreach (var ss in arr)
-            {
-                //проверим наш ли это параметр
-                var posSymbol = ss.IndexOf('=');
-
-                if (posSymbol == 0) continue; //странный параметр, такой не нужен нам
-
-                var sProperty = ss.Substring(0, posSymbol);
-                var sValue = ss.Substring(posSymbol + 1);
-
-                if (property.Trim() == sProperty.Trim())
-                {
-                    return sValue;
-                }
-            }
-            return "";
-        }
-
-
-        public bool AppyNewSetting(Setting value)
-        {
-
-
-
-
-            return true;
-        }
-
-
-
-        /// <summary>
-        /// Загрузка настроек программы из файла
-        /// </summary>
-        public void LoadSetting()
-        {
-
-
-
-
-
-            string sPulseX = LoadProperty("pulseX");
-            string sPulseY = LoadProperty("pulseY");
-            string sPulseZ = LoadProperty("pulseZ");
-
-            if (sPulseX.Trim() != "") deviceInfo.AxesX_PulsePerMm = int.Parse(sPulseX);
-            if (sPulseY.Trim() != "") deviceInfo.AxesY_PulsePerMm = int.Parse(sPulseY);
-            if (sPulseZ.Trim() != "") deviceInfo.AxesZ_PulsePerMm = int.Parse(sPulseZ);
-
-        }
-
-        /// <summary>
-        /// Сохранение настроек в файл
-        /// </summary>
-        public void SaveSetting()
-        {
-            SaveProperty("pulseX", deviceInfo.AxesX_PulsePerMm.ToString());
-            SaveProperty("pulseY", deviceInfo.AxesY_PulsePerMm.ToString());
-            SaveProperty("pulseZ", deviceInfo.AxesZ_PulsePerMm.ToString());
-        }
+        private static UsbDevice _myUsbDevice;
+        private static ErrorCode _ec;
+        private static UsbEndpointReader _usbReader;
+        private static UsbEndpointWriter _usbWriter;
 
         #endregion
 
         #region Свойства для доступа извне к переменным
-        //TODO: пересмотреть необходимость процедур
+
         /// <summary>
         /// Возвращает информацию о наличии связи
         /// </summary>
-        public bool Connected
+        public static bool Connected
         {
             get
             {
@@ -238,7 +71,7 @@ namespace CNC_App
         /// <summary>
         /// Скорость движения шпинделя
         /// </summary>
-        public int ShpindelMoveSpeed
+        public static int ShpindelMoveSpeed
         {
             get
             {
@@ -249,7 +82,7 @@ namespace CNC_App
         /// <summary>
         /// Номер выполняемой инструкции
         /// </summary>
-        public int NumberComleatedInstructions
+        public static int NumberComleatedInstructions
         {
             get
             {
@@ -260,7 +93,7 @@ namespace CNC_App
         /// <summary>
         /// Свойство включен ли шпиндель
         /// </summary>
-        public bool SpindelOn
+        public static bool SpindelOn
         {
             get { return deviceInfo.shpindel_Enable; }
         }
@@ -268,7 +101,7 @@ namespace CNC_App
         /// <summary>
         /// Свойство активированна ли аварийная остановка
         /// </summary>
-        public bool EstopOn
+        public static bool EstopOn
         {
             get { return deviceInfo.Estop; }
         }
@@ -277,7 +110,7 @@ namespace CNC_App
         /// Проверка наличия связи, и незанятости контроллера
         /// </summary>
         /// <returns>булево, возможно ли посылать контроллеру задачи</returns>
-        public bool TestAllowActions()
+        public static bool TestAllowActions()
         {
             if (!Connected)
             {
@@ -288,25 +121,16 @@ namespace CNC_App
             return true;
         }
 
-        /// <summary>
-        /// Для проверки новых данных от контроллера
-        /// </summary>
-        public bool AvailableNewData { get; set; }
-
 
         /// <summary>
         /// Размер свободного буфера
         /// </summary>
         // ReSharper disable once UnusedMember.Global
-        public int AvailableBufferSize
+        public static int AvailableBufferSize
         {
             get
             {
                 return deviceInfo.FreebuffSize;
-            }
-            // ReSharper disable once ValueParameterNotUsed
-            set
-            {
             }
         }
 
@@ -318,9 +142,20 @@ namespace CNC_App
         /// Парсит полученные данные с контроллера
         /// </summary>
         /// <param name="readBuffer"></param>
-        private void ParseInfo(IList<byte> readBuffer)
+        private static void ParseInfo(IList<byte> readBuffer)
         {
+
+            int ttm = (int) (((readBuffer[22]*65536) + (readBuffer[21]*256) + (readBuffer[20]))/2.1);
+
+            if (ttm > 5000) return;
+
+            //TODO: иногда в МК2 бывает глюк, поэтому защитимся от него, костылем
+            //if (readBuffer[10] == 0x58 && readBuffer[11] == 0x02 && readBuffer[22] == 0x20 && readBuffer[23] == 0x02) return;
+
             deviceInfo.FreebuffSize = readBuffer[1];
+
+
+
             deviceInfo.shpindel_MoveSpeed = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 2.1); 
             deviceInfo.AxesX_PositionPulse = (readBuffer[27] * 16777216) + (readBuffer[26] * 65536) + (readBuffer[25] * 256) + (readBuffer[24]);
             deviceInfo.AxesY_PositionPulse = (readBuffer[31] * 16777216) + (readBuffer[30] * 65536) + (readBuffer[29] * 256) + (readBuffer[28]);
@@ -333,7 +168,7 @@ namespace CNC_App
             deviceInfo.AxesZ_LimitMax = (readBuffer[15] & (1 << 4)) != 0;
             deviceInfo.AxesZ_LimitMin = (readBuffer[15] & (1 << 5)) != 0;
 
-            deviceInfo.NuberCompleatedInstruction = (int)(readBuffer[9] * 16777216) + (readBuffer[8] * 65536) + (readBuffer[7] * 256) + (readBuffer[6]);
+            deviceInfo.NuberCompleatedInstruction = readBuffer[9] * 16777216 + (readBuffer[8] * 65536) + (readBuffer[7] * 256) + (readBuffer[6]);
 
             SuperByte bb = new SuperByte(readBuffer[19]);
 
@@ -343,12 +178,12 @@ namespace CNC_App
             deviceInfo.Estop = bb2.Bit7;
         }
 
-        private void ADDMessage(string ss)
+        private static void AddMessage(string ss)
         {
-            if (Message != null) Message(this, new DeviceEventArgsMessage(ss));
+            if (Message != null) Message(null, new DeviceEventArgsMessage(ss));
         }
 
-        private bool CompareArray(byte[] arr1, byte[] arr2)
+        private static bool CompareArray(byte[] arr1, byte[] arr2)
         {
             if (arr1 == null || arr2 == null) return false;
 
@@ -367,9 +202,9 @@ namespace CNC_App
         }
 
         //Поток для выполнения заданий
-        private void TheadsStart(object sender, DoWorkEventArgs e)
+        private static void TheadsStart(object sender, DoWorkEventArgs e)
         {
-            ADDMessage("Запуск потока, работы с контроллером");
+            AddMessage("Запуск потока, работы с контроллером");
 
             if (!deviceInfo.DEMO_DEVICE)
             {
@@ -385,10 +220,10 @@ namespace CNC_App
                     string StringError = "Не найден подключенный контроллер.";
                     _connected = false;
 
-                    ADDMessage(StringError);
+                    AddMessage(StringError);
 
                     //запустим событие о разрыве связи
-                    if (WasDisconnected != null) WasDisconnected(this, new DeviceEventArgsMessage(StringError));
+                    if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(StringError));
 
                     return;
                 }
@@ -412,22 +247,21 @@ namespace CNC_App
                 // open write endpoint 1.
                 _usbWriter = _myUsbDevice.OpenEndpointWriter(WriteEndpointID.Ep01);
 
-                ADDMessage("Подключение к контроллеру, успешно");
+                AddMessage("Подключение к контроллеру, успешно");
             }
             else
             {
-                ADDMessage("...Запущен ДЕМОРЕЖИМ...");
+                AddMessage("...Запущен ДЕМОРЕЖИМ...");
             }
 
-            AvailableNewData = true;
             _connected = true;
 
-            ADDMessage("Связь с контроллером установлена");
+            AddMessage("Связь с контроллером установлена");
 
-            if (WasConnected != null) WasConnected(this);
+            if (WasConnected != null) WasConnected(null);
 
             // Для отслеживания изменений
-            byte[] _oldInfoFromController = new byte[64];
+            byte[] oldInfoFromController = new byte[64];
 
             while (_connected)
             {
@@ -442,7 +276,7 @@ namespace CNC_App
                      if (_ec != ErrorCode.None)
                     {
                         _connected = false;
-                        if (WasDisconnected != null) WasDisconnected(this, new DeviceEventArgsMessage(@"Ошибка получения данных с контроллера, связь разорвана!"));
+                        if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(@"Ошибка получения данных с контроллера, связь разорвана!"));
                         
                         return;
                     }
@@ -454,18 +288,17 @@ namespace CNC_App
 
                 if (bytesRead == 0 || readBuffer[0] != 0x01) continue; //пока получаем пакеты только с кодом 0х01 
 
-                if (CompareArray(_oldInfoFromController, readBuffer)) continue; //если данные от контроллера не изменились, то дальше нет смысла...
+                if (CompareArray(oldInfoFromController, readBuffer)) continue; //если данные от контроллера не изменились, то дальше нет смысла...
 
                 deviceInfo.rawData = readBuffer;
 
                 ParseInfo(readBuffer);
-                _oldInfoFromController = readBuffer;
-                AvailableNewData = true;
+                oldInfoFromController = readBuffer;
 
-                if (NewDataFromController != null) NewDataFromController(this);
+                if (NewDataFromController != null) NewDataFromController(null);
             }
 
-            if (WasDisconnected != null) WasDisconnected(this, new DeviceEventArgsMessage("")); //событие завершения работы
+            if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage("")); //событие завершения работы
 
             if (!deviceInfo.DEMO_DEVICE)
             {
@@ -473,25 +306,34 @@ namespace CNC_App
                 UsbDevice.Exit();
             }
 
-            ADDMessage("Завершение потока работы с контроллером");
+            AddMessage("Завершение потока работы с контроллером");
         }
 
         /// <summary>
         /// Установка связи с контроллером
         /// </summary>
-        public void Connect()
+        public static void Connect()
         {
             if (Connected)
             {
-                ADDMessage("Соединение уже установлено!");
+                AddMessage("Соединение уже установлено!");
                 return;
             }
 
-            if (_theads.IsBusy)
+            if (_theads != null)
             {
-                ADDMessage("Повторное подключение невозможно, пока текущее не будет прервано!");
-                return;
+                if (_theads.IsBusy)
+                {
+                    AddMessage("Повторное подключение невозможно, пока текущее не будет прервано!");
+                    return;
+                } 
             }
+
+            _connected = false;
+            //Создаем поток, и подключаем к нему процедуру
+            _theads = new BackgroundWorker();
+            _theads.DoWork += TheadsStart;
+
 
             //Запустим поток
             _theads.RunWorkerAsync();
@@ -500,9 +342,9 @@ namespace CNC_App
         /// <summary>
         /// Отключение от контроллера
         /// </summary>
-        public void Disconnect()
+        public static void Disconnect()
         {
-            ADDMessage("Прекращение связи с контроллером!");
+            AddMessage("Прекращение связи с контроллером!");
             _connected = false;
         }
 
@@ -515,7 +357,7 @@ namespace CNC_App
         /// </summary>
         /// <param name="data">Набор данных</param>
         /// <param name="checkBuffSize">Проверять ли размер доступного буффера контроллера</param>
-        public void SendBinaryData(byte[] data, bool checkBuffSize = true)
+        public static void SendBinaryData(byte[] data, bool checkBuffSize = true)
         {
             if (checkBuffSize && (deviceInfo.FreebuffSize < 2))
             {
@@ -543,7 +385,7 @@ namespace CNC_App
         /// <summary>
         /// Включение шпинделя
         /// </summary>
-        public void Spindel_ON()
+        public static void Spindel_ON()
         {
             SendBinaryData(BinaryData.pack_B5(true));
         }
@@ -551,7 +393,7 @@ namespace CNC_App
         /// <summary>
         /// Выключение шпинделя
         /// </summary>
-        public void Spindel_OFF()
+        public static void Spindel_OFF()
         {
             SendBinaryData(BinaryData.pack_B5(false));
         }
@@ -559,7 +401,7 @@ namespace CNC_App
         /// <summary>
         /// Посылка аварийной остановки
         /// </summary>
-        public void EnergyStop()
+        public static void EnergyStop()
         {
             SendBinaryData(BinaryData.pack_AA(), false);
         }
@@ -571,7 +413,7 @@ namespace CNC_App
         /// <param name="y">Ось Y (доступные значения "+" "0" "-")</param>
         /// <param name="z">Ось Z (доступные значения "+" "0" "-")</param>
         /// <param name="speed"></param>
-        public void StartManualMove(string x, string y, string z, int speed)
+        public static void StartManualMove(string x, string y, string z, int speed)
         {
             if (!Connected)
             {
@@ -600,7 +442,7 @@ namespace CNC_App
             //Task_Start();
         }
 
-        public void StopManualMove()
+        public static void StopManualMove()
         {
             if (!Connected)
             {
@@ -625,7 +467,7 @@ namespace CNC_App
         /// <param name="x">Положение в импульсах</param>
         /// <param name="y">Положение в импульсах</param>
         /// <param name="z">Положение в импульсах</param>
-        public void DeviceNewPosition(int x, int y, int z)
+        public static void DeviceNewPosition(int x, int y, int z)
         {
             if (!TestAllowActions()) return;
 
@@ -639,7 +481,7 @@ namespace CNC_App
         /// <param name="y">в миллиметрах</param>
         /// <param name="z">в миллиметрах</param>
         // ReSharper disable once UnusedMember.Global
-        public void DeviceNewPosition(decimal x, decimal y, decimal z)
+        public static void DeviceNewPosition(decimal x, decimal y, decimal z)
         {
             if (!TestAllowActions()) return;
 
@@ -676,6 +518,8 @@ namespace CNC_App
     /// </summary>
     public enum EStatusDevice { Connect = 0, Disconnect };
 
+
+
     public static class deviceInfo
     {
         /// <summary>
@@ -705,9 +549,9 @@ namespace CNC_App
         /// </summary>
         public static int AxesZ_PositionPulse = 0;
 
-        public static int AxesX_PulsePerMm = 400;
-        public static int AxesY_PulsePerMm = 400;
-        public static int AxesZ_PulsePerMm = 400;
+        //public static int AxesX_PulsePerMm = 400;
+        //public static int AxesY_PulsePerMm = 400;
+        //public static int AxesZ_PulsePerMm = 400;
 
         //срабатывание сенсора
         public static bool AxesX_LimitMax = false;
@@ -734,7 +578,7 @@ namespace CNC_App
         {
             get
             {
-                return (decimal)AxesX_PositionPulse / AxesX_PulsePerMm; ;
+                return (decimal)AxesX_PositionPulse / Setting.PulseX;
             }
         }
 
@@ -742,7 +586,7 @@ namespace CNC_App
         {
             get
             {
-                return (decimal)AxesY_PositionPulse / AxesY_PulsePerMm; ;
+                return (decimal)AxesY_PositionPulse / Setting.PulseY;
             }
         }
 
@@ -750,7 +594,7 @@ namespace CNC_App
         {
             get
             {
-                return (decimal)AxesZ_PositionPulse / AxesZ_PulsePerMm; ;
+                return (decimal)AxesZ_PositionPulse / Setting.PulseZ;
             }
         }
 
@@ -762,9 +606,9 @@ namespace CNC_App
         /// <returns>Количество импульсов</returns>
         public static int CalcPosPulse(string axes, decimal posMm)
         {
-            if (axes == "X") return (int)(posMm * (decimal)AxesX_PulsePerMm);
-            if (axes == "Y") return (int)(posMm * (decimal)AxesY_PulsePerMm);
-            if (axes == "Z") return (int)(posMm * (decimal)AxesZ_PulsePerMm);
+            if (axes == "X") return (int)(posMm * Setting.PulseX);
+            if (axes == "Y") return (int)(posMm * Setting.PulseY);
+            if (axes == "Z") return (int)(posMm * Setting.PulseZ);
             return 0;
         }
     }
@@ -962,7 +806,7 @@ namespace CNC_App
             buf[46] = 0x10;
 
             // 
-            int inewReturn = (int)(returnDistance * (decimal)deviceInfo.AxesZ_PulsePerMm);
+            int inewReturn = (int)(returnDistance * Setting.PulseZ);
 
             //растояние возврата
             buf[50] = (byte)(inewReturn);
@@ -1473,10 +1317,10 @@ namespace CNC_App
         /// <returns></returns>
         public static dobPoint GetZ(dobPoint p1, dobPoint p2, dobPoint p3, dobPoint p4, dobPoint p5)
         {
-            dobPoint p12 = Geometry.CalcPX(p1, p2, p5);
-            dobPoint p34 = Geometry.CalcPX(p3, p4, p5);
+            dobPoint p12 = CalcPX(p1, p2, p5);
+            dobPoint p34 = CalcPX(p3, p4, p5);
 
-            dobPoint p1234 = Geometry.CalcPY(p12, p34, p5);
+            dobPoint p1234 = CalcPY(p12, p34, p5);
 
             return p1234;
         }

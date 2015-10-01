@@ -10,15 +10,13 @@ namespace CNC_App
     public partial class ScanSurface : Form
     {
         // ReSharper disable once NotAccessedField.Local
-        private CONTROLLER _ctrl;
 
         private dobPoint selectedPoint = null;
         private int selectedX = -1;
         private int selectedY = -1;
         
-        public ScanSurface(ref CONTROLLER ctrl)
+        public ScanSurface()
         {
-            _ctrl = ctrl;
             InitializeComponent();
         }
 
@@ -151,9 +149,9 @@ namespace CNC_App
 
             if (Scan) return;
 
-            _ctrl.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
-            _ctrl.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
-            _ctrl.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
+            Controller.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
+            Controller.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
+            Controller.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
         }
 
 
@@ -229,7 +227,7 @@ namespace CNC_App
         // TODO: при сканировании иногда заполняет сразу 2 ячейки в таблице?!?
         private void theads()
         {
-            if (_ctrl.ShpindelMoveSpeed != 0) return;
+            if (Controller.ShpindelMoveSpeed != 0) return;
             
             //координаты куда передвинуться
             //decimal px = dataCode.Matrix[indexScanY].X[indexScanX].X;
@@ -240,13 +238,13 @@ namespace CNC_App
             decimal py = (decimal)dataCode.matrix2[indexScanX, indexScanY].Y;
 
             //спозиционируемся
-            _ctrl.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
             Thread.Sleep(100);
 
             //опустим щуп
-            _ctrl.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
-            _ctrl.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, 0));      // + настройка отхода, и скорости
-            _ctrl.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
+            Controller.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
+            Controller.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, 0));      // + настройка отхода, и скорости
+            Controller.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
             Thread.Sleep(100);
 
             while (!deviceInfo.AxesZ_LimitMax)
@@ -260,18 +258,18 @@ namespace CNC_App
             //dataCode.Matrix[indexScanY].X[indexScanX].Z = deviceInfo.AxesZ_PositionMM;
             dataCode.matrix2[indexScanX, indexScanY].Z = (double)deviceInfo.AxesZ_PositionMM;
 
-            _ctrl.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
-            _ctrl.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
-            _ctrl.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
+            Controller.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
+            Controller.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
+            Controller.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
             Thread.Sleep(100);
             //спозиционируемся
-            _ctrl.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
             Thread.Sleep(100);
 
             if (indexScanX == indexMaxScanX && indexScanY == indexMaxScanY)
             {
                 Scan = false;
-                _ctrl.SendBinaryData(BinaryData.pack_FF());
+                Controller.SendBinaryData(BinaryData.pack_FF());
             }
 
             if (indexScanX < indexMaxScanX)
@@ -333,24 +331,24 @@ namespace CNC_App
         {
 
 
-            if (!_ctrl.TestAllowActions()) return;
+            if (!Controller.TestAllowActions()) return;
 
             if (selectedPoint == null) return;
 
             int speed = 200;
 
-            _ctrl.SendBinaryData(BinaryData.pack_9E(0x05));
-            _ctrl.SendBinaryData(BinaryData.pack_BF(speed, speed, speed));
-            _ctrl.SendBinaryData(BinaryData.pack_C0());
-            _ctrl.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", (decimal)selectedPoint.X), deviceInfo.CalcPosPulse("Y", (decimal)selectedPoint.Y), deviceInfo.CalcPosPulse("Z", (decimal)selectedPoint.Z), speed, 0));
-            _ctrl.SendBinaryData(BinaryData.pack_FF());
-            _ctrl.SendBinaryData(BinaryData.pack_9D());
-            _ctrl.SendBinaryData(BinaryData.pack_9E(0x02));
-            _ctrl.SendBinaryData(BinaryData.pack_FF());
-            _ctrl.SendBinaryData(BinaryData.pack_FF());
-            _ctrl.SendBinaryData(BinaryData.pack_FF());
-            _ctrl.SendBinaryData(BinaryData.pack_FF());
-            _ctrl.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_9E(0x05));
+            Controller.SendBinaryData(BinaryData.pack_BF(speed, speed, speed));
+            Controller.SendBinaryData(BinaryData.pack_C0());
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", (decimal)selectedPoint.X), deviceInfo.CalcPosPulse("Y", (decimal)selectedPoint.Y), deviceInfo.CalcPosPulse("Z", (decimal)selectedPoint.Z), speed, 0));
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_9D());
+            Controller.SendBinaryData(BinaryData.pack_9E(0x02));
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_FF());
 
         }
 
@@ -370,25 +368,25 @@ namespace CNC_App
         private void button6_MouseDown(object sender, MouseEventArgs e)
         {
             button6.BackColor = Color.DarkGreen;
-            _ctrl.StartManualMove("0", "0", "+", 100);       
+            Controller.StartManualMove("0", "0", "+", 100);       
         }
 
         private void button6_MouseUp(object sender, MouseEventArgs e)
         {
             button6.BackColor = Color.FromName("Control");
-            _ctrl.StopManualMove();        
+            Controller.StopManualMove();        
         }
 
         private void button5_MouseDown(object sender, MouseEventArgs e)
         {
             button5.BackColor = Color.DarkGreen;
-            _ctrl.StartManualMove("0", "0", "-", 100);
+            Controller.StartManualMove("0", "0", "-", 100);
         }
 
         private void button5_MouseUp(object sender, MouseEventArgs e)
         {
             button5.BackColor = Color.FromName("Control");
-            _ctrl.StopManualMove();
+            Controller.StopManualMove();
         }
 
 

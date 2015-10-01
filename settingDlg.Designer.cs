@@ -41,11 +41,14 @@
             this.rbType_MK2 = new System.Windows.Forms.RadioButton();
             this.rbType_MK1 = new System.Windows.Forms.RadioButton();
             this.rbType_Emulator = new System.Windows.Forms.RadioButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkBoxAutoConnect = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPulseX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPulseY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPulseZ)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -192,7 +195,7 @@
             this.groupBox2.Controls.Add(this.rbType_Emulator);
             this.groupBox2.Location = new System.Drawing.Point(7, 9);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(355, 92);
+            this.groupBox2.Size = new System.Drawing.Size(178, 92);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Вид контроллера";
@@ -229,11 +232,31 @@
             this.rbType_Emulator.Text = "Эмулятор контроллера";
             this.rbType_Emulator.UseVisualStyleBackColor = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.checkBoxAutoConnect);
+            this.groupBox3.Location = new System.Drawing.Point(201, 17);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(160, 83);
+            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "groupBox3";
+            // 
+            // checkBoxAutoConnect
+            // 
+            this.checkBoxAutoConnect.Location = new System.Drawing.Point(6, 19);
+            this.checkBoxAutoConnect.Name = "checkBoxAutoConnect";
+            this.checkBoxAutoConnect.Size = new System.Drawing.Size(148, 51);
+            this.checkBoxAutoConnect.TabIndex = 0;
+            this.checkBoxAutoConnect.Text = "подключение к контроллеру при запуске";
+            this.checkBoxAutoConnect.UseVisualStyleBackColor = true;
+            // 
             // setting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(374, 246);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button2);
@@ -251,6 +274,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -270,6 +294,8 @@
         private System.Windows.Forms.RadioButton rbType_MK2;
         private System.Windows.Forms.RadioButton rbType_MK1;
         private System.Windows.Forms.RadioButton rbType_Emulator;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox checkBoxAutoConnect;
 
     }
 }

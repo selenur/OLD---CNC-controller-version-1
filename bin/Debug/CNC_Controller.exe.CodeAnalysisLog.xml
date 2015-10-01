@@ -8,38 +8,33 @@
      <Namespaces>
       <Namespace Name="CNC_App">
        <Types>
-        <Type Name="CONTROLLER" Kind="Class" Accessibility="Public" ExternallyVisible="True">
-         <Messages>
-          <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Active" Created="2015-09-30 06:34:42Z" FixCategory="DependsOnFix">
-           <Issue Name="DependsOnFix" Certainty="95" Level="CriticalError">Реализуйте IDisposable для 'CONTROLLER', поскольку он создает члены следующих типов IDisposable: 'BackgroundWorker'. Если 'CONTROLLER' ранее был доставлен, добавление в данный тип новых членов, реализующих IDisposable, считается критическим изменением для существующих потребителей.</Issue>
-          </Message>
-         </Messages>
+        <Type Name="Controller" Kind="Class" Accessibility="Public" ExternallyVisible="True">
          <Members>
-          <Member Name="#Message" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+          <Member Name="#Message" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-09-30 06:34:42Z" FixCategory="Breaking">
-             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'CONTROLLER.DeviceEventNewMessage' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-10-01 12:44:46Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'Controller.DeviceEventNewMessage' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
             </Message>
            </Messages>
           </Member>
-          <Member Name="#NewDataFromController" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+          <Member Name="#NewDataFromController" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-09-30 06:34:42Z" FixCategory="Breaking">
-             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'CONTROLLER.DeviceEventNewData' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-10-01 12:44:46Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'Controller.DeviceEventNewData' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
             </Message>
            </Messages>
           </Member>
-          <Member Name="#WasConnected" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+          <Member Name="#WasConnected" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-09-30 06:34:42Z" FixCategory="Breaking">
-             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'CONTROLLER.DeviceEventConnect' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-10-01 12:44:46Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'Controller.DeviceEventConnect' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
             </Message>
            </Messages>
           </Member>
-          <Member Name="#WasDisconnected" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+          <Member Name="#WasDisconnected" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-09-30 06:34:42Z" FixCategory="Breaking">
-             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'CONTROLLER.DeviceEventDisconnect' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-10-01 12:44:46Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'Controller.DeviceEventDisconnect' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
             </Message>
            </Messages>
           </Member>
@@ -49,7 +44,7 @@
          <Members>
           <Member Name="#GetKeyState(CNC_App.MainForm+VirtualKeyStates)" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
            <Messages>
-            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2015-09-30 06:34:42Z" FixCategory="Breaking">
+            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2015-10-01 12:44:46Z" FixCategory="Breaking">
              <Issue Certainty="95" Level="CriticalWarning">Так как метод является методом P/Invoke, 'MainForm.GetKeyState(MainForm.VirtualKeyStates)' должен быть определен в классе с именем NativeMethods, SafeNativeMethods или UnsafeNativeMethods.</Issue>
             </Message>
            </Messages>
@@ -82,16 +77,6 @@
    <Url>http://msdn.microsoft.com/library/ms182161.aspx</Url>
    <Email>[none]</Email>
    <MessageLevel Certainty="95">CriticalWarning</MessageLevel>
-   <File Name="designrules.dll" Version="12.0.0.0" />
-  </Rule>
-  <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
-   <Name>Типы, которым принадлежат освобождаемые поля, должны быть освобождаемыми</Name>
-   <Description>Типы, объявляющие освобождаемые члены, также должны реализовывать IDisposable. Если типу не принадлежат какие-либо неуправляемые ресурсы, нет необходимости реализовывать для него метод завершения.</Description>
-   <Resolution Name="DependsOnFix">Реализуйте IDisposable для {0}, поскольку он создает члены следующих типов IDisposable: {1}. Если {0} ранее был доставлен, добавление в данный тип новых членов, реализующих IDisposable, считается критическим изменением для существующих потребителей.</Resolution>
-   <Owner />
-   <Url>http://msdn.microsoft.com/library/ms182172.aspx</Url>
-   <Email>[none]</Email>
-   <MessageLevel Certainty="95">CriticalError</MessageLevel>
    <File Name="designrules.dll" Version="12.0.0.0" />
   </Rule>
  </Rules>

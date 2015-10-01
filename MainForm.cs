@@ -6,7 +6,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using CNC_App.Controllers;
 using Tao.FreeGlut;
 using Tao.OpenGl;
 
@@ -14,37 +13,22 @@ namespace CNC_App
 {
     public partial class MainForm : Form
     {
-
-        /// <summary>
-        /// Настройки контроллера, с которым будем работать
-        /// </summary>
-        private Setting _setting;
-
-        /// <summary>
-        /// Главный класс для работы со станком
-        /// </summary>
-        private CONTROLLER _cnc;
-
         #region Инициализация/заршение работы формы
 
         public MainForm()
         {
             InitializeComponent();
 
-            // Получаем настройки
-            _setting = new Setting();
-            _setting.LoadSetting();
-            // инициализируем класс контроллера с данными настройками
-            _cnc = new CONTROLLER(_setting);
-            // Подключение событий от контроллера
-            //TODO: старый код
-            _cnc.LoadSetting(); //загрузка данных из файла настроек, если он есть
-            _cnc.WasConnected += CncConnect;
-            _cnc.WasDisconnected += CncDisconnect;
-            _cnc.NewDataFromController += CncNewData;
-            _cnc.Message += CncMessage;
+            // Получаем настройки из файла
+            Setting.LoadSetting();
 
-            // 3d инициализация
+            // Подключение событий от контроллера
+            Controller.WasConnected         += CncConnect;
+            Controller.WasDisconnected      += CncDisconnect;
+            Controller.NewDataFromController+= CncNewData;
+            Controller.Message              += CncMessage;
+
+            // 3d инициализация OpenGL
             OpenGL_preview.InitializeContexts();
 
             // подключение обработчика, колесика мышки
@@ -53,10 +37,16 @@ namespace CNC_App
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Дополнительная инициализация 3D
             Init3D();
 
             Task.posCodeNow = -1; //пока нет никаких заданий
             Task.StatusTask = EStatusTask.Waiting; //пока нет заданий для выполнения
+
+
+
+            // Подключение к контроллеру
+            if (Setting.StartupConnect) Controller.Connect();
 
             toolStripStatus.Text = @"";
             RefreshElementsForms();
@@ -65,7 +55,7 @@ namespace CNC_App
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_cnc.Connected)
+            if (Controller.Connected)
             {
                 MessageBox.Show(@"Для завершения работы с программой, необходимо отключиться от ЧПУ контроллера!");
                 e.Cancel = true;
@@ -73,10 +63,10 @@ namespace CNC_App
             else
             {
                 //Отменим подписки
-                _cnc.WasConnected -= CncConnect;
-                _cnc.WasDisconnected -= CncDisconnect;
-                _cnc.NewDataFromController -= CncNewData;
-                _cnc.Message -= CncMessage;
+                Controller.WasConnected         -= CncConnect;
+                Controller.WasDisconnected      -= CncDisconnect;
+                Controller.NewDataFromController-= CncNewData;
+                Controller.Message              -= CncMessage;
                 MouseWheel -= this_MouseWheel;
             }
         }
@@ -391,7 +381,7 @@ namespace CNC_App
 
             if (!checkBoxManualMove.Checked) return;  //проверка флажка "управление с NUM-pad"
 
-            if (!_cnc.TestAllowActions()) return; //Проверка что контроллер доступен
+            if (!Controller.TestAllowActions()) return; //Проверка что контроллер доступен
 
             if (Task.StatusTask != EStatusTask.Waiting) return; //Проверка что нет выполняемых задач в данный момент
 
@@ -435,13 +425,13 @@ namespace CNC_App
                 // +z
                 if (num5) _z = "+";
 
-                _cnc.StartManualMove(_x, _y, _z, (int)numericUpDownManualSpeed.Value);
+                Controller.StartManualMove(_x, _y, _z, (int)numericUpDownManualSpeed.Value);
             }
             else
             {
                 //нет ни одной нажатой
                 if (!_manualMoveButtonPressed) return;
-                _cnc.StopManualMove();
+                Controller.StopManualMove();
                 _manualMoveButtonPressed = false;
             }
         }
@@ -452,7 +442,7 @@ namespace CNC_App
 
         private void RefreshElementsForms()
         {
-            if (_cnc.Connected)
+            if (Controller.Connected)
             {
                 bt_ConnDiskonect.Image = btConnect.Image;
                 bt_ConnDiskonect.Text = @"Отключиться от контроллера";
@@ -466,17 +456,17 @@ namespace CNC_App
                 toolStripStatus.ForeColor = Color.Red;
             }
 
-            panelPosition.Enabled = _cnc.Connected;
-            panelControl1.Enabled = _cnc.Connected;
-            buttonESTOP.Enabled   = _cnc.Connected;
-            buttonSpindel.Enabled = _cnc.Connected;
+            panelPosition.Enabled = Controller.Connected;
+            panelControl1.Enabled = Controller.Connected;
+            buttonESTOP.Enabled = Controller.Connected;
+            buttonSpindel.Enabled = Controller.Connected;
 
 
-            labelSpeed.Text = _cnc.ShpindelMoveSpeed.ToString() + @" мм./мин.";
-            toolStripStatusLabelNumberInstruction.Text = @"№ инструкции: " + _cnc.NumberComleatedInstructions;
-            
+            labelSpeed.Text = Controller.ShpindelMoveSpeed.ToString() + @" мм./мин.";
+            toolStripStatusLabelNumberInstruction.Text = @"№ инструкции: " + Controller.NumberComleatedInstructions;
 
-            if (!_cnc.Connected) return;
+
+            if (!Controller.Connected) return;
 
             if (Task.StatusTask == EStatusTask.TaskStart) toolStripStatusLabel1.Text = @"Запуск задания";
             if (Task.StatusTask == EStatusTask.TaskPaused) toolStripStatusLabel1.Text = @"Пауза выполнения";
@@ -490,7 +480,7 @@ namespace CNC_App
             numPosY.Value = deviceInfo.AxesY_PositionMM;
             numPosZ.Value = deviceInfo.AxesZ_PositionMM;
 
-            if (_cnc.EstopOn)
+            if (Controller.EstopOn)
             {
                 buttonESTOP.BackColor = Color.Red;
                 buttonESTOP.ForeColor = Color.White;
@@ -502,7 +492,7 @@ namespace CNC_App
             }
 
 
-            if (_cnc.SpindelOn)
+            if (Controller.SpindelOn)
             {
                 buttonSpindel.BackColor = Color.Green;
                 buttonSpindel.ForeColor = Color.White;
@@ -565,9 +555,9 @@ namespace CNC_App
 
 
             // Кнопки запуска остановки заданий
-            groupBoxWorking.Enabled = _cnc.Connected;
+            groupBoxWorking.Enabled = Controller.Connected;
 
-            if (_cnc.Connected)
+            if (Controller.Connected)
             {
                 if (TaskTimer.Enabled)
                 {
@@ -608,7 +598,7 @@ namespace CNC_App
 
                 if (Task.StatusTask == EStatusTask.TaskWorking)
                 {
-                    toolStripProgressBar.Value = _cnc.NumberComleatedInstructions;
+                    toolStripProgressBar.Value = Controller.NumberComleatedInstructions;
                     //listGkodeForUser.Rows[_cnc.NumberComleatedInstructions].Selected = true;
                     //TODO: переделать алгоритм, иначе это изменение сбивает выделенный диапазон
                     //listGkodeCommand.SelectedIndex = _cnc.NumberComleatedInstructions;
@@ -635,29 +625,29 @@ namespace CNC_App
  
         private void btConnect_Click(object sender, EventArgs e)
         {
-            _cnc.Connect();
+            Controller.Connect();
         }
 
         private void bt_disconnect_Click(object sender, EventArgs e)
         {
-            _cnc.Disconnect();
+            Controller.Disconnect();
         }
 
         private void bt_ConnDiskonect_Click(object sender, EventArgs e)
         {
-            if (_cnc.Connected)
+            if (Controller.Connected)
             {
-                _cnc.Disconnect();
+                Controller.Disconnect();
             }
             else
             {
-                _cnc.Connect();
+                Controller.Connect();
             }
         }
 
         private void buttonShowKeyInfo_Click(object sender, EventArgs e)
         {
-            ManualControl kf = new ManualControl(ref _cnc);
+            ManualControl kf = new ManualControl();
             kf.Show();
         }
 
@@ -1030,26 +1020,23 @@ namespace CNC_App
 
         private void buttonXtoZero_Click(object sender, EventArgs e)
         {
-            _cnc.DeviceNewPosition(0, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse);
+            Controller.DeviceNewPosition(0, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse);
         }
 
         private void buttonYtoZero_Click(object sender, EventArgs e)
         {
-            _cnc.DeviceNewPosition(deviceInfo.AxesX_PositionPulse, 0, deviceInfo.AxesZ_PositionPulse);
+            Controller.DeviceNewPosition(deviceInfo.AxesX_PositionPulse, 0, deviceInfo.AxesZ_PositionPulse);
         }
 
         private void buttonZtoZero_Click(object sender, EventArgs e)
         {
-            _cnc.DeviceNewPosition(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, 0);
+            Controller.DeviceNewPosition(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, 0);
         }
 
         private void ShowSetting()
         {
             setting setfrm = new setting();
-            setfrm._setting = _setting;
             DialogResult dlgResult = setfrm.ShowDialog();
-
-            if (dlgResult == DialogResult.OK) _cnc.AppyNewSetting(setfrm._setting);
         }
 
         private void settingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1075,25 +1062,25 @@ namespace CNC_App
 
         private void buttonSpindel_Click_1(object sender, EventArgs e)
         {
-            if (_cnc.SpindelOn)
+            if (Controller.SpindelOn)
             {
-                _cnc.Spindel_OFF();
+                Controller.Spindel_OFF();
             }
             else
             {
-                _cnc.Spindel_ON();
+                Controller.Spindel_ON();
             }
         }
 
         private void toolStripButtonEnergyStop_Click(object sender, EventArgs e)
         {
-            _cnc.EnergyStop();
+            Controller.EnergyStop();
         }
 
         private void Feed()
         {
             PreviewSetting.ShowMatrix = true;
-            ScanSurface frm = new ScanSurface(ref _cnc);
+            ScanSurface frm = new ScanSurface();
             frm.Show();
         }
 
@@ -1617,7 +1604,7 @@ namespace CNC_App
                 else
                 {
                     // Тут выделяется только одна линия из траектории
-                    int numSelect = _cnc.NumberComleatedInstructions + 1;
+                    int numSelect = Controller.NumberComleatedInstructions + 1;
                     if (vv.numberInstruct == (numSelect - 1))
                     {
                         Gl.glVertex3d(pointX, pointY, pointZ);
@@ -1914,7 +1901,7 @@ namespace CNC_App
         {
             if (TaskTimer.Enabled) return; //нельзя дальше, если таймер включен
 
-            if (!_cnc.Connected)
+            if (!Controller.Connected)
             {
                 MessageBox.Show(@"Нет связи с контроллером!");
                 return;
@@ -1984,7 +1971,7 @@ namespace CNC_App
 
         private void TaskTimer_Tick(object sender, EventArgs e)
         {
-            if (!_cnc.Connected)
+            if (!Controller.Connected)
             {
                 TaskTimer.Enabled = false;
                 return;
@@ -2019,20 +2006,20 @@ namespace CNC_App
                 deviceInfo.NuberCompleatedInstruction = Task.posCodeNow;
                 //_cnc.NumberComleatedInstructions = Task.posCodeNow;
 
-                int MaxSpeedX = 100;
-                int MaxSpeedY = 100;
-                int MaxSpeedZ = 100;
+                //////int MaxSpeedX = 100;
+                //////int MaxSpeedY = 100;
+                //////int MaxSpeedZ = 100;
 
-                _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
-                _cnc.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
-                _cnc.SendBinaryData(BinaryData.pack_C0());
+                //////Controller.SendBinaryData(BinaryData.pack_9E(0x05));
+                //////Controller.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
+                //////Controller.SendBinaryData(BinaryData.pack_C0());
 
-                //так-же спозиционируемся, над первой точкой по оси X и Y
-                //TODO: нужно ещё и поднять повыше шпиндель, а пока на 10 мм (продумать реализацию)
-                _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z",10), UserSpeedG0, 0));
+                ////////так-же спозиционируемся, над первой точкой по оси X и Y
+                ////////TODO: нужно ещё и поднять повыше шпиндель, а пока на 10 мм (продумать реализацию)
+                //////Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.AxesX_PositionPulse, deviceInfo.AxesY_PositionPulse, deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z", 10), UserSpeedG0, 0));
 
-                //TODO: И продумать реализацию к подходу к точке
-                _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", gcodeNow.X), deviceInfo.CalcPosPulse("Y", gcodeNow.Y), deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z", 10), UserSpeedG0, 0));
+                ////////TODO: И продумать реализацию к подходу к точке
+                //////Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", gcodeNow.X), deviceInfo.CalcPosPulse("Y", gcodeNow.Y), deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z", 10), UserSpeedG0, 0));
 
                 Task.StatusTask = EStatusTask.TaskWorking;
                 RefreshElementsForms();
@@ -2048,14 +2035,14 @@ namespace CNC_App
             {
                 //TODO: добавить поднятие фрезы, возможное позиционирование в home
 
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_9D());
-                _cnc.SendBinaryData(BinaryData.pack_9E(0x02));
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_FF());
-                _cnc.SendBinaryData(BinaryData.pack_FF());
+                Controller.SendBinaryData(BinaryData.pack_FF());
+                Controller.SendBinaryData(BinaryData.pack_9D());
+                Controller.SendBinaryData(BinaryData.pack_9E(0x02));
+                Controller.SendBinaryData(BinaryData.pack_FF());
+                Controller.SendBinaryData(BinaryData.pack_FF());
+                Controller.SendBinaryData(BinaryData.pack_FF());
+                Controller.SendBinaryData(BinaryData.pack_FF());
+                Controller.SendBinaryData(BinaryData.pack_FF());
 
                 AddLog("Завершение задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
                 Task.StatusTask = EStatusTask.Waiting;
@@ -2077,11 +2064,11 @@ namespace CNC_App
             }
 
             //TODO: добавить в параметр значение
-            if (_cnc.AvailableBufferSize < 5) return; // откажемся от посылки контроллеру, пока буфер не освободиться
+            if (Controller.AvailableBufferSize < 5) return; // откажемся от посылки контроллеру, пока буфер не освободиться
 
 
             //TODO: добавить в параметр и это значение
-            if (Task.posCodeNow > (_cnc.NumberComleatedInstructions + 3)) return; // Так-же не будем много посылать команд, т.е. далеко убегать
+            if (Task.posCodeNow > (Controller.NumberComleatedInstructions + 3)) return; // Так-же не будем много посылать команд, т.е. далеко убегать
 
             //команда остановки G4 или M0
             if (gcodeNow.needPause)  
@@ -2147,7 +2134,7 @@ namespace CNC_App
             //TODO: доделать управление скоростью ручая/по программе
             int speed = (gcodeNow.workspeed) ? UserSpeedG1 : UserSpeedG0;
 
-            _cnc.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow));
+            Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow));
 
             Task.posCodeNow++;
             textBoxNumberLine.Text = Task.posCodeNow.ToString();
@@ -2178,22 +2165,22 @@ namespace CNC_App
         // движение в заданную точку
         private void button3_Click(object sender, EventArgs e)
         {
-            
 
-            if (!_cnc.TestAllowActions()) return;
-            
-            _cnc.SendBinaryData(BinaryData.pack_9E(0x05));
-            _cnc.SendBinaryData(BinaryData.pack_BF((int)numericUpDown3.Value, (int)numericUpDown3.Value, (int)numericUpDown3.Value));
-            _cnc.SendBinaryData(BinaryData.pack_C0());
-            _cnc.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X",numericUpDown6.Value), deviceInfo.CalcPosPulse("Y",numericUpDown5.Value), deviceInfo.CalcPosPulse("Z",numericUpDown4.Value), (int)numericUpDown3.Value,0));
-            _cnc.SendBinaryData(BinaryData.pack_FF());
-            _cnc.SendBinaryData(BinaryData.pack_9D());
-            _cnc.SendBinaryData(BinaryData.pack_9E(0x02));
-            _cnc.SendBinaryData(BinaryData.pack_FF());
-            _cnc.SendBinaryData(BinaryData.pack_FF());
-            _cnc.SendBinaryData(BinaryData.pack_FF());
-            _cnc.SendBinaryData(BinaryData.pack_FF());
-            _cnc.SendBinaryData(BinaryData.pack_FF());
+
+            if (!Controller.TestAllowActions()) return;
+
+            Controller.SendBinaryData(BinaryData.pack_9E(0x05));
+            Controller.SendBinaryData(BinaryData.pack_BF((int)numericUpDown3.Value, (int)numericUpDown3.Value, (int)numericUpDown3.Value));
+            Controller.SendBinaryData(BinaryData.pack_C0());
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0));
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_9D());
+            Controller.SendBinaryData(BinaryData.pack_9E(0x02));
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_FF());
+            Controller.SendBinaryData(BinaryData.pack_FF());
         }
 
         
@@ -2203,17 +2190,17 @@ namespace CNC_App
         {
             if (radioButton_off.Checked)
             {
-                _cnc.SendBinaryData(BinaryData.pack_B5(checkBox18.Checked, (int)numericUpDown7.Value, BinaryData.TypeSignal.None, (int)numericUpDown8.Value));
+                Controller.SendBinaryData(BinaryData.pack_B5(checkBox18.Checked, (int)numericUpDown7.Value, BinaryData.TypeSignal.None, (int)numericUpDown8.Value));
             }
 
             if (radioButton_Hz.Checked)
             {
-                _cnc.SendBinaryData(BinaryData.pack_B5(checkBox18.Checked, (int)numericUpDown7.Value, BinaryData.TypeSignal.Hz, (int)numericUpDown8.Value));
+                Controller.SendBinaryData(BinaryData.pack_B5(checkBox18.Checked, (int)numericUpDown7.Value, BinaryData.TypeSignal.Hz, (int)numericUpDown8.Value));
             }
 
             if (radioButton_RC.Checked)
             {
-                _cnc.SendBinaryData(BinaryData.pack_B5(checkBox18.Checked, (int)numericUpDown7.Value, BinaryData.TypeSignal.RC, (int)numericUpDown8.Value));
+                Controller.SendBinaryData(BinaryData.pack_B5(checkBox18.Checked, (int)numericUpDown7.Value, BinaryData.TypeSignal.RC, (int)numericUpDown8.Value));
             }            
 
         }
