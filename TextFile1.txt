@@ -341,3 +341,232 @@
 				//Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
 
 			}
+
+
+
+
+			
+
+
+
+///// <summary>
+///// Класс для работы с G-кодом
+///// </summary>
+//public static class GKode
+//{
+//    public static List<LineCommands> kode = new List<LineCommands>();
+
+//    public static int CountRow = 0;
+
+//    /// <summary>
+//    /// Получение текстового представления последней ошибки
+//    /// </summary>
+//    private static string _stringError = "";
+//    /// <summary>
+//    /// Получение текстового представления последней ошибки
+//    /// </summary>
+//    // ReSharper disable once InconsistentNaming
+//    public static string stringError
+//    {
+//        get { return _stringError; }
+//    }
+
+//    /// <summary>
+//    /// Очистка от всех данных
+//    /// </summary>
+//    public static void Clear()
+//    {
+//        kode.Clear();
+//        CountRow = 0;
+//    }
+
+
+//    //{
+//    //    //
+
+//    //}
+//    //byte[] readBuffer = new byte[64];
+//    //byte[] writeBuffer = new byte[64];
+//    //int bytesRead;
+//    //int bytesWritten;
+
+//    //while (IsConnect)
+//    //{
+
+
+
+
+
+//    //    //а тут мы и посылаем команды...
+//    //    if (statusWorks == EStatusTheads.TaskStart)//_isWorking && !task_RUN
+//    //    {
+//    //        //TODO: это начало задания, поэтому в станок посылаем настройки
+
+//    //        readBuffer = BinaryData.pack_9E(0x05);
+//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //        System.Threading.Thread.Sleep(1);
+
+//    //        readBuffer = BinaryData.pack_BF(CNC_speedNow, CNC_speedNow, CNC_speedNow);
+//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //        System.Threading.Thread.Sleep(1);
+
+//    //        readBuffer = BinaryData.pack_C0();
+//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //        System.Threading.Thread.Sleep(1);
+//    //        //task_RUN = true;
+//    //        statusWorks = EStatusTheads.TaskWorking;
+//    //    }
+
+
+//    //    if (statusWorks == EStatusTheads.TaskStop)//!_isWorking && task_RUN
+//    //    {
+//    //        //TODO: выполнение задания завершилось, необходимо послать последние параметры в контроллер
+//    //        readBuffer = BinaryData.pack_FF();
+//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //        System.Threading.Thread.Sleep(1);
+
+
+//    //        readBuffer = BinaryData.pack_9D();
+//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //        System.Threading.Thread.Sleep(1);
+
+//    //        readBuffer = BinaryData.pack_9E(0x02);
+//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //        System.Threading.Thread.Sleep(1);
+
+//    //        for (int i = 0; i < 7; i++)
+//    //        {
+//    //            readBuffer = BinaryData.pack_FF();
+//    //            ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //            System.Threading.Thread.Sleep(1);
+//    //        }
+
+//    //        statusWorks = EStatusTheads.Waiting;
+
+//    //    }
+
+//    //    if (statusWorks == EStatusTheads.TaskWorking)
+//    //    {
+
+
+//    //        lineCommands lcmd = gKode.kode[_numWorkingCommand];
+
+//    //        if (lcmd.sGoodsCmd != "")//отсеим необрабатываемые команды команды
+//    //        {
+
+//    //            foreach (string ss in lcmd.cmd)
+//    //            {
+//    //                if (ss == "G0") CNC_speedNow = CNC_speedG0;
+
+//    //                if (ss == "G1") CNC_speedNow = CNC_speedG1;
+
+//    //                if (ss.Substring(0, 1) == "X")
+//    //                {
+//    //                    string value = ss.Substring(1).Trim().Replace('.', ',');
+//    //                    decimal posx = decimal.Parse(value);
+//    //                    CNC_pulseX = (int)(posx * axesX.PulsePerMm);
+//    //                }
+
+//    //                if (ss.Substring(0, 1) == "Y")
+//    //                {
+//    //                    string value = ss.Substring(1).Trim().Replace('.', ',');
+//    //                    decimal posy = decimal.Parse(value);
+//    //                    CNC_pulseY = (int)(posy * axesY.PulsePerMm);
+//    //                }
+
+//    //                if (ss.Substring(0, 1) == "Z")
+//    //                {
+//    //                    string value = ss.Substring(1).Trim().Replace('.', ',');
+//    //                    decimal posz = decimal.Parse(value);
+//    //                    CNC_pulseZ = (int)(posz * axesZ.PulsePerMm);
+//    //                }
+
+//    //                if (ss == "M3" || ss == "M03") Spindel_ON();
+
+//    //                if (ss == "M5" || ss == "M05") Spindel_OFF();
+
+//    //            }
+//    //        }
+
+//    //        _numWorkingCommand++;
+
+//    //        if (_numWorkingCommand == gKode.kode.Count) statusWorks = EStatusTheads.TaskStop;
+
+//    //        //_numWorkingCommand
+//    //        //_cmd
+
+//    //        //todo 4 pack
+//    //        readBuffer = BinaryData.pack_CA(CNC_pulseX, CNC_pulseY, CNC_pulseZ, CNC_speedNow);
+//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //        System.Threading.Thread.Sleep(1);
+//    //    }
+
+//    //    // Если есть посылка массива данных 
+//    //    if (arrSend)
+//    //    {
+//    //        if (arrIndex < ByteArrayToSend.Count)
+//    //        {
+//    //            readBuffer = ByteArrayToSend[arrIndex];
+//    //            ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
+//    //            System.Threading.Thread.Sleep(1);
+
+//    //            arrIndex++;
+//    //        }
+//    //        else
+//    //        {
+//    //            arrSend = false;
+//    //        }
+
+
+//    //    }
+
+//    //}
+
+
+
+
+//}
+
+
+
+
+
+///// <summary>
+///// Класс для хранения 3D Траектории
+///// </summary>
+//public static class G3D
+//{
+//    public static List<G3Dpoint> points = new List<G3Dpoint>();
+
+
+
+
+//}
+
+
+///// <summary>
+///// Класс для описания точки
+///// </summary>
+//public class G3Dpoint
+//{
+//    public decimal X;
+//    public decimal Y;
+//    public decimal Z;
+//    public bool workspeed;
+//    /// <summary>
+//    /// Номер для сопоставления с источником комманд
+//    /// </summary>
+//    // ReSharper disable once NotAccessedField.Global
+//    private int NumPosition = 0;
+
+
+//    public G3Dpoint(decimal x, decimal y, decimal z, bool workspeed, int numPosition)
+//    {
+//        X = x;
+//        Y = y;
+//        Z = z;
+//        this.workspeed = workspeed;
+//        NumPosition = numPosition;
+//    }
+//}
+

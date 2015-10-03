@@ -40,13 +40,15 @@ namespace CNC_App
             Setting.PulseY = (int)numPulseY.Value;
             Setting.PulseZ = (int)numPulseZ.Value;
             Setting.StartupConnect = checkBoxAutoConnect.Checked;
-            Setting.SaveSetting();
 
             if (rbType_Emulator.Checked) Setting.DeviceModel = DeviceModel.Emulator;
 
             if (rbType_MK1.Checked) Setting.DeviceModel = DeviceModel.MK1;
 
             if (rbType_MK2.Checked) Setting.DeviceModel = DeviceModel.MK2;
+
+            Setting.SaveSetting();
+
         }
     }
 }

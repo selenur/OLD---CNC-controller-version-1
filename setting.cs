@@ -43,15 +43,32 @@ namespace CNC_App
         /// <returns></returns>
         public static void LoadSetting()
         {
-            string sPulseX = LoadProperty("pulseX");
-            string sPulseY = LoadProperty("pulseY");
-            string sPulseZ = LoadProperty("pulseZ");
-            string sStartupConnect = LoadProperty("StartupConnect");
+            string sPulseX         = LoadProperty("pulseX").Trim();
+            string sPulseY         = LoadProperty("pulseY").Trim();
+            string sPulseZ         = LoadProperty("pulseZ").Trim();
+            string sStartupConnect = LoadProperty("StartupConnect").Trim();
+            string sDeviceModel = LoadProperty("DeviceModel").Trim();
 
-            if (sPulseX.Trim() != "") Setting.PulseX = int.Parse(sPulseX);
-            if (sPulseY.Trim() != "") Setting.PulseY = int.Parse(sPulseY);
-            if (sPulseZ.Trim() != "") Setting.PulseZ = int.Parse(sPulseZ);
-            if (sStartupConnect.Trim() != "") StartupConnect      = bool.Parse(sStartupConnect);
+
+
+            if (sPulseX != "") Setting.PulseX = int.Parse(sPulseX);
+            if (sPulseY != "") Setting.PulseY = int.Parse(sPulseY);
+            if (sPulseZ != "") Setting.PulseZ = int.Parse(sPulseZ);
+
+            if (sStartupConnect != "") StartupConnect = bool.Parse(sStartupConnect);
+
+            switch (sDeviceModel)
+            {
+                case "MK1":
+                    Setting.DeviceModel = DeviceModel.MK1;
+                    break;
+                case "MK2":
+                    Setting.DeviceModel = DeviceModel.MK2;
+                    break;
+                default:
+                    Setting.DeviceModel = DeviceModel.Emulator;
+                    break;
+            }
         }
 
 
@@ -65,6 +82,7 @@ namespace CNC_App
             SaveProperty("pulseY", Setting.PulseY.ToString());
             SaveProperty("pulseZ", Setting.PulseZ.ToString());
             SaveProperty("StartupConnect", StartupConnect.ToString());
+            SaveProperty("DeviceModel", Setting.DeviceModel.ToString());
         }
 
 

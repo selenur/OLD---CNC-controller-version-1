@@ -206,7 +206,7 @@ namespace CNC_App
         {
             AddMessage("Запуск потока, работы с контроллером");
 
-            if (!deviceInfo.DEMO_DEVICE)
+            if (Setting.DeviceModel != DeviceModel.Emulator)
             {
                 //vid 2121 pid 2130 в десятичной системе будет как 8481 и 8496 соответственно
                 UsbDeviceFinder myUsbFinder = new UsbDeviceFinder(8481, 8496);
@@ -251,7 +251,7 @@ namespace CNC_App
             }
             else
             {
-                AddMessage("...Запущен ДЕМОРЕЖИМ...");
+                AddMessage("...Запущен РЕЖИМ симуляции...");
             }
 
             _connected = true;
@@ -269,7 +269,7 @@ namespace CNC_App
                 byte[] readBuffer = new byte[64];
                 int bytesRead = 0;
 
-                if (!deviceInfo.DEMO_DEVICE)
+                if (Setting.DeviceModel != DeviceModel.Emulator)
                 {
                     _ec = _usbReader.Read(readBuffer, 2000, out bytesRead); 
 
@@ -300,7 +300,7 @@ namespace CNC_App
 
             if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage("")); //событие завершения работы
 
-            if (!deviceInfo.DEMO_DEVICE)
+            if (Setting.DeviceModel != DeviceModel.Emulator)
             {
                  //завершение работы
                 UsbDevice.Exit();
@@ -371,7 +371,7 @@ namespace CNC_App
             // ReSharper disable once RedundantAssignment
             int bytesWritten = 64;
 
-            if (!deviceInfo.DEMO_DEVICE)
+            if (Setting.DeviceModel != DeviceModel.Emulator)
             {
                _ec = _usbWriter.Write(data, 2000, out bytesWritten); 
             }
@@ -517,8 +517,6 @@ namespace CNC_App
     /// Статусы работы с устройством
     /// </summary>
     public enum EStatusDevice { Connect = 0, Disconnect };
-
-
 
     public static class deviceInfo
     {
@@ -846,113 +844,112 @@ namespace CNC_App
                 inewSpd = (int)dnewSpd;
             }
 
-
-
             //скорость
             buf[10] = (byte)(inewSpd);
             buf[11] = (byte)(inewSpd >> 8);
             buf[12] = (byte)(inewSpd >> 16);
 
-
-            //TODO: Для МК2 немного иные посылки данных
-
-            if (speed != 0)
+            if (Setting.DeviceModel == DeviceModel.MK2)
             {
-                double dnewSpd = (9000 / (double)speed) * 1000;
-                inewSpd = (int)dnewSpd;
-            }
+                //TODO: Для МК2 немного иные посылки данных
 
-            //скорость
-            buf[10] = (byte)(inewSpd);
-            buf[11] = (byte)(inewSpd >> 8);
-            buf[12] = (byte)(inewSpd >> 16);
-
-            if (speed == 0)
-            {
-                buf[14] = 0x00;
-                buf[18] = 0x01;
-                buf[22] = 0x01;
-
-                //x
-                buf[26] = 0x00;
-                buf[27] = 0x00;
-                buf[28] = 0x00;
-                buf[29] = 0x00;
-
-                //y
-                buf[30] = 0x00;
-                buf[31] = 0x00;
-                buf[32] = 0x00;
-                buf[33] = 0x00;
-
-                //z
-                buf[34] = 0x00;
-                buf[35] = 0x00;
-                buf[36] = 0x00;
-                buf[37] = 0x00;
-
-
-            }
-            else
-            {
-                buf[14] = 0xC8; //TODO: WTF?? 
-                buf[18] = 0x14; //TODO: WTF??
-                buf[22] = 0x14; //TODO: WTF??
-
-
-
-
-                if (x == "+")
+                if (speed != 0)
                 {
-                    buf[26] = 0x40;
-                    buf[27] = 0x0D;
-                    buf[28] = 0x03;
+                    double dnewSpd = (9000 / (double)speed) * 1000;
+                    inewSpd = (int)dnewSpd;
+                }
+
+                //скорость
+                buf[10] = (byte)(inewSpd);
+                buf[11] = (byte)(inewSpd >> 8);
+                buf[12] = (byte)(inewSpd >> 16);
+
+                if (speed == 0)
+                {
+                    buf[14] = 0x00;
+                    buf[18] = 0x01;
+                    buf[22] = 0x01;
+
+                    //x
+                    buf[26] = 0x00;
+                    buf[27] = 0x00;
+                    buf[28] = 0x00;
                     buf[29] = 0x00;
-                }
 
-                if (x == "-")
-                {
-                    buf[26] = 0xC0;
-                    buf[27] = 0xF2;
-                    buf[28] = 0xFC;
-                    buf[29] = 0xFF;
-                }
-
-                if (y == "+")
-                {
-                    buf[30] = 0x40;
-                    buf[31] = 0x0D;
-                    buf[32] = 0x03;
+                    //y
+                    buf[30] = 0x00;
+                    buf[31] = 0x00;
+                    buf[32] = 0x00;
                     buf[33] = 0x00;
-                }
 
-                if (y == "-")
-                {
-                    buf[30] = 0xC0;
-                    buf[31] = 0xF2;
-                    buf[32] = 0xFC;
-                    buf[33] = 0xFF;
-                }
-
-                if (z == "+")
-                {
-                    buf[34] = 0x40;
-                    buf[35] = 0x0D;
-                    buf[36] = 0x03;
+                    //z
+                    buf[34] = 0x00;
+                    buf[35] = 0x00;
+                    buf[36] = 0x00;
                     buf[37] = 0x00;
-                }
 
-                if (z == "-")
+
+                }
+                else
                 {
-                    buf[34] = 0xC0;
-                    buf[35] = 0xF2;
-                    buf[36] = 0xFC;
-                    buf[37] = 0xFF;
+                    buf[14] = 0xC8; //TODO: WTF?? 
+                    buf[18] = 0x14; //TODO: WTF??
+                    buf[22] = 0x14; //TODO: WTF??
+
+
+
+
+                    if (x == "+")
+                    {
+                        buf[26] = 0x40;
+                        buf[27] = 0x0D;
+                        buf[28] = 0x03;
+                        buf[29] = 0x00;
+                    }
+
+                    if (x == "-")
+                    {
+                        buf[26] = 0xC0;
+                        buf[27] = 0xF2;
+                        buf[28] = 0xFC;
+                        buf[29] = 0xFF;
+                    }
+
+                    if (y == "+")
+                    {
+                        buf[30] = 0x40;
+                        buf[31] = 0x0D;
+                        buf[32] = 0x03;
+                        buf[33] = 0x00;
+                    }
+
+                    if (y == "-")
+                    {
+                        buf[30] = 0xC0;
+                        buf[31] = 0xF2;
+                        buf[32] = 0xFC;
+                        buf[33] = 0xFF;
+                    }
+
+                    if (z == "+")
+                    {
+                        buf[34] = 0x40;
+                        buf[35] = 0x0D;
+                        buf[36] = 0x03;
+                        buf[37] = 0x00;
+                    }
+
+                    if (z == "-")
+                    {
+                        buf[34] = 0xC0;
+                        buf[35] = 0xF2;
+                        buf[36] = 0xFC;
+                        buf[37] = 0xFF;
+                    }
                 }
             }
 
-
-
+            
 
 
             return buf;
@@ -1017,12 +1014,21 @@ namespace CNC_App
 
             buf[0] = 0xbf;
 
-            // Для МК2 не нужен байт....
-            //buf[4] = 0x80; //TODO: непонятный байт
+            buf[4] = 0x00;
+            double koef = 4500;
 
+            if (Setting.DeviceModel == DeviceModel.MK1)
+            {
+                buf[4] = 0x80; //TODO: непонятный байт
+                koef = 3600;
+            }
 
-            //double koef = 3600; //for MK1
-            double koef = 4500; //for MK2
+            if (Setting.DeviceModel == DeviceModel.MK2)
+            {
+                buf[4] = 0x00; //TODO: непонятный байт
+                koef = 4500;
+            }
+
 
             double dnewSpdX = (koef / (double)speedLimitX) * 1000;
             int inewSpdX = (int)dnewSpdX;
@@ -1353,231 +1359,3 @@ namespace CNC_App
 
     }
 }
-
-
-
-
-
-
-///// <summary>
-///// Класс для работы с G-кодом
-///// </summary>
-//public static class GKode
-//{
-//    public static List<LineCommands> kode = new List<LineCommands>();
-
-//    public static int CountRow = 0;
-
-//    /// <summary>
-//    /// Получение текстового представления последней ошибки
-//    /// </summary>
-//    private static string _stringError = "";
-//    /// <summary>
-//    /// Получение текстового представления последней ошибки
-//    /// </summary>
-//    // ReSharper disable once InconsistentNaming
-//    public static string stringError
-//    {
-//        get { return _stringError; }
-//    }
-
-//    /// <summary>
-//    /// Очистка от всех данных
-//    /// </summary>
-//    public static void Clear()
-//    {
-//        kode.Clear();
-//        CountRow = 0;
-//    }
-
-
-//    //{
-//    //    //
-
-//    //}
-//    //byte[] readBuffer = new byte[64];
-//    //byte[] writeBuffer = new byte[64];
-//    //int bytesRead;
-//    //int bytesWritten;
-
-//    //while (IsConnect)
-//    //{
-
-
-
-
-
-//    //    //а тут мы и посылаем команды...
-//    //    if (statusWorks == EStatusTheads.TaskStart)//_isWorking && !task_RUN
-//    //    {
-//    //        //TODO: это начало задания, поэтому в станок посылаем настройки
-
-//    //        readBuffer = BinaryData.pack_9E(0x05);
-//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //        System.Threading.Thread.Sleep(1);
-
-//    //        readBuffer = BinaryData.pack_BF(CNC_speedNow, CNC_speedNow, CNC_speedNow);
-//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //        System.Threading.Thread.Sleep(1);
-
-//    //        readBuffer = BinaryData.pack_C0();
-//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //        System.Threading.Thread.Sleep(1);
-//    //        //task_RUN = true;
-//    //        statusWorks = EStatusTheads.TaskWorking;
-//    //    }
-
-
-//    //    if (statusWorks == EStatusTheads.TaskStop)//!_isWorking && task_RUN
-//    //    {
-//    //        //TODO: выполнение задания завершилось, необходимо послать последние параметры в контроллер
-//    //        readBuffer = BinaryData.pack_FF();
-//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //        System.Threading.Thread.Sleep(1);
-
-
-//    //        readBuffer = BinaryData.pack_9D();
-//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //        System.Threading.Thread.Sleep(1);
-
-//    //        readBuffer = BinaryData.pack_9E(0x02);
-//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //        System.Threading.Thread.Sleep(1);
-
-//    //        for (int i = 0; i < 7; i++)
-//    //        {
-//    //            readBuffer = BinaryData.pack_FF();
-//    //            ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //            System.Threading.Thread.Sleep(1);
-//    //        }
-
-//    //        statusWorks = EStatusTheads.Waiting;
-
-//    //    }
-
-//    //    if (statusWorks == EStatusTheads.TaskWorking)
-//    //    {
-
-
-//    //        lineCommands lcmd = gKode.kode[_numWorkingCommand];
-
-//    //        if (lcmd.sGoodsCmd != "")//отсеим необрабатываемые команды команды
-//    //        {
-
-//    //            foreach (string ss in lcmd.cmd)
-//    //            {
-//    //                if (ss == "G0") CNC_speedNow = CNC_speedG0;
-
-//    //                if (ss == "G1") CNC_speedNow = CNC_speedG1;
-
-//    //                if (ss.Substring(0, 1) == "X")
-//    //                {
-//    //                    string value = ss.Substring(1).Trim().Replace('.', ',');
-//    //                    decimal posx = decimal.Parse(value);
-//    //                    CNC_pulseX = (int)(posx * axesX.PulsePerMm);
-//    //                }
-
-//    //                if (ss.Substring(0, 1) == "Y")
-//    //                {
-//    //                    string value = ss.Substring(1).Trim().Replace('.', ',');
-//    //                    decimal posy = decimal.Parse(value);
-//    //                    CNC_pulseY = (int)(posy * axesY.PulsePerMm);
-//    //                }
-
-//    //                if (ss.Substring(0, 1) == "Z")
-//    //                {
-//    //                    string value = ss.Substring(1).Trim().Replace('.', ',');
-//    //                    decimal posz = decimal.Parse(value);
-//    //                    CNC_pulseZ = (int)(posz * axesZ.PulsePerMm);
-//    //                }
-
-//    //                if (ss == "M3" || ss == "M03") Spindel_ON();
-
-//    //                if (ss == "M5" || ss == "M05") Spindel_OFF();
-
-//    //            }
-//    //        }
-
-//    //        _numWorkingCommand++;
-
-//    //        if (_numWorkingCommand == gKode.kode.Count) statusWorks = EStatusTheads.TaskStop;
-
-//    //        //_numWorkingCommand
-//    //        //_cmd
-
-//    //        //todo 4 pack
-//    //        readBuffer = BinaryData.pack_CA(CNC_pulseX, CNC_pulseY, CNC_pulseZ, CNC_speedNow);
-//    //        ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //        System.Threading.Thread.Sleep(1);
-//    //    }
-
-//    //    // Если есть посылка массива данных 
-//    //    if (arrSend)
-//    //    {
-//    //        if (arrIndex < ByteArrayToSend.Count)
-//    //        {
-//    //            readBuffer = ByteArrayToSend[arrIndex];
-//    //            ec = usb_writer.Write(readBuffer, 2000, out bytesWritten);
-//    //            System.Threading.Thread.Sleep(1);
-
-//    //            arrIndex++;
-//    //        }
-//    //        else
-//    //        {
-//    //            arrSend = false;
-//    //        }
-
-
-//    //    }
-
-//    //}
-
-
-
-
-//}
-
-
-
-
-
-///// <summary>
-///// Класс для хранения 3D Траектории
-///// </summary>
-//public static class G3D
-//{
-//    public static List<G3Dpoint> points = new List<G3Dpoint>();
-
-
-
-
-//}
-
-
-///// <summary>
-///// Класс для описания точки
-///// </summary>
-//public class G3Dpoint
-//{
-//    public decimal X;
-//    public decimal Y;
-//    public decimal Z;
-//    public bool workspeed;
-//    /// <summary>
-//    /// Номер для сопоставления с источником комманд
-//    /// </summary>
-//    // ReSharper disable once NotAccessedField.Global
-//    private int NumPosition = 0;
-
-
-//    public G3Dpoint(decimal x, decimal y, decimal z, bool workspeed, int numPosition)
-//    {
-//        X = x;
-//        Y = y;
-//        Z = z;
-//        this.workspeed = workspeed;
-//        NumPosition = numPosition;
-//    }
-//}
-
-
