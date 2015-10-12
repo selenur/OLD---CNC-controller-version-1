@@ -238,7 +238,7 @@ namespace CNC_App
             decimal py = (decimal)dataCode.matrix2[indexScanX, indexScanY].Y;
 
             //спозиционируемся
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0,0));
             Thread.Sleep(100);
 
             //опустим щуп
@@ -263,7 +263,7 @@ namespace CNC_App
             Controller.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
             Thread.Sleep(100);
             //спозиционируемся
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0,0));
             Thread.Sleep(100);
 
             if (indexScanX == indexMaxScanX && indexScanY == indexMaxScanY)
@@ -340,7 +340,7 @@ namespace CNC_App
             Controller.SendBinaryData(BinaryData.pack_9E(0x05));
             Controller.SendBinaryData(BinaryData.pack_BF(speed, speed, speed));
             Controller.SendBinaryData(BinaryData.pack_C0());
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", (decimal)selectedPoint.X), deviceInfo.CalcPosPulse("Y", (decimal)selectedPoint.Y), deviceInfo.CalcPosPulse("Z", (decimal)selectedPoint.Z), speed, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", (decimal)selectedPoint.X), deviceInfo.CalcPosPulse("Y", (decimal)selectedPoint.Y), deviceInfo.CalcPosPulse("Z", (decimal)selectedPoint.Z), speed, 0,0));
             Controller.SendBinaryData(BinaryData.pack_FF());
             Controller.SendBinaryData(BinaryData.pack_9D());
             Controller.SendBinaryData(BinaryData.pack_9E(0x02));

@@ -155,8 +155,23 @@ namespace CNC_App
             deviceInfo.FreebuffSize = readBuffer[1];
 
 
+            deviceInfo.shpindel_MoveSpeed = 0; 
 
-            deviceInfo.shpindel_MoveSpeed = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 2.1); 
+            if (Setting.DeviceModel == DeviceModel.MK1)
+            {
+                deviceInfo.shpindel_MoveSpeed = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 2.1);
+            }
+
+            if (Setting.DeviceModel == DeviceModel.MK2)
+            {
+                deviceInfo.shpindel_MoveSpeed = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 1.341);
+            }
+
+
+             
+
+
+
             deviceInfo.AxesX_PositionPulse = (readBuffer[27] * 16777216) + (readBuffer[26] * 65536) + (readBuffer[25] * 256) + (readBuffer[24]);
             deviceInfo.AxesY_PositionPulse = (readBuffer[31] * 16777216) + (readBuffer[30] * 65536) + (readBuffer[29] * 256) + (readBuffer[28]);
             deviceInfo.AxesZ_PositionPulse = (readBuffer[35] * 16777216) + (readBuffer[34] * 65536) + (readBuffer[33] * 256) + (readBuffer[32]);
@@ -1015,6 +1030,7 @@ namespace CNC_App
             buf[0] = 0xbf;
 
             buf[4] = 0x00;
+
             double koef = 4500;
 
             if (Setting.DeviceModel == DeviceModel.MK1)
@@ -1079,8 +1095,9 @@ namespace CNC_App
         /// <param name="_posZ">положение Z в импульсах</param>
         /// <param name="_speed">скорость мм/минуту</param>
         /// <param name="_NumberInstruction">Номер данной инструкции</param>
+        /// <param name="AngleVectors">Угол, на который измениться направление движения</param>
         /// <returns>набор данных для посылки</returns>
-        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _speed, int _NumberInstruction)
+        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _speed, int _NumberInstruction, int AngleVectors)
         {
             int newPosX = _posX;
             int newPosY = _posY;
@@ -1097,8 +1114,17 @@ namespace CNC_App
             buf[3] = (byte)(newInst >> 16);
             buf[4] = (byte)(newInst >> 24);
 
-            buf[5] = 0x39; //TODO: непонятный байт
 
+            //TODO: пауза перед следующей командой, 
+            // 0х01 нет паузы, 0х39 есть пауза (при маленькой паузе, и большой скорости происходит срыв...)
+            if (AngleVectors > 170 && AngleVectors < 190)
+            {
+                buf[5] = 0x01;
+            }
+            else
+            {
+                buf[5] = 0x39;
+            }
 
             //сколько импульсов сделать
             buf[6] = (byte)(newPosX);
@@ -1119,11 +1145,28 @@ namespace CNC_App
             buf[17] = (byte)(newPosZ >> 24);
 
 
+
+            double koef = 4500;
+
+            if (Setting.DeviceModel == DeviceModel.MK1)
+            {
+                buf[4] = 0x80; //TODO: непонятный байт
+                koef = 3600;
+            }
+
+            if (Setting.DeviceModel == DeviceModel.MK2)
+            {
+                buf[4] = 0x00; //TODO: непонятный байт
+                koef = 4500;
+            }
+
+
+
             int inewSpd = 2328; //TODO: скорость по умолчанию
 
             if (_speed != 0)
             {
-                double dnewSpd = (1800 / (double)_speed) * 1000;
+                double dnewSpd = (koef / (double)_speed) * 1000;
                 inewSpd = (int)dnewSpd;
             }
 

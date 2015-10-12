@@ -38,6 +38,7 @@
             this.btConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.bt_disconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testSpeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStrip = new System.Windows.Forms.ToolStrip();
@@ -61,6 +62,7 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelNumberInstruction = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelBuffer = new System.Windows.Forms.ToolStripStatusLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panelPosition = new System.Windows.Forms.Panel();
             this.groupBoxPositions = new System.Windows.Forms.GroupBox();
@@ -116,6 +118,7 @@
             this.posAngleZm = new System.Windows.Forms.ToolStripButton();
             this.OpenGL_preview = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.tabPageSupp = new System.Windows.Forms.TabPage();
+            this.checkBoxNewSpped = new System.Windows.Forms.CheckBox();
             this.btToBuffer = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
@@ -265,7 +268,8 @@
             this.controllerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btConnect,
             this.bt_disconnect,
-            this.settingToolStripMenuItem});
+            this.settingToolStripMenuItem,
+            this.testSpeedToolStripMenuItem});
             this.controllerToolStripMenuItem.Name = "controllerToolStripMenuItem";
             this.controllerToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.controllerToolStripMenuItem.Text = "&Контроллер";
@@ -296,6 +300,13 @@
             this.settingToolStripMenuItem.Size = new System.Drawing.Size(225, 38);
             this.settingToolStripMenuItem.Text = "Настройки контроллера";
             this.settingToolStripMenuItem.Click += new System.EventHandler(this.settingToolStripMenuItem_Click);
+            // 
+            // testSpeedToolStripMenuItem
+            // 
+            this.testSpeedToolStripMenuItem.Name = "testSpeedToolStripMenuItem";
+            this.testSpeedToolStripMenuItem.Size = new System.Drawing.Size(225, 38);
+            this.testSpeedToolStripMenuItem.Text = "testSpeed";
+            this.testSpeedToolStripMenuItem.Click += new System.EventHandler(this.testSpeedToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -475,7 +486,8 @@
             this.toolStripStatusLabel1,
             this.toolStripProgressBar,
             this.toolStripStatus,
-            this.toolStripStatusLabelNumberInstruction});
+            this.toolStripStatusLabelNumberInstruction,
+            this.toolStripStatusLabelBuffer});
             this.MainStatusStrip.Location = new System.Drawing.Point(0, 581);
             this.MainStatusStrip.Name = "MainStatusStrip";
             this.MainStatusStrip.Size = new System.Drawing.Size(910, 22);
@@ -507,6 +519,12 @@
             this.toolStripStatusLabelNumberInstruction.Name = "toolStripStatusLabelNumberInstruction";
             this.toolStripStatusLabelNumberInstruction.Size = new System.Drawing.Size(22, 17);
             this.toolStripStatusLabelNumberInstruction.Text = "---";
+            // 
+            // toolStripStatusLabelBuffer
+            // 
+            this.toolStripStatusLabelBuffer.Name = "toolStripStatusLabelBuffer";
+            this.toolStripStatusLabelBuffer.Size = new System.Drawing.Size(147, 17);
+            this.toolStripStatusLabelBuffer.Text = "Буффер: ххх, доступно ххх";
             // 
             // flowLayoutPanel1
             // 
@@ -1182,6 +1200,7 @@
             // 
             // tabPageSupp
             // 
+            this.tabPageSupp.Controls.Add(this.checkBoxNewSpped);
             this.tabPageSupp.Controls.Add(this.btToBuffer);
             this.tabPageSupp.Controls.Add(this.trackBar1);
             this.tabPageSupp.Controls.Add(this.groupBox9);
@@ -1199,6 +1218,18 @@
             this.tabPageSupp.Text = "Дополнительно";
             this.tabPageSupp.UseVisualStyleBackColor = true;
             // 
+            // checkBoxNewSpped
+            // 
+            this.checkBoxNewSpped.Checked = true;
+            this.checkBoxNewSpped.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxNewSpped.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBoxNewSpped.Location = new System.Drawing.Point(268, 435);
+            this.checkBoxNewSpped.Name = "checkBoxNewSpped";
+            this.checkBoxNewSpped.Size = new System.Drawing.Size(181, 45);
+            this.checkBoxNewSpped.TabIndex = 10;
+            this.checkBoxNewSpped.Text = "Использовать новый режим обработки";
+            this.checkBoxNewSpped.UseVisualStyleBackColor = true;
+            // 
             // btToBuffer
             // 
             this.btToBuffer.Location = new System.Drawing.Point(95, 3);
@@ -1214,7 +1245,7 @@
             this.trackBar1.Location = new System.Drawing.Point(6, 435);
             this.trackBar1.Maximum = 65535;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(445, 45);
+            this.trackBar1.Size = new System.Drawing.Size(256, 45);
             this.trackBar1.SmallChange = 50;
             this.trackBar1.TabIndex = 8;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
@@ -1878,7 +1909,7 @@
             // 
             // TaskTimer
             // 
-            this.TaskTimer.Interval = 1;
+            this.TaskTimer.Interval = 10;
             this.TaskTimer.Tick += new System.EventHandler(this.TaskTimer_Tick);
             // 
             // groupBox1
@@ -2155,6 +2186,9 @@
         private System.Windows.Forms.ListBox listGkodeCommand;
         private System.Windows.Forms.ToolStripMenuItem generatorCodeToolStripMenuItem;
         private System.Windows.Forms.Button btToBuffer;
+        private System.Windows.Forms.ToolStripMenuItem testSpeedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBuffer;
+        private System.Windows.Forms.CheckBox checkBoxNewSpped;
     }
 }
 

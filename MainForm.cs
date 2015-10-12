@@ -466,6 +466,10 @@ namespace CNC_App
             toolStripStatusLabelNumberInstruction.Text = @"№ инструкции: " + Controller.NumberComleatedInstructions;
 
 
+            toolStripStatusLabelBuffer.Text = @"Буффер доступно: " + deviceInfo.FreebuffSize;
+
+            
+
             if (!Controller.Connected) return;
 
             if (Task.StatusTask == EStatusTask.TaskStart) toolStripStatusLabel1.Text = @"Запуск задания";
@@ -805,6 +809,7 @@ namespace CNC_App
             listGkodeCommand.Items.Clear();
 
             GKOD_Command tmpCommand = new GKOD_Command();
+            tmpCommand.angleVectors = 0; //значение по умолчанию
             int maxIndexLen = listCode.Count.ToString().Length; //вычисление количества символов используемых для нумерации записей
 
             listBoxLog.Items.Add("Преобразование текста в спец-формат...");
@@ -948,6 +953,47 @@ namespace CNC_App
 
                 listGkodeCommand.Items.Add("[" + tmpCommand.numberInstruct.ToString().PadLeft(maxIndexLen, '0') + "]" + " " + valueStr);
             }
+
+
+            if (!checkBoxNewSpped.Checked) return;
+
+            //TODO: Нужно вычислить угол между отрезками
+            for (int numPos = 0; numPos < GKODS.Count; numPos++)
+            {
+                if (numPos==0 || numPos > GKODS.Count-10) continue;
+
+                //получим 3 точки
+                double xa = (double)(GKODS[numPos - 1].X - GKODS[numPos].X);
+                double ya = (double)(GKODS[numPos - 1].Y - GKODS[numPos].Y);
+                double za = (double)(GKODS[numPos - 1].Z - GKODS[numPos].Z);
+                double xb = (double)(GKODS[numPos + 1].X - GKODS[numPos].X);
+                double yb = (double)(GKODS[numPos + 1].Y - GKODS[numPos].Y);
+                double zb = (double)(GKODS[numPos + 1].Z - GKODS[numPos].Z);
+
+
+                //double xc = (double)GKODS[numPos].X;
+                //double yc = (double)GKODS[numPos].Y;
+                //double zc = (double)GKODS[numPos].Z;
+                //сместим в начало координат точку "b"
+
+
+
+
+
+
+                
+
+                double angle = Math.Acos(   (xa * xb + ya * yb + za * zb) /  ( Math.Sqrt(xa * xa + ya * ya + za * za)*Math.Sqrt(xb*xb+yb*yb+zb*zb )  )       );
+                double angle1 = angle* 180/Math.PI   ;
+
+                GKODS[numPos].angleVectors = (int)angle1;
+
+            }
+
+
+
+
+
         }
 
 
@@ -1075,6 +1121,10 @@ namespace CNC_App
         private void toolStripButtonEnergyStop_Click(object sender, EventArgs e)
         {
             Controller.EnergyStop();
+
+            if (Task.StatusTask == EStatusTask.Waiting) return;
+            Task.StatusTask = EStatusTask.TaskStop;
+            RefreshElementsForms();
         }
 
         private void Feed()
@@ -2006,13 +2056,13 @@ namespace CNC_App
                 deviceInfo.NuberCompleatedInstruction = Task.posCodeNow;
                 //_cnc.NumberComleatedInstructions = Task.posCodeNow;
 
-                //////int MaxSpeedX = 100;
-                //////int MaxSpeedY = 100;
-                //////int MaxSpeedZ = 100;
+                int MaxSpeedX = (int)numericUpDown2.Value; //g0
+                int MaxSpeedY = (int)numericUpDown2.Value; //g0
+                int MaxSpeedZ = (int)numericUpDown2.Value; //g0
 
-                //////Controller.SendBinaryData(BinaryData.pack_9E(0x05));
-                //////Controller.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
-                //////Controller.SendBinaryData(BinaryData.pack_C0());
+                Controller.SendBinaryData(BinaryData.pack_9E(0x05));
+                Controller.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
+                Controller.SendBinaryData(BinaryData.pack_C0());
 
                 ////////так-же спозиционируемся, над первой точкой по оси X и Y
                 ////////TODO: нужно ещё и поднять повыше шпиндель, а пока на 10 мм (продумать реализацию)
@@ -2066,9 +2116,8 @@ namespace CNC_App
             //TODO: добавить в параметр значение
             if (Controller.AvailableBufferSize < 5) return; // откажемся от посылки контроллеру, пока буфер не освободиться
 
-
             //TODO: добавить в параметр и это значение
-            if (Task.posCodeNow > (Controller.NumberComleatedInstructions + 3)) return; // Так-же не будем много посылать команд, т.е. далеко убегать
+            //if (Task.posCodeNow > (Controller.NumberComleatedInstructions + 3)) return; // Так-же не будем много посылать команд, т.е. далеко убегать
 
             //команда остановки G4 или M0
             if (gcodeNow.needPause)  
@@ -2134,10 +2183,11 @@ namespace CNC_App
             //TODO: доделать управление скоростью ручая/по программе
             int speed = (gcodeNow.workspeed) ? UserSpeedG1 : UserSpeedG0;
 
-            Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow));
+            Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow, gcodeNow.angleVectors));
 
             Task.posCodeNow++;
-            textBoxNumberLine.Text = Task.posCodeNow.ToString();
+            textBoxNumberLine.Text = deviceInfo.NuberCompleatedInstruction.ToString();
+            //textBoxNumberLine.Text = Task.posCodeNow.ToString();
 
             #endregion
         } //void TaskTimer_Tick
@@ -2172,7 +2222,7 @@ namespace CNC_App
             Controller.SendBinaryData(BinaryData.pack_9E(0x05));
             Controller.SendBinaryData(BinaryData.pack_BF((int)numericUpDown3.Value, (int)numericUpDown3.Value, (int)numericUpDown3.Value));
             Controller.SendBinaryData(BinaryData.pack_C0());
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0,0));
             Controller.SendBinaryData(BinaryData.pack_FF());
             Controller.SendBinaryData(BinaryData.pack_9D());
             Controller.SendBinaryData(BinaryData.pack_9E(0x02));
@@ -2274,6 +2324,13 @@ namespace CNC_App
 
             Clipboard.SetText(ttx);
 
+        }
+
+        private void testSpeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //TODO: добавим тестирование ускорения работы
+            testSpeed frmTest = new testSpeed();
+            frmTest.Show();
         }
    
     }
@@ -2380,6 +2437,7 @@ namespace CNC_App
         public int numberInstruct;     // номер инструкции
         public bool workspeed; // true=G1 false=G0
         public decimal diametr; // диаметр инструмента
+        public int angleVectors; //угол между отрезками, образуемыми этой, предыдущей и следующей точкой
         
         /// <summary>
         /// Пустой конструктор
@@ -2399,6 +2457,7 @@ namespace CNC_App
             speed          = 0;
             workspeed      = false;
             diametr = 0;
+            angleVectors = 0;
         }
 
         public GKOD_Command(int _numberInstruct, bool _spindelON, decimal _X, decimal _Y, decimal _Z, int _speed, bool _workspeed, bool _changeInstrument = false, int _numberInstrument = 0, bool _needPause = false, int _timeSeconds = 0, decimal _diametr = 0)

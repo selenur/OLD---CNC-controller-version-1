@@ -273,7 +273,7 @@
             this.toolStripButton2});
             this.MenuPrimitivAndFunc.Location = new System.Drawing.Point(0, 3);
             this.MenuPrimitivAndFunc.Name = "MenuPrimitivAndFunc";
-            this.MenuPrimitivAndFunc.Size = new System.Drawing.Size(85, 139);
+            this.MenuPrimitivAndFunc.Size = new System.Drawing.Size(85, 181);
             this.MenuPrimitivAndFunc.TabIndex = 0;
             this.MenuPrimitivAndFunc.Text = "Примитив";
             // 
