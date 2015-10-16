@@ -118,6 +118,7 @@
             this.posAngleZm = new System.Windows.Forms.ToolStripButton();
             this.OpenGL_preview = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.tabPageSupp = new System.Windows.Forms.TabPage();
+            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
             this.checkBoxNewSpped = new System.Windows.Forms.CheckBox();
             this.btToBuffer = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
@@ -183,6 +184,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listGkodeCommand = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -204,6 +206,7 @@
             this.tabPage3D.SuspendLayout();
             this.menu3Dview.SuspendLayout();
             this.tabPageSupp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
@@ -1200,6 +1203,8 @@
             // 
             // tabPageSupp
             // 
+            this.tabPageSupp.Controls.Add(this.label1);
+            this.tabPageSupp.Controls.Add(this.numericUpDown9);
             this.tabPageSupp.Controls.Add(this.checkBoxNewSpped);
             this.tabPageSupp.Controls.Add(this.btToBuffer);
             this.tabPageSupp.Controls.Add(this.trackBar1);
@@ -1218,14 +1223,33 @@
             this.tabPageSupp.Text = "Дополнительно";
             this.tabPageSupp.UseVisualStyleBackColor = true;
             // 
+            // numericUpDown9
+            // 
+            this.numericUpDown9.ForeColor = System.Drawing.Color.DarkBlue;
+            this.numericUpDown9.Location = new System.Drawing.Point(352, 79);
+            this.numericUpDown9.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown9.Name = "numericUpDown9";
+            this.numericUpDown9.Size = new System.Drawing.Size(78, 20);
+            this.numericUpDown9.TabIndex = 11;
+            this.numericUpDown9.Value = new decimal(new int[] {
+            57,
+            0,
+            0,
+            0});
+            // 
             // checkBoxNewSpped
             // 
             this.checkBoxNewSpped.Checked = true;
             this.checkBoxNewSpped.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxNewSpped.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBoxNewSpped.Location = new System.Drawing.Point(268, 435);
+            this.checkBoxNewSpped.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.checkBoxNewSpped.Location = new System.Drawing.Point(331, 14);
             this.checkBoxNewSpped.Name = "checkBoxNewSpped";
-            this.checkBoxNewSpped.Size = new System.Drawing.Size(181, 45);
+            this.checkBoxNewSpped.Size = new System.Drawing.Size(131, 46);
             this.checkBoxNewSpped.TabIndex = 10;
             this.checkBoxNewSpped.Text = "Использовать новый режим обработки";
             this.checkBoxNewSpped.UseVisualStyleBackColor = true;
@@ -1263,7 +1287,7 @@
             this.groupBox9.Controls.Add(this.checkBox18);
             this.groupBox9.Location = new System.Drawing.Point(6, 318);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(456, 115);
+            this.groupBox9.Size = new System.Drawing.Size(340, 115);
             this.groupBox9.TabIndex = 7;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Генерация сигнала";
@@ -1303,7 +1327,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(289, 16);
+            this.label12.Location = new System.Drawing.Point(238, 16);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(84, 13);
             this.label12.TabIndex = 6;
@@ -1312,7 +1336,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(128, 16);
+            this.label11.Location = new System.Drawing.Point(114, 15);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(107, 13);
             this.label11.TabIndex = 5;
@@ -1320,9 +1344,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(131, 63);
+            this.button2.Location = new System.Drawing.Point(89, 65);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(209, 46);
+            this.button2.Size = new System.Drawing.Size(167, 46);
             this.button2.TabIndex = 4;
             this.button2.Text = "Послать команду";
             this.button2.UseVisualStyleBackColor = true;
@@ -1330,7 +1354,7 @@
             // 
             // numericUpDown8
             // 
-            this.numericUpDown8.Location = new System.Drawing.Point(256, 32);
+            this.numericUpDown8.Location = new System.Drawing.Point(214, 32);
             this.numericUpDown8.Maximum = new decimal(new int[] {
             330000,
             0,
@@ -1347,7 +1371,7 @@
             // 
             // numericUpDown7
             // 
-            this.numericUpDown7.Location = new System.Drawing.Point(137, 32);
+            this.numericUpDown7.Location = new System.Drawing.Point(113, 32);
             this.numericUpDown7.Name = "numericUpDown7";
             this.numericUpDown7.Size = new System.Drawing.Size(45, 20);
             this.numericUpDown7.TabIndex = 2;
@@ -1820,7 +1844,7 @@
             this.listBoxLog.FormattingEnabled = true;
             this.listBoxLog.Location = new System.Drawing.Point(3, 28);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(459, 108);
+            this.listBoxLog.Size = new System.Drawing.Size(322, 56);
             this.listBoxLog.TabIndex = 0;
             // 
             // groupBoxWorking
@@ -1962,6 +1986,16 @@
             this.splitContainer1.SplitterDistance = 476;
             this.splitContainer1.TabIndex = 6;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label1.Location = new System.Drawing.Point(330, 63);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(132, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Пауза между отрезками";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2006,6 +2040,7 @@
             this.menu3Dview.PerformLayout();
             this.tabPageSupp.ResumeLayout(false);
             this.tabPageSupp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
@@ -2189,6 +2224,8 @@
         private System.Windows.Forms.ToolStripMenuItem testSpeedToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelBuffer;
         private System.Windows.Forms.CheckBox checkBoxNewSpped;
+        private System.Windows.Forms.NumericUpDown numericUpDown9;
+        private System.Windows.Forms.Label label1;
     }
 }
 

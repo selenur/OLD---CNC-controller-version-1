@@ -957,10 +957,17 @@ namespace CNC_App
 
             if (!checkBoxNewSpped.Checked) return;
 
-            //TODO: Нужно вычислить угол между отрезками
-            for (int numPos = 0; numPos < GKODS.Count; numPos++)
+            // Вычисление угла между отрезками
+            for (int numPos = 1; numPos < GKODS.Count; numPos++)
             {
-                if (numPos==0 || numPos > GKODS.Count-10) continue;
+                double xn = (double)(GKODS[numPos].X - GKODS[numPos-1].X);
+                double yn = (double)(GKODS[numPos].Y - GKODS[numPos-1].Y);
+                double zn = (double)(GKODS[numPos].Z - GKODS[numPos-1].Z);
+
+                //длина отрезка
+                GKODS[numPos].Distance =(int) Math.Sqrt((xn*xn) + (yn*yn) + (zn*zn));
+
+                if (numPos > GKODS.Count-2) continue; //первую и последнюю точку не трогаем
 
                 //получим 3 точки
                 double xa = (double)(GKODS[numPos - 1].X - GKODS[numPos].X);
@@ -970,30 +977,11 @@ namespace CNC_App
                 double yb = (double)(GKODS[numPos + 1].Y - GKODS[numPos].Y);
                 double zb = (double)(GKODS[numPos + 1].Z - GKODS[numPos].Z);
 
-
-                //double xc = (double)GKODS[numPos].X;
-                //double yc = (double)GKODS[numPos].Y;
-                //double zc = (double)GKODS[numPos].Z;
-                //сместим в начало координат точку "b"
-
-
-
-
-
-
-                
-
                 double angle = Math.Acos(   (xa * xb + ya * yb + za * zb) /  ( Math.Sqrt(xa * xa + ya * ya + za * za)*Math.Sqrt(xb*xb+yb*yb+zb*zb )  )       );
                 double angle1 = angle* 180/Math.PI   ;
 
                 GKODS[numPos].angleVectors = (int)angle1;
-
             }
-
-
-
-
-
         }
 
 
@@ -2183,7 +2171,18 @@ namespace CNC_App
             //TODO: доделать управление скоростью ручая/по программе
             int speed = (gcodeNow.workspeed) ? UserSpeedG1 : UserSpeedG0;
 
-            Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow, gcodeNow.angleVectors));
+
+            if (checkBoxNewSpped.Checked)
+            {
+                // новый алгоритм
+                Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow,
+                    gcodeNow.angleVectors, gcodeNow.Distance,(int)numericUpDown9.Value));
+            }
+            else
+            {
+                //старый алгоритм
+                Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow, 0,0));
+            }
 
             Task.posCodeNow++;
             textBoxNumberLine.Text = deviceInfo.NuberCompleatedInstruction.ToString();
@@ -2222,7 +2221,7 @@ namespace CNC_App
             Controller.SendBinaryData(BinaryData.pack_9E(0x05));
             Controller.SendBinaryData(BinaryData.pack_BF((int)numericUpDown3.Value, (int)numericUpDown3.Value, (int)numericUpDown3.Value));
             Controller.SendBinaryData(BinaryData.pack_C0());
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0,0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0,0,0));
             Controller.SendBinaryData(BinaryData.pack_FF());
             Controller.SendBinaryData(BinaryData.pack_9D());
             Controller.SendBinaryData(BinaryData.pack_9E(0x02));
@@ -2438,6 +2437,7 @@ namespace CNC_App
         public bool workspeed; // true=G1 false=G0
         public decimal diametr; // диаметр инструмента
         public int angleVectors; //угол между отрезками, образуемыми этой, предыдущей и следующей точкой
+        public int Distance; //растояние данного отрезка в мм.
         
         /// <summary>
         /// Пустой конструктор
@@ -2458,6 +2458,7 @@ namespace CNC_App
             workspeed      = false;
             diametr = 0;
             angleVectors = 0;
+            Distance = 0;
         }
 
         public GKOD_Command(int _numberInstruct, bool _spindelON, decimal _X, decimal _Y, decimal _Z, int _speed, bool _workspeed, bool _changeInstrument = false, int _numberInstrument = 0, bool _needPause = false, int _timeSeconds = 0, decimal _diametr = 0)

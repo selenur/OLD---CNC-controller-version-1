@@ -1096,35 +1096,63 @@ namespace CNC_App
         /// <param name="_speed">скорость мм/минуту</param>
         /// <param name="_NumberInstruction">Номер данной инструкции</param>
         /// <param name="AngleVectors">Угол, на который измениться направление движения</param>
+        /// <param name="Distance">Длина данного отрезка в мм</param>
         /// <returns>набор данных для посылки</returns>
-        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _speed, int _NumberInstruction, int AngleVectors)
+        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _speed, int _NumberInstruction, int AngleVectors, int Distance, int _valuePause = 0x39)
         {
             int newPosX = _posX;
             int newPosY = _posY;
             int newPosZ = _posZ;
             int newInst = _NumberInstruction;
 
-
             byte[] buf = new byte[64];
 
-            buf[0] = 0xca;
+            buf[0] = 0xCA;
             //запись номера инструкции
             buf[1] = (byte)(newInst);
             buf[2] = (byte)(newInst >> 8);
             buf[3] = (byte)(newInst >> 16);
             buf[4] = (byte)(newInst >> 24);
 
+            // Зная угол между 2-мя отрезками, вычислим необходимую паузу перехода, от отрезка к отрезку
+            //int deltaAngle = 180 - AngleVectors;
 
-            //TODO: пауза перед следующей командой, 
-            // 0х01 нет паузы, 0х39 есть пауза (при маленькой паузе, и большой скорости происходит срыв...)
-            if (AngleVectors > 170 && AngleVectors < 190)
-            {
-                buf[5] = 0x01;
-            }
-            else
-            {
-                buf[5] = 0x39;
-            }
+            //buf[5] = 0x01;
+
+            //if (deltaAngle > 45) buf[5] = 0x39;
+
+
+            //if (deltaAngle <= 25) 
+            //buf[5] = 0x03;
+            buf[5] = (byte)_valuePause;
+
+
+            //if (deltaAngle < 15) buf[5] = 0x10;
+
+
+            //if (deltaAngle < 10) buf[5] = 0x02;
+
+
+            //if (deltaAngle < 3) buf[5] = 0x01;
+
+
+
+            //buf[5] = (byte)deltaAngle;
+
+            //if (buf[5] == 0x00) buf[5] = 0x01;
+
+            //if (buf[5] > 0x39) buf[5] = 0x39;
+
+            //TODO: старый алгоритм для удаления
+            //// 0х01 нет паузы, 0х39 есть пауза (при маленькой паузе, и большой скорости происходит срыв...)
+            //if (AngleVectors > 170 && AngleVectors < 190)
+            //{
+            //    buf[5] = 0x01;
+            //}
+            //else
+            //{
+            //    buf[5] = 0x39;
+            //}
 
             //сколько импульсов сделать
             buf[6] = (byte)(newPosX);
@@ -1161,20 +1189,47 @@ namespace CNC_App
             }
 
 
+            //TODO: если дистанция = 0 то используем скорость....
 
-            int inewSpd = 2328; //TODO: скорость по умолчанию
+            //TODO: Учесть длину траектории, если она короткая то нельзя ставить большую скорость, т.к. легко можно сорвать вращение 
+            //int SpeedToSend = _speed;
 
+            int SpeedToSend = 2328; 
+            //старый код
             if (_speed != 0)
             {
-                double dnewSpd = (koef / (double)_speed) * 1000;
-                inewSpd = (int)dnewSpd;
+                SpeedToSend = _speed;
             }
 
-            //скорость ось х
-            buf[43] = (byte)(inewSpd);
-            buf[44] = (byte)(inewSpd >> 8);
-            buf[45] = (byte)(inewSpd >> 16);
+            //TODO: добавить ограничение скорости от дистанции!!!
+            //при большой дистанции используем скорость заданную G-кодом
+            //if (Distance > 50) SpeedToSend = _speed;
+            //else
+            //{
+            //    //иначе замедлим скорость
+            //    /* растояние 50мм скорость = 500мм/минуту
+            //     * растояние 30мм скорость = 300мм/минуту
+            //     * растояние 10мм скорость = 100мм/минуту
+            //     * и т.д....
+            //     */
+            //    //SpeedToSend = Distance * 10;
+            //    SpeedToSend = 500;
+            //    // не всегда имеем дистанцию 
+            //    //if (Distance == 0) SpeedToSend = 200;
+            //}
 
+            //////if (Distance < 10) SpeedToSend = 400;
+
+            //////if (_speed == 0) SpeedToSend = 200;
+
+
+
+            int iSpeed = (int)(koef / SpeedToSend) * 1000;
+            //скорость ось х
+            buf[43] = (byte)(iSpeed);
+            buf[44] = (byte)(iSpeed >> 8);
+            buf[45] = (byte)(iSpeed >> 16);
+            
             buf[54] = 0x40;  //TODO: непонятный байт
 
             return buf;
