@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CNC_App", "CNC_App.csproj", "{5B5110D6-2B5B-4257-AFAF-834B46E83FBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Import_From_TXT_IMAGE", "C:\Users\Администратор\Desktop\ConvertToGkode\WindowsFormsApplication1\Import_From_TXT_IMAGE.csproj", "{795986AB-8359-474C-A09B-9CFC6D6E663A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Import_From_PLT_GRB_DRL", "..\ImporterToGKode\Import_From_PLT_GRB_DRL.csproj", "{08A2CC71-CD59-4D55-ACFC-6FCD290B2BE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{5B5110D6-2B5B-4257-AFAF-834B46E83FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B5110D6-2B5B-4257-AFAF-834B46E83FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B5110D6-2B5B-4257-AFAF-834B46E83FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{795986AB-8359-474C-A09B-9CFC6D6E663A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{795986AB-8359-474C-A09B-9CFC6D6E663A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{795986AB-8359-474C-A09B-9CFC6D6E663A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{795986AB-8359-474C-A09B-9CFC6D6E663A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A2CC71-CD59-4D55-ACFC-6FCD290B2BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A2CC71-CD59-4D55-ACFC-6FCD290B2BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A2CC71-CD59-4D55-ACFC-6FCD290B2BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A2CC71-CD59-4D55-ACFC-6FCD290B2BE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
