@@ -1098,7 +1098,7 @@ namespace CNC_App
         /// <param name="AngleVectors">”гол, на который изменитьс€ направление движени€</param>
         /// <param name="Distance">ƒлина данного отрезка в мм</param>
         /// <returns>набор данных дл€ посылки</returns>
-        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _speed, int _NumberInstruction, int AngleVectors, int Distance, int _valuePause = 0x39)
+        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _speed, int _NumberInstruction, int AngleVectors, decimal Distance, int _valuePause = 0x39)
         {
             int newPosX = _posX;
             int newPosY = _posY;
@@ -1126,6 +1126,8 @@ namespace CNC_App
             //buf[5] = 0x03;
             buf[5] = (byte)_valuePause;
 
+
+            if (Distance >0 && Distance < 5) buf[5] = 0x03;
 
             //if (deltaAngle < 15) buf[5] = 0x10;
 

@@ -46,3 +46,4 @@ C:\FILES\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_App.Properties.Resources.re
 C:\FILES\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_App.Sett3D.resources
 C:\FILES\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_App.setting.resources
 C:\FILES\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_App.csproj.GenerateResource.Cache
+D:\GITHUB\CNC-controller-for-mk1\obj\Debug\CNC_App.testSpeed.resources

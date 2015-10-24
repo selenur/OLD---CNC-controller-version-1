@@ -965,7 +965,7 @@ namespace CNC_App
                 double zn = (double)(GKODS[numPos].Z - GKODS[numPos-1].Z);
 
                 //длина отрезка
-                GKODS[numPos].Distance =(int) Math.Sqrt((xn*xn) + (yn*yn) + (zn*zn));
+                GKODS[numPos].Distance =(decimal) Math.Sqrt((xn*xn) + (yn*yn) + (zn*zn));
 
                 if (numPos > GKODS.Count-2) continue; //первую и последнюю точку не трогаем
 
@@ -2437,7 +2437,7 @@ namespace CNC_App
         public bool workspeed; // true=G1 false=G0
         public decimal diametr; // диаметр инструмента
         public int angleVectors; //угол между отрезками, образуемыми этой, предыдущей и следующей точкой
-        public int Distance; //растояние данного отрезка в мм.
+        public decimal Distance; //растояние данного отрезка в мм.
         
         /// <summary>
         /// Пустой конструктор
