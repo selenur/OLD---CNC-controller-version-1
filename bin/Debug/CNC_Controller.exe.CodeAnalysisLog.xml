@@ -2,7 +2,7 @@
 <?xml-stylesheet type="text/xsl" href="c:\program files (x86)\microsoft visual studio 12.0\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
 <FxCopReport Version="12.0">
  <Targets>
-  <Target Name="D:\GITHUB\CNC-controller-for-mk1\bin\Debug\CNC_Controller.exe">
+  <Target Name="C:\Users\SelenuR\Documents\GitHub\CNC-controller\bin\Debug\CNC_Controller.exe">
    <Modules>
     <Module Name="cnc_controller.exe">
      <Namespaces>
@@ -12,29 +12,29 @@
          <Members>
           <Member Name="#Message" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-10-24 08:40:44Z" FixCategory="Breaking">
-             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'Controller.DeviceEventNewMessage' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-02 18:35:58Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventNewMessage' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#NewDataFromController" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-10-24 08:40:44Z" FixCategory="Breaking">
-             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'Controller.DeviceEventNewData' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-02 18:35:58Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventNewData' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#WasConnected" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-10-24 08:40:44Z" FixCategory="Breaking">
-             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'Controller.DeviceEventConnect' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-02 18:35:58Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventConnect' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#WasDisconnected" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-10-24 08:40:44Z" FixCategory="Breaking">
-             <Issue Name="Second" Certainty="95" Level="Error">Объявите второй параметр для 'Controller.DeviceEventDisconnect' как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Issue>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-02 18:35:58Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventDisconnect' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
@@ -44,8 +44,8 @@
          <Members>
           <Member Name="#GetKeyState(CNC_App.MainForm+VirtualKeyStates)" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
            <Messages>
-            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2015-10-24 08:40:44Z" FixCategory="Breaking">
-             <Issue Certainty="95" Level="CriticalWarning">Так как метод является методом P/Invoke, 'MainForm.GetKeyState(MainForm.VirtualKeyStates)' должен быть определен в классе с именем NativeMethods, SafeNativeMethods или UnsafeNativeMethods.</Issue>
+            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2015-11-02 18:35:58Z" FixCategory="Breaking">
+             <Issue Certainty="95" Level="CriticalWarning">Because it is a P/Invoke method, 'MainForm.GetKeyState(MainForm.VirtualKeyStates)' should be defined in a class named NativeMethods, SafeNativeMethods, or UnsafeNativeMethods.</Issue>
             </Message>
            </Messages>
           </Member>
@@ -60,9 +60,9 @@
  </Targets>
  <Rules>
   <Rule TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009">
-   <Name>Правильно объявите обработчики событий</Name>
-   <Description>По соглашению для событий .NET предусмотрены два параметра, определяющие источник события и данные события. Сигнатуры обработчиков событий должны иметь следующую форму: void MyEventHandler(object sender, EventArgs e). Параметр "sender" всегда имеет тип System.Object, даже если есть возможность использовать более конкретный тип. Параметр "e" всегда имеет тип System.EventArgs. События, не предоставляющие данных о себе, должны использовать тип делегата System.EventHandler. Обработчики событий возвращают значение void, благодаря чему они могут отправлять каждое событие множеству целевых методов. Любое значение, возвращенное целевым объектом, будет утеряно после первого вызова.</Description>
-   <Resolution Name="Second">Объявите второй параметр для {0} как EventArgs или экземпляр типа, расширяющего EventArgs, и присвойте ему имя "e".</Resolution>
+   <Name>Declare event handlers correctly</Name>
+   <Description>By convention, .NET events have two parameters that specify the event sender and event data. Event handler signatures should follow this form: void MyEventHandler(object sender, EventArgs e). The 'sender' parameter is always of type System.Object, even if it is possible to employ a more specific type. The 'e' parameter is always of type System.EventArgs. Events that do not provide event data should use the System.EventHandler delegate type. Event handlers return void so that they can send each event to multiple target methods. Any value returned by a target would be lost after the first call.</Description>
+   <Resolution Name="Second">Declare the second parameter of {0} as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Resolution>
    <Owner />
    <Url>http://msdn.microsoft.com/library/ms182133.aspx</Url>
    <Email>[none]</Email>
@@ -70,9 +70,9 @@
    <File Name="designrules.dll" Version="12.0.0.0" />
   </Rule>
   <Rule TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060">
-   <Name>Переместите методы P/Invoke в класс NativeMethods</Name>
-   <Description>В этом типе содержатся члены с атрибутом DllImport. Члены с атрибутом DllImport должны содержаться в классах с именем NativeMethods, SafeNativeMethods или UnsafeNativeMethods.</Description>
-   <Resolution Name="Default">Так как метод является методом P/Invoke, {0} должен быть определен в классе с именем NativeMethods, SafeNativeMethods или UnsafeNativeMethods.</Resolution>
+   <Name>Move P/Invokes to NativeMethods class</Name>
+   <Description>This type contains members with the DllImport attribute. Members with the DllImport attribute should be contained in classes named NativeMethods, SafeNativeMethods, or UnsafeNativeMethods.</Description>
+   <Resolution Name="Default">Because it is a P/Invoke method, {0} should be defined in a class named NativeMethods, SafeNativeMethods, or UnsafeNativeMethods.</Resolution>
    <Owner />
    <Url>http://msdn.microsoft.com/library/ms182161.aspx</Url>
    <Email>[none]</Email>
@@ -81,27 +81,27 @@
   </Rule>
  </Rules>
  <Localized>
-  <String Key="Category">Категория</String>
-  <String Key="Certainty">Достоверность</String>
-  <String Key="CollapseAll">Свернуть все</String>
-  <String Key="CheckId">ИД проверки</String>
-  <String Key="Error">Ошибка</String>
-  <String Key="Errors">ошибки</String>
-  <String Key="ExpandAll">Развернуть все</String>
-  <String Key="Help">Справка</String>
-  <String Key="Line">Строка</String>
-  <String Key="Messages">сообщения</String>
-  <String Key="LocationNotStoredInPdb">[расположение не сохранено в PDB]</String>
-  <String Key="Project">Проект</String>
-  <String Key="Resolution">Разрешение</String>
-  <String Key="Rule">Правило</String>
-  <String Key="RuleFile">Файл правил</String>
-  <String Key="RuleDescription">Описание правила</String>
-  <String Key="Source">Источник</String>
-  <String Key="Status">Состояние</String>
-  <String Key="Target">Цель</String>
-  <String Key="Warning">Предупреждение</String>
-  <String Key="Warnings">предупреждения</String>
-  <String Key="ReportTitle">Отчет по анализу кода</String>
+  <String Key="Category">Category</String>
+  <String Key="Certainty">Certainty</String>
+  <String Key="CollapseAll">Collapse All</String>
+  <String Key="CheckId">Check Id</String>
+  <String Key="Error">Error</String>
+  <String Key="Errors">error(s)</String>
+  <String Key="ExpandAll">Expand All</String>
+  <String Key="Help">Help</String>
+  <String Key="Line">Line</String>
+  <String Key="Messages">message(s)</String>
+  <String Key="LocationNotStoredInPdb">[Location not stored in Pdb]</String>
+  <String Key="Project">Project</String>
+  <String Key="Resolution">Resolution</String>
+  <String Key="Rule">Rule</String>
+  <String Key="RuleFile">Rule File</String>
+  <String Key="RuleDescription">Rule Description</String>
+  <String Key="Source">Source</String>
+  <String Key="Status">Status</String>
+  <String Key="Target">Target</String>
+  <String Key="Warning">Warning</String>
+  <String Key="Warnings">warning(s)</String>
+  <String Key="ReportTitle">Code Analysis Report</String>
  </Localized>
 </FxCopReport>
