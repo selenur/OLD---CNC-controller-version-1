@@ -41,7 +41,7 @@ namespace CNC_App
             Init3D();
 
             Task.posCodeNow = -1; //пока нет никаких заданий
-            Task.StatusTask = EStatusTask.Waiting; //пока нет заданий для выполнения
+            Task.StatusTask = statusVariant.Waiting; //пока нет заданий для выполнения
 
 
 
@@ -383,7 +383,7 @@ namespace CNC_App
 
             if (!Controller.TestAllowActions()) return; //Проверка что контроллер доступен
 
-            if (Task.StatusTask != EStatusTask.Waiting) return; //Проверка что нет выполняемых задач в данный момент
+            if (Task.StatusTask != statusVariant.Waiting) return; //Проверка что нет выполняемых задач в данный момент
 
             bool num0 = IsPressed(VirtualKeyStates.VkNumpad0);
             bool num1 = IsPressed(VirtualKeyStates.VkNumpad1);
@@ -472,11 +472,11 @@ namespace CNC_App
 
             if (!Controller.Connected) return;
 
-            if (Task.StatusTask == EStatusTask.TaskStart) toolStripStatusLabel1.Text = @"Запуск задания";
-            if (Task.StatusTask == EStatusTask.TaskPaused) toolStripStatusLabel1.Text = @"Пауза выполнения";
-            if (Task.StatusTask == EStatusTask.TaskStop) toolStripStatusLabel1.Text = @"Остановка задания";
-            if (Task.StatusTask == EStatusTask.TaskWorking) toolStripStatusLabel1.Text = @"Выполнение задания";
-            if (Task.StatusTask == EStatusTask.Waiting) toolStripStatusLabel1.Text = @"ожидание";
+            if (Task.StatusTask == statusVariant.Starting) toolStripStatusLabel1.Text = @"Запуск задания";
+            if (Task.StatusTask == statusVariant.Paused) toolStripStatusLabel1.Text = @"Пауза выполнения";
+            if (Task.StatusTask == statusVariant.Stop) toolStripStatusLabel1.Text = @"Остановка задания";
+            if (Task.StatusTask == statusVariant.Working) toolStripStatusLabel1.Text = @"Выполнение задания";
+            if (Task.StatusTask == statusVariant.Waiting) toolStripStatusLabel1.Text = @"ожидание";
 
 
 
@@ -567,7 +567,7 @@ namespace CNC_App
                 {
                     buttonStartTask.Enabled = false;
 
-                    if (Task.StatusTask == EStatusTask.TaskPaused)
+                    if (Task.StatusTask == statusVariant.Paused)
                     {
                         btStopTask.Enabled = false;
                         buttonPauseTask.Enabled = true;
@@ -585,7 +585,7 @@ namespace CNC_App
                     buttonPauseTask.Enabled = false;
                 }
 
-                if (Task.StatusTask == EStatusTask.Waiting)
+                if (Task.StatusTask == statusVariant.Waiting)
                 {
                     buttonXtoZero.Enabled = true;
                     buttonYtoZero.Enabled = true;
@@ -600,7 +600,7 @@ namespace CNC_App
 
 
 
-                if (Task.StatusTask == EStatusTask.TaskWorking)
+                if (Task.StatusTask == statusVariant.Working)
                 {
                     toolStripProgressBar.Value = Controller.NumberComleatedInstructions;
                     //listGkodeForUser.Rows[_cnc.NumberComleatedInstructions].Selected = true;
@@ -1110,8 +1110,8 @@ namespace CNC_App
         {
             Controller.EnergyStop();
 
-            if (Task.StatusTask == EStatusTask.Waiting) return;
-            Task.StatusTask = EStatusTask.TaskStop;
+            if (Task.StatusTask == statusVariant.Waiting) return;
+            Task.StatusTask = statusVariant.Stop;
             RefreshElementsForms();
         }
 
@@ -1629,7 +1629,7 @@ namespace CNC_App
 
                 //добавим тут фильт
 
-                if (Task.StatusTask == EStatusTask.Waiting)
+                if (Task.StatusTask == statusVariant.Waiting)
                 {
                     int numSelectStart = Task.posCodeStart-1;
                     int numSelectStop = Task.posCodeEnd-1;
@@ -1983,7 +1983,7 @@ namespace CNC_App
 
             checkBoxManualMove.Checked = false; // отключим реакцию на нажатие NUM-pad
 
-            Task.StatusTask = EStatusTask.TaskStart;
+            Task.StatusTask = statusVariant.Starting;
             TaskTimer.Enabled = true;
              
             RefreshElementsForms();
@@ -1991,19 +1991,19 @@ namespace CNC_App
 
         private void buttonPauseTask_Click(object sender, EventArgs e)
         {
-            if (Task.StatusTask == EStatusTask.TaskStart) return; //пока задание не запустилось, нет смысла ставить паузу
+            if (Task.StatusTask == statusVariant.Starting) return; //пока задание не запустилось, нет смысла ставить паузу
 
-            if (Task.StatusTask == EStatusTask.TaskWorking || Task.StatusTask == EStatusTask.TaskPaused)
+            if (Task.StatusTask == statusVariant.Working || Task.StatusTask == statusVariant.Paused)
             {
-                Task.StatusTask = (Task.StatusTask == EStatusTask.TaskPaused) ? EStatusTask.TaskWorking : EStatusTask.TaskPaused;
+                Task.StatusTask = (Task.StatusTask == statusVariant.Paused) ? statusVariant.Working : statusVariant.Paused;
             }
             RefreshElementsForms();
         }
 
         private void btStopTask_Click(object sender, EventArgs e)
         {
-            if (Task.StatusTask == EStatusTask.Waiting) return;
-            Task.StatusTask = EStatusTask.TaskStop;
+            if (Task.StatusTask == statusVariant.Waiting) return;
+            Task.StatusTask = statusVariant.Stop;
             RefreshElementsForms();
         }
 
@@ -2024,9 +2024,9 @@ namespace CNC_App
             if (Task.posCodeNow == GKODS.Count)
             {
                 //уже дошли до конца
-                if (Task.StatusTask == EStatusTask.TaskWorking)
+                if (Task.StatusTask == statusVariant.Working)
                 {
-                    Task.StatusTask = EStatusTask.TaskStop;
+                    Task.StatusTask = statusVariant.Stop;
                 }
             }
             else
@@ -2036,7 +2036,7 @@ namespace CNC_App
 
             #region TaskStart
 
-            if (Task.StatusTask == EStatusTask.TaskStart)
+            if (Task.StatusTask == statusVariant.Starting)
             {
                 AddLog("Запуск задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
 
@@ -2059,7 +2059,7 @@ namespace CNC_App
                 ////////TODO: И продумать реализацию к подходу к точке
                 //////Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", gcodeNow.X), deviceInfo.CalcPosPulse("Y", gcodeNow.Y), deviceInfo.AxesZ_PositionPulse + deviceInfo.CalcPosPulse("Z", 10), UserSpeedG0, 0));
 
-                Task.StatusTask = EStatusTask.TaskWorking;
+                Task.StatusTask = statusVariant.Working;
                 RefreshElementsForms();
 
                 return; //после запуска дальше код пропустим...
@@ -2069,7 +2069,7 @@ namespace CNC_App
             
             #region TaskStop
 
-            if (Task.StatusTask == EStatusTask.TaskStop)
+            if (Task.StatusTask == statusVariant.Stop)
             {
                 //TODO: добавить поднятие фрезы, возможное позиционирование в home
 
@@ -2083,7 +2083,7 @@ namespace CNC_App
                 Controller.SendBinaryData(BinaryData.pack_FF());
 
                 AddLog("Завершение задания в " + DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture));
-                Task.StatusTask = EStatusTask.Waiting;
+                Task.StatusTask = statusVariant.Waiting;
                 TaskTimer.Enabled = false;
                 RefreshElementsForms();
             }
@@ -2092,12 +2092,12 @@ namespace CNC_App
             
             #region TaskWorking
 
-            if (Task.StatusTask != EStatusTask.TaskWorking) return;
+            if (Task.StatusTask != statusVariant.Working) return;
 
             //Все необходимые команды завершены, пора всё завершить
             if (Task.posCodeNow > Task.posCodeEnd) 
             {
-                Task.StatusTask = EStatusTask.TaskStop;
+                Task.StatusTask = statusVariant.Stop;
                 return;
             }
 
@@ -2112,7 +2112,7 @@ namespace CNC_App
             {
                 if (gcodeNow.timeSeconds == 0) // M0 - команда ожидания от пользователя
                 {
-                    Task.StatusTask = EStatusTask.TaskPaused;
+                    Task.StatusTask = statusVariant.Paused;
                     RefreshElementsForms();
                     //пауза до клика пользователя
                     MessageBox.Show(@"Получена команда M0 для остановки! для дальнейшего выполнения нужно нажать на кнопку 'пауза'", "Пауза",
@@ -2131,7 +2131,7 @@ namespace CNC_App
             //команда смены инструмента
             if (gcodeNow.changeInstrument)
             {
-                Task.StatusTask = EStatusTask.TaskPaused;
+                Task.StatusTask = statusVariant.Paused;
                 RefreshElementsForms();
 
                 //пауза до клика пользователя
@@ -2281,7 +2281,7 @@ namespace CNC_App
         private void listBox1_Click(object sender, EventArgs e)
         {
             
-            if (Task.StatusTask == EStatusTask.Waiting)
+            if (Task.StatusTask == statusVariant.Waiting)
             {
                 Task.posCodeStart = listGkodeCommand.SelectedIndex;
                 textBoxNumberLine.Text = (listGkodeCommand.SelectedIndex +1).ToString();
@@ -2297,7 +2297,7 @@ namespace CNC_App
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Task.StatusTask == EStatusTask.Waiting)
+            if (Task.StatusTask == statusVariant.Waiting)
             {
                 Task.posCodeStart = listGkodeCommand.SelectedIndex;
                 Task.posCodeEnd = listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count;
@@ -2368,7 +2368,7 @@ namespace CNC_App
     /// <summary>
     /// Виды статусов выполнения задания
     /// </summary>
-    public enum EStatusTask { Waiting = 0, TaskStart, TaskWorking, TaskPaused, TaskStop };
+    public enum statusVariant { Waiting = 0, Starting, Working, Paused, Stop };
 
     /// <summary>
     /// Класс для работы с заданием для контроллера
@@ -2378,7 +2378,7 @@ namespace CNC_App
         /// <summary>
         /// Сво-во для определения режима работы
         /// </summary>
-        public static EStatusTask StatusTask = EStatusTask.Waiting;
+        public static statusVariant StatusTask = statusVariant.Waiting;
 
         ///// <summary>
         ///// Номер строки с заданием для выполнения

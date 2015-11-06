@@ -325,6 +325,10 @@
     <None Include="Resources\arrow_down.png" />
     <None Include="Resources\cross.png" />
     <None Include="Resources\save_as.png" />
+    <Content Include="Resources\bullet_arrow_left.png" />
+    <None Include="Resources\bullet_arrow_left1.png" />
+    <Content Include="Resources\bullet_arrow_right.png" />
+    <None Include="Resources\bullet_arrow_right1.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup />

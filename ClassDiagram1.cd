@@ -21,13 +21,13 @@
       <FileName>CONTROLLER.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CNC_App.CONTROLLER" Collapsed="true">
+  <Class Name="CNC_App.Controller" Collapsed="true">
     <Position X="1.75" Y="0.5" Width="3.75" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>EIQCEBEIQABAYIIAAAcAhIAAgACEAACABYAAIAAAgEA=</HashCode>
+      <HashCode>EIUCEBEIQABAYIIAAAcAhIAAgACEAACABYAAIAAAAEA=</HashCode>
       <FileName>CONTROLLER.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -41,7 +41,7 @@
   <Class Name="CNC_App.deviceInfo" Collapsed="true">
     <Position X="5.75" Y="2" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAgwEBCABAgIACAQCBIAYAAABAAAAAgAAgAQAIIACA=</HashCode>
+      <HashCode>AAAgQEBCABAgIACAACBIAYAAABAAAAAgAAgAQAIAACA=</HashCode>
       <FileName>CONTROLLER.cs</FileName>
     </TypeIdentifier>
   </Class>

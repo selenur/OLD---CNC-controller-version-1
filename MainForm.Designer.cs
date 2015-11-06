@@ -118,6 +118,7 @@
             this.posAngleZm = new System.Windows.Forms.ToolStripButton();
             this.OpenGL_preview = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.tabPageSupp = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
             this.checkBoxNewSpped = new System.Windows.Forms.CheckBox();
             this.btToBuffer = new System.Windows.Forms.Button();
@@ -182,9 +183,11 @@
             this.RenderTimer = new System.Windows.Forms.Timer(this.components);
             this.TaskTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btStepNext = new System.Windows.Forms.Button();
+            this.btStepReturn = new System.Windows.Forms.Button();
             this.listGkodeCommand = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -221,6 +224,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             this.groupBoxWorking.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -897,7 +901,7 @@
             this.groupBoxManualSpeedGkode.Controls.Add(this.label5);
             this.groupBoxManualSpeedGkode.Controls.Add(this.numericUpDown2);
             this.groupBoxManualSpeedGkode.Controls.Add(this.label6);
-            this.groupBoxManualSpeedGkode.Location = new System.Drawing.Point(3, 279);
+            this.groupBoxManualSpeedGkode.Location = new System.Drawing.Point(3, 235);
             this.groupBoxManualSpeedGkode.Name = "groupBoxManualSpeedGkode";
             this.groupBoxManualSpeedGkode.Size = new System.Drawing.Size(203, 113);
             this.groupBoxManualSpeedGkode.TabIndex = 9;
@@ -1222,6 +1226,16 @@
             this.tabPageSupp.TabIndex = 1;
             this.tabPageSupp.Text = "Дополнительно";
             this.tabPageSupp.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label1.Location = new System.Drawing.Point(330, 63);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(132, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Пауза между отрезками";
             // 
             // numericUpDown9
             // 
@@ -1855,7 +1869,7 @@
             this.groupBoxWorking.Controls.Add(this.labelWorkingRow);
             this.groupBoxWorking.Controls.Add(this.btStopTask);
             this.groupBoxWorking.Controls.Add(this.buttonStartTask);
-            this.groupBoxWorking.Location = new System.Drawing.Point(3, 395);
+            this.groupBoxWorking.Location = new System.Drawing.Point(3, 349);
             this.groupBoxWorking.Name = "groupBoxWorking";
             this.groupBoxWorking.Size = new System.Drawing.Size(203, 111);
             this.groupBoxWorking.TabIndex = 1;
@@ -1938,6 +1952,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.listGkodeCommand);
             this.groupBox1.Controls.Add(this.groupBoxManualSpeedGkode);
             this.groupBox1.Controls.Add(this.groupBoxWorking);
@@ -1948,6 +1963,36 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "G-код";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.btStepNext);
+            this.groupBox2.Controls.Add(this.btStepReturn);
+            this.groupBox2.Enabled = false;
+            this.groupBox2.Location = new System.Drawing.Point(3, 463);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(203, 45);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            // 
+            // btStepNext
+            // 
+            this.btStepNext.Image = global::CNC_App.Properties.Resources.bullet_arrow_right;
+            this.btStepNext.Location = new System.Drawing.Point(108, 11);
+            this.btStepNext.Name = "btStepNext";
+            this.btStepNext.Size = new System.Drawing.Size(76, 28);
+            this.btStepNext.TabIndex = 1;
+            this.btStepNext.UseVisualStyleBackColor = true;
+            // 
+            // btStepReturn
+            // 
+            this.btStepReturn.Image = global::CNC_App.Properties.Resources.bullet_arrow_left;
+            this.btStepReturn.Location = new System.Drawing.Point(6, 11);
+            this.btStepReturn.Name = "btStepReturn";
+            this.btStepReturn.Size = new System.Drawing.Size(76, 28);
+            this.btStepReturn.TabIndex = 0;
+            this.btStepReturn.UseVisualStyleBackColor = true;
             // 
             // listGkodeCommand
             // 
@@ -1961,7 +2006,7 @@
             this.listGkodeCommand.Location = new System.Drawing.Point(6, 20);
             this.listGkodeCommand.Name = "listGkodeCommand";
             this.listGkodeCommand.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listGkodeCommand.Size = new System.Drawing.Size(194, 251);
+            this.listGkodeCommand.Size = new System.Drawing.Size(194, 213);
             this.listGkodeCommand.TabIndex = 10;
             this.listGkodeCommand.Click += new System.EventHandler(this.listBox1_Click);
             this.listGkodeCommand.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -1985,16 +2030,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(692, 512);
             this.splitContainer1.SplitterDistance = 476;
             this.splitContainer1.TabIndex = 6;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label1.Location = new System.Drawing.Point(330, 63);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Пауза между отрезками";
             // 
             // MainForm
             // 
@@ -2061,6 +2096,7 @@
             this.groupBoxWorking.ResumeLayout(false);
             this.groupBoxWorking.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
@@ -2226,6 +2262,9 @@
         private System.Windows.Forms.CheckBox checkBoxNewSpped;
         private System.Windows.Forms.NumericUpDown numericUpDown9;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btStepNext;
+        private System.Windows.Forms.Button btStepReturn;
     }
 }
 
