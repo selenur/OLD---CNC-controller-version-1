@@ -486,7 +486,7 @@ namespace CNC_App
         {
             if (!TestAllowActions()) return;
 
-            SendBinaryData(BinaryData.pack_C8(x, y, z));
+            SendBinaryData(BinaryData.pack_C8(x, y, z,0));
         }
 
         /// <summary>
@@ -500,7 +500,7 @@ namespace CNC_App
         {
             if (!TestAllowActions()) return;
 
-            SendBinaryData(BinaryData.pack_C8(deviceInfo.CalcPosPulse("X", x), deviceInfo.CalcPosPulse("Y", y), deviceInfo.CalcPosPulse("Z", z)));
+            SendBinaryData(BinaryData.pack_C8(deviceInfo.CalcPosPulse("X", x), deviceInfo.CalcPosPulse("Y", y), deviceInfo.CalcPosPulse("Z", z),0));
         }
 
 
@@ -560,7 +560,11 @@ namespace CNC_App
         /// <summary>
         /// Текущее положение в импульсах
         /// </summary>
-        public static int AxesZ_PositionPulse = 0;
+        public static int AxesZ_PositionPulse = 0;        
+        /// <summary>
+        /// Текущее положение в импульсах
+        /// </summary>
+        public static int AxesA_PositionPulse = 0;
 
         //public static int AxesX_PulsePerMm = 400;
         //public static int AxesY_PulsePerMm = 400;
@@ -573,6 +577,8 @@ namespace CNC_App
         public static bool AxesY_LimitMin = false;
         public static bool AxesZ_LimitMax = false;
         public static bool AxesZ_LimitMin = false;
+        public static bool AxesA_LimitMax = false;
+        public static bool AxesA_LimitMin = false;
 
 
         public static int shpindel_MoveSpeed = 0;
@@ -611,6 +617,14 @@ namespace CNC_App
             }
         }
 
+        public static decimal AxesA_PositionMM
+        {
+            get
+            {
+                return (decimal)AxesA_PositionPulse / Setting.PulseA;
+            }
+        }
+
         /// <summary>
         /// Вычисление положения в импульсах, при указании оси, и положения в миллиметрах
         /// </summary>
@@ -622,6 +636,7 @@ namespace CNC_App
             if (axes == "X") return (int)(posMm * Setting.PulseX);
             if (axes == "Y") return (int)(posMm * Setting.PulseY);
             if (axes == "Z") return (int)(posMm * Setting.PulseZ);
+            if (axes == "A") return (int)(posMm * Setting.PulseA);
             return 0;
         }
     }
@@ -755,11 +770,12 @@ namespace CNC_App
         /// <param name="y"></param>
         /// <param name="z"></param>
         /// <returns></returns>
-        public static byte[] pack_C8(int x, int y, int z)
+        public static byte[] pack_C8(int x, int y, int z, int a)
         {
             int newPosX = x;
             int newPosY = y;
             int newPosZ = z;
+            int newPosA = a;
 
             byte[] buf = new byte[64];
             buf[0] = 0xC8;
@@ -777,7 +793,12 @@ namespace CNC_App
             buf[14] = (byte)(newPosZ);
             buf[15] = (byte)(newPosZ >> 8);
             buf[16] = (byte)(newPosZ >> 16);
-            buf[17] = (byte)(newPosZ >> 24);
+            buf[17] = (byte)(newPosZ >> 24);       
+            //сколько импульсов сделать
+            buf[18] = (byte)(newPosA);
+            buf[19] = (byte)(newPosA >> 8);
+            buf[20] = (byte)(newPosA >> 16);
+            buf[21] = (byte)(newPosA >> 24);
 
             return buf;
         }
@@ -841,7 +862,7 @@ namespace CNC_App
         /// <param name="direction">Направление по осям в байте</param>
         /// <param name="speed">Скорость движения</param>
         /// <returns></returns>
-        public static byte[] pack_BE(byte direction, int speed, string x = "_", string y="_", string z = "_")
+        public static byte[] pack_BE(byte direction, int speed, string x = "_", string y = "_", string z = "_", string a = "_")
         {
             //TODO: переделать определения с направлениями движения
 
@@ -903,6 +924,12 @@ namespace CNC_App
                     buf[36] = 0x00;
                     buf[37] = 0x00;
 
+                    //a
+                    buf[38] = 0x00;
+                    buf[39] = 0x00;
+                    buf[40] = 0x00;
+                    buf[41] = 0x00;
+
 
                 }
                 else
@@ -961,6 +988,25 @@ namespace CNC_App
                         buf[36] = 0xFC;
                         buf[37] = 0xFF;
                     }
+
+                    if (a == "+")
+                    {
+                        buf[38] = 0x40;
+                        buf[39] = 0x0D;
+                        buf[40] = 0x03;
+                        buf[41] = 0x00;
+                    }
+
+                    if (a == "-")
+                    {
+                        buf[38] = 0xC0;
+                        buf[39] = 0xF2;
+                        buf[40] = 0xFC;
+                        buf[41] = 0xFF;
+                    }
+
+
+
                 }
             }
 
@@ -1023,7 +1069,7 @@ namespace CNC_App
         /// <param name="speedLimitY">Максимальная скорость по оси Y</param>
         /// <param name="speedLimitZ">Максимальная скорость по оси Z</param>
         /// <returns></returns>
-        public static byte[] pack_BF(int speedLimitX, int speedLimitY, int speedLimitZ)
+        public static byte[] pack_BF(int speedLimitX, int speedLimitY, int speedLimitZ, int speedLimitA)
         {
             byte[] buf = new byte[64];
 
@@ -1055,6 +1101,9 @@ namespace CNC_App
             double dnewSpdZ = (koef / (double)speedLimitZ) * 1000;
             int inewSpdZ = (int)dnewSpdZ;
 
+            double dnewSpdA = (koef / (double)speedLimitA) * 1000;
+            int inewSpdA = (int)dnewSpdA;
+
             buf[07] = (byte)(inewSpdX);
             buf[08] = (byte)(inewSpdX >> 8);
             buf[09] = (byte)(inewSpdX >> 16);
@@ -1070,6 +1119,11 @@ namespace CNC_App
             buf[16] = (byte)(inewSpdZ >> 8);
             buf[17] = (byte)(inewSpdZ >> 16);
             buf[18] = (byte)(inewSpdZ >> 24);
+
+            buf[19] = (byte)(inewSpdA);
+            buf[20] = (byte)(inewSpdA >> 8);
+            buf[21] = (byte)(inewSpdA >> 16);
+            buf[22] = (byte)(inewSpdA >> 24);
 
             return buf;
         }
@@ -1098,11 +1152,12 @@ namespace CNC_App
         /// <param name="AngleVectors">Угол, на который измениться направление движения</param>
         /// <param name="Distance">Длина данного отрезка в мм</param>
         /// <returns>набор данных для посылки</returns>
-        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _speed, int _NumberInstruction, int AngleVectors, decimal Distance, int _valuePause = 0x39)
+        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _posA, int _speed, int _NumberInstruction, int AngleVectors, decimal Distance, int _valuePause = 0x39)
         {
             int newPosX = _posX;
             int newPosY = _posY;
             int newPosZ = _posZ;
+            int newPosA = _posA;
             int newInst = _NumberInstruction;
 
             byte[] buf = new byte[64];
@@ -1173,6 +1228,12 @@ namespace CNC_App
             buf[15] = (byte)(newPosZ >> 8);
             buf[16] = (byte)(newPosZ >> 16);
             buf[17] = (byte)(newPosZ >> 24);
+
+            //сколько импульсов сделать
+            buf[18] = (byte)(newPosA);
+            buf[19] = (byte)(newPosA >> 8);
+            buf[20] = (byte)(newPosA >> 16);
+            buf[21] = (byte)(newPosA >> 24);
 
 
 
@@ -1361,12 +1422,14 @@ namespace CNC_App
         public decimal X;       // координата в мм
         public decimal Y;       // координата в мм
         public decimal Z;       // координата в мм
+        public decimal A;       // координата в мм
 
-        public decPoint(decimal _x, decimal _y, decimal _z)
+        public decPoint(decimal _x, decimal _y, decimal _z, decimal _a)
         {
             X = _x;
             Y = _y;
             Z = _z;
+            A = _a;
         }
     }
 
@@ -1376,12 +1439,14 @@ namespace CNC_App
         public double X;       // координата в мм
         public double Y;       // координата в мм
         public double Z;       // координата в мм
+        public double A;       // координата в мм
 
-        public dobPoint(double _x, double _y, double _z)
+        public dobPoint(double _x, double _y, double _z, double _a)
         {
             X = _x;
             Y = _y;
             Z = _z;
+            A = _a;
         }
     }
 
@@ -1434,7 +1499,7 @@ namespace CNC_App
         //нахождение высоты Z точки p0, лежащей на прямой которая паралельна оси X
         public static dobPoint CalcPX(dobPoint p1, dobPoint p2, dobPoint p0)
         {
-            dobPoint ReturnPoint = new dobPoint(p0.X, p0.Y, p0.Z);
+            dobPoint ReturnPoint = new dobPoint(p0.X, p0.Y, p0.Z,0);
 
             ReturnPoint.Z = p1.Z + (((p1.Z - p2.Z) / (p1.X - p2.X)) * (p0.X - p1.X));
 
@@ -1450,7 +1515,7 @@ namespace CNC_App
         //нахождение высоты Z точки p0, лежащей на прямой между точками p3 p4  (прямая паралельна оси Y)
         public static dobPoint CalcPY(dobPoint p1, dobPoint p2, dobPoint p0)
         {
-            dobPoint ReturnPoint = new dobPoint(p0.X, p0.Y, p0.Z);
+            dobPoint ReturnPoint = new dobPoint(p0.X, p0.Y, p0.Z,0);
 
             ReturnPoint.Z = p1.Z + (((p1.Z - p2.Z) / (p1.Y - p2.Y)) * (p0.Y - p1.Y));
 

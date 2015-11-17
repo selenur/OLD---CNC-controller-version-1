@@ -15,6 +15,11 @@ namespace CNC_App
     {
         #region Инициализация/заршение работы формы
 
+        /// <summary>
+        /// Панелька с координатами
+        /// </summary>
+        private GUI_panel_POS panelPos = new GUI_panel_POS();
+
         public MainForm()
         {
             InitializeComponent();
@@ -33,6 +38,8 @@ namespace CNC_App
 
             // подключение обработчика, колесика мышки
             MouseWheel += this_MouseWheel;
+
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -49,6 +56,11 @@ namespace CNC_App
             if (Setting.StartupConnect) Controller.Connect();
 
             toolStripStatus.Text = @"";
+
+            //TODO: временно
+            flowLayoutPanel1.Controls.Add(panelPos);
+
+
             RefreshElementsForms();
 
         }
@@ -456,7 +468,9 @@ namespace CNC_App
                 toolStripStatus.ForeColor = Color.Red;
             }
 
-            panelPosition.Enabled = Controller.Connected;
+            panelPos.RefreshControl();
+
+            //panelPosition.Enabled = Controller.Connected;
             panelControl1.Enabled = Controller.Connected;
             buttonESTOP.Enabled = Controller.Connected;
             buttonSpindel.Enabled = Controller.Connected;
@@ -480,9 +494,7 @@ namespace CNC_App
 
 
 
-            numPosX.Value = deviceInfo.AxesX_PositionMM;
-            numPosY.Value = deviceInfo.AxesY_PositionMM;
-            numPosZ.Value = deviceInfo.AxesZ_PositionMM;
+
 
             if (Controller.EstopOn)
             {
@@ -585,18 +597,7 @@ namespace CNC_App
                     buttonPauseTask.Enabled = false;
                 }
 
-                if (Task.StatusTask == statusVariant.Waiting)
-                {
-                    buttonXtoZero.Enabled = true;
-                    buttonYtoZero.Enabled = true;
-                    buttonZtoZero.Enabled = true;
-                }
-                else
-                {
-                    buttonXtoZero.Enabled = false;
-                    buttonYtoZero.Enabled = false;
-                    buttonZtoZero.Enabled = false;
-                }
+
 
 
 
@@ -1794,7 +1795,7 @@ namespace CNC_App
         private double GetDeltaZ(double _x, double _y)
         {
                         //точка которую нужно отобразить
-           dobPoint pResult = new dobPoint(_x, _y, 0);
+           dobPoint pResult = new dobPoint(_x, _y, 0,0);
 
 
             int indexXmin = 0;
@@ -1812,10 +1813,10 @@ namespace CNC_App
             }
 
 
-            dobPoint p1 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin].X, dataCode.matrix2[indexXmin, indexYmin].Y, dataCode.matrix2[indexXmin, indexYmin].Z);
-            dobPoint p3 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin + 1].X, dataCode.matrix2[indexXmin, indexYmin + 1].Y, dataCode.matrix2[indexXmin, indexYmin + 1].Z);
-            dobPoint p2 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin].X, dataCode.matrix2[indexXmin + 1, indexYmin].Y, dataCode.matrix2[indexXmin + 1, indexYmin].Z);
-            dobPoint p4 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin + 1].X, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Y, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Z);
+            dobPoint p1 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin].X, dataCode.matrix2[indexXmin, indexYmin].Y, dataCode.matrix2[indexXmin, indexYmin].Z,0);
+            dobPoint p3 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin + 1].X, dataCode.matrix2[indexXmin, indexYmin + 1].Y, dataCode.matrix2[indexXmin, indexYmin + 1].Z,0);
+            dobPoint p2 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin].X, dataCode.matrix2[indexXmin + 1, indexYmin].Y, dataCode.matrix2[indexXmin + 1, indexYmin].Z,0);
+            dobPoint p4 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin + 1].X, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Y, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Z,0);
 
             dobPoint p12 = Geometry.CalcPX(p1, p2, pResult);
             dobPoint p34 = Geometry.CalcPX(p3, p4, pResult);
@@ -2049,7 +2050,7 @@ namespace CNC_App
                 int MaxSpeedZ = (int)numericUpDown2.Value; //g0
 
                 Controller.SendBinaryData(BinaryData.pack_9E(0x05));
-                Controller.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
+                Controller.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ,0));
                 Controller.SendBinaryData(BinaryData.pack_C0());
 
                 ////////так-же спозиционируемся, над первой точкой по оси X и Y
@@ -2175,13 +2176,13 @@ namespace CNC_App
             if (checkBoxNewSpped.Checked)
             {
                 // новый алгоритм
-                Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow,
+                Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, 0,speed, Task.posCodeNow,
                     gcodeNow.angleVectors, gcodeNow.Distance,(int)numericUpDown9.Value));
             }
             else
             {
                 //старый алгоритм
-                Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, speed, Task.posCodeNow, 0,0));
+                Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, 0,speed, Task.posCodeNow, 0,0));
             }
 
             Task.posCodeNow++;
@@ -2219,9 +2220,9 @@ namespace CNC_App
             if (!Controller.TestAllowActions()) return;
 
             Controller.SendBinaryData(BinaryData.pack_9E(0x05));
-            Controller.SendBinaryData(BinaryData.pack_BF((int)numericUpDown3.Value, (int)numericUpDown3.Value, (int)numericUpDown3.Value));
+            Controller.SendBinaryData(BinaryData.pack_BF((int)numericUpDown3.Value, (int)numericUpDown3.Value, (int)numericUpDown3.Value,0));
             Controller.SendBinaryData(BinaryData.pack_C0());
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), (int)numericUpDown3.Value, 0,0,0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", numericUpDown6.Value), deviceInfo.CalcPosPulse("Y", numericUpDown5.Value), deviceInfo.CalcPosPulse("Z", numericUpDown4.Value), 0,(int)numericUpDown3.Value, 0,0,0));
             Controller.SendBinaryData(BinaryData.pack_FF());
             Controller.SendBinaryData(BinaryData.pack_9D());
             Controller.SendBinaryData(BinaryData.pack_9E(0x02));
@@ -2330,6 +2331,19 @@ namespace CNC_App
             //TODO: добавим тестирование ускорения работы
             testSpeed frmTest = new testSpeed();
             frmTest.Show();
+        }
+
+
+        
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+             
+
+
+
+
+            
         }
    
     }

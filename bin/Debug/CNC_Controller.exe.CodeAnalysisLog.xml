@@ -12,28 +12,28 @@
          <Members>
           <Member Name="#Message" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-06 18:35:41Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
              <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventNewMessage' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#NewDataFromController" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-06 18:35:41Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
              <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventNewData' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#WasConnected" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-06 18:35:41Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
              <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventConnect' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#WasDisconnected" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-06 18:35:41Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
              <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventDisconnect' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
@@ -44,7 +44,7 @@
          <Members>
           <Member Name="#GetKeyState(CNC_App.MainForm+VirtualKeyStates)" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
            <Messages>
-            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2015-11-06 18:35:41Z" FixCategory="Breaking">
+            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
              <Issue Certainty="95" Level="CriticalWarning">Because it is a P/Invoke method, 'MainForm.GetKeyState(MainForm.VirtualKeyStates)' should be defined in a class named NativeMethods, SafeNativeMethods, or UnsafeNativeMethods.</Issue>
             </Message>
            </Messages>

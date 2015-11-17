@@ -24,7 +24,7 @@ namespace CNC_App
 
             // start
             Controller.SendBinaryData(BinaryData.pack_9E(0x05));
-            Controller.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ));
+            Controller.SendBinaryData(BinaryData.pack_BF(MaxSpeedX, MaxSpeedY, MaxSpeedZ,0));
             Controller.SendBinaryData(BinaryData.pack_C0());
 
 
@@ -39,11 +39,11 @@ namespace CNC_App
             int posY1 = posY0;
             int posZ1 = posZ0;
 
-            Controller.SendBinaryData(BinaryData.pack_CA(posX1, posY1, posZ1, speed, Task.posCodeNow, 0, 0));
-            Controller.SendBinaryData(BinaryData.pack_CA(posX1, posY1, posZ1, speed, Task.posCodeNow, 0, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(posX1, posY1, posZ1,0, speed, Task.posCodeNow, 0, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(posX1, posY1, posZ1,0, speed, Task.posCodeNow, 0, 0));
 
-            Controller.SendBinaryData(BinaryData.pack_CA(posX0, posY0, posZ0, speed, Task.posCodeNow, 0, 0));
-            Controller.SendBinaryData(BinaryData.pack_CA(posX0, posY0, posZ0, speed, Task.posCodeNow, 0, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(posX0, posY0, posZ0,0, speed, Task.posCodeNow, 0, 0));
+            Controller.SendBinaryData(BinaryData.pack_CA(posX0, posY0, posZ0,0, speed, Task.posCodeNow, 0, 0));
 
             //stop
             Controller.SendBinaryData(BinaryData.pack_FF());

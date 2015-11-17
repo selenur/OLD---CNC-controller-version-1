@@ -72,3 +72,4 @@ C:\Users\SelenuR\Documents\GitHub\CNC-controller\obj\Debug\CNC_App.testSpeed.res
 C:\Users\SelenuR\Documents\GitHub\CNC-controller\obj\Debug\CNC_App.csproj.GenerateResource.Cache
 C:\Users\SelenuR\Documents\GitHub\CNC-controller\obj\Debug\CNC_Controller.exe
 C:\Users\SelenuR\Documents\GitHub\CNC-controller\obj\Debug\CNC_Controller.pdb
+C:\Users\SelenuR\Documents\GitHub\CNC-controller\obj\Debug\CNC_App.GUI_panel_POS.resources

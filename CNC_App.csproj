@@ -93,6 +93,13 @@
       <DependentUpon>frmRotate.cs</DependentUpon>
     </Compile>
     <Compile Include="CONTROLLER.cs" />
+    <Compile Include="GUI_panel_POS.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI_panel_POS.Designer.cs">
+      <DependentUpon>GUI_panel_POS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Language.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="EditGkode.cs">
       <SubType>Form</SubType>
@@ -177,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConstructorGkode\frmPoint.resx">
       <DependentUpon>frmPoint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI_panel_POS.resx">
+      <DependentUpon>GUI_panel_POS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ScanSurface.resx">
       <DependentUpon>ScanSurface.cs</DependentUpon>

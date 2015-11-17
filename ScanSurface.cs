@@ -72,7 +72,7 @@ namespace CNC_App
 
                 for (int x = 0; x < numCountX.Value; x++)
                 {
-                    dataCode.matrix2[x, y] = new dobPoint((double)numPosX.Value + (x * (double)numStepX.Value), (double)numPosY.Value + (y * (double)numStepY.Value), (double)numPosZ.Value);
+                    dataCode.matrix2[x, y] = new dobPoint((double)numPosX.Value + (x * (double)numStepX.Value), (double)numPosY.Value + (y * (double)numStepY.Value), (double)numPosZ.Value,0);
 
                     //matrixline.X.Add(new matrixPoint(numPosX.Value + (x * numStep.Value), numPosZ.Value, true));
                 }
@@ -238,7 +238,7 @@ namespace CNC_App
             decimal py = (decimal)dataCode.matrix2[indexScanX, indexScanY].Y;
 
             //спозиционируемся
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0,0,0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz),0, (int)numSpeed.Value, 0,0,0));
             Thread.Sleep(100);
 
             //опустим щуп
@@ -263,7 +263,7 @@ namespace CNC_App
             Controller.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
             Thread.Sleep(100);
             //спозиционируемся
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), (int)numSpeed.Value, 0,0,0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), 0,(int)numSpeed.Value, 0,0,0));
             Thread.Sleep(100);
 
             if (indexScanX == indexMaxScanX && indexScanY == indexMaxScanY)
@@ -321,7 +321,7 @@ namespace CNC_App
             }
             else
             {
-                selectedPoint = new dobPoint(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z);
+                selectedPoint = new dobPoint(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z,0);
                 selectedX = x;
                 selectedY = y;
             }
@@ -338,9 +338,9 @@ namespace CNC_App
             int speed = 200;
 
             Controller.SendBinaryData(BinaryData.pack_9E(0x05));
-            Controller.SendBinaryData(BinaryData.pack_BF(speed, speed, speed));
+            Controller.SendBinaryData(BinaryData.pack_BF(speed, speed, speed,0));
             Controller.SendBinaryData(BinaryData.pack_C0());
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", (decimal)selectedPoint.X), deviceInfo.CalcPosPulse("Y", (decimal)selectedPoint.Y), deviceInfo.CalcPosPulse("Z", (decimal)selectedPoint.Z), speed, 0,0,0));
+            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", (decimal)selectedPoint.X), deviceInfo.CalcPosPulse("Y", (decimal)selectedPoint.Y), deviceInfo.CalcPosPulse("Z", (decimal)selectedPoint.Z),0, speed, 0,0,0));
             Controller.SendBinaryData(BinaryData.pack_FF());
             Controller.SendBinaryData(BinaryData.pack_9D());
             Controller.SendBinaryData(BinaryData.pack_9E(0x02));

@@ -16,6 +16,12 @@ namespace CNC_App
         public static DeviceModel DeviceModel = DeviceModel.Emulator;
 
         /// <summary>
+        /// Язык вывода
+        /// пока доступно rus, eng
+        /// </summary>
+        public static eLanguage language = eLanguage.rus;
+
+        /// <summary>
         /// Количество импульсов в 1 мм для X
         /// </summary>
         public static int PulseX = 400;
@@ -26,7 +32,11 @@ namespace CNC_App
         /// <summary>
         /// Количество импульсов в 1 мм для Z 
         /// </summary>
-        public static int PulseZ = 400;
+        public static int PulseZ = 400;      
+        /// <summary>
+        /// Количество импульсов в 1 мм для Z 
+        /// </summary>
+        public static int PulseA = 400;
 
         public static bool StartupConnect = true;
 
@@ -48,6 +58,7 @@ namespace CNC_App
             string sPulseZ         = LoadProperty("pulseZ").Trim();
             string sStartupConnect = LoadProperty("StartupConnect").Trim();
             string sDeviceModel = LoadProperty("DeviceModel").Trim();
+            string sLanguage = LoadProperty("Language").Trim();
 
 
 
@@ -69,6 +80,22 @@ namespace CNC_App
                     Setting.DeviceModel = DeviceModel.Emulator;
                     break;
             }
+
+
+            switch (sLanguage)
+            {
+                case "rus":
+                    Setting.language = eLanguage.rus;
+                    break;
+                case "eng":
+                    Setting.language = eLanguage.eng;
+                    break;
+                default:
+                    Setting.language = eLanguage.eng;
+                    break;
+            }
+
+
         }
 
 
@@ -83,6 +110,7 @@ namespace CNC_App
             SaveProperty("pulseZ", Setting.PulseZ.ToString());
             SaveProperty("StartupConnect", StartupConnect.ToString());
             SaveProperty("DeviceModel", Setting.DeviceModel.ToString());
+            SaveProperty("Language", Setting.language.ToString());
         }
 
 
@@ -199,6 +227,16 @@ namespace CNC_App
         MK2 = 2
     };
 
+
+
+    /// <summary>
+    /// язык программы
+    /// </summary>
+    public enum eLanguage
+    {
+        rus = 0,
+        eng = 1
+    };
 
 }
 

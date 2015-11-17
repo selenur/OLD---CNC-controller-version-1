@@ -64,17 +64,6 @@
             this.toolStripStatusLabelNumberInstruction = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelBuffer = new System.Windows.Forms.ToolStripStatusLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.panelPosition = new System.Windows.Forms.Panel();
-            this.groupBoxPositions = new System.Windows.Forms.GroupBox();
-            this.buttonZtoZero = new System.Windows.Forms.Button();
-            this.buttonYtoZero = new System.Windows.Forms.Button();
-            this.buttonXtoZero = new System.Windows.Forms.Button();
-            this.numPosZ = new System.Windows.Forms.NumericUpDown();
-            this.numPosY = new System.Windows.Forms.NumericUpDown();
-            this.numPosX = new System.Windows.Forms.NumericUpDown();
-            this.labelposZ = new System.Windows.Forms.Label();
-            this.labelposY = new System.Windows.Forms.Label();
-            this.labelposX = new System.Windows.Forms.Label();
             this.panelIndicator = new System.Windows.Forms.Panel();
             this.groupBoxLimits = new System.Windows.Forms.GroupBox();
             this.labelZmax = new System.Windows.Forms.Label();
@@ -118,6 +107,7 @@
             this.posAngleZm = new System.Windows.Forms.ToolStripButton();
             this.OpenGL_preview = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.tabPageSupp = new System.Windows.Forms.TabPage();
+            this.button4 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
             this.checkBoxNewSpped = new System.Windows.Forms.CheckBox();
@@ -192,11 +182,6 @@
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
-            this.panelPosition.SuspendLayout();
-            this.groupBoxPositions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosX)).BeginInit();
             this.panelIndicator.SuspendLayout();
             this.groupBoxLimits.SuspendLayout();
             this.panelControl1.SuspendLayout();
@@ -537,7 +522,6 @@
             // 
             this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.flowLayoutPanel1.Controls.Add(this.panelPosition);
             this.flowLayoutPanel1.Controls.Add(this.panelIndicator);
             this.flowLayoutPanel1.Controls.Add(this.panelControl1);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 66);
@@ -545,160 +529,10 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(204, 512);
             this.flowLayoutPanel1.TabIndex = 3;
             // 
-            // panelPosition
-            // 
-            this.panelPosition.Controls.Add(this.groupBoxPositions);
-            this.panelPosition.Enabled = false;
-            this.panelPosition.Location = new System.Drawing.Point(3, 3);
-            this.panelPosition.Name = "panelPosition";
-            this.panelPosition.Size = new System.Drawing.Size(198, 119);
-            this.panelPosition.TabIndex = 4;
-            // 
-            // groupBoxPositions
-            // 
-            this.groupBoxPositions.Controls.Add(this.buttonZtoZero);
-            this.groupBoxPositions.Controls.Add(this.buttonYtoZero);
-            this.groupBoxPositions.Controls.Add(this.buttonXtoZero);
-            this.groupBoxPositions.Controls.Add(this.numPosZ);
-            this.groupBoxPositions.Controls.Add(this.numPosY);
-            this.groupBoxPositions.Controls.Add(this.numPosX);
-            this.groupBoxPositions.Controls.Add(this.labelposZ);
-            this.groupBoxPositions.Controls.Add(this.labelposY);
-            this.groupBoxPositions.Controls.Add(this.labelposX);
-            this.groupBoxPositions.Location = new System.Drawing.Point(3, 3);
-            this.groupBoxPositions.Name = "groupBoxPositions";
-            this.groupBoxPositions.Size = new System.Drawing.Size(192, 113);
-            this.groupBoxPositions.TabIndex = 4;
-            this.groupBoxPositions.TabStop = false;
-            this.groupBoxPositions.Text = "Координаты";
-            // 
-            // buttonZtoZero
-            // 
-            this.buttonZtoZero.Enabled = false;
-            this.buttonZtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
-            this.buttonZtoZero.Location = new System.Drawing.Point(1, 81);
-            this.buttonZtoZero.Name = "buttonZtoZero";
-            this.buttonZtoZero.Size = new System.Drawing.Size(26, 28);
-            this.buttonZtoZero.TabIndex = 12;
-            this.buttonZtoZero.UseVisualStyleBackColor = true;
-            this.buttonZtoZero.Click += new System.EventHandler(this.buttonZtoZero_Click);
-            // 
-            // buttonYtoZero
-            // 
-            this.buttonYtoZero.Enabled = false;
-            this.buttonYtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
-            this.buttonYtoZero.Location = new System.Drawing.Point(1, 47);
-            this.buttonYtoZero.Name = "buttonYtoZero";
-            this.buttonYtoZero.Size = new System.Drawing.Size(26, 28);
-            this.buttonYtoZero.TabIndex = 11;
-            this.buttonYtoZero.UseVisualStyleBackColor = true;
-            this.buttonYtoZero.Click += new System.EventHandler(this.buttonYtoZero_Click);
-            // 
-            // buttonXtoZero
-            // 
-            this.buttonXtoZero.Enabled = false;
-            this.buttonXtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
-            this.buttonXtoZero.Location = new System.Drawing.Point(1, 14);
-            this.buttonXtoZero.Name = "buttonXtoZero";
-            this.buttonXtoZero.Size = new System.Drawing.Size(26, 28);
-            this.buttonXtoZero.TabIndex = 10;
-            this.buttonXtoZero.UseVisualStyleBackColor = true;
-            this.buttonXtoZero.Click += new System.EventHandler(this.buttonXtoZero_Click);
-            // 
-            // numPosZ
-            // 
-            this.numPosZ.DecimalPlaces = 3;
-            this.numPosZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosZ.Location = new System.Drawing.Point(66, 81);
-            this.numPosZ.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numPosZ.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            -2147483648});
-            this.numPosZ.Name = "numPosZ";
-            this.numPosZ.Size = new System.Drawing.Size(120, 29);
-            this.numPosZ.TabIndex = 5;
-            this.numPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // numPosY
-            // 
-            this.numPosY.DecimalPlaces = 3;
-            this.numPosY.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosY.Location = new System.Drawing.Point(66, 47);
-            this.numPosY.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numPosY.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            -2147483648});
-            this.numPosY.Name = "numPosY";
-            this.numPosY.Size = new System.Drawing.Size(120, 29);
-            this.numPosY.TabIndex = 4;
-            this.numPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // numPosX
-            // 
-            this.numPosX.DecimalPlaces = 3;
-            this.numPosX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosX.Location = new System.Drawing.Point(66, 13);
-            this.numPosX.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numPosX.Minimum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            -2147483648});
-            this.numPosX.Name = "numPosX";
-            this.numPosX.Size = new System.Drawing.Size(120, 29);
-            this.numPosX.TabIndex = 3;
-            this.numPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // labelposZ
-            // 
-            this.labelposZ.AutoSize = true;
-            this.labelposZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposZ.Location = new System.Drawing.Point(40, 86);
-            this.labelposZ.Name = "labelposZ";
-            this.labelposZ.Size = new System.Drawing.Size(20, 20);
-            this.labelposZ.TabIndex = 2;
-            this.labelposZ.Text = "Z";
-            // 
-            // labelposY
-            // 
-            this.labelposY.AutoSize = true;
-            this.labelposY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposY.Location = new System.Drawing.Point(39, 52);
-            this.labelposY.Name = "labelposY";
-            this.labelposY.Size = new System.Drawing.Size(21, 20);
-            this.labelposY.TabIndex = 1;
-            this.labelposY.Text = "Y";
-            // 
-            // labelposX
-            // 
-            this.labelposX.AutoSize = true;
-            this.labelposX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposX.Location = new System.Drawing.Point(39, 18);
-            this.labelposX.Name = "labelposX";
-            this.labelposX.Size = new System.Drawing.Size(21, 20);
-            this.labelposX.TabIndex = 0;
-            this.labelposX.Text = "X";
-            // 
             // panelIndicator
             // 
             this.panelIndicator.Controls.Add(this.groupBoxLimits);
-            this.panelIndicator.Location = new System.Drawing.Point(3, 128);
+            this.panelIndicator.Location = new System.Drawing.Point(3, 3);
             this.panelIndicator.Name = "panelIndicator";
             this.panelIndicator.Size = new System.Drawing.Size(198, 94);
             this.panelIndicator.TabIndex = 4;
@@ -809,9 +643,9 @@
             this.panelControl1.Controls.Add(this.labelSpeed);
             this.panelControl1.Controls.Add(this.groupBoxManualMove);
             this.panelControl1.Enabled = false;
-            this.panelControl1.Location = new System.Drawing.Point(3, 228);
+            this.panelControl1.Location = new System.Drawing.Point(3, 103);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(198, 274);
+            this.panelControl1.Size = new System.Drawing.Size(198, 157);
             this.panelControl1.TabIndex = 0;
             // 
             // labelSpeed
@@ -1207,6 +1041,7 @@
             // 
             // tabPageSupp
             // 
+            this.tabPageSupp.Controls.Add(this.button4);
             this.tabPageSupp.Controls.Add(this.label1);
             this.tabPageSupp.Controls.Add(this.numericUpDown9);
             this.tabPageSupp.Controls.Add(this.checkBoxNewSpped);
@@ -1226,6 +1061,16 @@
             this.tabPageSupp.TabIndex = 1;
             this.tabPageSupp.Text = "Дополнительно";
             this.tabPageSupp.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(390, 354);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(50, 43);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // label1
             // 
@@ -2053,12 +1898,6 @@
             this.MainStatusStrip.ResumeLayout(false);
             this.MainStatusStrip.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.panelPosition.ResumeLayout(false);
-            this.groupBoxPositions.ResumeLayout(false);
-            this.groupBoxPositions.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPosX)).EndInit();
             this.panelIndicator.ResumeLayout(false);
             this.groupBoxLimits.ResumeLayout(false);
             this.panelControl1.ResumeLayout(false);
@@ -2124,14 +1963,6 @@
         private System.Windows.Forms.ToolStripButton btOpenFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Panel panelPosition;
-        private System.Windows.Forms.GroupBox groupBoxPositions;
-        private System.Windows.Forms.NumericUpDown numPosZ;
-        private System.Windows.Forms.NumericUpDown numPosY;
-        private System.Windows.Forms.NumericUpDown numPosX;
-        private System.Windows.Forms.Label labelposZ;
-        private System.Windows.Forms.Label labelposY;
-        private System.Windows.Forms.Label labelposX;
         private System.Windows.Forms.Panel panelIndicator;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.GroupBox groupBoxLimits;
@@ -2159,9 +1990,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Button buttonXtoZero;
-        private System.Windows.Forms.Button buttonZtoZero;
-        private System.Windows.Forms.Button buttonYtoZero;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.TabPage tabPageSupp;
@@ -2265,6 +2093,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btStepNext;
         private System.Windows.Forms.Button btStepReturn;
+        private System.Windows.Forms.Button button4;
     }
 }
 
