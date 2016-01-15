@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CNC_App
+namespace CNC_Assist
 {
     public partial class Sett3D : Form
     {
@@ -28,11 +28,11 @@ namespace CNC_App
             numericUpDown4.Value=mf.PreviewSetting.GridYstart;
             numericUpDown5.Value=mf.PreviewSetting.GridYend;
 
-            checkBoxShowGrate.Checked = mf.ShowGrate;
-            numPosXmin.Value = (decimal)mf.GrateXmin;
-            numPosXmax.Value = (decimal)mf.GrateXmax;
-            numPosYmin.Value = (decimal)mf.GrateYmin;
-            numPosYmax.Value = (decimal)mf.GrateYmax;
+            //checkBoxShowGrate.Checked = mf.ShowGrate;
+            //numPosXmin.Value = (decimal)mf.GrateXmin;
+            //numPosXmax.Value = (decimal)mf.GrateXmax;
+            //numPosYmin.Value = (decimal)mf.GrateYmin;
+            //numPosYmax.Value = (decimal)mf.GrateYmax;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -83,35 +83,35 @@ namespace CNC_App
 
         private void checkBoxShowGrate_CheckedChanged(object sender, EventArgs e)
         {
-            mf.ShowGrate = checkBoxShowGrate.Checked;
+           // mf.ShowGrate = checkBoxShowGrate.Checked;
         }
 
         private void numPosXmin_ValueChanged(object sender, EventArgs e)
         {
-            mf.GrateXmin = (double)numPosXmin.Value;
+          //  mf.GrateXmin = (double)numPosXmin.Value;
         }
 
         private void numPosXmax_ValueChanged(object sender, EventArgs e)
         {
-            mf.GrateXmax = (double)numPosXmax.Value;
+           // mf.GrateXmax = (double)numPosXmax.Value;
         }
 
         private void numPosYmin_ValueChanged(object sender, EventArgs e)
         {
-            mf.GrateYmin = (double)numPosYmin.Value;
+          //  mf.GrateYmin = (double)numPosYmin.Value;
         }
 
         private void numPosYmax_ValueChanged(object sender, EventArgs e)
         {
-            mf.GrateYmax = (double)numPosYmax.Value;
+           // mf.GrateYmax = (double)numPosYmax.Value;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            mf.GrateXmin = (double)deviceInfo.AxesX_PositionMM;
-            mf.GrateXmax = (double)deviceInfo.AxesX_PositionMM;
-            mf.GrateYmin = (double)deviceInfo.AxesY_PositionMM;
-            mf.GrateYmax = (double)deviceInfo.AxesY_PositionMM;
+            //mf.GrateXmin = (double)Controller.INFO.AxesX_PositionMM;
+            //mf.GrateXmax = (double)Controller.INFO.AxesX_PositionMM;
+            //mf.GrateYmin = (double)Controller.INFO.AxesY_PositionMM;
+            //mf.GrateYmax = (double)Controller.INFO.AxesY_PositionMM;
         }
     }
 }

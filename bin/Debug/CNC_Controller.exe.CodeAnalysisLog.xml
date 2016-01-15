@@ -12,28 +12,28 @@
          <Members>
           <Member Name="#Message" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-12-02 19:37:53Z" FixCategory="Breaking">
              <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventNewMessage' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#NewDataFromController" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-12-02 19:37:53Z" FixCategory="Breaking">
              <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventNewData' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#WasConnected" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-12-02 19:37:53Z" FixCategory="Breaking">
              <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventConnect' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
           </Member>
           <Member Name="#WasDisconnected" Kind="Event" Static="True" Accessibility="Public" ExternallyVisible="True">
            <Messages>
-            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2015-12-02 19:37:53Z" FixCategory="Breaking">
              <Issue Name="Second" Certainty="95" Level="Error">Declare the second parameter of 'Controller.DeviceEventDisconnect' as an EventArgs, or an instance of a type that extends EventArgs, named 'e'.</Issue>
             </Message>
            </Messages>
@@ -44,8 +44,24 @@
          <Members>
           <Member Name="#GetKeyState(CNC_App.MainForm+VirtualKeyStates)" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
            <Messages>
-            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2015-11-17 20:02:54Z" FixCategory="Breaking">
+            <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Active" Created="2015-12-02 19:37:53Z" FixCategory="Breaking">
              <Issue Certainty="95" Level="CriticalWarning">Because it is a P/Invoke method, 'MainForm.GetKeyState(MainForm.VirtualKeyStates)' should be defined in a class named NativeMethods, SafeNativeMethods, or UnsafeNativeMethods.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="CNC_App.SettingApp">
+       <Types>
+        <Type Name="SettingForm" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#InitializeComponent()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="DoNotIndirectlyExposeMethodsWithLinkDemands" Category="Microsoft.Security" CheckId="CA2122" Status="Active" Created="2015-12-02 19:37:53Z" FixCategory="NonBreaking">
+             <Issue Certainty="33" Level="CriticalError" Path="c:\Users\SelenuR\Documents\GitHub\CNC-controller" File="SettingForm.Designer.cs" Line="30">'SettingForm.InitializeComponent()' calls into 'PropertyGrid.CategoryForeColor.set(Color)' which has a LinkDemand. By making this call, 'PropertyGrid.CategoryForeColor.set(Color)' is indirectly exposed to user code. Review the following call stack that might expose a way to circumvent security protection: &#xD;&#xA;   -&gt;'SettingForm.InitializeComponent()'&#xD;&#xA;   -&gt;'SettingForm.InitializeComponent()'&#xD;&#xA;   -&gt;'SettingForm.SettingForm()'</Issue>
+             <Issue Certainty="33" Level="CriticalError" Path="c:\Users\SelenuR\Documents\GitHub\CNC-controller" File="SettingForm.Designer.cs" Line="30">'SettingForm.InitializeComponent()' calls into 'PropertyGrid.PropertyValueChanged.add(PropertyValueChangedEventHandler)' which has a LinkDemand. By making this call, 'PropertyGrid.PropertyValueChanged.add(PropertyValueChangedEventHandler)' is indirectly exposed to user code. Review the following call stack that might expose a way to circumvent security protection: &#xD;&#xA;   -&gt;'SettingForm.InitializeComponent()'&#xD;&#xA;   -&gt;'SettingForm.InitializeComponent()'&#xD;&#xA;   -&gt;'SettingForm.SettingForm()'</Issue>
             </Message>
            </Messages>
           </Member>
@@ -68,6 +84,16 @@
    <Email>[none]</Email>
    <MessageLevel Certainty="95">Error</MessageLevel>
    <File Name="designrules.dll" Version="12.0.0.0" />
+  </Rule>
+  <Rule TypeName="DoNotIndirectlyExposeMethodsWithLinkDemands" Category="Microsoft.Security" CheckId="CA2122">
+   <Name>Do not indirectly expose methods with link demands</Name>
+   <Description>Do not wrap a method protected by a LinkDemand with a method that does not perform a security check. A LinkDemand checks the permissions of the immediate caller rather than checking the permissions of all callers in the call stack. In this case, the permissions of the wrapper method will be checked. If the wrapper method does not, itself, check the permissions of callers higher in the call stack, malicious code might be able to execute the wrapped function even though it lacks permission to do so.</Description>
+   <Resolution Name="Default">{0} calls into {1} which has a LinkDemand. By making this call, {1} is indirectly exposed to user code. Review the following call stack that might expose a way to circumvent security protection: {2}</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182303.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="33">CriticalError</MessageLevel>
+   <File Name="securityrules.dll" Version="12.0.0.0" />
   </Rule>
   <Rule TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060">
    <Name>Move P/Invokes to NativeMethods class</Name>

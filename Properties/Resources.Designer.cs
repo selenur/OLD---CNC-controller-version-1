@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CNC_App.Properties {
+namespace CNC_Assist.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CNC_App.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CNC_App.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CNC_Assist.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -233,6 +233,16 @@ namespace CNC_App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap connect1 {
+            get {
+                object obj = ResourceManager.GetObject("connect1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap contact_email {
             get {
                 object obj = ResourceManager.GetObject("contact_email", resourceCulture);
@@ -316,6 +326,26 @@ namespace CNC_App.Properties {
         internal static System.Drawing.Bitmap disconnect {
             get {
                 object obj = ResourceManager.GetObject("disconnect", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap disconnect1 {
+            get {
+                object obj = ResourceManager.GetObject("disconnect1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap document_prepare {
+            get {
+                object obj = ResourceManager.GetObject("document_prepare", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

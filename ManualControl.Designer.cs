@@ -1,4 +1,4 @@
-﻿namespace CNC_App
+﻿namespace CNC_Assist
 {
     partial class ManualControl
     {
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManualControl));
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -48,6 +49,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -67,7 +69,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::CNC_App.Properties.Resources.Numpad1;
+            this.pictureBox1.Image = global::CNC_Assist.Properties.Resources.Numpad1;
             this.pictureBox1.Location = new System.Drawing.Point(13, 17);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(205, 266);
@@ -131,7 +133,6 @@
             this.button6.TabIndex = 7;
             this.button6.Text = "X-";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             this.button6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button6_MouseDown);
             this.button6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button6_MouseUp);
             // 
@@ -144,7 +145,6 @@
             this.button7.TabIndex = 8;
             this.button7.Text = "X+";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
             this.button7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button7_MouseDown);
             this.button7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button7_MouseUp);
             // 
@@ -157,7 +157,6 @@
             this.button8.TabIndex = 9;
             this.button8.Text = "X- Y+";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
             this.button8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button8_MouseDown);
             this.button8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.button8_MouseUp);
             // 
@@ -299,6 +298,12 @@
             this.trackBar1.Value = 200;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 50;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // ManualControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -343,5 +348,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

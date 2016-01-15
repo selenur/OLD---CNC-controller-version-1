@@ -1,73 +1,78 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CNC_App
+namespace CNC_Assist
 {
     public partial class EditGkode : Form
     {
-        //Доступ к основной форме
-        private MainForm mf;
 
-        public EditGkode(MainForm _mf)
+        public EditGkode()
         {
-            if (_mf == null) throw new ArgumentNullException(@"Ошибка инициализации формы 'Корректировка G-кода'");
             InitializeComponent();
-            mf = _mf;
         }
 
         private void EditGkode_Load(object sender, EventArgs e)
         {
-            cbCorrection.Checked = mf.Correction;
-            numPosX.Value = (decimal)mf.deltaX;
-            numPosY.Value = (decimal)mf.deltaY;
-            numPosZ.Value = (decimal)mf.deltaZ;
 
-            checkBox6.Checked = mf.deltaFeed;
+            cbCorrection.Checked = Controller.CorrectionPos.useCorrection;
+            numPosX.Value = (decimal)Controller.CorrectionPos.deltaX;
+            numPosY.Value = (decimal)Controller.CorrectionPos.deltaY;
+            numPosZ.Value = (decimal)Controller.CorrectionPos.deltaZ;
+            numPosA.Value = (decimal)Controller.CorrectionPos.deltaA;
 
-            numericUpDown1.Value = (decimal)mf.koeffSizeX;
-            numericUpDown2.Value = (decimal)mf.koeffSizeY;
+            //checkBox6.Checked = Setting.deltaFeed;
+
+            //numericUpDown1.Value = (decimal)Setting.koeffSizeX;
+            //numericUpDown2.Value = (decimal)Setting.koeffSizeY;
 
             groupBox1.Enabled = cbCorrection.Checked;
             groupBox2.Enabled = cbCorrection.Checked;
-            checkBox6.Enabled = cbCorrection.Checked;
+            checkBoxUseMatrix.Enabled = cbCorrection.Checked;
         }
 
         private void ccbCorrection_CheckedChanged(object sender, EventArgs e)
         {
-            mf.Correction = cbCorrection.Checked;
+            Controller.CorrectionPos.useCorrection = cbCorrection.Checked;
+
             groupBox1.Enabled = cbCorrection.Checked;
             groupBox2.Enabled = cbCorrection.Checked;
-            checkBox6.Enabled = cbCorrection.Checked;
+            checkBoxUseMatrix.Enabled = cbCorrection.Checked;
         }
 
         private void numPosX_ValueChanged(object sender, EventArgs e)
         {
-            mf.deltaX = (double)numPosX.Value;
+            Controller.CorrectionPos.deltaX = numPosX.Value;
         }
 
         private void numPosY_ValueChanged(object sender, EventArgs e)
         {
-            mf.deltaY = (double)numPosY.Value;
+            Controller.CorrectionPos.deltaY = numPosY.Value;
         }
 
         private void numPosZ_ValueChanged(object sender, EventArgs e)
         {
-            mf.deltaZ = (double)numPosZ.Value;
+            Controller.CorrectionPos.deltaZ = numPosZ.Value;
         }
 
-        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxUseMatrix_CheckedChanged(object sender, EventArgs e)
         {
-            mf.deltaFeed = checkBox6.Checked;
+            Controller.CorrectionPos.UseMatrix = checkBoxUseMatrix.Checked;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            mf.koeffSizeX = (double)numericUpDown1.Value;
+            
+           // Setting.koeffSizeX = (double)numericUpDown1.Value;
         }
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
-            mf.koeffSizeY = (double)numericUpDown2.Value;
+           // Setting.koeffSizeY = (double)numericUpDown2.Value;
+        }
+
+        private void numPosA_ValueChanged(object sender, EventArgs e)
+        {
+            Controller.CorrectionPos.deltaA = numPosA.Value;
         }
     }
 }

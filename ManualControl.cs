@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace CNC_App
+namespace CNC_Assist
 {
     public partial class ManualControl : Form
     {
@@ -143,19 +143,24 @@ namespace CNC_App
             numericUpDown1.Value = trackBar1.Value;
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
-
+            if (Controller.Connected)
+            {
+                if (Controller.Locked)
+                {
+                    this.Enabled = false;
+                }
+                else
+                {
+                    this.Enabled = true;
+                }
+            }
+            else
+            {
+                this.Enabled = false;
+            }
         }
 
-        private void button7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

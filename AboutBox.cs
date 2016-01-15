@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace CNC_App
+namespace CNC_Assist
 {
     partial class AboutBox : Form
     {

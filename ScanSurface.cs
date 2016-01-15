@@ -1,397 +1,426 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Threading;
-using System.Windows.Forms;
-
-namespace CNC_App
+﻿namespace CNC_Assist
 {
-    // ReSharper disable once InconsistentNaming
-    public partial class ScanSurface : Form
+    /// <summary>
+    /// Класс содержащий информацию о сканируемой поверхности
+    /// </summary>
+    public static class ScanSurface
     {
-        // ReSharper disable once NotAccessedField.Local
+        #region Инициализация переменных
 
-        private dobPoint selectedPoint = null;
-        private int selectedX = -1;
-        private int selectedY = -1;
-        
-        public ScanSurface()
+        //Для определения того, инициализирован-ли
+        public static bool NotInit = true;
+
+        /// <summary>
+        /// Базовая точка относительно которой ,будем собирать отклонения
+        /// </summary>
+        private static SurfacePoint _primaryPosition;
+
+        /// <summary>
+        /// Количество точек сканирования в матрице по оси X
+        /// </summary>
+        private static int _countPointX;
+
+        /// <summary>
+        /// Количество точек сканирования в матрице по оси Y
+        /// </summary>
+        private static int _countPointY;
+
+        /// <summary>
+        /// Шаг между точками сканирования по оси X
+        /// </summary>
+        private static float _stepX;
+
+        /// <summary>
+        /// Шаг между точками сканирования по оси Y
+        /// </summary>
+        private static float _stepY;
+
+        /// <summary>
+        /// Скорость движения до точки сканирования
+        /// </summary>
+        public static int SpeedMove;
+
+        /// <summary>
+        /// Скорость сканирования
+        /// </summary>
+        public static int SpeedScan;
+
+        /// <summary>
+        /// Матрица содержащая данные сканирования
+        /// </summary>
+        public static SurfacePoint[,] Matrix;
+
+        #endregion
+
+        #region Свойства
+
+        /// <summary>
+        /// Базовая точка относительно которой ,будем собирать отклонения
+        /// </summary>
+        public static SurfacePoint PrimaryPosition
         {
-            InitializeComponent();
+            get { return _primaryPosition; }
+            set { _primaryPosition = value; }
         }
 
-        private void feeler_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Количество точек сканирования в матрице по оси X
+        /// </summary>
+        public static int CountPointX
         {
-            //TODO: загрузить данные из существующей матрицы
-
-
-            numPosX.Value = deviceInfo.AxesX_PositionMM;
-            numPosY.Value = deviceInfo.AxesY_PositionMM;
-            numPosZ.Value = deviceInfo.AxesZ_PositionMM;
-
-            RefrechDataGrid();
-        }
-
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
-        {
-            RefrechDataGrid();
-        }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            RefrechDataGrid();
-        }
-
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-            RefrechDataGrid();
-        }
-
-        private void numPosX_ValueChanged(object sender, EventArgs e)
-        {
-            RefrechDataGrid();
-        }
-
-        private void numPosY_ValueChanged(object sender, EventArgs e)
-        {
-            RefrechDataGrid();
-        }
-
-        private void RefrechDataGrid()
-        {
-            //наполним массив
-            //dataCode.Matrix.Clear();
-
-            dataCode.matrix2 = new dobPoint[(int)numCountX.Value, (int)numCountY.Value];
-
-            for (int y = 0; y < numCountY.Value; y++)
+            get
             {
-                //matrixYline matrixline = new matrixYline();
-                
-                //matrixline.Y = numPosY.Value + (y* numStep.Value);
+                return _countPointX;
+            }
+            set
+            {
+                _countPointX = value;
+                // TODO: нужно пересчитать матрицу
+            }
+        }
 
-                for (int x = 0; x < numCountX.Value; x++)
+        /// <summary>
+        /// Количество точек сканирования в матрице по оси Y
+        /// </summary>
+        public static int CountPointY
+        {
+            get
+            {
+                return _countPointY;
+            }
+            set
+            {
+                _countPointY = value;
+                // TODO: нужно пересчитать матрицу
+            }
+        }
+
+        /// <summary>
+        /// Шаг между точками сканирования по оси X
+        /// </summary>
+        public static float StepX
+        {
+            get
+            {
+                return _stepX;
+            }
+            set
+            {
+                _stepX = value;
+                // TODO: нужно пересчитать матрицу
+            }
+        }
+
+        /// <summary>
+        /// Шаг между точками сканирования по оси Y
+        /// </summary>
+        public static float StepY
+        {
+            get
+            {
+                return _stepY;
+            }
+            set
+            {
+                _stepY = value;
+                // TODO: нужно пересчитать матрицу
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Первоначальная инициализация
+        /// </summary>
+        /// <param name="surfacePoint">Ключевая(начальная) точка массива</param>
+        /// <param name="countpointX">Количество точек/рядов сканирования по оси X</param>
+        /// <param name="countpointY">Количество точек/строк сканирования по оси Y</param>
+        /// <param name="stepx">Интервал между точками</param>
+        /// <param name="stepy">Интервал между точками</param>
+        public static void Init(SurfacePoint surfacePoint, int countpointX, int countpointY, float stepx, float stepy)
+        {
+            if (surfacePoint == null) _primaryPosition = new SurfacePoint();
+            else _primaryPosition = new SurfacePoint(surfacePoint);
+
+            _countPointX = countpointX;
+            _countPointY = countpointY;
+            _stepX = stepx;
+            _stepY = stepy;
+
+            SpeedMove = 200;
+            SpeedScan = 50;
+
+            Matrix = new SurfacePoint[_countPointX, _countPointY];
+
+            // заполним пустыми данными
+            for (int y = 0; y < _countPointY; y++)
+            {
+                for (int x = 0; x < _countPointX; x++)
                 {
-                    dataCode.matrix2[x, y] = new dobPoint((double)numPosX.Value + (x * (double)numStepX.Value), (double)numPosY.Value + (y * (double)numStepY.Value), (double)numPosZ.Value,0);
+                    SurfacePoint tmPoint = new SurfacePoint();
 
-                    //matrixline.X.Add(new matrixPoint(numPosX.Value + (x * numStep.Value), numPosZ.Value, true));
-                }
-                //dataCode.Matrix.Add(matrixline);
-            }
+                    if (surfacePoint != null)
+                    {
+                        tmPoint.PosX = (x * stepx) + surfacePoint.PosX;
+                        tmPoint.PosY = (y * stepy) + surfacePoint.PosY;
+                        tmPoint.PosZ = surfacePoint.PosZ;
+                    }
+                    tmPoint.PosZ = 0;
 
-            //и перезаполним таблицу
-            dataGridView.Columns.Clear();
-            dataGridView.Rows.Clear();
-
-            // в начале создадим незаполненную таблицу
-            dataGridView.Columns.Add("nameY", "---");
-            dataGridView.Rows.Add();
-            
-            for (int x = 0; x < numCountX.Value; x++)
-            {
-                dataGridView.Columns.Add("X" + x.ToString(), "");
-                dataGridView.Rows[0].Cells[x+1].Value = "X " + (numPosX.Value + (x*numStepX.Value));
-            }
-
-            for (int y = 0; y < numCountY.Value; y++)
-            {
-                int index = dataGridView.Rows.Add();
-                dataGridView.Rows[index].Cells[0].Value = "Y " + (numPosY.Value + (y * numStepY.Value));
-            }
-
-            for (int y = 0; y < numCountY.Value; y++)
-            {
-                for (int x = 0; x < numCountX.Value; x++)
-                {
-                    dataGridView.Rows[y + 1].Cells[x + 1].Value = dataCode.matrix2[x, y].Z;
-
-                    //dataGridView.Rows[y + 1].Cells[x + 1].Value = dataCode.Matrix[y].X[x].Z;
-                }
-            }
-
-        }
-
-        private void numPosZ_ValueChanged(object sender, EventArgs e)
-        {
-            RefrechDataGrid();
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            dataGridView.ReadOnly = checkBox1.Checked;
-        }        
-
-        private void dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            int x = e.ColumnIndex;
-            int y = e.RowIndex;
-
-            if (x == 0 || y == 0) return;
-
-            string ss = dataGridView.Rows[y].Cells[x].Value.ToString();
-            decimal val = decimal.Parse(ss.Replace(".", ","));
-
-            try
-            {
-                dataCode.matrix2[x - 1, y - 1].Z = (double)val;
-
-                //dataCode.Matrix[y - 1].X[x - 1].Z = val;
-            }
-            catch (Exception)
-            {
-                //throw;
-            }
-        }
-
-        private void buttonTest_Click(object sender, EventArgs e)
-        {
-            if (backgroundWorker1.IsBusy) return; //небудем вклиниваться если что....
-
-            if (Scan) return;
-
-            Controller.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
-            Controller.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
-            Controller.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
-        }
-
-
-
-
-
-
-        private bool Scan = false;
-        private int indexScanX = 0;
-        private int indexScanY = 0;
-        private int indexMaxScanX = 0;
-        private int indexMaxScanY = 0;
-        
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //TODO: Добавить возможность выборочного сканирования
-
-            if (Scan)
-            {
-                Scan = false;
-            }
-            else
-            {
-
-                if (backgroundWorker1.IsBusy) return; //пока ещё работает поток
-
-                indexScanX = 0;
-                indexScanY = 0;
-                //indexMaxScanX = dataCode.Matrix[0].X.Count - 1;
-                //indexMaxScanY = dataCode.Matrix.Count - 1;
-                indexMaxScanX = (int)numCountX.Value - 1;
-                indexMaxScanY = (int)numCountY.Value - 1;
-
-                backgroundWorker1.RunWorkerAsync();
-            }
-        }
-
-        private void timerTASK_Tick_1(object sender, EventArgs e)
-        {
-            if (Scan)
-            {
-                button1.Text = @"Остановить";
-            }
-            else
-            {
-                button1.Text = @"Сканировать";
-            }
-
-            try
-            {
-               // dataGridView.Rows[indexScanY + 1].Cells[indexScanX + 1].Value = dataCode.Matrix[indexScanY].X[indexScanX].Z;
-                dataGridView.Rows[indexScanY + 1].Cells[indexScanX + 1].Value = dataCode.matrix2[indexScanX, indexScanY].Z;
-            }
-            catch (Exception)
-            {
-                
-               // throw;
-            }
-            
-        }
-
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            Scan = true;
-
-            while (Scan)
-            {
-                theads();
-            }
-        }
-
-        // Поток выполняющий сканирование
-        // TODO: при сканировании иногда заполняет сразу 2 ячейки в таблице?!?
-        private void theads()
-        {
-            if (Controller.ShpindelMoveSpeed != 0) return;
-            
-            //координаты куда передвинуться
-            //decimal px = dataCode.Matrix[indexScanY].X[indexScanX].X;
-            decimal px = (decimal)dataCode.matrix2[indexScanX, indexScanY].X;
-            //decimal pz = dataCode.Matrix[indexScanY].X[indexScanX].Z;
-            decimal pz = numPosZ.Value;
-            //decimal py = dataCode.Matrix[indexScanY].Y;
-            decimal py = (decimal)dataCode.matrix2[indexScanX, indexScanY].Y;
-
-            //спозиционируемся
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz),0, (int)numSpeed.Value, 0,0,0));
-            Thread.Sleep(100);
-
-            //опустим щуп
-            Controller.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
-            Controller.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, 0));      // + настройка отхода, и скорости
-            Controller.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
-            Thread.Sleep(100);
-
-            while (!deviceInfo.AxesZ_LimitMax)
-            {
-                //dataCode.Matrix[indexScanY].X[indexScanX].Z = deviceInfo.AxesZ_PositionMM - numReturn.Value;
-                Thread.Sleep(100);
-            }
-
-            
-            Thread.Sleep(300);
-            //dataCode.Matrix[indexScanY].X[indexScanX].Z = deviceInfo.AxesZ_PositionMM;
-            dataCode.matrix2[indexScanX, indexScanY].Z = (double)deviceInfo.AxesZ_PositionMM;
-
-            Controller.SendBinaryData(BinaryData.pack_C0(0x01)); //вкл
-            Controller.SendBinaryData(BinaryData.pack_D2((int)numSpeed.Value, (decimal)numReturn.Value));      // + настройка отхода, и скорости
-            Controller.SendBinaryData(BinaryData.pack_C0(0x00)); //выкл
-            Thread.Sleep(100);
-            //спозиционируемся
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", px), deviceInfo.CalcPosPulse("Y", py), deviceInfo.CalcPosPulse("Z", pz), 0,(int)numSpeed.Value, 0,0,0));
-            Thread.Sleep(100);
-
-            if (indexScanX == indexMaxScanX && indexScanY == indexMaxScanY)
-            {
-                Scan = false;
-                Controller.SendBinaryData(BinaryData.pack_FF());
-            }
-
-            if (indexScanX < indexMaxScanX)
-            {
-                indexScanX++;
-            }
-            else
-            {
-                indexScanX = 0;
-
-                if (indexScanY < indexMaxScanY)
-                {
-                    indexScanY++;
-                }
-                else
-                {
-                    indexScanY = 0;
+                    Matrix[x, y] = new SurfacePoint(tmPoint);
                 }
             }
+
+            NotInit = false;
         }
 
-        private void numStepY_ValueChanged(object sender, EventArgs e)
-        {
-            RefrechDataGrid();
-        }
 
-        private void timer1_Tick(object sender, EventArgs e)
+
+        public static float GetPosZ(float _x, float _y)
         {
-            if (selectedPoint == null)
+            //точка которую нужно отобразить
+            SurfacePoint pResult = new SurfacePoint(_x, _y, 0);
+
+
+
+            //поиск ближайшей точки из матрицы
+            int indexXmin = 0;
+            int indexYmin = 0;
+            for (int x = 0; x < Matrix.GetLength(0) - 1; x++)
             {
-                label10.Text = @"X: 000.000  Y: 000.000";
-                return;
+                for (int y = 0; y < Matrix.GetLength(1) - 1; y++)
+                {
+                    if (_x > Matrix[x, 0].PosX && _x < Matrix[x + 1, 0].PosX && Matrix[0, y].PosY < _y && Matrix[0, y + 1].PosY > _y)
+                    {
+                        indexXmin = x;
+                        indexYmin = y;
+                    }
+                }
             }
 
-            label10.Text = @"X: " + selectedPoint.X + @"  Y: " + selectedPoint.Y;
+
+            SurfacePoint p1 = new SurfacePoint(Matrix[indexXmin, indexYmin].PosX, Matrix[indexXmin, indexYmin].PosY, Matrix[indexXmin, indexYmin].PosZ);
+            SurfacePoint p3 = new SurfacePoint(Matrix[indexXmin, indexYmin + 1].PosX, Matrix[indexXmin, indexYmin + 1].PosY, Matrix[indexXmin, indexYmin + 1].PosZ);
+            SurfacePoint p2 = new SurfacePoint(Matrix[indexXmin + 1, indexYmin].PosX, Matrix[indexXmin + 1, indexYmin].PosY, Matrix[indexXmin + 1, indexYmin].PosZ);
+            SurfacePoint p4 = new SurfacePoint(Matrix[indexXmin + 1, indexYmin + 1].PosX, Matrix[indexXmin + 1, indexYmin + 1].PosY, Matrix[indexXmin + 1, indexYmin + 1].PosZ);
+
+            SurfacePoint p12 = Geometry.CalcPX(p1, p2, pResult);
+            SurfacePoint p34 = Geometry.CalcPX(p3, p4, pResult);
+            SurfacePoint p1234 = Geometry.CalcPY(p12, p34, pResult);
+            /////////////////////* 
+
+            ////////////////////            //pointZ = p1234.Z;
+
+
+
+            ////////////////////             //TODO: В связи с переделкой ряда ключевых механизмов применение матрицы отключим
+
+
+
+            ////////////////////            //1) получим координаты 4-х ближайших точек из матрицы
+
+            ////////////////////            //текущая точка
+
+
+
+
+
+            ////////////////////            //2) запустим математику
+
+
+            ////////////////////            //Point p1 = new Point(numericUpDown11.Value, numericUpDown10.Value, numericUpDown9.Value);
+            ////////////////////            //Point p2 = new Point(numericUpDown12.Value, numericUpDown14.Value, numericUpDown13.Value);
+            ////////////////////            //Point p3 = new Point(numericUpDown15.Value, numericUpDown17.Value, numericUpDown16.Value);
+            ////////////////////            //Point p4 = new Point(numericUpDown21.Value, numericUpDown23.Value, numericUpDown22.Value);
+
+            ////////////////////            //Point p5 = new Point(numericUpDown18.Value, numericUpDown20.Value, numericUpDown19.Value);
+
+
+
+            ////////////////////            //numericUpDown24.Value = p1234.X;
+            ////////////////////            //numericUpDown26.Value = p1234.Y;
+            ////////////////////            //numericUpDown25.Value = p1234.Z;
+
+            ////////////////////            ////Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
+            ////////////////////            */
+
+            return p1234.PosZ;
+            //return 0;
         }
 
-        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            int x = e.ColumnIndex-1;
-            int y = e.RowIndex-1;
-
-            if (x < 0 || y < 0)
-            {
-                selectedPoint = null;
-
-                selectedX = -1;
-                selectedY = -1;
-            }
-            else
-            {
-                selectedPoint = new dobPoint(dataCode.matrix2[x, y].X, dataCode.matrix2[x, y].Y, dataCode.matrix2[x, y].Z,0);
-                selectedX = x;
-                selectedY = y;
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
 
 
-            if (!Controller.TestAllowActions()) return;
+        ///// <summary>
+        ///// Сдвиг начальной точки
+        ///// </summary>
+        ///// <param name="x">новая координата</param>
+        ///// <param name="y">новая координата</param>
+        ///// <param name="z">новая координата</param>
+        //public static void ChangeStartPosition(float x, float y, float z)
+        //{
+        //    _StartPosX = x;
+        //    _StartPosY = y;
+        //    _StartPosZ = z;
+        //}
 
-            if (selectedPoint == null) return;
+        ///// <summary>
+        ///// Изменение размерности массива данных
+        ///// </summary>
+        ///// <param name="countX"></param>
+        ///// <param name="countY"></param>
+        ///// <param name="stepX"></param>
+        ///// <param name="stepY"></param>
+        //public static void ChangeSizeOrStep(int countX, int countY, float stepX, float stepY)
+        //{
 
-            int speed = 200;
+        //    //TODO:добавить возможность оставлять старые данные
 
-            Controller.SendBinaryData(BinaryData.pack_9E(0x05));
-            Controller.SendBinaryData(BinaryData.pack_BF(speed, speed, speed,0));
-            Controller.SendBinaryData(BinaryData.pack_C0());
-            Controller.SendBinaryData(BinaryData.pack_CA(deviceInfo.CalcPosPulse("X", (decimal)selectedPoint.X), deviceInfo.CalcPosPulse("Y", (decimal)selectedPoint.Y), deviceInfo.CalcPosPulse("Z", (decimal)selectedPoint.Z),0, speed, 0,0,0));
-            Controller.SendBinaryData(BinaryData.pack_FF());
-            Controller.SendBinaryData(BinaryData.pack_9D());
-            Controller.SendBinaryData(BinaryData.pack_9E(0x02));
-            Controller.SendBinaryData(BinaryData.pack_FF());
-            Controller.SendBinaryData(BinaryData.pack_FF());
-            Controller.SendBinaryData(BinaryData.pack_FF());
-            Controller.SendBinaryData(BinaryData.pack_FF());
-            Controller.SendBinaryData(BinaryData.pack_FF());
+        //    CountPointX = countX;
+        //    CountPointY = countY;
+        //    StepX = stepX;
+        //    StepY = stepY;
 
-        }
+        //    float xf = 0;
+        //    float yf = 0;
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            // 
-            
-            //узнаем координаты из таблицы, куда все поместить
+        //    Matrix = new SurfacePoint[countX, countY];
+        //    // заполним данными
+        //    for (int y = 0; y < CountPointY; y++)
+        //    {
+        //        for (int x = 0; x < CountPointX; x++)
+        //        {
+        //            Matrix[x, y] = new SurfacePoint(StartPosX+(float)(x*stepX), StartPosY+(float) (y*stepY), StartPosZ);
+        //            //dataGridView.Rows[y + 1].Cells[x + 1].Value = cScanSurface.matrix[x, y].value;
+        //        }
+        //    }            
 
-            if (selectedX == -1 || selectedY == -1) return;
 
-            dataCode.matrix2[selectedX, selectedY].Z = (double)deviceInfo.AxesZ_PositionMM;
-            dataGridView.Rows[selectedY + 1].Cells[selectedX + 1].Value = dataCode.matrix2[selectedX, selectedY].Z;
-
-        }
-
-        private void button6_MouseDown(object sender, MouseEventArgs e)
-        {
-            button6.BackColor = Color.DarkGreen;
-            Controller.StartManualMove("0", "0", "+", 100);       
-        }
-
-        private void button6_MouseUp(object sender, MouseEventArgs e)
-        {
-            button6.BackColor = Color.FromName("Control");
-            Controller.StopManualMove();        
-        }
-
-        private void button5_MouseDown(object sender, MouseEventArgs e)
-        {
-            button5.BackColor = Color.DarkGreen;
-            Controller.StartManualMove("0", "0", "-", 100);
-        }
-
-        private void button5_MouseUp(object sender, MouseEventArgs e)
-        {
-            button5.BackColor = Color.FromName("Control");
-            Controller.StopManualMove();
-        }
+        //}
 
 
 
 
     }
-}
 
+
+
+
+
+    //класс для работы с геометрией
+    public static class Geometry
+    {
+        /*
+         *    Корректировка высоты по оси Z, у точки №5, зная высоту по Z у точек 1,2,3,4 
+         * 
+         *  /\ ось Y
+         *  |
+         *  |    (точка №1) -------------*--------------- (точка №2)
+         *  |                            |
+         *  |                            |
+         *  |                            |
+         *  |                       (точка №5)
+         *  |                            |
+         *  |                            |
+         *  |    (точка №3) -------------*--------------- (точка №4)
+         *  |
+         *  |
+         *  *----------------------------------------------------------------> ось X 
+         *  Корректировка выполняется следующим образом:
+         *  1) зная координату X у точки 5, и координаты точек 1 и 2, вычисляем высоту Z в точке которая находится на линии точек 1,2 и перпендикулярно 5-й точке (получает точку №12)
+         *  2) Тоже самое вычисляется для точки на линии точек 3,4 (получает точку №34)
+         *  3) Зная координаты точек №12, №34 и значение по оси Y у точки 5, вычисляем высоту по оси Z 
+         */
+
+
+        /// <summary>
+        /// Функция корректирует высоту по оси Z
+        /// </summary>
+        /// <param name="p1">первая точка первой линии X</param>
+        /// <param name="p2">вторая точка первой линии X</param>
+        /// <param name="p3">первая точка второй линии X</param>
+        /// <param name="p4">вторая точка второй линии X</param>
+        /// <param name="p5">точка у которой нужно скорректировать высоту</param>
+        /// <returns></returns>
+        public static SurfacePoint GetZ(SurfacePoint p1, SurfacePoint p2, SurfacePoint p3, SurfacePoint p4, SurfacePoint p5)
+        {
+            SurfacePoint p12 = CalcPX(p1, p2, p5);
+            SurfacePoint p34 = CalcPX(p3, p4, p5);
+
+            SurfacePoint p1234 = CalcPY(p12, p34, p5);
+
+            return p1234;
+        }
+
+        //нахождение высоты Z точки p0, лежащей на прямой которая паралельна оси X
+        public static SurfacePoint CalcPX(SurfacePoint p1, SurfacePoint p2, SurfacePoint p0)
+        {
+            SurfacePoint ReturnPoint = new SurfacePoint(p0.PosX, p0.PosY, p0.PosZ);
+
+            ReturnPoint.PosZ = p1.PosZ + (((p1.PosZ - p2.PosZ) / (p1.PosX - p2.PosX)) * (p0.PosX - p1.PosX));
+
+            //TODO: учесть на будущее что точка 1 и 2 могут лежать не на одной паралльной линии оси Х
+            ReturnPoint.PosY = p1.PosY;
+
+            return ReturnPoint;
+        }
+
+
+
+        //TODO: деление на ноль
+        //нахождение высоты Z точки p0, лежащей на прямой между точками p3 p4  (прямая паралельна оси Y)
+        public static SurfacePoint CalcPY(SurfacePoint p1, SurfacePoint p2, SurfacePoint p0)
+        {
+            SurfacePoint ReturnPoint = new SurfacePoint(p0.PosX, p0.PosY, p0.PosZ);
+
+            ReturnPoint.PosZ = p1.PosZ + (((p1.PosZ - p2.PosZ) / (p1.PosY - p2.PosY)) * (p0.PosY - p1.PosY));
+
+            return ReturnPoint;
+        }
+
+    }
+
+
+
+
+
+    /// <summary>
+    /// Класс содержит информацию о точке сканирования поверхности
+    /// </summary>
+    public class SurfacePoint
+    {
+        public float PosX = 0; 
+        public float PosY = 0;
+        public float PosZ = 0;
+        //public float deltaZ = 0;
+
+        public SurfacePoint()
+        {
+            PosX = 0;
+            PosY = 0;
+            PosZ = 0;
+            //deltaZ = 0;
+        }
+
+        public SurfacePoint(float _PosX, float _PosY, float _PosZ)
+        {
+            PosX = _PosX;
+            PosY = _PosY;
+            PosZ = _PosZ;
+            //deltaZ = _deltaZ;
+        }
+
+        /// <summary>
+        /// Клонирование данных из существующей точки
+        /// </summary>
+        /// <param name="_point"></param>
+        public SurfacePoint(SurfacePoint _point)
+        {
+            PosX = _point.PosX;
+            PosY = _point.PosY;
+            PosZ = _point.PosZ;
+            //deltaZ = _point.deltaZ;
+        }
+    }
+
+
+}

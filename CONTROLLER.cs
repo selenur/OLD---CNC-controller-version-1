@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO.Ports;
+using System.Threading;
+using CNC_Assist.PlanetCNC;
 using LibUsbDotNet;
 using LibUsbDotNet.Main;
 
-namespace CNC_App
+namespace CNC_Assist
 {
     /// <summary>
     /// Класс работы с контроллером
@@ -36,26 +39,7 @@ namespace CNC_App
 
         #endregion
         
-        #region внутренние параметры
-
-        /// <summary>
-        /// Наличие связи с контроллером
-        /// </summary>
-        private static bool _connected;
-
-        /// <summary>
-        /// Поток для получения, посылки данных в контроллер
-        /// </summary>
-        private static BackgroundWorker _theads;
-
-        private static UsbDevice _myUsbDevice;
-        private static ErrorCode _ec;
-        private static UsbEndpointReader _usbReader;
-        private static UsbEndpointWriter _usbWriter;
-
-        #endregion
-
-        #region Свойства для доступа извне к переменным
+        #region Общие команды, вне зависимости от контроллера
 
         /// <summary>
         /// Возвращает информацию о наличии связи
@@ -69,260 +53,16 @@ namespace CNC_App
         }
 
         /// <summary>
-        /// Скорость движения шпинделя
+        /// Для определения того используется, ли контроллер каким-либо потоком. Чисто формально.
+        /// что-бы в этот момент другие клиенты не подключались к контроллеру
         /// </summary>
-        public static int ShpindelMoveSpeed
+        public static bool Locked
         {
-            get
-            {
-                return deviceInfo.shpindel_MoveSpeed;
-            }
+            get { return _lockIsSet; }
+            set { _lockIsSet = value; }
         }
 
-        /// <summary>
-        /// Номер выполняемой инструкции
-        /// </summary>
-        public static int NumberComleatedInstructions
-        {
-            get
-            {
-                return deviceInfo.NuberCompleatedInstruction;
-            }
-        }
-
-        /// <summary>
-        /// Свойство включен ли шпиндель
-        /// </summary>
-        public static bool SpindelOn
-        {
-            get { return deviceInfo.shpindel_Enable; }
-        }
-
-        /// <summary>
-        /// Свойство активированна ли аварийная остановка
-        /// </summary>
-        public static bool EstopOn
-        {
-            get { return deviceInfo.Estop; }
-        }
-
-        /// <summary>
-        /// Проверка наличия связи, и незанятости контроллера
-        /// </summary>
-        /// <returns>булево, возможно ли посылать контроллеру задачи</returns>
-        public static bool TestAllowActions()
-        {
-            if (!Connected)
-            {
-                //StringError = @"Отсутствует связь с контроллером!";
-                return false;
-            }
-
-            return true;
-        }
-
-
-        /// <summary>
-        /// Размер свободного буфера
-        /// </summary>
-        // ReSharper disable once UnusedMember.Global
-        public static int AvailableBufferSize
-        {
-            get
-            {
-                return deviceInfo.FreebuffSize;
-            }
-        }
-
-        #endregion
-
-        #region Поток выполнения задания
-
-        /// <summary>
-        /// Парсит полученные данные с контроллера
-        /// </summary>
-        /// <param name="readBuffer"></param>
-        private static void ParseInfo(IList<byte> readBuffer)
-        {
-
-            int ttm = (int) (((readBuffer[22]*65536) + (readBuffer[21]*256) + (readBuffer[20]))/2.1);
-
-            if (ttm > 5000) return;
-
-            //TODO: иногда в МК2 бывает глюк, поэтому защитимся от него, костылем
-            //if (readBuffer[10] == 0x58 && readBuffer[11] == 0x02 && readBuffer[22] == 0x20 && readBuffer[23] == 0x02) return;
-
-            deviceInfo.FreebuffSize = readBuffer[1];
-
-
-            deviceInfo.shpindel_MoveSpeed = 0; 
-
-            if (Setting.DeviceModel == DeviceModel.MK1)
-            {
-                deviceInfo.shpindel_MoveSpeed = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 2.1);
-            }
-
-            if (Setting.DeviceModel == DeviceModel.MK2)
-            {
-                deviceInfo.shpindel_MoveSpeed = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 1.341);
-            }
-
-
-             
-
-
-
-            deviceInfo.AxesX_PositionPulse = (readBuffer[27] * 16777216) + (readBuffer[26] * 65536) + (readBuffer[25] * 256) + (readBuffer[24]);
-            deviceInfo.AxesY_PositionPulse = (readBuffer[31] * 16777216) + (readBuffer[30] * 65536) + (readBuffer[29] * 256) + (readBuffer[28]);
-            deviceInfo.AxesZ_PositionPulse = (readBuffer[35] * 16777216) + (readBuffer[34] * 65536) + (readBuffer[33] * 256) + (readBuffer[32]);
-
-            deviceInfo.AxesX_LimitMax = (readBuffer[15] & (1 << 0)) != 0;
-            deviceInfo.AxesX_LimitMin = (readBuffer[15] & (1 << 1)) != 0;
-            deviceInfo.AxesY_LimitMax = (readBuffer[15] & (1 << 2)) != 0;
-            deviceInfo.AxesY_LimitMin = (readBuffer[15] & (1 << 3)) != 0;
-            deviceInfo.AxesZ_LimitMax = (readBuffer[15] & (1 << 4)) != 0;
-            deviceInfo.AxesZ_LimitMin = (readBuffer[15] & (1 << 5)) != 0;
-
-            deviceInfo.NuberCompleatedInstruction = readBuffer[9] * 16777216 + (readBuffer[8] * 65536) + (readBuffer[7] * 256) + (readBuffer[6]);
-
-            SuperByte bb = new SuperByte(readBuffer[19]);
-
-            deviceInfo.shpindel_Enable = bb.Bit0;
-
-            SuperByte bb2 = new SuperByte(readBuffer[14]);
-            deviceInfo.Estop = bb2.Bit7;
-        }
-
-        private static void AddMessage(string ss)
-        {
-            if (Message != null) Message(null, new DeviceEventArgsMessage(ss));
-        }
-
-        private static bool CompareArray(byte[] arr1, byte[] arr2)
-        {
-            if (arr1 == null || arr2 == null) return false;
-
-            //проверяем 64 байта
-            bool value = true;
-
-            for (int i = 0; i < 64; i++)
-            {
-                if (arr1[i] != arr2[i])
-                {
-                    value = false;
-                    break;
-                }
-            }
-            return value;
-        }
-
-        //Поток для выполнения заданий
-        private static void TheadsStart(object sender, DoWorkEventArgs e)
-        {
-            AddMessage("Запуск потока, работы с контроллером");
-
-            if (Setting.DeviceModel != DeviceModel.Emulator)
-            {
-                //vid 2121 pid 2130 в десятичной системе будет как 8481 и 8496 соответственно
-                UsbDeviceFinder myUsbFinder = new UsbDeviceFinder(8481, 8496);
-
-                // Попытаемся установить связь
-                _myUsbDevice = UsbDevice.OpenUsbDevice(myUsbFinder);
-
-                if (_myUsbDevice == null)
-                {
-
-                    string StringError = "Не найден подключенный контроллер.";
-                    _connected = false;
-
-                    AddMessage(StringError);
-
-                    //запустим событие о разрыве связи
-                    if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(StringError));
-
-                    return;
-                }
-
-                IUsbDevice wholeUsbDevice = _myUsbDevice as IUsbDevice;
-                if (!ReferenceEquals(wholeUsbDevice, null))
-                {
-                    // This is a "whole" USB device. Before it can be used, 
-                    // the desired configuration and interface must be selected.
-
-                    // Select config #1
-                    wholeUsbDevice.SetConfiguration(1);
-
-                    // Claim interface #0.
-                    wholeUsbDevice.ClaimInterface(0);
-                }
-
-                // open read endpoint 1.
-                _usbReader = _myUsbDevice.OpenEndpointReader(ReadEndpointID.Ep01);
-
-                // open write endpoint 1.
-                _usbWriter = _myUsbDevice.OpenEndpointWriter(WriteEndpointID.Ep01);
-
-                AddMessage("Подключение к контроллеру, успешно");
-            }
-            else
-            {
-                AddMessage("...Запущен РЕЖИМ симуляции...");
-            }
-
-            _connected = true;
-
-            AddMessage("Связь с контроллером установлена");
-
-            if (WasConnected != null) WasConnected(null);
-
-            // Для отслеживания изменений
-            byte[] oldInfoFromController = new byte[64];
-
-            while (_connected)
-            {
-                // 1. Получим данные если есть
-                byte[] readBuffer = new byte[64];
-                int bytesRead = 0;
-
-                if (Setting.DeviceModel != DeviceModel.Emulator)
-                {
-                    _ec = _usbReader.Read(readBuffer, 2000, out bytesRead); 
-
-                     if (_ec != ErrorCode.None)
-                    {
-                        _connected = false;
-                        if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(@"Ошибка получения данных с контроллера, связь разорвана!"));
-                        
-                        return;
-                    }
-                }
-                else
-                {
-                    //TODO: добавить регенерирование данных виртуальным контроллером
-                }
-
-                if (bytesRead == 0 || readBuffer[0] != 0x01) continue; //пока получаем пакеты только с кодом 0х01 
-
-                if (CompareArray(oldInfoFromController, readBuffer)) continue; //если данные от контроллера не изменились, то дальше нет смысла...
-
-                deviceInfo.rawData = readBuffer;
-
-                ParseInfo(readBuffer);
-                oldInfoFromController = readBuffer;
-
-                if (NewDataFromController != null) NewDataFromController(null);
-            }
-
-            if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage("")); //событие завершения работы
-
-            if (Setting.DeviceModel != DeviceModel.Emulator)
-            {
-                 //завершение работы
-                UsbDevice.Exit();
-            }
-
-            AddMessage("Завершение потока работы с контроллером");
-        }
+        #region Команды подключения/отключения от контроллера
 
         /// <summary>
         /// Установка связи с контроллером
@@ -341,17 +81,14 @@ namespace CNC_App
                 {
                     AddMessage("Повторное подключение невозможно, пока текущее не будет прервано!");
                     return;
-                } 
+                }
             }
-
+            _lockIsSet = false;
             _connected = false;
-            //Создаем поток, и подключаем к нему процедуру
-            _theads = new BackgroundWorker();
-            _theads.DoWork += TheadsStart;
 
-
-            //Запустим поток
-            _theads.RunWorkerAsync();
+            //Создаем поток
+            Thread workerThread = new Thread(TheadsStart);
+            workerThread.Start();
         }
 
         /// <summary>
@@ -363,7 +100,373 @@ namespace CNC_App
             _connected = false;
         }
 
+        /// <summary>
+        /// Переподключение к контроллеру
+        /// </summary>
+        public static void Reconnect()
+        {
+            AddMessage("Вызов метода переподключения к контроллеру");
+            Disconnect();
+            Connect();
+        }
+
         #endregion
+
+        #region Поток выполнения задания
+
+
+
+
+        //Поток для выполнения заданий
+        private static void TheadsStart()
+        {
+            AddMessage("Запуск потока...............");
+            AddMessage("-Подключение к контроллеру " + GlobalSetting.AppSetting.Controller);
+
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK1 ||
+                GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK2)
+            {
+                //попытка подключения
+                if (!Get_connect_PlanetCNC())
+                {
+                    AddMessage("-подключение не удалось");
+                    AddMessage("Завершение потока.................");
+                    _connected = false;
+                    return;                    
+                }
+
+                _connected = true;
+                if (WasConnected != null) WasConnected(null); //вызовем событие что подключились
+
+                // Для отслеживания изменений от контроллера
+                byte[] oldInfoFromController = new byte[64];
+
+                int  indexCommand = -1; // текущая команда
+
+
+                // тут поток висит пока не произойдет завершение работы
+                while (_connected)
+                {
+                    //1) Проверим не прислал ли нам контроллер каких либо данных
+                    byte[] readBuffer = new byte[64];
+                    int bytesRead;
+                    _ec = _usbReader.Read(readBuffer, 2000, out bytesRead);
+                    if (_ec != ErrorCode.None)
+                    {
+                        _connected = false;
+                        if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(@"Ошибка получения данных с контроллера, связь разорвана!"));
+                    }
+
+                    if (bytesRead > 0 &&
+                        readBuffer[0] == 0x01 &&
+                        !CompareArray(oldInfoFromController, readBuffer))
+                    {
+                        INFO.rawData = readBuffer;
+
+                        ParseInfo(readBuffer);
+                        oldInfoFromController = readBuffer;
+
+                        if (NewDataFromController != null) NewDataFromController(null); //событие о получении новых данных                       
+                    }
+                }
+
+                UsbDevice.Exit();
+                _usbReader = null;
+                _usbWriter = null;
+                _myUsbDevice = null;
+                //return;
+            }
+
+
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.Arduino_Gerber09)
+            {
+                string StringError = "Поддержка данного контроллера ещё не реализована.";
+                _connected = false;
+
+                AddMessage(StringError);
+
+                //запустим событие о разрыве связи
+                if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(StringError));
+            }
+
+
+
+
+
+            if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage("")); //событие завершения работы
+
+            AddMessage("Завершение потока.................");
+
+        } //окончание потока работы с контроллерами
+
+
+        #endregion
+
+
+        /// <summary>
+        /// Проверка наличия связи, и незанятости контроллера
+        /// </summary>
+        /// <returns>булево, возможно ли посылать контроллеру задачи</returns>
+        public static bool TestAllowActions()
+        {
+            if (!Connected) return false;
+
+            if (_lockIsSet) return false;
+
+            return true;
+        }
+
+        #endregion
+
+        #region параметры
+
+        /// <summary>
+        /// Наличие связи с контроллером
+        /// </summary>
+        private static volatile bool _connected = false;
+
+        /// <summary>
+        /// Для определения того используется, ли контроллер каким-либо потоком. Чисто формально.
+        /// что-бы в этот момент другие клиенты не подключались к контроллеру
+        /// </summary>
+        private static bool _lockIsSet;
+
+        /// <summary>
+        /// Поток для получения, посылки данных в контроллер
+        /// </summary>
+        private static BackgroundWorker _theads;
+
+        // для контроллера planet-cnc
+        private static UsbDevice _myUsbDevice;
+        private static ErrorCode _ec;
+        private static UsbEndpointReader _usbReader;
+        private static UsbEndpointWriter _usbWriter;
+        // для ардуино контроллера
+        private static SerialPort _serialPort;
+
+        /// <summary>
+        /// Информация о параметрах контроллера
+        /// </summary>
+        public static volatile deviceInfo INFO = new deviceInfo();
+
+
+        /// <summary>
+        /// Информация о применении смещения
+        /// </summary>
+        public static volatile correctionPos CorrectionPos = new correctionPos();
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+        #region Planet-CNC
+
+
+
+        private static bool Get_connect_PlanetCNC()
+        {
+            //vid 2121 pid 2130 в десятичной системе будет как 8481 и 8496 соответственно
+            UsbDeviceFinder myUsbFinder = new UsbDeviceFinder(8481, 8496);
+
+            // Попытаемся установить связь
+            _myUsbDevice = UsbDevice.OpenUsbDevice(myUsbFinder);
+
+            if (_myUsbDevice == null)
+            {
+
+                string StringError = "Не найден подключенный контроллер.";
+                _connected = false;
+
+                AddMessage(StringError);
+
+                //запустим событие о разрыве связи
+                if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(StringError));
+
+                return false;
+            }
+
+            IUsbDevice wholeUsbDevice = _myUsbDevice as IUsbDevice;
+            if (!ReferenceEquals(wholeUsbDevice, null))
+            {
+                // This is a "whole" USB device. Before it can be used, 
+                // the desired configuration and interface must be selected.
+
+                // Select config #1
+                wholeUsbDevice.SetConfiguration(1);
+
+                // Claim interface #0.
+                wholeUsbDevice.ClaimInterface(0);
+            }
+
+            // open read endpoint 1.
+            _usbReader = _myUsbDevice.OpenEndpointReader(ReadEndpointID.Ep01);
+
+            // open write endpoint 1.
+            _usbWriter = _myUsbDevice.OpenEndpointWriter(WriteEndpointID.Ep01);
+
+
+            return true;
+        }
+
+
+
+
+        #endregion
+
+
+
+
+
+
+
+        #region разбор
+
+
+        /// <summary>
+        /// Выполнение G-кода
+        /// </summary>
+        /// <param name="command">строка с G-кодом</param>
+        public static void ExecuteCommand(string command)
+        {
+            DataRow dataRowNow = new DataRow(0, command);
+            DataLoader.FillStructure(PlanetCNC_Controller.LastStatus, ref dataRowNow);
+
+
+
+
+            if (dataRowNow.Machine.SpindelON != PlanetCNC_Controller.LastStatus.Machine.SpindelON || dataRowNow.Machine.SpeedSpindel != PlanetCNC_Controller.LastStatus.Machine.SpeedSpindel)
+            {
+                Controller.SendBinaryData(BinaryData.pack_B5(dataRowNow.Machine.SpindelON, 2, BinaryData.TypeSignal.Hz, dataRowNow.Machine.SpeedSpindel));
+
+                //зафиксируем
+                PlanetCNC_Controller.LastStatus = dataRowNow;
+            }
+
+
+            if (dataRowNow.POS.X != PlanetCNC_Controller.LastStatus.POS.X || dataRowNow.POS.Y != PlanetCNC_Controller.LastStatus.POS.Y || dataRowNow.POS.Z != PlanetCNC_Controller.LastStatus.POS.Z || dataRowNow.POS.Z != PlanetCNC_Controller.LastStatus.POS.Z)
+            {
+                // int xtmp = Controller.INFO.NuberCompleatedInstruction + 10;
+
+
+                // не будем давать возможность слать более чем данное количество комманд
+                //if (dataRowNow.numberRow>xtmp) return;
+
+
+
+                Controller.SendBinaryData(BinaryData.pack_CA(Controller.INFO.CalcPosPulse("X", dataRowNow.POS.X),
+                                                                Controller.INFO.CalcPosPulse("Y", dataRowNow.POS.Y),
+                                                                Controller.INFO.CalcPosPulse("Z", dataRowNow.POS.Z),
+                                                                Controller.INFO.CalcPosPulse("A", dataRowNow.POS.A),
+                                                                dataRowNow.Machine.SpeedMaсhine,
+                                                                dataRowNow.numberRow));
+
+                //зафиксируем
+                PlanetCNC_Controller.LastStatus = dataRowNow;
+            }
+
+
+
+
+        }
+
+        /// <summary>
+        /// Парсит полученные данные с контроллера
+        /// </summary>
+        /// <param name="readBuffer"></param>
+        private static void ParseInfo(IList<byte> readBuffer)
+        {
+
+            int ttm = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 2.1);
+
+            if (ttm > 5000) return;
+
+            //TODO: иногда в МК2 бывает глюк, поэтому защитимся от него, костылем
+            //if (readBuffer[10] == 0x58 && readBuffer[11] == 0x02 && readBuffer[22] == 0x20 && readBuffer[23] == 0x02) return;
+
+            INFO.FreebuffSize = readBuffer[1];
+
+            INFO.shpindel_MoveSpeed = 0;
+
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK1)
+            {
+                INFO.shpindel_MoveSpeed = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 2.1);
+            }
+
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK2)
+            {
+                INFO.shpindel_MoveSpeed = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 1.341);
+            }
+
+
+
+            INFO.shpindel_MoveSpeedSumm = (INFO.shpindel_MoveSpeedSumm + INFO.shpindel_MoveSpeed)/2;
+
+            INFO.shpindel_STOPPED = INFO.shpindel_MoveSpeedSumm == 0;
+
+
+
+            INFO.AxesX_PositionPulse = (readBuffer[27] * 16777216) + (readBuffer[26] * 65536) + (readBuffer[25] * 256) + (readBuffer[24]);
+            INFO.AxesY_PositionPulse = (readBuffer[31] * 16777216) + (readBuffer[30] * 65536) + (readBuffer[29] * 256) + (readBuffer[28]);
+            INFO.AxesZ_PositionPulse = (readBuffer[35] * 16777216) + (readBuffer[34] * 65536) + (readBuffer[33] * 256) + (readBuffer[32]);
+            INFO.AxesA_PositionPulse = (readBuffer[39] * 16777216) + (readBuffer[38] * 65536) + (readBuffer[37] * 256) + (readBuffer[36]);
+
+            INFO.AxesX_LimitMax = (readBuffer[15] & (1 << 0)) != 0;
+            INFO.AxesX_LimitMin = (readBuffer[15] & (1 << 1)) != 0;
+            INFO.AxesY_LimitMax = (readBuffer[15] & (1 << 2)) != 0;
+            INFO.AxesY_LimitMin = (readBuffer[15] & (1 << 3)) != 0;
+            INFO.AxesZ_LimitMax = (readBuffer[15] & (1 << 4)) != 0;
+            INFO.AxesZ_LimitMin = (readBuffer[15] & (1 << 5)) != 0;
+
+            INFO.NuberCompleatedInstruction = readBuffer[9] * 16777216 + (readBuffer[8] * 65536) + (readBuffer[7] * 256) + (readBuffer[6]);
+
+
+            SuperByte bb = new SuperByte(readBuffer[19]);
+
+            INFO.shpindel_Enable = bb.Bit0;
+
+            SuperByte bb2 = new SuperByte(readBuffer[14]);
+            INFO.Estop = bb2.Bit7;
+        }
+
+        private static void AddMessage(string ss)
+        {
+            if (Message != null) Message(null, new DeviceEventArgsMessage(ss));
+        }
+
+        /// <summary>
+        /// Функция сравнения двух массивов (возврат: Истина - одинаковые, Ложь - различаются)
+        /// </summary>
+        /// <param name="arr1">первый массив</param>
+        /// <param name="arr2">второй массив</param>
+        /// <returns>Истина - одинаковые массивы, Ложь - различающиеся</returns>
+        private static bool CompareArray(byte[] arr1, byte[] arr2)
+        {
+            if (arr1 == null || arr2 == null) return false;
+
+            //проверяем 64 байта
+            bool value = true;
+
+            for (int i = 0; i < 64; i++)
+            {
+                if (arr1[i] != arr2[i])
+                {
+                    value = false;
+                    break;
+                }
+            }
+            return value;
+        }
+
+        #endregion
+
 
         #region Послания данных в контроллер
 
@@ -374,44 +477,30 @@ namespace CNC_App
         /// <param name="checkBuffSize">Проверять ли размер доступного буффера контроллера</param>
         public static void SendBinaryData(byte[] data, bool checkBuffSize = true)
         {
-            if (checkBuffSize && (deviceInfo.FreebuffSize < 2))
-            {
-                //тут нужно зависнуть пока буфер не освободиться
+        //    if (checkBuffSize && (INFO.FreebuffSize < 2))
+        //    {
+        //        //тут нужно зависнуть пока буфер не освободиться
 
-                //TODO: перед выполнением проверять буфер на занятость....
+        //        //TODO: перед выполнением проверять буфер на занятость....
 
-            }
+        //    }
 
             // ReSharper disable once SuggestVarOrType_BuiltInTypes
             // ReSharper disable once RedundantAssignment
             int bytesWritten = 64;
 
-            if (Setting.DeviceModel != DeviceModel.Emulator)
-            {
+            //if (Setting.DeviceModel != DeviceModel.Emulator)
+            //{
                _ec = _usbWriter.Write(data, 2000, out bytesWritten); 
-            }
-            else
-            {
+            //}
+           // else
+           // {
                 //TODO: добавить посылку виртуальному
-            }
+           // }
             
         }
 
-        /// <summary>
-        /// Включение шпинделя
-        /// </summary>
-        public static void Spindel_ON()
-        {
-            SendBinaryData(BinaryData.pack_B5(true));
-        }
 
-        /// <summary>
-        /// Выключение шпинделя
-        /// </summary>
-        public static void Spindel_OFF()
-        {
-            SendBinaryData(BinaryData.pack_B5(false));
-        }
 
         /// <summary>
         /// Посылка аварийной остановки
@@ -482,146 +571,155 @@ namespace CNC_App
         /// <param name="x">Положение в импульсах</param>
         /// <param name="y">Положение в импульсах</param>
         /// <param name="z">Положение в импульсах</param>
-        public static void DeviceNewPosition(int x, int y, int z)
+        /// <param name="a">Положение в импульсах</param>
+        public static void DeviceNewPosition(int x, int y, int z, int a)
         {
             if (!TestAllowActions()) return;
 
-            SendBinaryData(BinaryData.pack_C8(x, y, z,0));
+            SendBinaryData(BinaryData.pack_C8(x, y, z,a));
         }
 
-        /// <summary>
+       /// <summary>
         /// Установка в контроллер, нового положения по осям в ммилиметрах
         /// </summary>
         /// <param name="x">в миллиметрах</param>
         /// <param name="y">в миллиметрах</param>
         /// <param name="z">в миллиметрах</param>
         // ReSharper disable once UnusedMember.Global
-        public static void DeviceNewPosition(decimal x, decimal y, decimal z)
+        public static void DeviceNewPosition(decimal x, decimal y, decimal z, decimal a)
         {
             if (!TestAllowActions()) return;
 
-            SendBinaryData(BinaryData.pack_C8(deviceInfo.CalcPosPulse("X", x), deviceInfo.CalcPosPulse("Y", y), deviceInfo.CalcPosPulse("Z", z),0));
+            SendBinaryData(BinaryData.pack_C8(INFO.CalcPosPulse("X", x), INFO.CalcPosPulse("Y", y), INFO.CalcPosPulse("Z", z), INFO.CalcPosPulse("A", a)));
         }
 
+
+
+
+        public static void ResetToZeroAxes(string nameAxes)
+        {
+            switch (nameAxes)
+            {
+                case "X":
+                    DeviceNewPosition(0, INFO.AxesY_PositionPulse, INFO.AxesZ_PositionPulse, INFO.AxesA_PositionPulse);
+                    break;
+
+                case "Y":
+                    DeviceNewPosition(INFO.AxesX_PositionPulse, 0, INFO.AxesZ_PositionPulse, INFO.AxesA_PositionPulse);
+                    break;
+
+                case "Z":
+                    DeviceNewPosition(INFO.AxesX_PositionPulse, INFO.AxesY_PositionPulse, 0, INFO.AxesA_PositionPulse);
+                    break;
+
+                case "A":
+                    DeviceNewPosition(INFO.AxesX_PositionPulse, INFO.AxesY_PositionPulse, INFO.AxesZ_PositionPulse, 0);
+                    break;
+            }
+        }
+
+ 
 
 
         #endregion
-
     }
 
-    /// <summary>
-    /// Аргументы для события
-    /// </summary>
-    public class DeviceEventArgsMessage
-    {
-        protected string _str;
 
-        public string Message
-        {
-            get { return _str; }
-            set { _str = value;}
-        }
 
-        public DeviceEventArgsMessage(string Str)
-        {
-            _str = Str;
-        }
-    }
 
-    /// <summary>
-    /// Статусы работы с устройством
-    /// </summary>
-    public enum EStatusDevice { Connect = 0, Disconnect };
-
-    public static class deviceInfo
+    public class deviceInfo
     {
         /// <summary>
         /// Сырые данные от контроллера
         /// </summary>
-        public static byte[] rawData = new byte[64];
+        public byte[] rawData = new byte[64];
 
         /// <summary>
         /// Размер доступного буфера в контроллере
         /// </summary>
-        public static byte FreebuffSize = 0;
+        public byte FreebuffSize = 0;
         /// <summary>
         /// Номер выполненной инструкции
         /// </summary>
-        public static int NuberCompleatedInstruction = 0;
+        public int NuberCompleatedInstruction = 0;
 
         /// <summary>
         /// Текущее положение в импульсах
         /// </summary>
-        public static int AxesX_PositionPulse = 0;
+        public int AxesX_PositionPulse = 0;
         /// <summary>
         /// Текущее положение в импульсах
         /// </summary>
-        public static int AxesY_PositionPulse = 0;
+        public int AxesY_PositionPulse = 0;
         /// <summary>
         /// Текущее положение в импульсах
         /// </summary>
-        public static int AxesZ_PositionPulse = 0;        
+        public int AxesZ_PositionPulse = 0;        
         /// <summary>
         /// Текущее положение в импульсах
         /// </summary>
-        public static int AxesA_PositionPulse = 0;
+        public int AxesA_PositionPulse = 0;
 
         //public static int AxesX_PulsePerMm = 400;
         //public static int AxesY_PulsePerMm = 400;
         //public static int AxesZ_PulsePerMm = 400;
 
         //срабатывание сенсора
-        public static bool AxesX_LimitMax = false;
-        public static bool AxesX_LimitMin = false;
-        public static bool AxesY_LimitMax = false;
-        public static bool AxesY_LimitMin = false;
-        public static bool AxesZ_LimitMax = false;
-        public static bool AxesZ_LimitMin = false;
-        public static bool AxesA_LimitMax = false;
-        public static bool AxesA_LimitMin = false;
+        public bool AxesX_LimitMax = false;
+        public bool AxesX_LimitMin = false;
+        public bool AxesY_LimitMax = false;
+        public bool AxesY_LimitMin = false;
+        public bool AxesZ_LimitMax = false;
+        public bool AxesZ_LimitMin = false;
+        public bool AxesA_LimitMax = false;
+        public bool AxesA_LimitMin = false;
 
 
-        public static int shpindel_MoveSpeed = 0;
-        public static bool shpindel_Enable = false;
-
-        public static bool Estop = false;
-
+        public int shpindel_MoveSpeed = 0;
+        public bool shpindel_Enable = false;
+        public bool Estop = false;
 
         /// <summary>
-        /// Использование виртуального контроллера
+        /// Данный параметр вычисляется усредненнием значений скорости, из выборки последних 10 значенией
+        /// Если это значение равно 0 то "shpindel_STOPPED = true" иначе значение равно "ложь"
         /// </summary>
-        public static bool DEMO_DEVICE = false;
+        public bool shpindel_STOPPED = true;
+        public int shpindel_MoveSpeedSumm = 0;
+
+        
 
 
-        public static decimal AxesX_PositionMM
+
+
+        public decimal AxesX_PositionMM
         {
             get
             {
-                return (decimal)AxesX_PositionPulse / Setting.PulseX;
+                return (decimal)Controller.INFO.AxesX_PositionPulse / GlobalSetting.ControllerSetting.AxleX.countPulse;
             }
         }
 
-        public static decimal AxesY_PositionMM
+        public decimal AxesY_PositionMM
         {
             get
             {
-                return (decimal)AxesY_PositionPulse / Setting.PulseY;
+                return (decimal)Controller.INFO.AxesY_PositionPulse / GlobalSetting.ControllerSetting.AxleY.countPulse;
             }
         }
 
-        public static decimal AxesZ_PositionMM
+        public decimal AxesZ_PositionMM
         {
             get
             {
-                return (decimal)AxesZ_PositionPulse / Setting.PulseZ;
+                return (decimal)Controller.INFO.AxesZ_PositionPulse / GlobalSetting.ControllerSetting.AxleZ.countPulse;
             }
         }
 
-        public static decimal AxesA_PositionMM
+        public decimal AxesA_PositionMM
         {
             get
             {
-                return (decimal)AxesA_PositionPulse / Setting.PulseA;
+                return (decimal)Controller.INFO.AxesA_PositionPulse / GlobalSetting.ControllerSetting.AxleA.countPulse;
             }
         }
 
@@ -631,15 +729,48 @@ namespace CNC_App
         /// <param name="axes">имя оси X,Y,Z</param>
         /// <param name="posMm">положение в мм</param>
         /// <returns>Количество импульсов</returns>
-        public static int CalcPosPulse(string axes, decimal posMm)
+        public int CalcPosPulse(string axes, decimal posMm)
         {
-            if (axes == "X") return (int)(posMm * Setting.PulseX);
-            if (axes == "Y") return (int)(posMm * Setting.PulseY);
-            if (axes == "Z") return (int)(posMm * Setting.PulseZ);
-            if (axes == "A") return (int)(posMm * Setting.PulseA);
+            if (axes == "X") return (int)(posMm * GlobalSetting.ControllerSetting.AxleX.countPulse);
+            if (axes == "Y") return (int)(posMm * GlobalSetting.ControllerSetting.AxleY.countPulse);
+            if (axes == "Z") return (int)(posMm * GlobalSetting.ControllerSetting.AxleZ.countPulse);
+            if (axes == "A") return (int)(posMm * GlobalSetting.ControllerSetting.AxleA.countPulse);
             return 0;
         }
     }
+
+
+
+
+    /// <summary>
+    /// Аргументы для события
+    /// </summary>
+    public class DeviceEventArgsMessage
+    {
+        protected string _str;
+        
+        public string Message
+        {
+            get { return _str; }
+            set { _str = value;}
+        }
+
+        public DeviceEventArgsMessage(string Str)
+        {
+            _str = Str;
+            
+        }
+    }
+
+    /// <summary>
+    /// Статусы работы с устройством
+    /// </summary>
+    public enum EStatusDevice { Connect = 0, Disconnect };
+
+
+
+
+
 
     /// <summary>
     /// Класс для получиния бинарных данных
@@ -678,6 +809,13 @@ namespace CNC_App
         /// <returns></returns>
         public static byte[] pack_B5(bool shpindelON, int numShimChanel = 0, TypeSignal ts = TypeSignal.None, int SpeedShim = 0)
         {
+
+            int tmpSpeed = SpeedShim;
+
+            //что-бы не привысить максимум, после которого контроллер вырубается с ошибкой...
+            if (tmpSpeed > 65000) tmpSpeed = 65000;
+
+
             byte[] buf = new byte[64];
 
             buf[0] = 0xB5;
@@ -698,47 +836,47 @@ namespace CNC_App
             switch (numShimChanel)
             {
                 case 2:
-                {
-                    buf[8] = 0x02;
-                    break;
-                }
+                    {
+                        buf[8] = 0x02;
+                        break;
+                    }
                 case 3:
-                {
-                    buf[8] = 0x03;
-                    break;
-                }
+                    {
+                        buf[8] = 0x03;
+                        break;
+                    }
                 default:
-                {
-                    buf[8] = 0x00; //доступен только 2 и 3 канал, остальные не подходят....
-                    break;
-                }
+                    {
+                        buf[8] = 0x00; //доступен только 2 и 3 канал, остальные не подходят....
+                        break;
+                    }
             }
 
 
             switch (ts)
             {
                 case TypeSignal.Hz:
-                {
-                    buf[9] = 0x01;
-                    break;
-                }
+                    {
+                        buf[9] = 0x01;
+                        break;
+                    }
 
-                case  TypeSignal.RC:
-                {
-                    buf[9] = 0x02;
-                    break;
-                }
+                case TypeSignal.RC:
+                    {
+                        buf[9] = 0x02;
+                        break;
+                    }
                 default:
-                {
-                    buf[9] = 0x00;
-                    break;
-                }
+                    {
+                        buf[9] = 0x00;
+                        break;
+                    }
             }
 
 
 
 
-            int itmp = SpeedShim;
+            int itmp = tmpSpeed;
             buf[10] = (byte)(itmp);
             buf[11] = (byte)(itmp >> 8);
             buf[12] = (byte)(itmp >> 16);
@@ -748,8 +886,48 @@ namespace CNC_App
             //buf[11] = 0xFF;
             //buf[12] = 0x04;
 
+            //зафиксируем
+            PlanetCNC_Controller.LastStatus.Machine.SpindelON = shpindelON;
+
             return buf;
         }
+
+
+
+        public static byte[] pack_B6(bool chanel2ON,bool chanel3ON)
+        {
+            byte[] buf = new byte[64];
+
+            buf[0] = 0xB6;
+            buf[4] = 0x80;
+
+            if (chanel2ON)
+            {
+                buf[5] = 0x02;
+            }
+            else
+            {
+                buf[5] = 0x01;
+            }
+
+            if (chanel3ON)
+            {
+                buf[7] = 0x02;
+            }
+            else
+            {
+                buf[7] = 0x01;
+            }
+            //зафиксируем
+            PlanetCNC_Controller.LastStatus.Machine.Chanel2ON = chanel2ON;
+            PlanetCNC_Controller.LastStatus.Machine.Chanel3ON = chanel3ON;
+
+            return buf;
+        }
+
+
+
+
 
         /// <summary>
         /// Аварийная остановка
@@ -840,7 +1018,7 @@ namespace CNC_App
             buf[46] = 0x10;
 
             // 
-            int inewReturn = (int)(returnDistance * Setting.PulseZ);
+            int inewReturn = (int)(returnDistance * GlobalSetting.ControllerSetting.AxleZ.countPulse);
 
             //растояние возврата
             buf[50] = (byte)(inewReturn);
@@ -885,7 +1063,7 @@ namespace CNC_App
             buf[11] = (byte)(inewSpd >> 8);
             buf[12] = (byte)(inewSpd >> 16);
 
-            if (Setting.DeviceModel == DeviceModel.MK2)
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK2)
             {
                 //TODO: Для МК2 немного иные посылки данных
 
@@ -1062,8 +1240,23 @@ namespace CNC_App
             return buf;
         }
 
+
+
+
+
+
+        public static byte[] pack_9F(byte value)
+        {
+            byte[] buf = new byte[64];
+
+            buf[0] = 0x9e;
+            buf[5] = value;
+
+            return buf;
+        }
+
         /// <summary>
-        /// Установка ограничения скорости
+        /// Установка ограничения максимальной скорости, по осям
         /// </summary>
         /// <param name="speedLimitX">Максимальная скорость по оси X</param>
         /// <param name="speedLimitY">Максимальная скорость по оси Y</param>
@@ -1079,13 +1272,13 @@ namespace CNC_App
 
             double koef = 4500;
 
-            if (Setting.DeviceModel == DeviceModel.MK1)
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK1)
             {
                 buf[4] = 0x80; //TODO: непонятный байт
                 koef = 3600;
             }
 
-            if (Setting.DeviceModel == DeviceModel.MK2)
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK2)
             {
                 buf[4] = 0x00; //TODO: непонятный байт
                 koef = 4500;
@@ -1152,13 +1345,32 @@ namespace CNC_App
         /// <param name="AngleVectors">Угол, на который измениться направление движения</param>
         /// <param name="Distance">Длина данного отрезка в мм</param>
         /// <returns>набор данных для посылки</returns>
-        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _posA, int _speed, int _NumberInstruction, int AngleVectors, decimal Distance, int _valuePause = 0x39)
+        public static byte[] pack_CA(int _posX, int _posY, int _posZ, int _posA, int _speed, int _NumberInstruction = 0, bool _withoutpause = false)
         {
             int newPosX = _posX;
             int newPosY = _posY;
             int newPosZ = _posZ;
             int newPosA = _posA;
             int newInst = _NumberInstruction;
+
+
+
+
+
+            //корректировка положения
+            if (Controller.CorrectionPos.useCorrection)
+            {
+                newPosX += Controller.INFO.CalcPosPulse("X", Controller.CorrectionPos.deltaX);
+                newPosY += Controller.INFO.CalcPosPulse("Y", Controller.CorrectionPos.deltaY);
+                newPosZ += Controller.INFO.CalcPosPulse("Z", Controller.CorrectionPos.deltaZ);
+                newPosA += Controller.INFO.CalcPosPulse("A", Controller.CorrectionPos.deltaA);
+            }
+
+
+
+
+
+
 
             byte[] buf = new byte[64];
 
@@ -1179,10 +1391,10 @@ namespace CNC_App
 
             //if (deltaAngle <= 25) 
             //buf[5] = 0x03;
-            buf[5] = (byte)_valuePause;
+            //buf[5] = (byte)_valuePause;
 
 
-            if (Distance >0 && Distance < 5) buf[5] = 0x03;
+           // if (Distance >0 && Distance < 5) buf[5] = 0x03;
 
             //if (deltaAngle < 15) buf[5] = 0x10;
 
@@ -1202,14 +1414,15 @@ namespace CNC_App
 
             //TODO: старый алгоритм для удаления
             //// 0х01 нет паузы, 0х39 есть пауза (при маленькой паузе, и большой скорости происходит срыв...)
-            //if (AngleVectors > 170 && AngleVectors < 190)
-            //{
-            //    buf[5] = 0x01;
-            //}
-            //else
-            //{
-            //    buf[5] = 0x39;
-            //}
+
+            if (_withoutpause)
+            {
+                buf[5] = 0x01;
+            }
+            else
+            {
+                buf[5] = 0x39;
+            }
 
             //сколько импульсов сделать
             buf[6] = (byte)(newPosX);
@@ -1239,13 +1452,14 @@ namespace CNC_App
 
             double koef = 4500;
 
-            if (Setting.DeviceModel == DeviceModel.MK1)
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK1)
             {
                 buf[4] = 0x80; //TODO: непонятный байт
-                koef = 3600;
+                //koef = 3600;
+                koef = 2000;
             }
 
-            if (Setting.DeviceModel == DeviceModel.MK2)
+            if (GlobalSetting.AppSetting.Controller == ControllerModel.PlanetCNC_MK2)
             {
                 buf[4] = 0x00; //TODO: непонятный байт
                 koef = 4500;
@@ -1257,12 +1471,12 @@ namespace CNC_App
             //TODO: Учесть длину траектории, если она короткая то нельзя ставить большую скорость, т.к. легко можно сорвать вращение 
             //int SpeedToSend = _speed;
 
-            int SpeedToSend = 2328; 
-            //старый код
-            if (_speed != 0)
-            {
-                SpeedToSend = _speed;
-            }
+            //int SpeedToSend = 2328; 
+            ////старый код
+            //if (_speed != 0)
+            //{
+            //    SpeedToSend = _speed;
+            //}
 
             //TODO: добавить ограничение скорости от дистанции!!!
             //при большой дистанции используем скорость заданную G-кодом
@@ -1287,7 +1501,7 @@ namespace CNC_App
 
 
 
-            int iSpeed = (int)(koef / SpeedToSend) * 1000;
+            int iSpeed = (int)(koef / _speed) * 1000;
             //скорость ось х
             buf[43] = (byte)(iSpeed);
             buf[44] = (byte)(iSpeed >> 8);
@@ -1342,72 +1556,31 @@ namespace CNC_App
 
     #region НАБОР ДАННЫХ
 
-    /// <summary>
-    /// Содержит наборы данных G-kode, и для вывода 3d
-    /// </summary>
-    public static class dataCode
-    {
-        ///// <summary>
-        ///// Набор готовых инструкций для станка 
-        ///// </summary>
-        //public static List<GKOD_ready> GKODready = new List<GKOD_ready>();
-
-        /// <summary>
-        /// Набор сырых инструкций для станка 
-        /// </summary>
-        //public static List<GKOD_raw> GKODraw = new List<GKOD_raw>();
-
-        /// <summary>
-        /// Набор точек матрицы, получаемой при сканировании поверхности
-        /// </summary>
-        //public static List<matrixYline> Matrix = new List<matrixYline>(); 
-
-
-        ///// <summary>
-        ///// Очистка данных
-        ///// </summary>
-        //public static void Clear()
-        //{
-        //    //GKODready.Clear();
-        //    //GKODraw.Clear();
-        //}
-
-
-
-
-        //Более удобная матрица
-        public static dobPoint[,] matrix2 = new dobPoint[1,1]; 
-
-
-    
-    
-    
-    }
 
 
 
 
 
 
-    public class matrixYline
-    {
-        public decimal Y = 0;       // координата в мм
-        public List<matrixPoint> X = new List<matrixPoint>(); //набор координат по оси X, и свойства используется ли эта точка
-    }
+    //public class matrixYline
+    //{
+    //    public decimal Y = 0;       // координата в мм
+    //   // public List<matrixPoint> X = new List<matrixPoint>(); //набор координат по оси X, и свойства используется ли эта точка
+    //}
 
-    public class matrixPoint
-    {
-        public decimal X = 0;       // координата в мм
-        public decimal Z = 0;       // координата в мм
-        public bool Used = false;       // используется ли эта точка
+    //public class matrixPoint
+    //{
+    //    public decimal X = 0;       // координата в мм
+    //    public decimal Z = 0;       // координата в мм
+    //    public bool Used = false;       // используется ли эта точка
 
-        public matrixPoint(decimal _X, decimal _Z, bool _Used)
-        {
-            X = _X;
-            Z = _Z;
-            Used = _Used;
-        }
-    }
+    //    public matrixPoint(decimal _X, decimal _Z, bool _Used)
+    //    {
+    //        X = _X;
+    //        Z = _Z;
+    //        Used = _Used;
+    //    }
+    //}
 
 
 
@@ -1451,76 +1624,56 @@ namespace CNC_App
     }
 
 
-    //класс для работы с геометрией
-    public static class Geometry
-    {
-        /*
-         *    Корректировка высоты по оси Z, у точки №5, зная высоту по Z у точек 1,2,3,4 
-         * 
-         *  /\ ось Y
-         *  |
-         *  |    (точка №1) -------------*--------------- (точка №2)
-         *  |                            |
-         *  |                            |
-         *  |                            |
-         *  |                       (точка №5)
-         *  |                            |
-         *  |                            |
-         *  |    (точка №3) -------------*--------------- (точка №4)
-         *  |
-         *  |
-         *  *----------------------------------------------------------------> ось X 
-         *  Корректировка выполняется следующим образом:
-         *  1) зная координату X у точки 5, и координаты точек 1 и 2, вычисляем высоту Z в точке которая находится на линии точек 1,2 и перпендикулярно 5-й точке (получает точку №12)
-         *  2) Тоже самое вычисляется для точки на линии точек 3,4 (получает точку №34)
-         *  3) Зная координаты точек №12, №34 и значение по оси Y у точки 5, вычисляем высоту по оси Z 
-         */
 
+
+    /// <summary>
+    /// Хласс для хранения данных о смещении координат, пропорций и прочего
+    /// </summary>
+    public class correctionPos
+    {
+        /// <summary>
+        /// Статус применения корректировки
+        /// </summary>
+        public bool useCorrection;
+        /// <summary>
+        /// Смещение по X
+        /// </summary>
+        public decimal deltaX;
+        /// <summary>
+        /// Смещение по Y
+        /// </summary>
+        public decimal deltaY;
+        /// <summary>
+        /// Смещение по Z
+        /// </summary>
+        public decimal deltaZ;
+        /// <summary>
+        /// Смещение по A
+        /// </summary>
+        public decimal deltaA;
 
         /// <summary>
-        /// Функция корректирует высоту по оси Z
+        /// Применение матрицы сканирования поверхности
         /// </summary>
-        /// <param name="p1">первая точка первой линии X</param>
-        /// <param name="p2">вторая точка первой линии X</param>
-        /// <param name="p3">первая точка второй линии X</param>
-        /// <param name="p4">вторая точка второй линии X</param>
-        /// <param name="p5">точка у которой нужно скорректировать высоту</param>
-        /// <returns></returns>
-        public static dobPoint GetZ(dobPoint p1, dobPoint p2, dobPoint p3, dobPoint p4, dobPoint p5)
+        public bool UseMatrix;
+
+        public correctionPos()
         {
-            dobPoint p12 = CalcPX(p1, p2, p5);
-            dobPoint p34 = CalcPX(p3, p4, p5);
-
-            dobPoint p1234 = CalcPY(p12, p34, p5);
-
-            return p1234;
-        }
-
-        //нахождение высоты Z точки p0, лежащей на прямой которая паралельна оси X
-        public static dobPoint CalcPX(dobPoint p1, dobPoint p2, dobPoint p0)
-        {
-            dobPoint ReturnPoint = new dobPoint(p0.X, p0.Y, p0.Z,0);
-
-            ReturnPoint.Z = p1.Z + (((p1.Z - p2.Z) / (p1.X - p2.X)) * (p0.X - p1.X));
-
-            //TODO: учесть на будущее что точка 1 и 2 могут лежать не на одной паралльной линии оси Х
-            ReturnPoint.Y = p1.Y;
-
-            return ReturnPoint;
+            useCorrection = false;
+            deltaX = 0;
+            deltaY = 0;
+            deltaZ = 0;
+            deltaA = 0;
+            UseMatrix = false;
         }
 
 
 
-        //TODO: деление на ноль
-        //нахождение высоты Z точки p0, лежащей на прямой между точками p3 p4  (прямая паралельна оси Y)
-        public static dobPoint CalcPY(dobPoint p1, dobPoint p2, dobPoint p0)
-        {
-            dobPoint ReturnPoint = new dobPoint(p0.X, p0.Y, p0.Z,0);
 
-            ReturnPoint.Z = p1.Z + (((p1.Z - p2.Z) / (p1.Y - p2.Y)) * (p0.Y - p1.Y));
-
-            return ReturnPoint;
-        }
 
     }
+
+
 }
+
+

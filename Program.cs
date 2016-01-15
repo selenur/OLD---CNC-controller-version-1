@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CNC_App
+namespace CNC_Assist
 {
     static class Program
     {

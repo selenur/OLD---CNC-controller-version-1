@@ -1,84 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="CNC_App.SuperByte" Collapsed="true">
-    <Position X="10" Y="0.5" Width="2.75" />
+  <Class Name="CNC_Assist.ScanSurface">
+    <Position X="5.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQQAgAAAAAAAQACAAPAPAQAAAAAAAAAAABAAAAAACAA=</HashCode>
-      <FileName>SuperByte.cs</FileName>
+      <HashCode>AEABAAAAAAAAAACAAAAIAAgAAAigAABAAAACAAEAAAA=</HashCode>
+      <FileName>ScanSurface.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CNC_App.BinaryData">
-    <Position X="2" Y="1.75" Width="3" />
-    <NestedTypes>
-      <Enum Name="CNC_App.BinaryData.TypeSignal" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>CONTROLLER.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
+  <Class Name="CNC_Assist.SurfacePoint">
+    <Position X="8.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIBGAAAAAAAAAAAgLAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAwAIAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>ScanSurface.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CNC_App.Controller" Collapsed="true">
-    <Position X="1.75" Y="0.5" Width="3.75" />
-    <Compartments>
-      <Compartment Name="Nested Types" Collapsed="false" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>EIUCEBEIQABAYIIAAAcAhIAAgACEAACABYAAIAAAAEA=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CNC_App.DeviceEventArgsMessage">
-    <Position X="8.5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CNC_App.deviceInfo" Collapsed="true">
-    <Position X="5.75" Y="2" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAAgQEBCABAgIACAACBIAYAAABAAAAAgAAgAQAIAACA=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CNC_App.matrixYline">
-    <Position X="10.25" Y="4.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CNC_App.matrixPoint">
-    <Position X="8.5" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEE=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CNC_App.dobPoint">
-    <Position X="10.25" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CNC_App.Geometry">
-    <Position X="8.5" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Enum Name="CNC_App.EStatusDevice">
-    <Position X="10.25" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>CONTROLLER.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

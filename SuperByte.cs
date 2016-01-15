@@ -1,4 +1,4 @@
-namespace CNC_App
+namespace CNC_Assist
 {
     /// <summary>
     /// Класс для работы с байтом, со спец. возможностями

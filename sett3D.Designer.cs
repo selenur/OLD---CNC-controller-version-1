@@ -1,4 +1,4 @@
-﻿namespace CNC_App
+﻿namespace CNC_Assist
 {
     partial class Sett3D
     {

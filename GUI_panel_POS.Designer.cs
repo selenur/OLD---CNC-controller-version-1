@@ -1,6 +1,6 @@
-﻿namespace CNC_App
+﻿namespace CNC_Assist
 {
-    partial class GUI_panel_POS
+    partial class GuiPanelPos
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBoxPositions = new System.Windows.Forms.GroupBox();
             this.buttonAtoZero = new System.Windows.Forms.Button();
             this.numPosA = new System.Windows.Forms.NumericUpDown();
@@ -41,6 +42,7 @@
             this.labelposZ = new System.Windows.Forms.Label();
             this.labelposY = new System.Windows.Forms.Label();
             this.labelposX = new System.Windows.Forms.Label();
+            this.timer_Refresh = new System.Windows.Forms.Timer(this.components);
             this.groupBoxPositions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosZ)).BeginInit();
@@ -71,8 +73,8 @@
             // 
             // buttonAtoZero
             // 
-            this.buttonAtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
-            this.buttonAtoZero.Location = new System.Drawing.Point(4, 114);
+            this.buttonAtoZero.Image = global::CNC_Assist.Properties.Resources.digit_separator;
+            this.buttonAtoZero.Location = new System.Drawing.Point(4, 113);
             this.buttonAtoZero.Name = "buttonAtoZero";
             this.buttonAtoZero.Size = new System.Drawing.Size(26, 28);
             this.buttonAtoZero.TabIndex = 15;
@@ -83,7 +85,7 @@
             // 
             this.numPosA.DecimalPlaces = 3;
             this.numPosA.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosA.Location = new System.Drawing.Point(66, 114);
+            this.numPosA.Location = new System.Drawing.Point(66, 113);
             this.numPosA.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -111,8 +113,8 @@
             // 
             // buttonZtoZero
             // 
-            this.buttonZtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
-            this.buttonZtoZero.Location = new System.Drawing.Point(4, 81);
+            this.buttonZtoZero.Image = global::CNC_Assist.Properties.Resources.digit_separator;
+            this.buttonZtoZero.Location = new System.Drawing.Point(4, 80);
             this.buttonZtoZero.Name = "buttonZtoZero";
             this.buttonZtoZero.Size = new System.Drawing.Size(26, 28);
             this.buttonZtoZero.TabIndex = 12;
@@ -121,7 +123,7 @@
             // 
             // buttonYtoZero
             // 
-            this.buttonYtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
+            this.buttonYtoZero.Image = global::CNC_Assist.Properties.Resources.digit_separator;
             this.buttonYtoZero.Location = new System.Drawing.Point(4, 47);
             this.buttonYtoZero.Name = "buttonYtoZero";
             this.buttonYtoZero.Size = new System.Drawing.Size(26, 28);
@@ -131,7 +133,7 @@
             // 
             // buttonXtoZero
             // 
-            this.buttonXtoZero.Image = global::CNC_App.Properties.Resources.digit_separator;
+            this.buttonXtoZero.Image = global::CNC_Assist.Properties.Resources.digit_separator;
             this.buttonXtoZero.Location = new System.Drawing.Point(4, 14);
             this.buttonXtoZero.Name = "buttonXtoZero";
             this.buttonXtoZero.Size = new System.Drawing.Size(26, 28);
@@ -143,7 +145,7 @@
             // 
             this.numPosZ.DecimalPlaces = 3;
             this.numPosZ.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosZ.Location = new System.Drawing.Point(66, 81);
+            this.numPosZ.Location = new System.Drawing.Point(66, 80);
             this.numPosZ.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -183,7 +185,7 @@
             // 
             this.numPosX.DecimalPlaces = 3;
             this.numPosX.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numPosX.Location = new System.Drawing.Point(66, 13);
+            this.numPosX.Location = new System.Drawing.Point(66, 14);
             this.numPosX.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -213,7 +215,7 @@
             // 
             this.labelposY.AutoSize = true;
             this.labelposY.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposY.Location = new System.Drawing.Point(39, 52);
+            this.labelposY.Location = new System.Drawing.Point(39, 53);
             this.labelposY.Name = "labelposY";
             this.labelposY.Size = new System.Drawing.Size(21, 20);
             this.labelposY.TabIndex = 1;
@@ -223,18 +225,24 @@
             // 
             this.labelposX.AutoSize = true;
             this.labelposX.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelposX.Location = new System.Drawing.Point(39, 18);
+            this.labelposX.Location = new System.Drawing.Point(39, 19);
             this.labelposX.Name = "labelposX";
             this.labelposX.Size = new System.Drawing.Size(21, 20);
             this.labelposX.TabIndex = 0;
             this.labelposX.Text = "X";
+            // 
+            // timer_Refresh
+            // 
+            this.timer_Refresh.Enabled = true;
+            this.timer_Refresh.Interval = 50;
+            this.timer_Refresh.Tick += new System.EventHandler(this.timer_Refresh_Tick);
             // 
             // GUI_panel_POS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBoxPositions);
-            this.Name = "GUI_panel_POS";
+            this.Name = "GuiPanelPos";
             this.Size = new System.Drawing.Size(200, 154);
             this.Load += new System.EventHandler(this.GUI_panel_POS_Load);
             this.groupBoxPositions.ResumeLayout(false);
@@ -262,5 +270,6 @@
         private System.Windows.Forms.Button buttonAtoZero;
         private System.Windows.Forms.NumericUpDown numPosA;
         private System.Windows.Forms.Label labelposA;
+        private System.Windows.Forms.Timer timer_Refresh;
     }
 }

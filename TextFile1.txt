@@ -1,5 +1,179 @@
 ﻿
 
+
+/*
+        /// <summary>
+        /// Загрузка из файла настроек
+        /// </summary>
+        /// <returns></returns>
+        public static void LoadSetting()
+        {
+            string sPulseX = LoadProperty("pulseX").Trim();
+            string sPulseY = LoadProperty("pulseY").Trim();
+            string sPulseZ = LoadProperty("pulseZ").Trim();
+            string sStartupConnect = LoadProperty("StartupConnect").Trim();
+            string sDeviceModel = LoadProperty("DeviceModel").Trim();
+            string sLanguage = LoadProperty("Language").Trim();
+
+
+
+            if (sPulseX != "") Setting.PulseX = int.Parse(sPulseX);
+            if (sPulseY != "") Setting.PulseY = int.Parse(sPulseY);
+            if (sPulseZ != "") Setting.PulseZ = int.Parse(sPulseZ);
+
+            if (sStartupConnect != "") StartupConnect = bool.Parse(sStartupConnect);
+
+            switch (sDeviceModel)
+            {
+                case "MK1":
+                    Setting.DeviceModel = DeviceModel.MK1;
+                    break;
+                case "MK2":
+                    Setting.DeviceModel = DeviceModel.MK2;
+                    break;
+                default:
+                    Setting.DeviceModel = DeviceModel.Emulator;
+                    break;
+            }
+
+
+            switch (sLanguage)
+            {
+                case "rus":
+                    Setting.language = eLanguage.rus;
+                    break;
+                case "eng":
+                    Setting.language = eLanguage.eng;
+                    break;
+                default:
+                    Setting.language = eLanguage.eng;
+                    break;
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// Сохранение в файл настроек
+        /// </summary>
+        /// <returns></returns>
+        public static void SaveSetting()
+        {
+            SaveProperty("pulseX", Setting.PulseX.ToString());
+            SaveProperty("pulseY", Setting.PulseY.ToString());
+            SaveProperty("pulseZ", Setting.PulseZ.ToString());
+            SaveProperty("StartupConnect", StartupConnect.ToString());
+            SaveProperty("DeviceModel", Setting.DeviceModel.ToString());
+            SaveProperty("Language", Setting.language.ToString());
+        }
+
+
+
+        /// <summary>
+        /// Функция извлечения параметра из файла настроек
+        /// </summary>
+        /// <param name="property">Имя параметра (строка)</param>
+        /// <returns>Значение параметра (Строка), если будет отсутствовать файл настроек, или указанный параметр, то вернется ""</returns>
+        private static string LoadProperty(string property)
+        {
+            if (!File.Exists(Filesetting)) return "";
+            var sr = new StreamReader(Filesetting);
+            var arr = sr.ReadToEnd().Split('\n');
+            sr.Close();
+
+            foreach (var ss in arr)
+            {
+                //проверим наш ли это параметр
+                var posSymbol = ss.IndexOf('=');
+
+                if (posSymbol <= 0) continue; //странный параметр, такой не нужен нам
+
+                var sProperty = ss.Substring(0, posSymbol);
+                var sValue = ss.Substring(posSymbol + 1);
+
+                if (property.Trim() == sProperty.Trim())
+                {
+                    return sValue;
+                }
+            }
+            return "";
+        }
+
+
+        /// <summary>
+        /// Функция для сохранения параметров в файле настроек
+        /// Сохраненные данные в файле будут выглядеть следующим образом:
+        /// параметр = значение
+        /// !!! Поэтому знак равно нельзя использовать ни в параметре ни в значении
+        /// </summary>
+        /// <param name="property">Имя параметра (строка)</param>
+        /// <param name="value">Значение параметра (Строка)</param>
+        private static void SaveProperty(string property, string value)
+        {
+            List<string> listProperty = new List<string>();
+
+            // Запись параметра в файл
+
+            // В начале получим все параметры
+            if (File.Exists(Filesetting))
+            {
+
+                StreamReader sr = new StreamReader(Filesetting);
+                string[] arr = sr.ReadToEnd().Split('\n');
+                sr.Close();
+
+                foreach (string ss in arr)
+                {
+                    // ReSharper disable once RedundantAssignment
+                    var sformat = ss.Replace('\n', ' ').Trim();
+                    sformat = ss.Replace('\r', ' ').Trim();
+
+                    if (sformat.Length < 3) continue;
+                    //проверим наш ли это параметр
+                    int posSymbol = sformat.IndexOf('=');
+
+                    if (posSymbol == 0) continue; //странный параметр, такой не нужен нам
+
+                    string sProperty = sformat.Substring(0, posSymbol);
+                    string sValue = sformat.Substring(posSymbol + 1);
+
+                    if (property.Trim() == sProperty.Trim()) continue; //нужный параметр пропустим
+
+                    listProperty.Add(sProperty + "=" + sValue);
+                }
+            }
+
+            //если в существующем файле такого параметра нет, то добавим новый
+            listProperty.Add(property + "=" + value);
+
+            try
+            {
+                string sOut = "";
+
+                foreach (string ss in listProperty)
+                {
+                    sOut += ss + Environment.NewLine;
+
+                    //OutputFile.WriteLine(ss);
+                }
+
+                StreamWriter sw = new StreamWriter(Filesetting);
+                sw.WriteLine(sOut);
+                sw.Close();
+            }
+            catch (Exception)
+            {
+                //addLog(e.ToString(), true);
+            }
+        }
+
+
+
+
+
+*/
+
 //////            int numPos = 1;
 //////            //TODO: а теперь из DATA заполним таблицу командами
 
@@ -569,4 +743,737 @@
 //        NumPosition = numPosition;
 //    }
 //}
+
+
+
+   //dataRowOld = dataRowNow;
+
+        //////if (Controller.AvailableBufferSize < 5) return; // откажемся от посылки контроллеру, пока буфер не освободиться
+
+        //////int yy = Controller.NumberComleatedInstructions;
+
+        ////////if (yy == 0) timerTask.Interval = 1000;
+        ////////else
+        ////////{
+        ////////    timerTask.Interval = 100;
+        ////////}
+
+        ////////TODO: вот тут пристально нужно следить за скорость посылки 
+
+        //////Controller.ExecuteCommand(listGkodeCommand.Items[nowPos].ToString());
+     
+    
+
+        //private static void taskWorks()
+        //{
+
+
+
+
+        //    //TODO: добавить в параметр значение
+        //   
+
+        //    //int ttt = DataLoader.GKODS[nowPos++].indexStr;
+        //    //string ss = listGkodeCommand[nowPos].ToString();
+
+        //    Controller.ExecuteCommand(GCodeTask[nowPos++]);
+
+        //    //nowPos++;
+
+        //    // 1) получим строку, и отправим в контроллер
+        //    //GKOD_Command gcodeNow = DataLoader.GKODS[nowPos++];
+
+
+
+
+        //    ////Все необходимые команды завершены, пора всё завершить
+        //    //if (Task.posCodeNow > Task.posCodeEnd)
+        //    //{
+        //    //    Task.StatusTask = statusVariant.Stop;
+        //    //    return;
+        //    //}
+
+
+
+        //    ////TODO: добавить в параметр и это значение
+        //    ////if (Task.posCodeNow > (Controller.NumberComleatedInstructions + 3)) return; // Так-же не будем много посылать команд, т.е. далеко убегать
+
+        //    ////команда остановки G4 или M0
+        //    //if (gcodeNow.needPause)
+        //    //{
+        //    //    if (gcodeNow.timeSeconds == 0) // M0 - команда ожидания от пользователя
+        //    //    {
+        //    //        _NeedPause = true;
+        //    //        //Task.StatusTask = statusVariant.Paused;
+        //    //        //RefreshElementsForms();
+        //    //        //пауза до клика пользователя
+        //    //        MessageBox.Show(@"Получена команда M0 для остановки! для дальнейшего выполнения нужно нажать на кнопку 'пауза' для дальнейшего продолжения работы.", "Пауза",
+        //    //            MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //       // toolStripStatus.Text = "Пауза " + gcodeNow.timeSeconds + " мсек. по команде G4";
+
+        //    //        Thread.Sleep(gcodeNow.timeSeconds); // пауза в мсек.
+
+        //    //        //toolStripStatus.Text = "";
+        //    //    }
+        //    //}
+
+        //    ////команда смены инструмента
+        //    //if (gcodeNow.changeInstrument)
+        //    //{
+        //    //    _NeedPause = true;
+        //    //    //Task.StatusTask = statusVariant.Paused;
+        //    //    //RefreshElementsForms();
+
+        //    //    //пауза до клика пользователя
+        //    //    MessageBox.Show(@"Активирована ПАУЗА! Установите инструмент №:" + gcodeNow.numberInstrument + " имеющий диаметр: " + gcodeNow.diametr + " мм. и нажмите кнопку 'пауза' для продолжения сверления", "Пауза",
+        //    //        MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        //    //}
+
+
+
+
+
+        //    //double pointX = (double)gcodeNow.X;
+        //    //double pointY = (double)gcodeNow.Y;
+        //    //double pointZ = (double)gcodeNow.Z;
+
+        //    ////добавление смещения G-кода
+        //    //if (Setting.CorrectGKode)
+        //    //{
+        //    //    // применение пропорций
+        //    //    pointX *= Setting.koeffSizeX;
+        //    //    pointY *= Setting.koeffSizeY;
+
+        //    //    //применение смещения
+        //    //    pointX += Setting.deltaX;
+        //    //    pointY += Setting.deltaY;
+        //    //    pointZ += Setting.deltaZ;
+
+        //    //    //применение матрицы поверхности детали
+        //    //    if (Setting.deltaFeed)
+        //    //    {
+        //    //        pointZ += GetDeltaZ(pointX, pointY);
+        //    //    }
+        //    //}
+
+        //    //int posX = Controller.INFO.CalcPosPulse("X", (decimal)pointX);
+        //    //int posY = Controller.INFO.CalcPosPulse("Y", (decimal)pointY);
+        //    //int posZ = Controller.INFO.CalcPosPulse("Z", (decimal)pointZ);
+
+        //    //TODO: доделать управление скоростью ручая/по программе
+        //    //int speed = (gcodeNow.workspeed) ? UserSpeedG1 : UserSpeedG0;
+        //    //int speed = 500;
+
+
+        //    //if (checkBoxNewSpped.Checked)
+        //    //{
+        //    //    // новый алгоритм
+        //    //    Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, 0, speed, Task.posCodeNow,
+        //    //        gcodeNow.angleVectors, gcodeNow.Distance, (int)numericUpDown9.Value));
+        //    //}
+        //    //else
+        //    //{
+        //    //    //старый алгоритм
+        //    // Controller.SendBinaryData(BinaryData.pack_CA(posX, posY, posZ, 0, speed, Task.posCodeNow, 0, 0));
+        //    //}
+
+        //    //Task.posCodeNow++;
+        //    //textBoxNumberLine.Text = deviceInfo.NuberCompleatedInstruction.ToString();
+        //    ////textBoxNumberLine.Text = Task.posCodeNow.ToString();
+        //}
+
+
+
+
+        //private static double GetDeltaZ(double _x, double _y)
+        //{
+        //    //точка которую нужно отобразить
+        //    dobPoint pResult = new dobPoint(_x, _y, 0, 0);
+
+
+        //    int indexXmin = 0;
+        //    int indexYmin = 0;
+        //    for (int x = 0; x < dataCode.matrix2.GetLength(0) - 1; x++)
+        //    {
+        //        for (int y = 0; y < dataCode.matrix2.GetLength(1) - 1; y++)
+        //        {
+        //            if (_x > dataCode.matrix2[x, 0].X && _x < dataCode.matrix2[x + 1, 0].X && dataCode.matrix2[0, y].Y < _y && dataCode.matrix2[0, y + 1].Y > _y)
+        //            {
+        //                indexXmin = x;
+        //                indexYmin = y;
+        //            }
+        //        }
+        //    }
+
+
+        //    dobPoint p1 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin].X, dataCode.matrix2[indexXmin, indexYmin].Y, dataCode.matrix2[indexXmin, indexYmin].Z, 0);
+        //    dobPoint p3 = new dobPoint(dataCode.matrix2[indexXmin, indexYmin + 1].X, dataCode.matrix2[indexXmin, indexYmin + 1].Y, dataCode.matrix2[indexXmin, indexYmin + 1].Z, 0);
+        //    dobPoint p2 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin].X, dataCode.matrix2[indexXmin + 1, indexYmin].Y, dataCode.matrix2[indexXmin + 1, indexYmin].Z, 0);
+        //    dobPoint p4 = new dobPoint(dataCode.matrix2[indexXmin + 1, indexYmin + 1].X, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Y, dataCode.matrix2[indexXmin + 1, indexYmin + 1].Z, 0);
+
+        //    dobPoint p12 = Geometry.CalcPX(p1, p2, pResult);
+        //    dobPoint p34 = Geometry.CalcPX(p3, p4, pResult);
+        //    dobPoint p1234 = Geometry.CalcPY(p12, p34, pResult);
+        //    /* 
+
+        //                //pointZ = p1234.Z;
+
+
+
+        //                 //TODO: В связи с переделкой ряда ключевых механизмов применение матрицы отключим
+
+
+
+        //                //1) получим координаты 4-х ближайших точек из матрицы
+
+        //                //текущая точка
+                    
+
+
+
+
+        //                //2) запустим математику
+
+
+        //                //Point p1 = new Point(numericUpDown11.Value, numericUpDown10.Value, numericUpDown9.Value);
+        //                //Point p2 = new Point(numericUpDown12.Value, numericUpDown14.Value, numericUpDown13.Value);
+        //                //Point p3 = new Point(numericUpDown15.Value, numericUpDown17.Value, numericUpDown16.Value);
+        //                //Point p4 = new Point(numericUpDown21.Value, numericUpDown23.Value, numericUpDown22.Value);
+
+        //                //Point p5 = new Point(numericUpDown18.Value, numericUpDown20.Value, numericUpDown19.Value);
+
+
+
+        //                //numericUpDown24.Value = p1234.X;
+        //                //numericUpDown26.Value = p1234.Y;
+        //                //numericUpDown25.Value = p1234.Z;
+
+        //                ////Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
+        //                */
+
+        //    return p1234.Z;
+        //}
+
+
+
+
+
+
+
+            //if (Task.StatusTask == statusVariant.Waiting) return;
+            //Task.StatusTask = statusVariant.Stop;
+
+
+
+//if (Task.StatusTask == statusVariant.Starting) return; //пока задание не запустилось, нет смысла ставить паузу
+
+//if (Task.StatusTask == statusVariant.Working || Task.StatusTask == statusVariant.Paused)
+//{
+//    Task.StatusTask = (Task.StatusTask == statusVariant.Paused) ? statusVariant.Working : statusVariant.Paused;
+//}
+
+
+
+//if (TaskTimer.Enabled) return; //нельзя дальше, если таймер включен
+
+//if (!Controller.Connected)
+//{
+//    MessageBox.Show(@"Нет связи с контроллером!");
+//    return;
+//}
+
+//if (GKODS.Count == 0)
+//{
+//    // нет данных для выполнения
+//    MessageBox.Show(@"Нет данных для выполнения!");
+//    return;
+//}
+
+////если в списке команд не выбрана строчка, то спозиционируемся на первой
+//if (listGkodeCommand.SelectedIndex == -1) listGkodeCommand.SelectedIndex = 0;
+
+//if (listGkodeCommand.SelectedItems.Count == 1)   //выбрана всего одна строка, а значит для выполнения будет указан диапазон, от этой строки и до конца
+//{
+//    DialogResult dlgres = MessageBox.Show(@"Запустить выполнение G-кода со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString()
+//        + "\n и до последней?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+
+//    if (dlgres == DialogResult.Cancel) return;
+
+//    //установим границы выполнения
+//    Task.posCodeStart = listGkodeCommand.SelectedIndex;
+//    Task.posCodeEnd = listGkodeCommand.Items.Count;
+//    Task.posCodeNow = Task.posCodeStart;
+//}
+//else   //выбран диапазон строк
+//{
+//    DialogResult dlgr = MessageBox.Show(@"Запустить выполнение G-кода со строки №: " + (listGkodeCommand.SelectedIndex + 1).ToString()
+//        + @" по строку №: " + (listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count).ToString()
+//        + "?", @"Запуск выполнения программы", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+
+//    if (dlgr == DialogResult.Cancel) return;
+
+//    //установим границы выполнения
+//    Task.posCodeStart = listGkodeCommand.SelectedIndex;
+//    Task.posCodeEnd = listGkodeCommand.SelectedIndex + listGkodeCommand.SelectedItems.Count;
+//    Task.posCodeNow = Task.posCodeStart;
+//}
+
+
+//if (panelManualControl != null) panelManualControl.checkBoxManualMove.Checked = false; // отключим реакцию на нажатие NUM-pad
+
+//Task.StatusTask = statusVariant.Starting;
+//TaskTimer.Enabled = true;
+
+
+//public void RefreshControl()
+//{
+//    //this.Enabled = Controller.Connected;
+
+//    //groupBoxWorking.Enabled = Controller.Connected;
+//    //groupBoxManualSpeedGkode.Enabled = Controller.Connected;
+
+//    //// Кнопки запуска остановки заданий
+//    //groupBoxWorking.Enabled = Controller.Connected;
+
+//    //if (Controller.Connected)
+//    //{
+//    //    if (TimerRefresh.Enabled)
+//    //    {
+//    //        buttonStartTask.Enabled = false;
+
+//    //        if (Task.StatusTask == statusVariant.Paused)
+//    //        {
+//    //            btStopTask.Enabled = false;
+//    //            buttonPauseTask.Enabled = true;
+//    //        }
+//    //        else
+//    //        {
+//    //            btStopTask.Enabled = true;
+//    //            buttonPauseTask.Enabled = true;
+//    //        }
+//    //    }
+//    //    else //таймер выполнения задания выключен
+//    //    {
+//    //        buttonStartTask.Enabled = true;
+//    //        btStopTask.Enabled = false;
+//    //        buttonPauseTask.Enabled = false;
+//    //    }
+
+
+
+
+
+//    //}
+
+
+//}
+
+//listGkodeCommand.DataSource = DataCode.Data_string;
+
+
+
+//if (!Controller.Connected)
+//{
+//    TaskTimer.Enabled = false;
+//    return;
+//}
+
+//// скорость с главной формы
+//int UserSpeedG1 = (int)numericUpDown1.Value;
+//int UserSpeedG0 = (int)numericUpDown2.Value;
+
+//GKOD_Command gcodeNow = null;
+
+//if (Task.posCodeNow == GKODS.Count)
+//{
+//    //уже дошли до конца
+//    if (Task.StatusTask == statusVariant.Working)
+//    {
+//        Task.StatusTask = statusVariant.Stop;
+//    }
+//}
+//else
+//{
+//    gcodeNow = GKODS[Task.posCodeNow];
+//}
+
+
+
+
+
+///// <summary>
+///// Выполнение g-кода
+///// </summary>
+///// <param name="dataList"></param>
+//public static void Planet_Execute(string value)
+//{
+//    Planet_ParseStringCode(value);
+
+//    //действия комманд TODO: потом перевести это в параметры, для возможности настройки
+//    // M3 - включить канал 1 (шпиндель)
+//    // M5 - выключить канал 1
+//    // M7 - включить канал 2 (сож1)
+//    // M8 - включить канал 3 (сож2)
+//    // M9 - выключить канал 2 и 3
+
+//}
+
+
+
+//private static void Planet_ParseStringCode(string value)
+//{
+//    //получим символ разделения дробной и целой части.
+//    string symbSeparatorDec = CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator.ToString();
+//    ////            //string symbSeparatorGroup = CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator.ToString(); 
+
+//    char Csourse = '.';
+//    char Cdestination = ',';
+
+//    if (symbSeparatorDec == ".")
+//    {
+//        Csourse = ',';
+//        Cdestination = '.';
+//    }
+
+
+//    //GKOD_resultParse result;
+
+//    // 1) распарсим строку
+//    List<string> lcmd = Planet_parserGkodeLine(value.ToUpper());
+
+//    if (lcmd.Count == 0) return;
+
+//    bool needMove = false; //если в перечне комманд встретилась команда X,Y,Z,A то необходимо выполнить движение, но только после перебора всей строки
+
+//    foreach (string CODE in lcmd)
+//    {
+//        if (CODE == "M3")
+//        {
+//            PlanetCNC_Controller.Spindel_ON();
+//        }
+
+//        if (CODE == "M5")
+//        {
+//            PlanetCNC_Controller.Spindel_OFF();
+//        }
+
+//        if (CODE == "M7")
+//        {
+//            PlanetCNC_Controller.Chanel2 = true;
+//        }
+
+//        if (CODE == "M8")
+//        {
+//            PlanetCNC_Controller.Chanel3 = true;
+//        }
+
+//        if (CODE == "M9")
+//        {
+//            PlanetCNC_Controller.Chanel2 = false;
+//            PlanetCNC_Controller.Chanel3 = false;
+//        }
+
+
+//        if (CODE == "G0")
+//        {
+//            PlanetCNC_Controller.lastG0 = true;
+//            PlanetCNC_Controller.lastG1 = false;
+//            PlanetCNC_Controller.lastG2 = false;
+//            PlanetCNC_Controller.lastG3 = false;
+//        }
+
+//        if (CODE == "G1")
+//        {
+//            PlanetCNC_Controller.lastG0 = false;
+//            PlanetCNC_Controller.lastG1 = true;
+//            PlanetCNC_Controller.lastG2 = false;
+//            PlanetCNC_Controller.lastG3 = false;
+//        }
+
+//        if (CODE == "G2")
+//        {
+//            PlanetCNC_Controller.lastG0 = false;
+//            PlanetCNC_Controller.lastG1 = false;
+//            PlanetCNC_Controller.lastG2 = true;
+//            PlanetCNC_Controller.lastG3 = false;
+//        }
+
+//        if (CODE == "G3")
+//        {
+//            PlanetCNC_Controller.lastG0 = false;
+//            PlanetCNC_Controller.lastG1 = false;
+//            PlanetCNC_Controller.lastG2 = false;
+//            PlanetCNC_Controller.lastG3 = true;
+//        }
+
+//        if (CODE.Substring(0, 1) == "F") //скорость движения, извлечем
+//        {
+//            string svalue = CODE.Substring(1).Replace(Csourse, Cdestination); ;
+//            int spd = 0;
+//            int.TryParse(svalue, out spd);
+
+//            if (PlanetCNC_Controller.lastG0) PlanetCNC_Controller.lastG0speed = spd;
+//            if (PlanetCNC_Controller.lastG1) PlanetCNC_Controller.lastG1speed = spd;
+//            if (PlanetCNC_Controller.lastG2) PlanetCNC_Controller.lastG2speed = spd;
+//            if (PlanetCNC_Controller.lastG3) PlanetCNC_Controller.lastG3speed = spd;
+
+//        }
+
+//        if (CODE.Substring(0, 1) == "N") //номер кадра
+//        {
+//            string svalue = CODE.Substring(1).Replace(Csourse, Cdestination); ;
+//            int numKadr = 0;
+//            int.TryParse(svalue, out numKadr);
+
+//            PlanetCNC_Controller.numKadr = numKadr;
+//        }
+
+//        if (CODE.Substring(0, 1) == "S") //скорость движения, извлечем
+//        {
+//            string svalue = CODE.Substring(1).Replace(Csourse, Cdestination); ;
+//            int spd = 0;
+//            int.TryParse(svalue, out spd);
+
+//            PlanetCNC_Controller.ValueHz = spd;
+
+//            Controller.SendBinaryData(BinaryData.pack_B5(PlanetCNC_Controller.lastChanel1ON, 2, BinaryData.TypeSignal.Hz, PlanetCNC_Controller.ValueHz));
+//        }
+
+
+//        if (CODE.Substring(0, 1) == "X") //координата
+//        {
+//            string svalue = CODE.Substring(1).Replace(Csourse, Cdestination); ;
+//            double pos = 0;
+//            double.TryParse(svalue, out pos);
+
+
+
+//            if (PlanetCNC_Controller.AbsolutlyPos) PlanetCNC_Controller.lastPosXpulse = (int)(pos * GlobalSetting.controllerSetting.AxleX.countPulse);
+//            else PlanetCNC_Controller.lastPosXpulse += (int)(pos * GlobalSetting.controllerSetting.AxleX.countPulse);
+
+//            needMove = true;
+//        }
+
+
+//        if (CODE.Substring(0, 1) == "Y") //координата
+//        {
+//            string svalue = CODE.Substring(1).Replace(Csourse, Cdestination); ;
+//            double pos = 0;
+//            double.TryParse(svalue, out pos);
+
+
+
+//            if (PlanetCNC_Controller.AbsolutlyPos) PlanetCNC_Controller.lastPosYpulse = (int)(pos * GlobalSetting.controllerSetting.AxleY.countPulse);
+//            else PlanetCNC_Controller.lastPosYpulse += (int)(pos * GlobalSetting.controllerSetting.AxleY.countPulse);
+
+//            needMove = true;
+//        }
+
+
+//        if (CODE.Substring(0, 1) == "Z") //координата
+//        {
+//            string svalue = CODE.Substring(1).Replace(Csourse, Cdestination); ;
+//            double pos = 0;
+//            double.TryParse(svalue, out pos);
+
+
+
+//            if (PlanetCNC_Controller.AbsolutlyPos) PlanetCNC_Controller.lastPosZpulse = (int)(pos * GlobalSetting.controllerSetting.AxleZ.countPulse);
+//            else PlanetCNC_Controller.lastPosZpulse += (int)(pos * GlobalSetting.controllerSetting.AxleZ.countPulse);
+
+//            needMove = true;
+//        }
+
+
+//        if (CODE.Substring(0, 1) == "A") //координата
+//        {
+//            string svalue = CODE.Substring(1);
+//            double pos = 0;
+//            double.TryParse(svalue, out pos);
+
+
+
+//            if (PlanetCNC_Controller.AbsolutlyPos) PlanetCNC_Controller.lastPosApulse = (int)(pos * GlobalSetting.controllerSetting.AxleA.countPulse);
+//            else PlanetCNC_Controller.lastPosApulse += (int)(pos * GlobalSetting.controllerSetting.AxleA.countPulse);
+
+//            needMove = true;
+//        }
+
+
+
+
+//        if (CODE == "G90")
+//        {
+//            PlanetCNC_Controller.AbsolutlyPos = true; //применяем абсолютные координаты
+//        }
+
+//        if (CODE == "G91")
+//        {
+//            PlanetCNC_Controller.AbsolutlyPos = false;//применяем относительные координаты
+//        }
+
+
+//    }//foreach (string CODE in lcmd)
+
+//    if (needMove)
+//    {
+
+//        //TODO: посылаем команду движения
+//        //double pointX = (double)gcodeNow.X;
+//        //double pointY = (double)gcodeNow.Y;
+//        //double pointZ = (double)gcodeNow.Z;
+
+//        ////добавление смещения G-кода
+//        //if (Setting.CorrectGKode)
+//        //{
+//        //    // применение пропорций
+//        //    pointX *= Setting.koeffSizeX;
+//        //    pointY *= Setting.koeffSizeY;
+
+//        //    //применение смещения
+//        //    pointX += Setting.deltaX;
+//        //    pointY += Setting.deltaY;
+//        //    pointZ += Setting.deltaZ;
+
+//        //    //применение матрицы поверхности детали
+//        //    if (Setting.deltaFeed)
+//        //    {
+//        //        pointZ += GetDeltaZ(pointX, pointY);
+//        //    }
+//        //}
+
+//        int speed = 100; //если вдруг не была задана скорость, т.к. ноль посылать нельзя
+
+//        if (PlanetCNC_Controller.lastG0) speed = PlanetCNC_Controller.lastG0speed;
+//        if (PlanetCNC_Controller.lastG1) speed = PlanetCNC_Controller.lastG1speed;
+//        if (PlanetCNC_Controller.lastG2) speed = PlanetCNC_Controller.lastG2speed;
+//        if (PlanetCNC_Controller.lastG3) speed = PlanetCNC_Controller.lastG3speed;
+
+//        Controller.SendBinaryData(BinaryData.pack_CA(PlanetCNC_Controller.lastPosXpulse, PlanetCNC_Controller.lastPosYpulse, PlanetCNC_Controller.lastPosZpulse, PlanetCNC_Controller.lastPosApulse, speed, PlanetCNC_Controller.numKadr));
+//    }
+
+//    //string sGoodsCmd = "";
+//    //string sBadCmd = "";
+
+//    //// 2) проанализируем список команд, и разберем команды на те которые знаем и не знаем
+//    //for (int i = 0; i < lcmd.Count; i++)
+//    //{
+//    //    string sCommd = lcmd[i].Substring(0, 1).Trim().ToUpper();
+//    //    string sValue = lcmd[i].Substring(1).Trim().ToUpper();
+
+//    //    bool good = false;
+
+//    //    if (sCommd == "G")
+//    //    {
+//    //        //скорости движения
+//    //        if (sValue == "0" || sValue == "00") good = true;
+//    //        if (sValue == "1" || sValue == "01") good = true;
+//    //        // пауза в работе
+//    //        if (sValue == "4" || sValue == "04")
+//    //        {
+//    //            if ((i + 1) < lcmd.Count)
+//    //            {
+//    //                //проверим что есть ещё параметр "P"
+//    //                if (lcmd[i + 1].Substring(0, 1).ToUpper() == "P")
+//    //                {
+//    //                    sGoodsCmd += lcmd[i].Trim().ToUpper() + " " + lcmd[i + 1].Trim().ToUpper();
+//    //                    continue;
+//    //                }
+//    //            }
+//    //        }
+//    //    }
+
+//    //    if (sCommd == "M")
+//    //    {
+//    //        //остановка до нажатия кнопки продолжить
+//    //        if (sValue == "0" || sValue == "00") good = true;
+//    //        //вкл/выкл шпинделя
+//    //        if (sValue == "3" || sValue == "03") good = true;
+//    //        if (sValue == "5" || sValue == "05") good = true;
+//    //        //смена инструмента
+//    //        if (sValue == "6" || sValue == "06")
+//    //        {
+//    //            if ((i + 2) < lcmd.Count)
+//    //            {
+//    //                //проверим что есть ещё параметр "T" и "D"
+//    //                if (lcmd[i + 1].Substring(0, 1).ToUpper() == "T" && lcmd[i + 2].Substring(0, 1).ToUpper() == "D")
+//    //                {
+//    //                    sGoodsCmd += lcmd[i].Trim().ToUpper() + " " + lcmd[i + 1].Trim().ToUpper() + " " + lcmd[i + 2].Trim().ToUpper();
+//    //                    continue;
+//    //                }
+//    //            }
+//    //        }
+//    //    }
+
+//    //    if (sCommd == "X" || sCommd == "Y" || sCommd == "Z")
+//    //    {
+//    //        //координаты 3-х осей 
+//    //        good = true;
+//    //    }
+
+//    //    if (good)
+//    //    {
+//    //        sGoodsCmd += lcmd[i] + " ";
+//    //    }
+//    //    else
+//    //    {
+//    //        sBadCmd += lcmd[i] + " ";
+//    //    }
+//    //} //for (int i = 0; i < lcmd.Count; i++)
+
+
+//    //if (lcmd.Count == 0) sBadCmd = value;
+
+//    //result = new GKOD_resultParse(value, sGoodsCmd, sBadCmd);
+
+//    // return result;
+//}
+
+
+//private static List<string> Planet_parserGkodeLine(string value)
+//{
+
+//    List<string> lcmd = new List<string>();
+
+//    if (value.Trim() == "") return lcmd;
+
+//    // если строка начинается со скобки, то эту строку не анализируем, т.к. это комментарий!!!
+//    if (value.Substring(0, 1) == "(")
+//    {
+//        lcmd.Add(value);
+//        return lcmd;
+//    }
+
+//    if (value.Substring(0, 1) == "%") //тоже пропускаем эту сторку
+//    {
+//        lcmd.Add(value);
+//        return lcmd;
+//    }
+
+//    int inx = 0;
+
+//    bool collectCommand = false;
+
+//    foreach (char symb in value)
+//    {
+//        if (symb > 0x40 && symb < 0x5B)  //символы от A до Z
+//        {
+//            if (collectCommand)
+//            {
+//                inx++;
+//            }
+
+//            collectCommand = true;
+//            lcmd.Add("");
+//        }
+
+//        if (collectCommand && symb != ' ') lcmd[inx] += symb.ToString();
+//    }
+
+//    return lcmd;
+//}
+
 
