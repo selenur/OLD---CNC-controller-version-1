@@ -5,113 +5,136 @@ namespace CNC_Assist
 {
     public partial class Sett3D : Form
     {
-        MainForm mf;
-
-        public Sett3D(MainForm _mf)
+        public Sett3D()
         {
-            if (_mf == null) throw new ArgumentNullException("_mf");
             InitializeComponent();
-            mf = _mf;
         }
 
         private void sett3D_Load(object sender, EventArgs e)
         {
-            checkBox1.Checked = mf.PreviewSetting.ShowInstrument;
-            checkBox2.Checked = mf.PreviewSetting.ShowGrid;
-            checkBox3.Checked = mf.PreviewSetting.ShowMatrix;
-            checkBox4.Checked = mf.PreviewSetting.ShowAxes;
-            
-            numericUpDown1.Value = mf.PreviewSetting.GrigStep;
+            ShowCursor.Checked = GlobalSetting.RenderSetting.ShowCursor;
+            ShowAxes.Checked = GlobalSetting.RenderSetting.ShowAxes;
+            ShowScanedGrid.Checked = GlobalSetting.RenderSetting.ShowScanedGrid;
 
-            numericUpDown2.Value=mf.PreviewSetting.GridXstart;
-            numericUpDown3.Value=mf.PreviewSetting.GridXend;
-            numericUpDown4.Value=mf.PreviewSetting.GridYstart;
-            numericUpDown5.Value=mf.PreviewSetting.GridYend;
 
-            //checkBoxShowGrate.Checked = mf.ShowGrate;
-            //numPosXmin.Value = (decimal)mf.GrateXmin;
-            //numPosXmax.Value = (decimal)mf.GrateXmax;
-            //numPosYmin.Value = (decimal)mf.GrateYmin;
-            //numPosYmax.Value = (decimal)mf.GrateYmax;
+            ShowGrid.Checked = GlobalSetting.RenderSetting.ShowGrid;
+            numericUpDown1.Value = GlobalSetting.RenderSetting.GridSize;
+            numericUpDown2.Value = GlobalSetting.RenderSetting.GridStartX;
+            numericUpDown3.Value = GlobalSetting.RenderSetting.GridSizeX;
+            numericUpDown4.Value = GlobalSetting.RenderSetting.GridStartY;
+            numericUpDown5.Value = GlobalSetting.RenderSetting.GridSizeY;
+
+            checkBoxShowGrate.Checked = GlobalSetting.RenderSetting.ShowWorkArea;
+            //ShowCursor.Checked = mf.PreviewSetting.ShowInstrument;
+            //checkBox2.Checked = mf.PreviewSetting.ShowGrid;
+            //ShowScanedGrid.Checked = mf.PreviewSetting.ShowMatrix;
+            //ShowAxes.Checked = mf.PreviewSetting.ShowAxes;
+
+            ////checkBoxShowGrate.Checked = mf.ShowGrate;
+            ////numPosXmin.Value = (decimal)mf.GrateXmin;
+            ////numPosXmax.Value = (decimal)mf.GrateXmax;
+            ////numPosYmin.Value = (decimal)mf.GrateYmin;
+            ////numPosYmax.Value = (decimal)mf.GrateYmax;
+
+             numPosXmin.Value = (decimal)GlobalSetting.ControllerSetting.WorkSizeXm;
+             numPosXmax.Value = (decimal)GlobalSetting.ControllerSetting.WorkSizeXp;
+             numPosYmin.Value = (decimal)GlobalSetting.ControllerSetting.WorkSizeYm;
+             numPosYmax.Value = (decimal)GlobalSetting.ControllerSetting.WorkSizeYp;
+
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void ShowCursor_CheckedChanged(object sender, EventArgs e)
         {
-            mf.PreviewSetting.ShowInstrument = checkBox1.Checked;
+            GlobalSetting.RenderSetting.ShowCursor = ShowCursor.Checked;
+            GlobalSetting.SaveToFile();
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void ShowAxes_CheckedChanged(object sender, EventArgs e)
         {
-            mf.PreviewSetting.ShowGrid = checkBox2.Checked;
+            GlobalSetting.RenderSetting.ShowAxes = ShowAxes.Checked;
+            GlobalSetting.SaveToFile();
+        }
+
+        private void ShowScanedGrid_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobalSetting.RenderSetting.ShowScanedGrid = ShowScanedGrid.Checked;
+            GlobalSetting.SaveToFile();
+        }
+
+        private void ShowGrid_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobalSetting.RenderSetting.ShowGrid = ShowGrid.Checked;
+            GlobalSetting.SaveToFile();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            mf.PreviewSetting.GrigStep = (int)numericUpDown1.Value;
+            GlobalSetting.RenderSetting.GridSize = (int)numericUpDown1.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
-            mf.PreviewSetting.GridXstart = (int)numericUpDown2.Value;
+            GlobalSetting.RenderSetting.GridStartX = (int)numericUpDown2.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void numericUpDown3_ValueChanged(object sender, EventArgs e)
         {
-            mf.PreviewSetting.GridXend = (int)numericUpDown3.Value;
+            GlobalSetting.RenderSetting.GridSizeX = (int)numericUpDown3.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void numericUpDown4_ValueChanged(object sender, EventArgs e)
         {
-            mf.PreviewSetting.GridYstart = (int)numericUpDown4.Value;
+            GlobalSetting.RenderSetting.GridStartY = (int)numericUpDown4.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void numericUpDown5_ValueChanged(object sender, EventArgs e)
         {
-            mf.PreviewSetting.GridYend = (int)numericUpDown5.Value;
-        }
-
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
-        {
-
-            mf.PreviewSetting.ShowMatrix = checkBox3.Checked;
-        }
-
-        private void checkBox4_CheckedChanged(object sender, EventArgs e)
-        {
-            mf.PreviewSetting.ShowAxes = checkBox4.Checked;
+            GlobalSetting.RenderSetting.GridSizeY = (int)numericUpDown5.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void checkBoxShowGrate_CheckedChanged(object sender, EventArgs e)
         {
-           // mf.ShowGrate = checkBoxShowGrate.Checked;
+            GlobalSetting.RenderSetting.ShowWorkArea = checkBoxShowGrate.Checked;
+            GlobalSetting.SaveToFile();
         }
 
         private void numPosXmin_ValueChanged(object sender, EventArgs e)
         {
-          //  mf.GrateXmin = (double)numPosXmin.Value;
+            GlobalSetting.ControllerSetting.WorkSizeXm = (float)numPosXmin.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void numPosXmax_ValueChanged(object sender, EventArgs e)
         {
-           // mf.GrateXmax = (double)numPosXmax.Value;
+            GlobalSetting.ControllerSetting.WorkSizeXp = (float)numPosXmax.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void numPosYmin_ValueChanged(object sender, EventArgs e)
         {
-          //  mf.GrateYmin = (double)numPosYmin.Value;
+            GlobalSetting.ControllerSetting.WorkSizeYm = (float)numPosYmin.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void numPosYmax_ValueChanged(object sender, EventArgs e)
         {
-           // mf.GrateYmax = (double)numPosYmax.Value;
+            GlobalSetting.ControllerSetting.WorkSizeYp = (float)numPosYmax.Value;
+            GlobalSetting.SaveToFile();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //mf.GrateXmin = (double)Controller.INFO.AxesX_PositionMM;
-            //mf.GrateXmax = (double)Controller.INFO.AxesX_PositionMM;
-            //mf.GrateYmin = (double)Controller.INFO.AxesY_PositionMM;
-            //mf.GrateYmax = (double)Controller.INFO.AxesY_PositionMM;
+
+            GlobalSetting.ControllerSetting.WorkSizeXm = 0;
+            GlobalSetting.ControllerSetting.WorkSizeYm = 0;
+            GlobalSetting.ControllerSetting.WorkSizeXp = 0;
+            GlobalSetting.ControllerSetting.WorkSizeYp = 0;
+            GlobalSetting.SaveToFile();
         }
     }
 }

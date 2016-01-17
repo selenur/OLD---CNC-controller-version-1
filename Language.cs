@@ -46,7 +46,7 @@ namespace CNC_Assist
 
 
 
-        public static string GetTranslate(languages _lang,string _value)
+        public static string GetTranslate(Languages _lang,string _value)
         {
             if (_value == "") return "";
 
@@ -71,13 +71,13 @@ namespace CNC_Assist
             {
                 switch (_lang)
                 {
-                        case languages.russian:
+                        case Languages.Russian:
                         return ss.rus;
-                        break;
 
-                        case languages.english:
+
+                        case Languages.English:
                         return ss.eng;
-                        break;
+
 
 
                 }

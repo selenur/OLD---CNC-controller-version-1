@@ -8,7 +8,7 @@ namespace CNC_Assist
         public GUI_panel_ManualControl()
         {
             InitializeComponent();
-            if (GlobalSetting.AppSetting.Language == languages.russian)
+            if (GlobalSetting.AppSetting.Language == Languages.Russian)
             {
                 groupBoxManualMove.Text = @"Ручное управление";
                 checkBoxManualMove.Text = @"Управление с NumPad";

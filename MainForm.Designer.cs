@@ -35,12 +35,14 @@
             this.menuOpenFile = new System.Windows.Forms.ToolStripMenuItem();
             this.fromBufferToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bt_exit = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modulesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.webcameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setWorkAreaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scanSurfaceToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuEnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolStrip = new System.Windows.Forms.ToolStrip();
             this.bt_ConnDiskonect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -55,9 +57,8 @@
             this.toolStripButtonEditData = new System.Windows.Forms.ToolStripButton();
             this.toolStripDropDownadditionally = new System.Windows.Forms.ToolStripDropDownButton();
             this.additionallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scansurfaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generatorCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3D = new System.Windows.Forms.TabPage();
             this.btDefaulPreview = new System.Windows.Forms.Button();
@@ -104,7 +105,6 @@
             this.panelCenter = new System.Windows.Forms.Panel();
             this.panelRight = new System.Windows.Forms.FlowLayoutPanel();
             this.panelLeft = new System.Windows.Forms.FlowLayoutPanel();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -125,8 +125,9 @@
             // 
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.modulesToolStripMenuItem,
             this.helpToolStripMenuItem,
-            this.modulesToolStripMenuItem});
+            this.menuLanguageToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(864, 24);
@@ -155,6 +156,8 @@
             // 
             // fromBufferToolStripMenuItem
             // 
+            this.fromBufferToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("fromBufferToolStripMenuItem.Image")));
+            this.fromBufferToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.fromBufferToolStripMenuItem.Name = "fromBufferToolStripMenuItem";
             this.fromBufferToolStripMenuItem.Size = new System.Drawing.Size(212, 38);
             this.fromBufferToolStripMenuItem.Text = "Загрузить из буффера";
@@ -168,6 +171,33 @@
             this.bt_exit.Size = new System.Drawing.Size(212, 38);
             this.bt_exit.Text = "Завершение работы";
             this.bt_exit.Click += new System.EventHandler(this.bt_exit_Click);
+            // 
+            // modulesToolStripMenuItem
+            // 
+            this.modulesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.webcameraToolStripMenuItem,
+            this.scanSurfaceToolStripMenuItem1});
+            this.modulesToolStripMenuItem.Name = "modulesToolStripMenuItem";
+            this.modulesToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.modulesToolStripMenuItem.Text = "Модули";
+            // 
+            // webcameraToolStripMenuItem
+            // 
+            this.webcameraToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.webcam;
+            this.webcameraToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.webcameraToolStripMenuItem.Name = "webcameraToolStripMenuItem";
+            this.webcameraToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.webcameraToolStripMenuItem.Text = "Веб-камера";
+            this.webcameraToolStripMenuItem.Click += new System.EventHandler(this.webcameraToolStripMenuItem_Click);
+            // 
+            // scanSurfaceToolStripMenuItem1
+            // 
+            this.scanSurfaceToolStripMenuItem1.Image = global::CNC_Assist.Properties.Resources.layer_grid;
+            this.scanSurfaceToolStripMenuItem1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.scanSurfaceToolStripMenuItem1.Name = "scanSurfaceToolStripMenuItem1";
+            this.scanSurfaceToolStripMenuItem1.Size = new System.Drawing.Size(243, 38);
+            this.scanSurfaceToolStripMenuItem1.Text = "Сканирование поверхности";
+            this.scanSurfaceToolStripMenuItem1.Click += new System.EventHandler(this.scanSurfaceToolStripMenuItem1_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -186,36 +216,31 @@
             this.aboutToolStripMenuItem.Text = "О программе";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // modulesToolStripMenuItem
+            // menuLanguageToolStripMenuItem
             // 
-            this.modulesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.webcameraToolStripMenuItem,
-            this.setWorkAreaToolStripMenuItem,
-            this.scanSurfaceToolStripMenuItem1});
-            this.modulesToolStripMenuItem.Name = "modulesToolStripMenuItem";
-            this.modulesToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
-            this.modulesToolStripMenuItem.Text = "Временно";
+            this.menuLanguageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuRuToolStripMenuItem,
+            this.menuEnToolStripMenuItem});
+            this.menuLanguageToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.flag_russia;
+            this.menuLanguageToolStripMenuItem.Name = "menuLanguageToolStripMenuItem";
+            this.menuLanguageToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.menuLanguageToolStripMenuItem.Text = "Язык";
             // 
-            // webcameraToolStripMenuItem
+            // menuRuToolStripMenuItem
             // 
-            this.webcameraToolStripMenuItem.Name = "webcameraToolStripMenuItem";
-            this.webcameraToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.webcameraToolStripMenuItem.Text = "Веб-камера";
-            this.webcameraToolStripMenuItem.Click += new System.EventHandler(this.webcameraToolStripMenuItem_Click);
+            this.menuRuToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.flag_russia;
+            this.menuRuToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.menuRuToolStripMenuItem.Name = "menuRuToolStripMenuItem";
+            this.menuRuToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
+            this.menuRuToolStripMenuItem.Text = "русский";
             // 
-            // setWorkAreaToolStripMenuItem
+            // menuEnToolStripMenuItem
             // 
-            this.setWorkAreaToolStripMenuItem.Name = "setWorkAreaToolStripMenuItem";
-            this.setWorkAreaToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.setWorkAreaToolStripMenuItem.Text = "Настройка рабочей области";
-            this.setWorkAreaToolStripMenuItem.Click += new System.EventHandler(this.setWorkAreaToolStripMenuItem_Click);
-            // 
-            // scanSurfaceToolStripMenuItem1
-            // 
-            this.scanSurfaceToolStripMenuItem1.Name = "scanSurfaceToolStripMenuItem1";
-            this.scanSurfaceToolStripMenuItem1.Size = new System.Drawing.Size(231, 22);
-            this.scanSurfaceToolStripMenuItem1.Text = "Сканирование поверхности";
-            this.scanSurfaceToolStripMenuItem1.Click += new System.EventHandler(this.scanSurfaceToolStripMenuItem1_Click);
+            this.menuEnToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.flag_great_britain;
+            this.menuEnToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.menuEnToolStripMenuItem.Name = "menuEnToolStripMenuItem";
+            this.menuEnToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
+            this.menuEnToolStripMenuItem.Text = "Английский";
             // 
             // MainToolStrip
             // 
@@ -336,10 +361,7 @@
             // toolStripDropDownadditionally
             // 
             this.toolStripDropDownadditionally.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.additionallyToolStripMenuItem,
-            this.scansurfaceToolStripMenuItem,
-            this.generatorCodeToolStripMenuItem});
-            this.toolStripDropDownadditionally.Enabled = false;
+            this.additionallyToolStripMenuItem});
             this.toolStripDropDownadditionally.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownadditionally.Image")));
             this.toolStripDropDownadditionally.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripDropDownadditionally.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -349,22 +371,12 @@
             // 
             // additionallyToolStripMenuItem
             // 
-            this.additionallyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("additionallyToolStripMenuItem.Image")));
+            this.additionallyToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.video_mode;
             this.additionallyToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.additionallyToolStripMenuItem.Name = "additionallyToolStripMenuItem";
-            this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(259, 54);
+            this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
             this.additionallyToolStripMenuItem.Text = "Настройка 3D отображения";
             this.additionallyToolStripMenuItem.Click += new System.EventHandler(this.additionallyToolStripMenuItem_Click);
-            // 
-            // scansurfaceToolStripMenuItem
-            // 
-            this.scansurfaceToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.layer_grid;
-            this.scansurfaceToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.scansurfaceToolStripMenuItem.Name = "scansurfaceToolStripMenuItem";
-            this.scansurfaceToolStripMenuItem.Size = new System.Drawing.Size(259, 54);
-            this.scansurfaceToolStripMenuItem.Text = "Сканирование поверхности";
-            this.scansurfaceToolStripMenuItem.Click += new System.EventHandler(this.scansurfaceToolStripMenuItem_Click);
-
             // 
             // MainStatusStrip
             // 
@@ -375,6 +387,12 @@
             this.MainStatusStrip.Size = new System.Drawing.Size(864, 22);
             this.MainStatusStrip.TabIndex = 2;
             this.MainStatusStrip.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(47, 17);
+            this.toolStripStatusLabel1.Text = "FPS:000";
             // 
             // tabControl1
             // 
@@ -884,12 +902,6 @@
             this.panelLeft.Size = new System.Drawing.Size(204, 511);
             this.panelLeft.TabIndex = 10;
             // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(47, 17);
-            this.toolStripStatusLabel1.Text = "FPS:000";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -903,7 +915,7 @@
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
             this.Name = "MainForm";
-            this.Text = "CNC assist 2.0.0";
+            this.Text = "ЧПУ Хоббист 2.0.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MainMenu.ResumeLayout(false);
@@ -988,10 +1000,8 @@
         private System.Windows.Forms.RadioButton radioButton_off;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownadditionally;
         private System.Windows.Forms.ToolStripMenuItem additionallyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem scansurfaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripButtonEditData;
-        private System.Windows.Forms.ToolStripMenuItem generatorCodeToolStripMenuItem;
         private System.Windows.Forms.Button btToBuffer;
         private System.Windows.Forms.CheckBox checkBoxNewSpped;
         private System.Windows.Forms.NumericUpDown numericUpDown9;
@@ -1005,9 +1015,11 @@
         private System.Windows.Forms.ToolStripMenuItem modulesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem webcameraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromBufferToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem setWorkAreaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scanSurfaceToolStripMenuItem1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripMenuItem menuLanguageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuRuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuEnToolStripMenuItem;
     }
 }
 

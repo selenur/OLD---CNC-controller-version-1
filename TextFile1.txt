@@ -1,4 +1,89 @@
 ﻿
+        /////////////////////* 
+
+        ////////////////////            //pointZ = p1234.Z;
+
+
+
+        ////////////////////             //TODO: В связи с переделкой ряда ключевых механизмов применение матрицы отключим
+
+
+
+        ////////////////////            //1) получим координаты 4-х ближайших точек из матрицы
+
+        ////////////////////            //текущая точка
+
+
+
+
+
+        ////////////////////            //2) запустим математику
+
+
+        ////////////////////            //Point p1 = new Point(numericUpDown11.Value, numericUpDown10.Value, numericUpDown9.Value);
+        ////////////////////            //Point p2 = new Point(numericUpDown12.Value, numericUpDown14.Value, numericUpDown13.Value);
+        ////////////////////            //Point p3 = new Point(numericUpDown15.Value, numericUpDown17.Value, numericUpDown16.Value);
+        ////////////////////            //Point p4 = new Point(numericUpDown21.Value, numericUpDown23.Value, numericUpDown22.Value);
+
+        ////////////////////            //Point p5 = new Point(numericUpDown18.Value, numericUpDown20.Value, numericUpDown19.Value);
+
+
+
+        ////////////////////            //numericUpDown24.Value = p1234.X;
+        ////////////////////            //numericUpDown26.Value = p1234.Y;
+        ////////////////////            //numericUpDown25.Value = p1234.Z;
+
+        ////////////////////            ////Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
+        ////////////////////            */
+
+        ///// <summary>
+        ///// Сдвиг начальной точки
+        ///// </summary>
+        ///// <param name="x">новая координата</param>
+        ///// <param name="y">новая координата</param>
+        ///// <param name="z">новая координата</param>
+        //public static void ChangeStartPosition(float x, float y, float z)
+        //{
+        //    _StartPosX = x;
+        //    _StartPosY = y;
+        //    _StartPosZ = z;
+        //}
+
+        ///// <summary>
+        ///// Изменение размерности массива данных
+        ///// </summary>
+        ///// <param name="countX"></param>
+        ///// <param name="countY"></param>
+        ///// <param name="stepX"></param>
+        ///// <param name="stepY"></param>
+        //public static void ChangeSizeOrStep(int countX, int countY, float stepX, float stepY)
+        //{
+
+        //    //TODO:добавить возможность оставлять старые данные
+
+        //    CountPointX = countX;
+        //    CountPointY = countY;
+        //    StepX = stepX;
+        //    StepY = stepY;
+
+        //    float xf = 0;
+        //    float yf = 0;
+
+        //    Matrix = new SurfacePoint[countX, countY];
+        //    // заполним данными
+        //    for (int y = 0; y < CountPointY; y++)
+        //    {
+        //        for (int x = 0; x < CountPointX; x++)
+        //        {
+        //            Matrix[x, y] = new SurfacePoint(StartPosX+(float)(x*stepX), StartPosY+(float) (y*stepY), StartPosZ);
+        //            //dataGridView.Rows[y + 1].Cells[x + 1].Value = cScanSurface.matrix[x, y].value;
+        //        }
+        //    }            
+
+
+        //}
+
+
 
 
 /*

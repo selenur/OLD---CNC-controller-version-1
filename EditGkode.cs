@@ -34,7 +34,7 @@ namespace CNC_Assist
         {
             Controller.CorrectionPos.useCorrection = cbCorrection.Checked;
 
-            groupBox1.Enabled = cbCorrection.Checked;
+            //groupBox1.Enabled = cbCorrection.Checked;
             groupBox2.Enabled = cbCorrection.Checked;
             checkBoxUseMatrix.Enabled = cbCorrection.Checked;
         }

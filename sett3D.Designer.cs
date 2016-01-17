@@ -33,18 +33,16 @@
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.ShowCursor = new System.Windows.Forms.CheckBox();
+            this.ShowGrid = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.ShowScanedGrid = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.ShowAxes = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.numPosYmax = new System.Windows.Forms.NumericUpDown();
@@ -56,14 +54,14 @@
             this.labelposY = new System.Windows.Forms.Label();
             this.labelposX = new System.Windows.Forms.Label();
             this.checkBoxShowGrate = new System.Windows.Forms.CheckBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             this.groupBox1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosYmax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosXmax)).BeginInit();
@@ -73,7 +71,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(67, 18);
+            this.numericUpDown1.Location = new System.Drawing.Point(71, 65);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -96,7 +94,7 @@
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(37, 57);
+            this.numericUpDown2.Location = new System.Drawing.Point(41, 104);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -114,7 +112,7 @@
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(102, 57);
+            this.numericUpDown3.Location = new System.Drawing.Point(106, 104);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -132,7 +130,7 @@
             // 
             // numericUpDown4
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(37, 79);
+            this.numericUpDown4.Location = new System.Drawing.Point(41, 126);
             this.numericUpDown4.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -150,7 +148,7 @@
             // 
             // numericUpDown5
             // 
-            this.numericUpDown5.Location = new System.Drawing.Point(102, 79);
+            this.numericUpDown5.Location = new System.Drawing.Point(106, 126);
             this.numericUpDown5.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -166,32 +164,32 @@
             this.numericUpDown5.TabIndex = 4;
             this.numericUpDown5.ValueChanged += new System.EventHandler(this.numericUpDown5_ValueChanged);
             // 
-            // checkBox1
+            // ShowCursor
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(22, 6);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(210, 17);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "Показывать инструмент (шпиндель)";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.ShowCursor.AutoSize = true;
+            this.ShowCursor.Location = new System.Drawing.Point(25, 12);
+            this.ShowCursor.Name = "ShowCursor";
+            this.ShowCursor.Size = new System.Drawing.Size(210, 17);
+            this.ShowCursor.TabIndex = 5;
+            this.ShowCursor.Text = "Показывать инструмент (шпиндель)";
+            this.ShowCursor.UseVisualStyleBackColor = true;
+            this.ShowCursor.CheckedChanged += new System.EventHandler(this.ShowCursor_CheckedChanged);
             // 
-            // checkBox2
+            // ShowGrid
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(15, 0);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(148, 17);
-            this.checkBox2.TabIndex = 6;
-            this.checkBox2.Text = "Показывать сетку (мм.)";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.ShowGrid.AutoSize = true;
+            this.ShowGrid.Location = new System.Drawing.Point(13, 0);
+            this.ShowGrid.Name = "ShowGrid";
+            this.ShowGrid.Size = new System.Drawing.Size(148, 17);
+            this.ShowGrid.TabIndex = 6;
+            this.ShowGrid.Text = "Показывать сетку (мм.)";
+            this.ShowGrid.UseVisualStyleBackColor = true;
+            this.ShowGrid.CheckedChanged += new System.EventHandler(this.ShowGrid_CheckedChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(34, 22);
+            this.label1.Location = new System.Drawing.Point(38, 69);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 7;
@@ -200,7 +198,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(43, 41);
+            this.label2.Location = new System.Drawing.Point(47, 88);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 13);
             this.label2.TabIndex = 8;
@@ -209,16 +207,16 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(99, 41);
+            this.label3.Location = new System.Drawing.Point(103, 88);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
+            this.label3.Size = new System.Drawing.Size(45, 13);
             this.label3.TabIndex = 9;
-            this.label3.Text = "окончание";
+            this.label3.Text = "размер";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 59);
+            this.label4.Location = new System.Drawing.Point(11, 106);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(14, 13);
             this.label4.TabIndex = 10;
@@ -227,26 +225,28 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 79);
+            this.label5.Location = new System.Drawing.Point(11, 126);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(14, 13);
             this.label5.TabIndex = 11;
             this.label5.Text = "Y";
             // 
-            // checkBox3
+            // ShowScanedGrid
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(16, 300);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(238, 17);
-            this.checkBox3.TabIndex = 12;
-            this.checkBox3.Text = "Показывать сканированную поверхность";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            this.ShowScanedGrid.AutoSize = true;
+            this.ShowScanedGrid.Location = new System.Drawing.Point(25, 58);
+            this.ShowScanedGrid.Name = "ShowScanedGrid";
+            this.ShowScanedGrid.Size = new System.Drawing.Size(238, 17);
+            this.ShowScanedGrid.TabIndex = 12;
+            this.ShowScanedGrid.Text = "Показывать сканированную поверхность";
+            this.ShowScanedGrid.UseVisualStyleBackColor = true;
+            this.ShowScanedGrid.CheckedChanged += new System.EventHandler(this.ShowScanedGrid_CheckedChanged);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.checkBox2);
+            this.groupBox1.Controls.Add(this.radioButton2);
+            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Controls.Add(this.ShowGrid);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.numericUpDown1);
@@ -257,48 +257,23 @@
             this.groupBox1.Controls.Add(this.numericUpDown5);
             this.groupBox1.Controls.Add(this.numericUpDown2);
             this.groupBox1.Controls.Add(this.numericUpDown3);
-            this.groupBox1.Location = new System.Drawing.Point(7, 29);
+            this.groupBox1.Location = new System.Drawing.Point(12, 81);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(253, 113);
+            this.groupBox1.Size = new System.Drawing.Size(199, 157);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "                                                  ";
             // 
-            // checkBox4
+            // ShowAxes
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(16, 277);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(140, 17);
-            this.checkBox4.TabIndex = 14;
-            this.checkBox4.Text = "Показывать оси X,Y,Z";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(274, 351);
-            this.tabControl1.TabIndex = 15;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.checkBox1);
-            this.tabPage1.Controls.Add(this.checkBox4);
-            this.tabPage1.Controls.Add(this.checkBox3);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(266, 325);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Основные";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.ShowAxes.AutoSize = true;
+            this.ShowAxes.Location = new System.Drawing.Point(25, 35);
+            this.ShowAxes.Name = "ShowAxes";
+            this.ShowAxes.Size = new System.Drawing.Size(140, 17);
+            this.ShowAxes.TabIndex = 14;
+            this.ShowAxes.Text = "Показывать оси X,Y,Z";
+            this.ShowAxes.UseVisualStyleBackColor = true;
+            this.ShowAxes.CheckedChanged += new System.EventHandler(this.ShowAxes_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -312,7 +287,7 @@
             this.groupBox2.Controls.Add(this.labelposY);
             this.groupBox2.Controls.Add(this.labelposX);
             this.groupBox2.Controls.Add(this.checkBoxShowGrate);
-            this.groupBox2.Location = new System.Drawing.Point(6, 148);
+            this.groupBox2.Location = new System.Drawing.Point(300, 17);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(253, 123);
             this.groupBox2.TabIndex = 15;
@@ -448,7 +423,7 @@
             // checkBoxShowGrate
             // 
             this.checkBoxShowGrate.AutoSize = true;
-            this.checkBoxShowGrate.Location = new System.Drawing.Point(10, 0);
+            this.checkBoxShowGrate.Location = new System.Drawing.Point(13, 2);
             this.checkBoxShowGrate.Name = "checkBoxShowGrate";
             this.checkBoxShowGrate.Size = new System.Drawing.Size(209, 17);
             this.checkBoxShowGrate.TabIndex = 0;
@@ -456,12 +431,40 @@
             this.checkBoxShowGrate.UseVisualStyleBackColor = true;
             this.checkBoxShowGrate.CheckedChanged += new System.EventHandler(this.checkBoxShowGrate_CheckedChanged);
             // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
+            this.radioButton1.Enabled = false;
+            this.radioButton1.Location = new System.Drawing.Point(25, 19);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(92, 17);
+            this.radioButton1.TabIndex = 12;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "В виде линий";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Enabled = false;
+            this.radioButton2.Location = new System.Drawing.Point(25, 42);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(90, 17);
+            this.radioButton2.TabIndex = 13;
+            this.radioButton2.Text = "В виде точек";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
             // Sett3D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(274, 351);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(584, 440);
+            this.Controls.Add(this.ShowAxes);
+            this.Controls.Add(this.ShowScanedGrid);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.ShowCursor);
+            this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.Name = "Sett3D";
@@ -475,9 +478,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPosYmax)).EndInit();
@@ -485,6 +485,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPosYmin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPosXmin)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -495,18 +496,16 @@
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.NumericUpDown numericUpDown4;
         private System.Windows.Forms.NumericUpDown numericUpDown5;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox ShowCursor;
+        private System.Windows.Forms.CheckBox ShowGrid;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox ShowScanedGrid;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.CheckBox ShowAxes;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkBoxShowGrate;
         private System.Windows.Forms.NumericUpDown numPosYmax;
@@ -518,5 +517,7 @@
         private System.Windows.Forms.Label labelposY;
         private System.Windows.Forms.Label labelposX;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton1;
     }
 }

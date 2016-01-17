@@ -17,7 +17,7 @@ namespace CNC_Assist
         {
             InitializeComponent();
 
-            if (GlobalSetting.AppSetting.Language == languages.russian)
+            if (GlobalSetting.AppSetting.Language == Languages.Russian)
             {
                 groupBoxPositions.Text = @"Координаты";
             }

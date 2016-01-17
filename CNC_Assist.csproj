@@ -100,22 +100,10 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConfigureWorkArea.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigureWorkArea.Designer.cs">
-      <DependentUpon>ConfigureWorkArea.cs</DependentUpon>
-    </Compile>
     <Compile Include="CONTROLLER.cs" />
     <Compile Include="DataLoader.cs" />
     <Compile Include="GlobalSetting.cs" />
     <Compile Include="GRBL\ArduinoCNC_Controller.cs" />
-    <Compile Include="GUI_panel_3DView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI_panel_3DView.Designer.cs">
-      <DependentUpon>GUI_panel_3DView.cs</DependentUpon>
-    </Compile>
     <Compile Include="LoadingData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,14 +204,8 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConfigureWorkArea.resx">
-      <DependentUpon>ConfigureWorkArea.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="EditGkode.resx">
       <DependentUpon>EditGkode.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI_panel_3DView.resx">
-      <DependentUpon>GUI_panel_3DView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoadingData.resx">
       <DependentUpon>LoadingData.cs</DependentUpon>
@@ -401,6 +383,10 @@
     <Content Include="Resources\bullet_arrow_right.png" />
     <None Include="Resources\bullet_arrow_right1.png" />
     <None Include="Resources\document_prepare.png" />
+    <None Include="Resources\webcam.png" />
+    <None Include="Resources\flag_russia.png" />
+    <None Include="Resources\flag_great_britain.png" />
+    <None Include="Resources\video_mode.png" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup />

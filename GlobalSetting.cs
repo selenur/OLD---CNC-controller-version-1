@@ -10,7 +10,7 @@ namespace CNC_Assist
 {
 
     /// <summary>
-    /// Класс для хранения абсолютно всех настроек программы
+    /// Все настройки программы
     /// </summary>
     public static class GlobalSetting
     {
@@ -18,14 +18,41 @@ namespace CNC_Assist
         /// Файл настроек программы
         /// </summary>
         private static readonly string Filesetting1 = string.Format("{0}\\setup1.ini", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
+        /// <summary>
+        /// Файл настроек контроллера
+        /// </summary>
         private static readonly string Filesetting2 = string.Format("{0}\\setup2.ini", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
+        /// <summary>
+        /// Файл настроек 3D вуализации
+        /// </summary>
         private static readonly string Filesetting3 = string.Format("{0}\\setup3.ini", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
+        /// <summary>
+        /// Файл настроек отображения панелей
+        /// </summary>
         private static readonly string Filesetting4 = string.Format("{0}\\setup4.ini", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         // создание классов, с настройками по умолчанию
+
+
+
+        /// <summary>
+        /// Базовые настройки
+        /// </summary>
         public static SettingAPP AppSetting = new SettingAPP();
+        /// <summary>
+        /// Настройки текущего контроллера
+        /// </summary>
         public static SettingController ControllerSetting = new SettingController();
+        /// <summary>
+        /// Настройки 3D вуализации
+        /// </summary>
         public static SettingRender RenderSetting = new SettingRender();
+        /// <summary>
+        /// Настройки отображения панелей
+        /// </summary>
         public static SettingPanels PanelSetting = new SettingPanels();
 
         /// <summary>
@@ -98,35 +125,56 @@ namespace CNC_Assist
 
     }
 
+    /// <summary>
+    /// Базовые настройки
+    /// </summary>
     [Serializable]
     public class SettingAPP
     {
-        private ControllerModel _Controller = ControllerModel.PlanetCNC_MK1;
-        [DisplayName("Модель контроллера")]
+        /// <summary>
+        /// Модель контроллера
+        /// </summary>
+        private ControllerModel _controller = ControllerModel.PlanetCNC_MK1;
+        /// <summary>
+        /// Модель контроллера
+        /// </summary>
+        [DisplayName(@"Модель контроллера")]
         [Description("В данном пункте выбирается аппаратный контроллер, с которым будет работать программа")]
         [Category("1. Настройки программы")]
         [TypeConverter(typeof(EnumTypeConverter))]
         public ControllerModel Controller
         {
-            get { return _Controller; }
-            set { _Controller = value; }
+            get { return _controller; }
+            set { _controller = value; }
 
         }
 
-        private languages _language = languages.russian;
-        [DisplayName("Язык программы")]
+        /// <summary>
+        /// Используемый язык
+        /// </summary>
+        private Languages _language = Languages.Russian;
+        /// <summary>
+        /// Используемый язык
+        /// </summary>
+        [DisplayName(@"Язык программы")]
         [Category("1. Настройки программы")]
         //[ReadOnly(true)]
         [TypeConverter(typeof(EnumTypeConverter))]
-        public languages Language
+        public Languages Language
         {
             get { return _language; }
             set { _language = value; }
 
         }
 
-        private bool _autoconnect = false;
-        [DisplayName("Авто-подключение")]
+        /// <summary>
+        /// Автоподключение к контроллеру
+        /// </summary>
+        private bool _autoconnect;
+        /// <summary>
+        /// Автоподключение к контроллеру
+        /// </summary>
+        [DisplayName(@"Авто-подключение")]
         [Description("Постоянное удержание связи с контроллером, в случае обрыва связи, будет выполнятся автоматическое подключение")]
         [Category("1. Настройки программы")]
         [TypeConverter(typeof(BooleanTypeConverter))]
@@ -138,67 +186,100 @@ namespace CNC_Assist
         }
     }
 
+    /// <summary>
+    /// Настройки текущего контроллера
+    /// </summary>
     [Serializable]
     public class SettingController
     {
 
-        private int _MinBuffSize = 3;
-        [DisplayName("Количество посылаемых данных")]
+        /// <summary>
+        /// Минимальный объем буфера контроллера, при котором посылаем данные
+        /// </summary>
+        private int _minBuffSize = 3;
+        /// <summary>
+        /// Минимальный объем буфера контроллера, при котором посылаем данные
+        /// </summary>
+        [DisplayName(@"Количество посылаемых данных")]
         [Description("Настройка позволяет указать сколько посылать комманд в контроллер, от текущего кадра наперед.")]
         [PropertyOrder(5)]
         [Category("2. Настройки контроллера")]
         public int MinBuffSize
         {
-            get { return _MinBuffSize; }
-            set { _MinBuffSize = value; }
+            get { return _minBuffSize; }
+            set { _minBuffSize = value; }
 
         }
 
-        private AxleSetting _AxleX = new AxleSetting();
-        [DisplayName("Ось X")]
+        /// <summary>
+        /// Настройки оси
+        /// </summary>
+        private AxleSetting _axleX = new AxleSetting();
+        /// <summary>
+        /// Настройки оси
+        /// </summary>
+        [DisplayName(@"Ось X")]
         [Description("Настройки оси X")]
         [PropertyOrder(10)]
         [Category("2.1 Параметры осей")]
         public AxleSetting AxleX
         {
-            get { return _AxleX; }
-            set { _AxleX = value; }
+            get { return _axleX; }
+            set { _axleX = value; }
         }
 
 
-        private AxleSetting _AxleY = new AxleSetting();
-        [DisplayName("Ось Y")]
+        /// <summary>
+        /// Настройки оси
+        /// </summary>
+        private AxleSetting _axleY = new AxleSetting();
+        /// <summary>
+        /// Настройки оси
+        /// </summary>
+        [DisplayName(@"Ось Y")]
         [Description("Настройки оси Y")]
         [PropertyOrder(20)]
         [Category("2.1 Параметры осей")]
         public AxleSetting AxleY
         {
-            get { return _AxleY; }
-            set { _AxleY = value; }
+            get { return _axleY; }
+            set { _axleY = value; }
         }
 
 
-        private AxleSetting _AxleZ = new AxleSetting();
-        [DisplayName("Ось Z")]
+        /// <summary>
+        /// Настройки оси
+        /// </summary>
+        private AxleSetting _axleZ = new AxleSetting();
+        /// <summary>
+        /// Настройки оси
+        /// </summary>
+        [DisplayName(@"Ось Z")]
         [Description("Настройки оси Z")]
         [PropertyOrder(30)]
         [Category("2.1 Параметры осей")]
         public AxleSetting AxleZ
         {
-            get { return _AxleZ; }
-            set { _AxleZ = value; }
+            get { return _axleZ; }
+            set { _axleZ = value; }
         }
 
 
-        private AxleSetting _AxleA = new AxleSetting(false);
-        [DisplayName("Ось A")]
+        /// <summary>
+        /// Настройки оси
+        /// </summary>
+        private AxleSetting _axleA = new AxleSetting(false);
+        /// <summary>
+        /// Настройки оси
+        /// </summary>
+        [DisplayName(@"Ось A")]
         [Description("Настройки оси A")]
         [PropertyOrder(40)]
         [Category("2.1 Параметры осей")]
         public AxleSetting AxleA
         {
-            get { return _AxleA; }
-            set { _AxleA = value; }
+            get { return _axleA; }
+            set { _axleA = value; }
         }
 
 
@@ -206,133 +287,193 @@ namespace CNC_Assist
 
 
         //X+
-        private bool _UseLimitSwichXp = true;
-        [DisplayName("X+")]
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        private bool _useLimitSwichXp = true;
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        [DisplayName(@"X+")]
         [Description("X+")]
         [PropertyOrder(1)]
         [Category("2.2 Использование концевиков")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool UseLimitSwichXp
         {
-            get { return _UseLimitSwichXp; }
-            set { _UseLimitSwichXp = value; }
+            get { return _useLimitSwichXp; }
+            set { _useLimitSwichXp = value; }
         }
 
         //X-
-        private bool _UseLimitSwichXm = true;
-        [DisplayName("X-")]
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        private bool _useLimitSwichXm = true;
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        [DisplayName(@"X-")]
         [Description("X-")]
         [PropertyOrder(1)]
         [Category("2.2 Использование концевиков")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool UseLimitSwichXm
         {
-            get { return _UseLimitSwichXm; }
-            set { _UseLimitSwichXm = value; }
+            get { return _useLimitSwichXm; }
+            set { _useLimitSwichXm = value; }
         }
 
 
         //Y+
-        private bool _UseLimitSwichYp = true;
-        [DisplayName("Y+")]
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        private bool _useLimitSwichYp = true;
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        [DisplayName(@"Y+")]
         [Description("Y+")]
         [PropertyOrder(1)]
         [Category("2.2 Использование концевиков")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool UseLimitSwichYp
         {
-            get { return _UseLimitSwichYp; }
-            set { _UseLimitSwichYp = value; }
+            get { return _useLimitSwichYp; }
+            set { _useLimitSwichYp = value; }
         }
 
         //Y-
-        private bool _UseLimitSwichYm = true;
-        [DisplayName("Y-")]
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        private bool _useLimitSwichYm = true;
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        [DisplayName(@"Y-")]
         [Description("Y-")]
         [PropertyOrder(1)]
         [Category("2.2 Использование концевиков")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool UseLimitSwichYm
         {
-            get { return _UseLimitSwichYm; }
-            set { _UseLimitSwichYm = value; }
+            get { return _useLimitSwichYm; }
+            set { _useLimitSwichYm = value; }
         }
 
 
         //X+
-        private bool _UseLimitSwichZp = true;
-        [DisplayName("Z+")]
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        private bool _useLimitSwichZp = true;
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        [DisplayName(@"Z+")]
         [Description("Z+")]
         [PropertyOrder(1)]
         [Category("2.2 Использование концевиков")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool UseLimitSwichZp
         {
-            get { return _UseLimitSwichZp; }
-            set { _UseLimitSwichZp = value; }
+            get { return _useLimitSwichZp; }
+            set { _useLimitSwichZp = value; }
         }
 
         //X-
-        private bool _UseLimitSwichZm = true;
-        [DisplayName("Z-")]
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        private bool _useLimitSwichZm = true;
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        [DisplayName(@"Z-")]
         [Description("Z-")]
         [PropertyOrder(1)]
         [Category("2.2 Использование концевиков")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool UseLimitSwichZm
         {
-            get { return _UseLimitSwichZm; }
-            set { _UseLimitSwichZm = value; }
+            get { return _useLimitSwichZm; }
+            set { _useLimitSwichZm = value; }
         }
 
 
 
 
-        private float _WorkSizeXp = 0;
-        [DisplayName("Граница X+")]
+        /// <summary>
+        /// Доступная рабочая область
+        /// </summary>
+        private float _workSizeXp;
+        /// <summary>
+        /// Доступная рабочая область
+        /// </summary>
+        [DisplayName(@"Граница X+")]
         [Description("Граница рабочей области")]
         [PropertyOrder(5)]
         [Category("2.3 Рабочая область")]
         public float WorkSizeXp
         {
-            get { return _WorkSizeXp; }
-            set { _WorkSizeXp = value; }
+            get { return _workSizeXp; }
+            set { _workSizeXp = value; }
 
         }
 
-        private float _WorkSizeXm = 0;
-        [DisplayName("Граница X-")]
+        /// <summary>
+        /// Доступная рабочая область
+        /// </summary>
+        private float _workSizeXm;
+        /// <summary>
+        /// Доступная рабочая область
+        /// </summary>
+        [DisplayName(@"Граница X-")]
         [Description("Граница рабочей области")]
         [PropertyOrder(5)]
         [Category("2.3 Рабочая область")]
         public float WorkSizeXm
         {
-            get { return _WorkSizeXm; }
-            set { _WorkSizeXm = value; }
+            get { return _workSizeXm; }
+            set { _workSizeXm = value; }
 
         }
 
-        private float _WorkSizeYp = 0;
-        [DisplayName("Граница Y+")]
+        /// <summary>
+        /// Доступная рабочая область
+        /// </summary>
+        private float _workSizeYp;
+        /// <summary>
+        /// Доступная рабочая область
+        /// </summary>
+        [DisplayName(@"Граница Y+")]
         [Description("Граница рабочей области")]
         [PropertyOrder(5)]
         [Category("2.3 Рабочая область")]
         public float WorkSizeYp
         {
-            get { return _WorkSizeYp; }
-            set { _WorkSizeYp = value; }
+            get { return _workSizeYp; }
+            set { _workSizeYp = value; }
 
         }
 
-        private float _WorkSizeYm = 0;
-        [DisplayName("Граница Y-")]
+        /// <summary>
+        /// Доступная рабочая область
+        /// </summary>
+        private float _workSizeYm;
+        /// <summary>
+        /// Доступная рабочая область
+        /// </summary>
+        [DisplayName(@"Граница Y-")]
         [Description("Граница рабочей области")]
         [PropertyOrder(5)]
         [Category("2.3 Рабочая область")]
         public float WorkSizeYm
         {
-            get { return _WorkSizeYm; }
-            set { _WorkSizeYm = value; }
+            get { return _workSizeYm; }
+            set { _workSizeYm = value; }
 
         }
 
@@ -340,79 +481,155 @@ namespace CNC_Assist
 
     }
 
+    /// <summary>
+    /// Настройки 3D вуализации
+    /// </summary>
     [Serializable]
     public class SettingRender
     {
 
-        private bool _ShowAxes = true;
-        [DisplayName("Отображать оси")]
+        /// <summary>
+        /// Показывать оси координат
+        /// </summary>
+        private bool _showAxes = true;
+        /// <summary>
+        /// Показывать оси координат
+        /// </summary>
+        [DisplayName(@"Отображать оси")]
         [Description("Показывать оси X,Y,Z")]
         [PropertyOrder(1)]
         [Category("3.1 Настройки 3D")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool ShowAxes
         {
-            get { return _ShowAxes; }
-            set { _ShowAxes = value; }
+            get { return _showAxes; }
+            set { _showAxes = value; }
         }
 
-        private bool _ShowCursor = true;
-        [DisplayName("Отображать курсор/инструмент")]
+        /// <summary>
+        /// Показывать инструмент
+        /// </summary>
+        private bool _showCursor = true;
+        /// <summary>
+        /// Показывать инструмент
+        /// </summary>
+        [DisplayName(@"Отображать курсор/инструмент")]
         [Description("Показывать курсор/инструмент")]
         [PropertyOrder(2)]
         [Category("3.1 Настройки 3D")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool ShowCursor
         {
-            get { return _ShowCursor; }
-            set { _ShowCursor = value; }
+            get { return _showCursor; }
+            set { _showCursor = value; }
         }
 
-        private bool _ShowGrid = true;
-        [DisplayName("Отображать сетку")]
+        /// <summary>
+        /// Показывать сетку
+        /// </summary>
+        private bool _showGrid = true;
+        /// <summary>
+        /// Показывать сетку
+        /// </summary>
+        [DisplayName(@"Отображать сетку")]
         [Description("Показывать сетку")]
         [PropertyOrder(3)]
         [Category("3.2 Настройки 3D - Сетка")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool ShowGrid
         {
-            get { return _ShowGrid; }
-            set { _ShowGrid = value; }
+            get { return _showGrid; }
+            set { _showGrid = value; }
         }
 
-        private int _GridSize = 10;
-        [DisplayName("Размер ячейки")]
+        /// <summary>
+        /// Размер ячейки в сетке
+        /// </summary>
+        private int _gridSize = 10;
+        /// <summary>
+        /// Размер ячейки в сетке
+        /// </summary>
+        [DisplayName(@"Размер ячейки")]
         [Description(" ")]
         [PropertyOrder(4)]
         [Category("3.2 Настройки 3D - Сетка")]
         public int GridSize
         {
-            get { return _GridSize; }
-            set { _GridSize = value; }
+            get { return _gridSize; }
+            set { _gridSize = value; }
 
         }
 
-        private int _GridSizeX = 100;
-        [DisplayName("Размер сетки по X")]
+        /// <summary>
+        /// Размер всей сетки
+        /// </summary>
+        private int _gridSizeX = 100;
+        /// <summary>
+        /// Размер всей сетки
+        /// </summary>
+        [DisplayName(@"Размер сетки по X")]
         [Description(" ")]
         [PropertyOrder(4)]
         [Category("3.2 Настройки 3D - Сетка")]
         public int GridSizeX
         {
-            get { return _GridSizeX; }
-            set { _GridSizeX = value; }
+            get { return _gridSizeX; }
+            set { _gridSizeX = value; }
 
         }
 
-        private int _GridSizeY = 100;
-        [DisplayName("Размер сетки по Y")]
+        /// <summary>
+        /// Размер всей сетки
+        /// </summary>
+        private int _gridSizeY = 100;
+        /// <summary>
+        /// Размер всей сетки
+        /// </summary>
+        [DisplayName(@"Размер сетки по Y")]
         [Description(" ")]
         [PropertyOrder(4)]
         [Category("3.2 Настройки 3D - Сетка")]
         public int GridSizeY
         {
-            get { return _GridSizeY; }
-            set { _GridSizeY = value; }
+            get { return _gridSizeY; }
+            set { _gridSizeY = value; }
+
+        }
+
+
+        /// <summary>
+        /// Начало сетки
+        /// </summary>
+        private int _gridStartX;
+        /// <summary>
+        /// Начало сетки
+        /// </summary>
+        [DisplayName(@"Начальное расположение сетки по X")]
+        [Description(" ")]
+        [PropertyOrder(4)]
+        [Category("3.2 Настройки 3D - Сетка")]
+        public int GridStartX
+        {
+            get { return _gridStartX; }
+            set { _gridStartX = value; }
+
+        }
+
+        /// <summary>
+        /// Начало сетки
+        /// </summary>
+        private int _gridStartY = 100;
+        /// <summary>
+        /// Начало сетки
+        /// </summary>
+        [DisplayName(@"Начальное расположение сетки по Y")]
+        [Description(" ")]
+        [PropertyOrder(4)]
+        [Category("3.2 Настройки 3D - Сетка")]
+        public int GridStartY
+        {
+            get { return _gridStartY; }
+            set { _gridStartY = value; }
 
         }
 
@@ -420,38 +637,56 @@ namespace CNC_Assist
 
 
 
-        private bool _ShowWorkArea = true;
-        [DisplayName("Отображать рабочую область")]
+        /// <summary>
+        /// Показывать рабочую область
+        /// </summary>
+        private bool _showWorkArea = true;
+        /// <summary>
+        /// Показывать рабочую область
+        /// </summary>
+        [DisplayName(@"Отображать рабочую область")]
         [Description("Показывать область в пределах которой станок сможет работать")]
         [PropertyOrder(5)]
         [Category("3.1 Настройки 3D")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool ShowWorkArea
         {
-            get { return _ShowWorkArea; }
-            set { _ShowWorkArea = value; }
+            get { return _showWorkArea; }
+            set { _showWorkArea = value; }
         }
 
 
 
-        private bool _ShowScanedGrid = true;
-        [DisplayName("Отображать сетку сканирования")]
+        /// <summary>
+        /// Показывать матрицу сканирования
+        /// </summary>
+        private bool _showScanedGrid = true;
+        /// <summary>
+        /// Показывать матрицу сканирования
+        /// </summary>
+        [DisplayName(@"Отображать сетку сканирования")]
         [Description("Показывать сетку сканирования")]
         [PropertyOrder(5)]
         [Category("3.1 Настройки 3D")]
         [TypeConverter(typeof(BooleanTypeConverter))]
         public bool ShowScanedGrid
         {
-            get { return _ShowScanedGrid; }
-            set { _ShowScanedGrid = value; }
+            get { return _showScanedGrid; }
+            set { _showScanedGrid = value; }
         }
 
-        private show3DGkode _gkodeshow = show3DGkode.all;
-        [DisplayName("Вариант отображения G-кода")]
+        /// <summary>
+        /// Параметры отображения g-кода
+        /// </summary>
+        private Show3DGkode _gkodeshow = Show3DGkode.All;
+        /// <summary>
+        /// Параметры отображения g-кода
+        /// </summary>
+        [DisplayName(@"Вариант отображения G-кода")]
         [Category("3.1 Настройки 3D")]
         //[ReadOnly(true)]
         [TypeConverter(typeof(EnumTypeConverter))]
-        public show3DGkode gkodeshow
+        public Show3DGkode Gkodeshow
         {
             get { return _gkodeshow; }
             set { _gkodeshow = value; }
@@ -460,102 +695,96 @@ namespace CNC_Assist
         
     }
 
+    /// <summary>
+    /// Настройки отображения панелей
+    /// </summary>
     [Serializable]
     public class SettingPanels
     {
 
-        private bool _showGUI_panel_Info = false;
-        [DisplayName("Скорость движения")]
+        private bool _showGuiPanelInfo;
+        [DisplayName(@"Скорость движения")]
         [Description("Модуль отображает скорость движения")]
         [Category("4. Настройки отображения модулей")]
         [TypeConverter(typeof(BooleanTypeConverter))]
-        public bool showGUI_panel_Info
+        public bool ShowGuiPanelInfo
         {
-            get { return _showGUI_panel_Info; }
-            set { _showGUI_panel_Info = value; }
+            get { return _showGuiPanelInfo; }
+            set { _showGuiPanelInfo = value; }
 
         }
 
-        private bool _showGUI_panel_Limits = false;
-        [DisplayName("Концевики")]
+        private bool _showGuiPanelLimits;
+        [DisplayName(@"Концевики")]
         [Description("Модуль вотобразает статус концевиков")]
         [Category("4. Настройки отображения модулей")]
         [TypeConverter(typeof(BooleanTypeConverter))]
-        public bool showGUI_panel_Limits
+        public bool ShowGuiPanelLimits
         {
-            get { return _showGUI_panel_Limits; }
-            set { _showGUI_panel_Limits = value; }
+            get { return _showGuiPanelLimits; }
+            set { _showGuiPanelLimits = value; }
 
         }
 
-        private bool _showGUI_panel_ManualControl = false;
-        [DisplayName("Ручное управление")]
+        private bool _showGuiPanelManualControl;
+        [DisplayName(@"Ручное управление")]
         [Description("Модуль позволяет с помощью мыши, или клавиш управлять станком")]
         [Category("4. Настройки отображения модулей")]
         [TypeConverter(typeof(BooleanTypeConverter))]
-        public bool showGUI_panel_ManualControl
+        public bool ShowGuiPanelManualControl
         {
-            get { return _showGUI_panel_ManualControl; }
-            set { _showGUI_panel_ManualControl = value; }
+            get { return _showGuiPanelManualControl; }
+            set { _showGuiPanelManualControl = value; }
 
         }
 
-        private bool _showGUI_panel_MoveTo = false;
-        [DisplayName("Запуск движения в точку")]
+        private bool _showGuiPanelMoveTo;
+        [DisplayName(@"Запуск движения в точку")]
         [Description("Модуль позволяет запустить движение в указанную точку")]
         [Category("4. Настройки отображения модулей")]
         [TypeConverter(typeof(BooleanTypeConverter))]
-        public bool showGUI_panel_MoveTo
+        public bool ShowGuiPanelMoveTo
         {
-            get { return _showGUI_panel_MoveTo; }
-            set { _showGUI_panel_MoveTo = value; }
+            get { return _showGuiPanelMoveTo; }
+            set { _showGuiPanelMoveTo = value; }
 
         }
 
-        private bool _showGUI_panel_POS = false;
-        [DisplayName("Координаты")]
+        private bool _showGuiPanelPos;
+        [DisplayName(@"Координаты")]
         [Description("Модуль выводит координаты станка")]
         [Category("4. Настройки отображения модулей")]
         [TypeConverter(typeof(BooleanTypeConverter))]
-        public bool showGUI_panel_POS
+        public bool ShowGuiPanelPos
         {
-            get { return _showGUI_panel_POS; }
-            set { _showGUI_panel_POS = value; }
+            get { return _showGuiPanelPos; }
+            set { _showGuiPanelPos = value; }
 
         }
 
-        private bool _showGUI_panel_TaskControl = false;
-        [DisplayName("Выполнение G-кода")]
+        private bool _showGuiPanelTaskControl;
+        [DisplayName(@"Выполнение G-кода")]
         [Description("Модуль позволяет запускать выполнение G-кода")]
         [Category("4. Настройки отображения модулей")]
         [TypeConverter(typeof(BooleanTypeConverter))]
-        public bool showGUI_panel_TaskControl
+        public bool ShowGuiPanelTaskControl
         {
-            get { return _showGUI_panel_TaskControl; }
-            set { _showGUI_panel_TaskControl = value; }
+            get { return _showGuiPanelTaskControl; }
+            set { _showGuiPanelTaskControl = value; }
         }
 
-        private bool _showGUI_panel_BitValue = false;
-        [DisplayName("Регистры контроллера")]
+        private bool _showGuiPanelBitValue;
+        [DisplayName(@"Регистры контроллера")]
         [Description("Модуль позволяет отображать значения некоторых регистров контроллера")]
         [Category("4. Настройки отображения модулей")]
         [TypeConverter(typeof(BooleanTypeConverter))]
-        public bool showGUI_panel_BitValue
+        public bool ShowGuiPanelBitValue
         {
-            get { return _showGUI_panel_BitValue; }
-            set { _showGUI_panel_BitValue = value; }
+            get { return _showGuiPanelBitValue; }
+            set { _showGuiPanelBitValue = value; }
         }
 
-        private bool _showGUI_panel_3DView = false;
-        [DisplayName("Найстройки 3D отображения")]
-        [Description("Модуль позволяет настраивать информацию того что отображать")]
-        [Category("4. Настройки отображения модулей")]
-        [TypeConverter(typeof(BooleanTypeConverter))]
-        public bool showGUI_panel_3DView
-        {
-            get { return _showGUI_panel_3DView; }
-            set { _showGUI_panel_3DView = value; }
-        }
+
 
 
 
@@ -574,18 +803,30 @@ namespace CNC_Assist
         /// <summary>
         /// Конструктор
         /// </summary>
-        public AxleSetting(bool usedAxes = true, int CountPulse = 200, string NameUE = "мм.", int MaxSpeed = 200, int acceleration = 20)
+        public AxleSetting()
+        {
+            _usedAxes = true;
+            _countPulse = 200;
+            _nameUe = "мм.";
+            _maxSpeed = 200;
+            _acceleration = 20;
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public AxleSetting(bool usedAxes = true, int countPulse = 200, string nameUe = "мм.", int maxSpeed = 200, int acceleration = 20)
         {
             _usedAxes = usedAxes;
-            _CountPulse = CountPulse;
-            _NameUE = NameUE;
-            _MaxSpeed = MaxSpeed;
+            _countPulse = countPulse;
+            _nameUe = nameUe;
+            _maxSpeed = maxSpeed;
             _acceleration = acceleration;
         }
 
 
-        private bool _usedAxes = true;
-        [DisplayName("Использовать")]
+        private bool _usedAxes;
+        [DisplayName(@"Использовать")]
         [Description("Использовать ли данную ось")]
         [PropertyOrder(10)]
         [TypeConverter(typeof(BooleanTypeConverter))]
@@ -596,41 +837,41 @@ namespace CNC_Assist
 
         }
 
-        private int _CountPulse = 200;
-        [DisplayName("Количество импульсов на 1 у.е.")]
+        private int _countPulse;
+        [DisplayName(@"Количество импульсов на 1 у.е.")]
         [Description("Настройка позволяет указать сколько импульсов соответствует, одной у.е.")]
         [PropertyOrder(20)]
-        public int countPulse
+        public int CountPulse
         {
-            get { return _CountPulse; }
-            set { _CountPulse = value; }
+            get { return _countPulse; }
+            set { _countPulse = value; }
 
         }
 
-        private string _NameUE = "мм.";
-        [DisplayName("Наименование у.е.")]
+        private string _nameUe;
+        [DisplayName(@"Наименование у.е.")]
         [Description("Наименование условной единицы")]
         [PropertyOrder(30)]
         public string NameUE
         {
-            get { return _NameUE; }
-            set { _NameUE = value; }
+            get { return _nameUe; }
+            set { _nameUe = value; }
         }
 
 
-        private int _MaxSpeed = 200;
-        [DisplayName("Максимальная скорость")]
+        private int _maxSpeed;
+        [DisplayName(@"Максимальная скорость")]
         [Description("Настройка позволяет указать максимальную скорость движения")]
         [PropertyOrder(40)]
         public int MaxSpeed
         {
-            get { return _MaxSpeed; }
-            set { _MaxSpeed = value; }
+            get { return _maxSpeed; }
+            set { _maxSpeed = value; }
 
         }
 
-        private int _acceleration = 20;
-        [DisplayName("Ускорение")]
+        private int _acceleration;
+        [DisplayName(@"Ускорение")]
         [Description("Настройка позволяет указать ускорение")]
         [PropertyOrder(50)]
         public int Acceleration
@@ -648,7 +889,7 @@ namespace CNC_Assist
         /// </summary>
         public override string ToString()
         {
-            if (_usedAxes == true) return _CountPulse + " имп. на 1 " + _NameUE;
+            if (_usedAxes) return _countPulse + " имп. на 1 " + _nameUe;
 
             return "Не используется";
         }
@@ -670,42 +911,52 @@ namespace CNC_Assist
         /// Контроллер МК2
         /// </summary>
         [Description("Planet-CNC MK2")]
-        PlanetCNC_MK2 = 1,
+        PlanetCNC_MK2 = 1//,
         /// <summary>
         /// Контроллер ардуино
         /// </summary>
-        [Description("Arduino UNO + GRBL v0.9")]
-        Arduino_Gerber09 = 2
-        ///// <summary>
-        ///// Эмулятор контроллера
-        ///// </summary>
-        //[Description("Эмулятор контроллера")]
-        //Emulator = 3
+        //[Description("Arduino UNO + GRBL v0.9")]
+        //Arduino_Gerber09 = 2
     }
 
     /// <summary>
-    /// язык программы
+    /// Доступные языки программы
     /// </summary>
     [Serializable]
-    public enum languages
+    public enum Languages
     {
+        /// <summary>
+        /// Русский
+        /// </summary>
         [Description("Русский")]
-        russian = 0,
+        Russian = 0,
+        /// <summary>
+        /// Английский
+        /// </summary>
         [Description("Английский")]
-        english = 1
+        English = 1
     };
 
 
     /// <summary>
-    /// параметры отображения g-кода
+    /// Параметры отображения g-кода
     /// </summary>
     [Serializable]
-    public enum show3DGkode
+    public enum Show3DGkode
     {
+        /// <summary>
+        /// Отображать весь G-код
+        /// </summary>
         [Description("Весь")]
-        all = 0,
+        All = 0,
+        /// <summary>
+        /// Отображать только выполненный G-код
+        /// </summary>
         [Description("Только выполненный")]
-        compleated = 1,
+        Compleated = 1,
+        /// <summary>
+        /// Отображать G-код, который осталось выполнить
+        /// </summary>
         [Description("Только не выполненный")]
         NotCompleated = 2
     };

@@ -24,7 +24,6 @@ namespace CNC_Assist
         private GuiPanelTaskControl _panelTaskControl;
         private GUI_panel_BitValue _panelBitValue;
         private GUI_panel_MoveTo _panelMoveTo;
-        private GUI_panel_3DView _panel3DView;
 
         private webCamera webCameraForms;
 
@@ -516,10 +515,10 @@ namespace CNC_Assist
             panelLeft.Controls.Clear();
             panelRight.Controls.Clear();
 
-            if (!GlobalSetting.PanelSetting.showGUI_panel_POS && 
-                !GlobalSetting.PanelSetting.showGUI_panel_Limits &&
-                !GlobalSetting.PanelSetting.showGUI_panel_Info &&
-                !GlobalSetting.PanelSetting.showGUI_panel_ManualControl)
+            if (!GlobalSetting.PanelSetting.ShowGuiPanelPos && 
+                !GlobalSetting.PanelSetting.ShowGuiPanelLimits &&
+                !GlobalSetting.PanelSetting.ShowGuiPanelInfo &&
+                !GlobalSetting.PanelSetting.ShowGuiPanelManualControl)
             {
                 visibleLeft = false;
             }
@@ -528,9 +527,9 @@ namespace CNC_Assist
                 visibleLeft = true;
             }
 
-            if (!GlobalSetting.PanelSetting.showGUI_panel_TaskControl &&
-                !GlobalSetting.PanelSetting.showGUI_panel_MoveTo &&
-                !GlobalSetting.PanelSetting.showGUI_panel_BitValue)
+            if (!GlobalSetting.PanelSetting.ShowGuiPanelTaskControl &&
+                !GlobalSetting.PanelSetting.ShowGuiPanelMoveTo &&
+                !GlobalSetting.PanelSetting.ShowGuiPanelBitValue)
             {
                 visibleRight = false;
                 visibleTask = false;
@@ -538,10 +537,10 @@ namespace CNC_Assist
             else
             {
                 visibleRight = true;
-                visibleTask = GlobalSetting.PanelSetting.showGUI_panel_TaskControl;
+                visibleTask = GlobalSetting.PanelSetting.ShowGuiPanelTaskControl;
             }
 
-            if (GlobalSetting.PanelSetting.showGUI_panel_POS)
+            if (GlobalSetting.PanelSetting.ShowGuiPanelPos)
             {
                 _panelPos = new GuiPanelPos();
                 panelLeft.Controls.Add(_panelPos);
@@ -551,7 +550,7 @@ namespace CNC_Assist
                 _panelPos = null;
             }
 
-            if (GlobalSetting.PanelSetting.showGUI_panel_Limits)
+            if (GlobalSetting.PanelSetting.ShowGuiPanelLimits)
             {
                 _panelLimits = new GUI_panel_Limits();
                 panelLeft.Controls.Add(_panelLimits);
@@ -561,7 +560,7 @@ namespace CNC_Assist
                 _panelLimits = null;
             }
 
-            if (GlobalSetting.PanelSetting.showGUI_panel_Info)
+            if (GlobalSetting.PanelSetting.ShowGuiPanelInfo)
             {
                 _panelInfo = new GUI_panel_Info();
                 panelLeft.Controls.Add(_panelInfo);
@@ -571,7 +570,7 @@ namespace CNC_Assist
                 _panelInfo = null;
             }
 
-            if (GlobalSetting.PanelSetting.showGUI_panel_ManualControl)
+            if (GlobalSetting.PanelSetting.ShowGuiPanelManualControl)
             {
                 _panelManualControl = new GUI_panel_ManualControl();
                 panelLeft.Controls.Add(_panelManualControl);
@@ -581,19 +580,10 @@ namespace CNC_Assist
                 _panelManualControl = null;
             }
 
-            if (GlobalSetting.PanelSetting.showGUI_panel_3DView)
-            {
-                _panel3DView = new GUI_panel_3DView();
-                panelLeft.Controls.Add(_panel3DView);
-            }
-            else
-            {
-                _panel3DView = null;
-            }
 
 
 
-            if (GlobalSetting.PanelSetting.showGUI_panel_TaskControl)
+            if (GlobalSetting.PanelSetting.ShowGuiPanelTaskControl)
             {
                 _panelTaskControl = new GuiPanelTaskControl();
                 panelRight.Controls.Add(_panelTaskControl);
@@ -603,7 +593,7 @@ namespace CNC_Assist
                 _panelTaskControl = null;
             }
 
-            if (GlobalSetting.PanelSetting.showGUI_panel_MoveTo)
+            if (GlobalSetting.PanelSetting.ShowGuiPanelMoveTo)
             {
                 _panelMoveTo = new GUI_panel_MoveTo();
                 panelRight.Controls.Add(_panelMoveTo);
@@ -613,7 +603,7 @@ namespace CNC_Assist
                 _panelMoveTo = null;
             }
 
-            if (GlobalSetting.PanelSetting.showGUI_panel_BitValue)
+            if (GlobalSetting.PanelSetting.ShowGuiPanelBitValue)
             {
                 _panelBitValue = new GUI_panel_BitValue();
                 panelRight.Controls.Add(_panelBitValue);
@@ -756,12 +746,28 @@ namespace CNC_Assist
             frm.Show();
         }
 
+        private Sett3D frmSett3D = null;
+
         private void additionallyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //вызов 3Д формы
             //покажем графические настройки
-            Sett3D frm = new Sett3D(this);
-            frm.Show();
+
+            if (frmSett3D == null)
+            {
+                frmSett3D = new Sett3D();
+                frmSett3D.FormClosed += new FormClosedEventHandler(frmSett3D_FormClosed);
+                frmSett3D.Show();
+            }
+            else
+            {
+                frmSett3D.Show();
+            }
+        }
+
+        private void frmSett3D_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            frmSett3D = null;
         }
 
         private void scansurfaceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1098,18 +1104,21 @@ namespace CNC_Assist
                 Gl.glBegin(Gl.GL_LINES);
                 
                 int gridStep = GlobalSetting.RenderSetting.GridSize;
-                int gridStart = 0;
+                int gridStartX = GlobalSetting.RenderSetting.GridStartX;
+                int gridStartY = GlobalSetting.RenderSetting.GridStartY;
+                int gridStopX = GlobalSetting.RenderSetting.GridStartX + GlobalSetting.RenderSetting.GridSizeX;
+                int gridStopY = GlobalSetting.RenderSetting.GridStartY + GlobalSetting.RenderSetting.GridSizeY;
 
-                for (int gX = gridStart; gX < GlobalSetting.RenderSetting.GridSizeX + 1; gX += gridStep)
+                for (int gX = gridStartX; gX < gridStopX + 1; gX += gridStep)
                 {
-                    Gl.glVertex3d(gX, PreviewSetting.GridYstart, 0);
-                    Gl.glVertex3d(gX, PreviewSetting.GridYend, 0);
+                    Gl.glVertex3d(gX, gridStartY, 0);
+                    Gl.glVertex3d(gX, gridStopY, 0);
                 }
 
-                for (int gY = gridStart; gY < GlobalSetting.RenderSetting.GridSizeY + 1; gY += gridStep)
+                for (int gY = gridStartY; gY < gridStopY + 1; gY += gridStep)
                 {
-                    Gl.glVertex3d(PreviewSetting.GridXstart, gY, 0);
-                    Gl.glVertex3d(PreviewSetting.GridXend, gY, 0);
+                    Gl.glVertex3d(gridStartX, gY, 0);
+                    Gl.glVertex3d(gridStopX, gY, 0);
                 }
                 
                 Gl.glEnd();
@@ -1711,29 +1720,6 @@ namespace CNC_Assist
         {
             scanSurfaceForm = null;
         }
-
-
-        private ConfigureWorkArea WorkAreaForm = null;
-
-        private void setWorkAreaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (WorkAreaForm == null)
-            {
-                WorkAreaForm = new ConfigureWorkArea();
-                WorkAreaForm.FormClosed += new FormClosedEventHandler(WorkAreaForm_FormClosed);
-                WorkAreaForm.Show();
-            }
-            else
-            {
-                WorkAreaForm.Show();
-            }
-        }
-
-        private void WorkAreaForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            WorkAreaForm = null;
-        }
-
 
     }
 

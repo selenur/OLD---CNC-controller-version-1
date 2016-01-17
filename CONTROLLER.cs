@@ -141,7 +141,7 @@ namespace CNC_Assist
                 // Для отслеживания изменений от контроллера
                 byte[] oldInfoFromController = new byte[64];
 
-                int  indexCommand = -1; // текущая команда
+                //int  indexCommand = -1; // текущая команда
 
 
                 // тут поток висит пока не произойдет завершение работы
@@ -178,16 +178,16 @@ namespace CNC_Assist
             }
 
 
-            if (GlobalSetting.AppSetting.Controller == ControllerModel.Arduino_Gerber09)
-            {
-                string StringError = "Поддержка данного контроллера ещё не реализована.";
-                _connected = false;
+            //if (GlobalSetting.AppSetting.Controller == ControllerModel.Arduino_Gerber09)
+            //{
+            //    string StringError = "Поддержка данного контроллера ещё не реализована.";
+            //    _connected = false;
 
-                AddMessage(StringError);
+            //    AddMessage(StringError);
 
-                //запустим событие о разрыве связи
-                if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(StringError));
-            }
+            //    //запустим событие о разрыве связи
+            //    if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(StringError));
+            //}
 
 
 
@@ -695,7 +695,7 @@ namespace CNC_Assist
         {
             get
             {
-                return (decimal)Controller.INFO.AxesX_PositionPulse / GlobalSetting.ControllerSetting.AxleX.countPulse;
+                return (decimal)Controller.INFO.AxesX_PositionPulse / GlobalSetting.ControllerSetting.AxleX.CountPulse;
             }
         }
 
@@ -703,7 +703,7 @@ namespace CNC_Assist
         {
             get
             {
-                return (decimal)Controller.INFO.AxesY_PositionPulse / GlobalSetting.ControllerSetting.AxleY.countPulse;
+                return (decimal)Controller.INFO.AxesY_PositionPulse / GlobalSetting.ControllerSetting.AxleY.CountPulse;
             }
         }
 
@@ -711,7 +711,7 @@ namespace CNC_Assist
         {
             get
             {
-                return (decimal)Controller.INFO.AxesZ_PositionPulse / GlobalSetting.ControllerSetting.AxleZ.countPulse;
+                return (decimal)Controller.INFO.AxesZ_PositionPulse / GlobalSetting.ControllerSetting.AxleZ.CountPulse;
             }
         }
 
@@ -719,7 +719,7 @@ namespace CNC_Assist
         {
             get
             {
-                return (decimal)Controller.INFO.AxesA_PositionPulse / GlobalSetting.ControllerSetting.AxleA.countPulse;
+                return (decimal)Controller.INFO.AxesA_PositionPulse / GlobalSetting.ControllerSetting.AxleA.CountPulse;
             }
         }
 
@@ -731,10 +731,10 @@ namespace CNC_Assist
         /// <returns>Количество импульсов</returns>
         public int CalcPosPulse(string axes, decimal posMm)
         {
-            if (axes == "X") return (int)(posMm * GlobalSetting.ControllerSetting.AxleX.countPulse);
-            if (axes == "Y") return (int)(posMm * GlobalSetting.ControllerSetting.AxleY.countPulse);
-            if (axes == "Z") return (int)(posMm * GlobalSetting.ControllerSetting.AxleZ.countPulse);
-            if (axes == "A") return (int)(posMm * GlobalSetting.ControllerSetting.AxleA.countPulse);
+            if (axes == "X") return (int)(posMm * GlobalSetting.ControllerSetting.AxleX.CountPulse);
+            if (axes == "Y") return (int)(posMm * GlobalSetting.ControllerSetting.AxleY.CountPulse);
+            if (axes == "Z") return (int)(posMm * GlobalSetting.ControllerSetting.AxleZ.CountPulse);
+            if (axes == "A") return (int)(posMm * GlobalSetting.ControllerSetting.AxleA.CountPulse);
             return 0;
         }
     }
@@ -1018,7 +1018,7 @@ namespace CNC_Assist
             buf[46] = 0x10;
 
             // 
-            int inewReturn = (int)(returnDistance * GlobalSetting.ControllerSetting.AxleZ.countPulse);
+            int inewReturn = (int)(returnDistance * GlobalSetting.ControllerSetting.AxleZ.CountPulse);
 
             //растояние возврата
             buf[50] = (byte)(inewReturn);

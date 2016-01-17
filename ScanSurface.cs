@@ -8,6 +8,9 @@
         #region Инициализация переменных
 
         //Для определения того, инициализирован-ли
+        /// <summary>
+        /// Переменная для определения того что матрица ещё не инициализированна
+        /// </summary>
         public static bool NotInit = true;
 
         /// <summary>
@@ -60,7 +63,7 @@
         public static SurfacePoint PrimaryPosition
         {
             get { return _primaryPosition; }
-            set { _primaryPosition = value; }
+            //set { _primaryPosition = value; }
         }
 
         /// <summary>
@@ -72,11 +75,11 @@
             {
                 return _countPointX;
             }
-            set
-            {
-                _countPointX = value;
-                // TODO: нужно пересчитать матрицу
-            }
+            //set
+            //{
+            //    _countPointX = value;
+            //    // нужно пересчитать матрицу
+            //}
         }
 
         /// <summary>
@@ -88,11 +91,11 @@
             {
                 return _countPointY;
             }
-            set
-            {
-                _countPointY = value;
-                // TODO: нужно пересчитать матрицу
-            }
+            //set
+            //{
+            //    _countPointY = value;
+            //    // нужно пересчитать матрицу
+            //}
         }
 
         /// <summary>
@@ -104,11 +107,11 @@
             {
                 return _stepX;
             }
-            set
-            {
-                _stepX = value;
-                // TODO: нужно пересчитать матрицу
-            }
+            //set
+            //{
+            //    _stepX = value;
+            //    // нужно пересчитать матрицу
+            //}
         }
 
         /// <summary>
@@ -120,17 +123,17 @@
             {
                 return _stepY;
             }
-            set
-            {
-                _stepY = value;
-                // TODO: нужно пересчитать матрицу
-            }
+            //set
+            //{
+            //    _stepY = value;
+            //    // нужно пересчитать матрицу
+            //}
         }
 
         #endregion
 
         /// <summary>
-        /// Первоначальная инициализация
+        /// Инициализация матрицы
         /// </summary>
         /// <param name="surfacePoint">Ключевая(начальная) точка массива</param>
         /// <param name="countpointX">Количество точек/рядов сканирования по оси X</param>
@@ -139,8 +142,8 @@
         /// <param name="stepy">Интервал между точками</param>
         public static void Init(SurfacePoint surfacePoint, int countpointX, int countpointY, float stepx, float stepy)
         {
-            if (surfacePoint == null) _primaryPosition = new SurfacePoint();
-            else _primaryPosition = new SurfacePoint(surfacePoint);
+            
+            _primaryPosition = surfacePoint == null ? new SurfacePoint() : new SurfacePoint(surfacePoint);
 
             _countPointX = countpointX;
             _countPointY = countpointY;
@@ -174,8 +177,9 @@
             NotInit = false;
         }
 
-
-
+        /// <summary>
+        /// Вычисление высоты Z по переданным 2-м координатам
+        /// </summary>
         public static float GetPosZ(float _x, float _y)
         {
             //точка которую нужно отобразить
@@ -204,111 +208,15 @@
             SurfacePoint p2 = new SurfacePoint(Matrix[indexXmin + 1, indexYmin].PosX, Matrix[indexXmin + 1, indexYmin].PosY, Matrix[indexXmin + 1, indexYmin].PosZ);
             SurfacePoint p4 = new SurfacePoint(Matrix[indexXmin + 1, indexYmin + 1].PosX, Matrix[indexXmin + 1, indexYmin + 1].PosY, Matrix[indexXmin + 1, indexYmin + 1].PosZ);
 
-            SurfacePoint p12 = Geometry.CalcPX(p1, p2, pResult);
-            SurfacePoint p34 = Geometry.CalcPX(p3, p4, pResult);
-            SurfacePoint p1234 = Geometry.CalcPY(p12, p34, pResult);
-            /////////////////////* 
+            SurfacePoint p12 = CalcPX(p1, p2, pResult);
+            SurfacePoint p34 = CalcPX(p3, p4, pResult);
+            SurfacePoint p1234 = CalcPY(p12, p34, pResult);
 
-            ////////////////////            //pointZ = p1234.Z;
-
-
-
-            ////////////////////             //TODO: В связи с переделкой ряда ключевых механизмов применение матрицы отключим
-
-
-
-            ////////////////////            //1) получим координаты 4-х ближайших точек из матрицы
-
-            ////////////////////            //текущая точка
-
-
-
-
-
-            ////////////////////            //2) запустим математику
-
-
-            ////////////////////            //Point p1 = new Point(numericUpDown11.Value, numericUpDown10.Value, numericUpDown9.Value);
-            ////////////////////            //Point p2 = new Point(numericUpDown12.Value, numericUpDown14.Value, numericUpDown13.Value);
-            ////////////////////            //Point p3 = new Point(numericUpDown15.Value, numericUpDown17.Value, numericUpDown16.Value);
-            ////////////////////            //Point p4 = new Point(numericUpDown21.Value, numericUpDown23.Value, numericUpDown22.Value);
-
-            ////////////////////            //Point p5 = new Point(numericUpDown18.Value, numericUpDown20.Value, numericUpDown19.Value);
-
-
-
-            ////////////////////            //numericUpDown24.Value = p1234.X;
-            ////////////////////            //numericUpDown26.Value = p1234.Y;
-            ////////////////////            //numericUpDown25.Value = p1234.Z;
-
-            ////////////////////            ////Point p01 = Geometry.GetZ(p1, p2, p3, p4, new Point(3, 3, 1));
-            ////////////////////            */
 
             return p1234.PosZ;
             //return 0;
         }
 
-
-
-        ///// <summary>
-        ///// Сдвиг начальной точки
-        ///// </summary>
-        ///// <param name="x">новая координата</param>
-        ///// <param name="y">новая координата</param>
-        ///// <param name="z">новая координата</param>
-        //public static void ChangeStartPosition(float x, float y, float z)
-        //{
-        //    _StartPosX = x;
-        //    _StartPosY = y;
-        //    _StartPosZ = z;
-        //}
-
-        ///// <summary>
-        ///// Изменение размерности массива данных
-        ///// </summary>
-        ///// <param name="countX"></param>
-        ///// <param name="countY"></param>
-        ///// <param name="stepX"></param>
-        ///// <param name="stepY"></param>
-        //public static void ChangeSizeOrStep(int countX, int countY, float stepX, float stepY)
-        //{
-
-        //    //TODO:добавить возможность оставлять старые данные
-
-        //    CountPointX = countX;
-        //    CountPointY = countY;
-        //    StepX = stepX;
-        //    StepY = stepY;
-
-        //    float xf = 0;
-        //    float yf = 0;
-
-        //    Matrix = new SurfacePoint[countX, countY];
-        //    // заполним данными
-        //    for (int y = 0; y < CountPointY; y++)
-        //    {
-        //        for (int x = 0; x < CountPointX; x++)
-        //        {
-        //            Matrix[x, y] = new SurfacePoint(StartPosX+(float)(x*stepX), StartPosY+(float) (y*stepY), StartPosZ);
-        //            //dataGridView.Rows[y + 1].Cells[x + 1].Value = cScanSurface.matrix[x, y].value;
-        //        }
-        //    }            
-
-
-        //}
-
-
-
-
-    }
-
-
-
-
-
-    //класс для работы с геометрией
-    public static class Geometry
-    {
         /*
          *    Корректировка высоты по оси Z, у точки №5, зная высоту по Z у точек 1,2,3,4 
          * 
@@ -331,7 +239,6 @@
          *  3) Зная координаты точек №12, №34 и значение по оси Y у точки 5, вычисляем высоту по оси Z 
          */
 
-
         /// <summary>
         /// Функция корректирует высоту по оси Z
         /// </summary>
@@ -341,7 +248,7 @@
         /// <param name="p4">вторая точка второй линии X</param>
         /// <param name="p5">точка у которой нужно скорректировать высоту</param>
         /// <returns></returns>
-        public static SurfacePoint GetZ(SurfacePoint p1, SurfacePoint p2, SurfacePoint p3, SurfacePoint p4, SurfacePoint p5)
+        private static SurfacePoint GetZ(SurfacePoint p1, SurfacePoint p2, SurfacePoint p3, SurfacePoint p4, SurfacePoint p5)
         {
             SurfacePoint p12 = CalcPX(p1, p2, p5);
             SurfacePoint p34 = CalcPX(p3, p4, p5);
@@ -352,7 +259,7 @@
         }
 
         //нахождение высоты Z точки p0, лежащей на прямой которая паралельна оси X
-        public static SurfacePoint CalcPX(SurfacePoint p1, SurfacePoint p2, SurfacePoint p0)
+        private static SurfacePoint CalcPX(SurfacePoint p1, SurfacePoint p2, SurfacePoint p0)
         {
             SurfacePoint ReturnPoint = new SurfacePoint(p0.PosX, p0.PosY, p0.PosZ);
 
@@ -364,11 +271,8 @@
             return ReturnPoint;
         }
 
-
-
-        //TODO: деление на ноль
         //нахождение высоты Z точки p0, лежащей на прямой между точками p3 p4  (прямая паралельна оси Y)
-        public static SurfacePoint CalcPY(SurfacePoint p1, SurfacePoint p2, SurfacePoint p0)
+        private static SurfacePoint CalcPY(SurfacePoint p1, SurfacePoint p2, SurfacePoint p0)
         {
             SurfacePoint ReturnPoint = new SurfacePoint(p0.PosX, p0.PosY, p0.PosZ);
 
@@ -378,9 +282,6 @@
         }
 
     }
-
-
-
 
 
     /// <summary>
@@ -421,6 +322,4 @@
             //deltaZ = _point.deltaZ;
         }
     }
-
-
 }

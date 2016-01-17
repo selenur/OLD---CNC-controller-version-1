@@ -270,9 +270,37 @@ namespace CNC_Assist
                         if (dataRowNow.Machine.NumGkode == 1) speedToSend = (int)numericUpDown2.Value;
                     }
 
-                    Controller.SendBinaryData(BinaryData.pack_CA(Controller.INFO.CalcPosPulse("X", dataRowNow.POS.X),
-                                                                    Controller.INFO.CalcPosPulse("Y", dataRowNow.POS.Y),
-                                                                    Controller.INFO.CalcPosPulse("Z", dataRowNow.POS.Z),
+
+
+                    //координаты следующей точки
+                    float pointX = (float)dataRowNow.POS.X;
+                    float pointY = (float)dataRowNow.POS.Y;
+                    float pointZ = (float)dataRowNow.POS.Z;
+
+                    //добавление смещения G-кода
+                    if (Controller.CorrectionPos.useCorrection)
+                    {
+                        //// применение пропорций
+                        //pointX *= Setting.koeffSizeX;
+                        //pointY *= Setting.koeffSizeY;
+
+                        //применение смещения
+                        pointX += (float)Controller.CorrectionPos.deltaX;
+                        pointY += (float)Controller.CorrectionPos.deltaY;
+
+                        //применение матрицы поверхности детали
+                        if (Controller.CorrectionPos.UseMatrix)
+                        {
+                            pointZ += ScanSurface.GetPosZ(pointX, pointY);
+                        }
+
+                        pointZ += (float)Controller.CorrectionPos.deltaZ;
+
+                    }
+
+                    Controller.SendBinaryData(BinaryData.pack_CA(Controller.INFO.CalcPosPulse("X", (decimal)pointX),
+                                                                    Controller.INFO.CalcPosPulse("Y", (decimal)pointY),
+                                                                    Controller.INFO.CalcPosPulse("Z", (decimal)pointZ),
                                                                     Controller.INFO.CalcPosPulse("A", dataRowNow.POS.A),
                                                                     speedToSend,
                                                                     dataRowNow.numberRow));

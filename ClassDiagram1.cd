@@ -1,18 +1,103 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="CNC_Assist.ScanSurface">
-    <Position X="5.75" Y="1.5" Width="1.5" />
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="CNC_Assist.GlobalSetting">
+    <Position X="0.75" Y="0.5" Width="4.25" />
     <TypeIdentifier>
-      <HashCode>AEABAAAAAAAAAACAAAAIAAgAAAigAABAAAACAAEAAAA=</HashCode>
-      <FileName>ScanSurface.cs</FileName>
+      <HashCode>QAAAAAAgAAAAAIAAAAEAAAAAQIABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CNC_Assist.SurfacePoint">
-    <Position X="8.75" Y="1.5" Width="1.5" />
+  <Class Name="CNC_Assist.SettingAPP" Collapsed="true">
+    <Position X="2.5" Y="4.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAwAIAAAAAAAAAAAAAAEAAAAA=</HashCode>
-      <FileName>ScanSurface.cs</FileName>
+      <HashCode>AAAAQAAACQAAAAAAAAAAAAAAAAAEAAAAACAAAEAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="CNC_Assist.SettingController" Collapsed="true">
+    <Position X="2.5" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEgCAQAAAABQgIBIABgsAAEIAAIA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNC_Assist.SettingRender" Collapsed="true">
+    <Position X="2.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkAAAAAAAAAAAABAAACSgADAAEAgABAAADAABAJAgAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNC_Assist.SettingPanels" Collapsed="true">
+    <Position X="4.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAAAAAAAAAAAAAAQAAAIEAAMAAEQAAgCACBAIA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNC_Assist.AxleSetting">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAMQAAAAAAAAAEAAAEAAAABAAAAAAAOAAEAQAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNC_Assist.BooleanTypeConverter">
+    <Position X="8.5" Y="3" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNC_Assist.EnumTypeConverter">
+    <Position X="7.5" Y="4.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAgAAAAAAAAAAAACAAAAIAAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNC_Assist.PropertySorter" Collapsed="true">
+    <Position X="11" Y="6.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNC_Assist.PropertyOrderAttribute">
+    <Position X="11.75" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNC_Assist.PropertyOrderPair" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAACAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Enum Name="CNC_Assist.ControllerModel" Collapsed="true">
+    <Position X="0.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CNC_Assist.Languages" Collapsed="true">
+    <Position X="0.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CNC_Assist.Show3DGkode" Collapsed="true">
+    <Position X="0.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAAAAAA=</HashCode>
+      <FileName>GlobalSetting.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
