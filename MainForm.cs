@@ -24,8 +24,7 @@ namespace CNC_Assist
         private GuiPanelTaskControl _panelTaskControl;
         private GUI_panel_BitValue _panelBitValue;
         private GUI_panel_MoveTo _panelMoveTo;
-
-        private webCamera webCameraForms;
+        private webCamera _webCameraForms;
 
         public MainForm()
         {
@@ -461,11 +460,15 @@ namespace CNC_Assist
 
         #region События от элементов на форме
 
-        // для invoke вызовов
+        /// <summary>
+        /// для invoke вызовов
+        /// </summary>
         private void RefreshElementsForms1()
         {
             RefreshElementsForms();
         }
+
+
 
         private void RefreshElementsForms(bool _reloadPanel = false)
         {
@@ -507,6 +510,23 @@ namespace CNC_Assist
             }
 
             if (!_reloadPanel) return; //что-бы не перерисовывать панели
+
+
+            if (GlobalSetting.AppSetting.Language == Languages.Russian)
+            {
+                this.Text = @"Хобби ЧПУ 2.0.0";
+                menuLanguageToolStripMenuItem.Text = @"Язык";
+
+
+            }
+            else
+            {
+                this.Text = @"Hobby CNC 2.0.0";
+                menuLanguageToolStripMenuItem.Text = @"Language";
+            }
+
+
+
 
             bool visibleLeft;
             bool visibleRight;
@@ -1672,15 +1692,15 @@ namespace CNC_Assist
 
         private void webcameraToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (webCameraForms == null)
+            if (_webCameraForms == null)
             {
-                webCameraForms = new webCamera();
-                webCameraForms.FormClosed += new FormClosedEventHandler(webCameraForms_FormClosed);
-                webCameraForms.Show();
+                _webCameraForms = new webCamera();
+                _webCameraForms.FormClosed += new FormClosedEventHandler(webCameraForms_FormClosed);
+                _webCameraForms.Show();
             }
             else
             {
-                webCameraForms.Show();
+                _webCameraForms.Show();
             }
 
         }
@@ -1688,7 +1708,7 @@ namespace CNC_Assist
 
         private void webCameraForms_FormClosed(object sender, FormClosedEventArgs e)
         {
-            webCameraForms = null;
+            _webCameraForms = null;
         }
 
         private void fromBufferToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1719,6 +1739,20 @@ namespace CNC_Assist
         private void scanSurfaceForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             scanSurfaceForm = null;
+        }
+
+        private void menuRuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GlobalSetting.AppSetting.Language = Languages.Russian;
+            GlobalSetting.SaveToFile();
+            RefreshElementsForms(true);
+        }
+
+        private void menuEnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GlobalSetting.AppSetting.Language = Languages.English;
+            GlobalSetting.SaveToFile();
+            RefreshElementsForms(true);
         }
 
     }

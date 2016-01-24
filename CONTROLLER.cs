@@ -1357,14 +1357,14 @@ namespace CNC_Assist
 
 
 
-            //корректировка положения
-            if (Controller.CorrectionPos.useCorrection)
-            {
-                newPosX += Controller.INFO.CalcPosPulse("X", Controller.CorrectionPos.deltaX);
-                newPosY += Controller.INFO.CalcPosPulse("Y", Controller.CorrectionPos.deltaY);
-                newPosZ += Controller.INFO.CalcPosPulse("Z", Controller.CorrectionPos.deltaZ);
-                newPosA += Controller.INFO.CalcPosPulse("A", Controller.CorrectionPos.deltaA);
-            }
+            ////корректировка положения
+            //if (Controller.CorrectionPos.useCorrection)
+            //{
+            //    newPosX += Controller.INFO.CalcPosPulse("X", Controller.CorrectionPos.deltaX);
+            //    newPosY += Controller.INFO.CalcPosPulse("Y", Controller.CorrectionPos.deltaY);
+            //    newPosZ += Controller.INFO.CalcPosPulse("Z", Controller.CorrectionPos.deltaZ);
+            //    newPosA += Controller.INFO.CalcPosPulse("A", Controller.CorrectionPos.deltaA);
+            //}
 
 
 

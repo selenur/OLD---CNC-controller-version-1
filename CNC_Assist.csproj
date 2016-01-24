@@ -355,6 +355,7 @@
     <None Include="picture\canvas.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="wiki\interface.jpg" />
     <None Include="picture\3d_glasses.png" />
     <Content Include="picture\accept_button.png" />
     <None Include="picture\cancel.png" />

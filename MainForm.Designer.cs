@@ -233,6 +233,7 @@
             this.menuRuToolStripMenuItem.Name = "menuRuToolStripMenuItem";
             this.menuRuToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
             this.menuRuToolStripMenuItem.Text = "русский";
+            this.menuRuToolStripMenuItem.Click += new System.EventHandler(this.menuRuToolStripMenuItem_Click);
             // 
             // menuEnToolStripMenuItem
             // 
@@ -241,6 +242,7 @@
             this.menuEnToolStripMenuItem.Name = "menuEnToolStripMenuItem";
             this.menuEnToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
             this.menuEnToolStripMenuItem.Text = "Английский";
+            this.menuEnToolStripMenuItem.Click += new System.EventHandler(this.menuEnToolStripMenuItem_Click);
             // 
             // MainToolStrip
             // 
@@ -915,7 +917,7 @@
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
             this.Name = "MainForm";
-            this.Text = "ЧПУ Хоббист 2.0.0";
+            this.Text = "Хобби ЧПУ 2.0.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MainMenu.ResumeLayout(false);
