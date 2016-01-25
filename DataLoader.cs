@@ -291,6 +291,7 @@ namespace CNC_Assist
                     nextDataRow.Machine.WithoutPause = false;
                 }
 
+                // TODO: добавить условие при котором данная команда доступна только с контроллером MK2, или вместо неё просто срабатывает команда g1
                 if (code == "G1.1") //рабочее движение без дальнейшей остановки в конце отрезка
                 {
                     nextDataRow.Machine.NumGkode = 1;

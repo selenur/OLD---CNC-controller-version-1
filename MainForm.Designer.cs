@@ -143,6 +143,7 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.fileToolStripMenuItem.Tag = "_file_";
             this.fileToolStripMenuItem.Text = "Файл";
             // 
             // menuOpenFile
@@ -151,6 +152,7 @@
             this.menuOpenFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuOpenFile.Name = "menuOpenFile";
             this.menuOpenFile.Size = new System.Drawing.Size(212, 38);
+            this.menuOpenFile.Tag = "_openfile_";
             this.menuOpenFile.Text = "Открыть файл";
             this.menuOpenFile.Click += new System.EventHandler(this.menuOpenFile_Click);
             // 
@@ -160,6 +162,7 @@
             this.fromBufferToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.fromBufferToolStripMenuItem.Name = "fromBufferToolStripMenuItem";
             this.fromBufferToolStripMenuItem.Size = new System.Drawing.Size(212, 38);
+            this.fromBufferToolStripMenuItem.Tag = "_loadkodefrombuffer_";
             this.fromBufferToolStripMenuItem.Text = "Загрузить из буффера";
             this.fromBufferToolStripMenuItem.Click += new System.EventHandler(this.fromBufferToolStripMenuItem_Click);
             // 
@@ -169,6 +172,7 @@
             this.bt_exit.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.bt_exit.Name = "bt_exit";
             this.bt_exit.Size = new System.Drawing.Size(212, 38);
+            this.bt_exit.Tag = "_closeprogramm_";
             this.bt_exit.Text = "Завершение работы";
             this.bt_exit.Click += new System.EventHandler(this.bt_exit_Click);
             // 
@@ -179,6 +183,7 @@
             this.scanSurfaceToolStripMenuItem1});
             this.modulesToolStripMenuItem.Name = "modulesToolStripMenuItem";
             this.modulesToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.modulesToolStripMenuItem.Tag = "_modules_";
             this.modulesToolStripMenuItem.Text = "Модули";
             // 
             // webcameraToolStripMenuItem
@@ -187,6 +192,7 @@
             this.webcameraToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.webcameraToolStripMenuItem.Name = "webcameraToolStripMenuItem";
             this.webcameraToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.webcameraToolStripMenuItem.Tag = "_webcamera_";
             this.webcameraToolStripMenuItem.Text = "Веб-камера";
             this.webcameraToolStripMenuItem.Click += new System.EventHandler(this.webcameraToolStripMenuItem_Click);
             // 
@@ -196,6 +202,7 @@
             this.scanSurfaceToolStripMenuItem1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.scanSurfaceToolStripMenuItem1.Name = "scanSurfaceToolStripMenuItem1";
             this.scanSurfaceToolStripMenuItem1.Size = new System.Drawing.Size(243, 38);
+            this.scanSurfaceToolStripMenuItem1.Tag = "_scannSurface_";
             this.scanSurfaceToolStripMenuItem1.Text = "Сканирование поверхности";
             this.scanSurfaceToolStripMenuItem1.Click += new System.EventHandler(this.scanSurfaceToolStripMenuItem1_Click);
             // 
@@ -205,6 +212,7 @@
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.helpToolStripMenuItem.Tag = "_help_";
             this.helpToolStripMenuItem.Text = "Справка";
             // 
             // aboutToolStripMenuItem
@@ -213,6 +221,7 @@
             this.aboutToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(165, 38);
+            this.aboutToolStripMenuItem.Tag = "_about_";
             this.aboutToolStripMenuItem.Text = "О программе";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -224,6 +233,7 @@
             this.menuLanguageToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.flag_russia;
             this.menuLanguageToolStripMenuItem.Name = "menuLanguageToolStripMenuItem";
             this.menuLanguageToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.menuLanguageToolStripMenuItem.Tag = "_language_";
             this.menuLanguageToolStripMenuItem.Text = "Язык";
             // 
             // menuRuToolStripMenuItem
@@ -231,7 +241,8 @@
             this.menuRuToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.flag_russia;
             this.menuRuToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuRuToolStripMenuItem.Name = "menuRuToolStripMenuItem";
-            this.menuRuToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
+            this.menuRuToolStripMenuItem.Size = new System.Drawing.Size(157, 38);
+            this.menuRuToolStripMenuItem.Tag = "_rus_";
             this.menuRuToolStripMenuItem.Text = "русский";
             this.menuRuToolStripMenuItem.Click += new System.EventHandler(this.menuRuToolStripMenuItem_Click);
             // 
@@ -240,7 +251,8 @@
             this.menuEnToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.flag_great_britain;
             this.menuEnToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuEnToolStripMenuItem.Name = "menuEnToolStripMenuItem";
-            this.menuEnToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
+            this.menuEnToolStripMenuItem.Size = new System.Drawing.Size(157, 38);
+            this.menuEnToolStripMenuItem.Tag = "_eng_";
             this.menuEnToolStripMenuItem.Text = "Английский";
             this.menuEnToolStripMenuItem.Click += new System.EventHandler(this.menuEnToolStripMenuItem_Click);
             // 
@@ -332,6 +344,7 @@
             this.buttonESTOP.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonESTOP.Name = "buttonESTOP";
             this.buttonESTOP.Size = new System.Drawing.Size(115, 36);
+            this.buttonESTOP.Tag = "_energystop_";
             this.buttonESTOP.Text = "ОСТАНОВКА";
             this.buttonESTOP.Click += new System.EventHandler(this.toolStripButtonEnergyStop_Click);
             // 
@@ -347,6 +360,7 @@
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(103, 36);
+            this.toolStripButton1.Tag = "_setting_";
             this.toolStripButton1.Text = "Настройки";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 

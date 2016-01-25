@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -50,6 +51,8 @@ namespace CNC_Assist
         {
             // Дополнительная инициализация 3D
             Init3D();
+
+            Language.Init();
 
             // Подключение к контроллеру
             if (GlobalSetting.AppSetting.Autoconnect) Controller.Connect();
@@ -469,6 +472,24 @@ namespace CNC_Assist
         }
 
 
+        void GetAllTypedControls(Control ctrl)
+        {
+            //// Работаем только с элементами искомого типа   
+            //if (ctrl.GetType() == type)
+            //{
+            //    controls.Add(ctrl);
+            //////Language.Tranlate(ctrl);
+            //}
+            // Проходим через элементы рекурсивно,   
+            // чтобы не пропустить элементы,   
+            //которые находятся в контейнерах   
+            foreach (Control ctrlChild in ctrl.Controls)
+            {
+                GetAllTypedControls(ctrlChild);
+            }
+        }  
+
+
 
         private void RefreshElementsForms(bool _reloadPanel = false)
         {
@@ -512,18 +533,30 @@ namespace CNC_Assist
             if (!_reloadPanel) return; //что-бы не перерисовывать панели
 
 
-            if (GlobalSetting.AppSetting.Language == Languages.Russian)
-            {
-                this.Text = @"Хобби ЧПУ 2.0.0";
-                menuLanguageToolStripMenuItem.Text = @"Язык";
+            // переводчик
+            //foreach (var ctrl in this.Controls)
+            //{
+            //    if (ctrl is ToolStrip) //
+            //    {
+            //        Language.Tranlate(ctrl);
+            //    }
+            //}
+
+            //GetAllTypedControls(this);
+            
+
+            //if (GlobalSetting.AppSetting.Language == Languages.Russian)
+            //{
+            //    this.Text = @"Хобби ЧПУ 2.0.0";
+            //    menuLanguageToolStripMenuItem.Text = @"Язык";
 
 
-            }
-            else
-            {
-                this.Text = @"Hobby CNC 2.0.0";
-                menuLanguageToolStripMenuItem.Text = @"Language";
-            }
+            //}
+            //else
+            //{
+            //    this.Text = @"Hobby CNC 2.0.0";
+            //    menuLanguageToolStripMenuItem.Text = @"Language";
+            //}
 
 
 

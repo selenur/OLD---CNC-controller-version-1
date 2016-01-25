@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace CNC_Assist
 {
     static class Language
     {
 
-        public static List<langString> ValueLangStrings = new List<langString>();
+        private static List<langString> ValueLangStrings = new List<langString>();
 
         public static void Init()
         {
@@ -43,6 +44,71 @@ namespace CNC_Assist
         }
 
 
+        private static void TranslateMenu(MenuStrip _mm)
+        {
+
+
+        //    for (int i = 0; i < _mm.Items.Count; i++)
+        //    {
+        //        _mm.Items[i].Text = Language.GetTranslate(Setting.language, _mm.Items[i].Text);
+
+        //        //TranslateMenu((MenuStrip) _mm.Items[i].Owner);
+
+        //       // for (int n = 0; n < _mm.Items[i].Owner.Items.Count;n++ )
+        //        //{
+
+
+        //      //  }
+
+
+        //      //_mm.Items[3].Owner.Items[1]
+
+        //    //foreach (ToolStripMenuItem tsiCollection in _mm.Items)
+        //    //{
+        //    //   // Tranlate(ctrl);
+
+        //    //    //ctrl.Text = Language.GetTranslate(Setting.language, ctrl.Text);
+
+
+
+        //    //}              
+
+
+
+        //    }
+
+
+
+
+
+        }
+
+
+        ////будет рекурсивной
+        public static void Tranlate(object _obj)
+        {
+
+
+            //    _obj.Text = Language.GetTranslate(Setting.language, _obj.Text);
+
+            //    if (_obj.Controls.Count > 0)
+            //    {
+
+            //        foreach (Control ctrl in _obj.Controls)
+            //        {
+            //            Tranlate(ctrl);
+
+            //            //ctrl.Text = Language.GetTranslate(Setting.language, ctrl.Text);
+
+
+
+            //        }
+
+            //    }
+
+
+
+        }
 
 
 
@@ -107,6 +173,13 @@ namespace CNC_Assist
             rus = _rus;
             eng = _eng;
         }
+
+
+
+
+
+
+
     }
 }
 
@@ -117,68 +190,5 @@ namespace CNC_Assist
 //TranslateMenu(this.MainMenu);
 
 
-//private void TranslateMenu(MenuStrip _mm)
-//{
 
 
-//    for (int i = 0; i < _mm.Items.Count; i++)
-//    {
-//        _mm.Items[i].Text = Language.GetTranslate(Setting.language, _mm.Items[i].Text);
-
-//        //TranslateMenu((MenuStrip) _mm.Items[i].Owner);
-
-//       // for (int n = 0; n < _mm.Items[i].Owner.Items.Count;n++ )
-//        //{
-
-
-//      //  }
-
-
-//      //_mm.Items[3].Owner.Items[1]
-
-//    //foreach (ToolStripMenuItem tsiCollection in _mm.Items)
-//    //{
-//    //   // Tranlate(ctrl);
-
-//    //    //ctrl.Text = Language.GetTranslate(Setting.language, ctrl.Text);
-
-
-
-//    //}              
-
-
-
-//    }
-
-
-
-
-
-//}
-
-
-////будет рекурсивной
-//private void Tranlate(Control _obj)
-//{
-
-
-//    _obj.Text = Language.GetTranslate(Setting.language, _obj.Text);
-
-//    if (_obj.Controls.Count > 0)
-//    {
-
-//        foreach (Control ctrl in _obj.Controls)
-//        {
-//            Tranlate(ctrl);
-
-//            //ctrl.Text = Language.GetTranslate(Setting.language, ctrl.Text);
-
-
-
-//        }
-
-//    }
-
-
-
-//}
