@@ -12,32 +12,20 @@ namespace CNC_Assist
         {
             ValueLangStrings.Clear();
 
-            ValueLangStrings.Add(new langString(@"_appName_", @"ЧПУ хоббист", @"CNC hobbist"));
+            ValueLangStrings.Add(new langString(@"_formCaption_", @"Хобби ЧПУ", @"Hobby CNC"));
 
-            ValueLangStrings.Add(new langString(@"_menuFile_"       , @"Файл"           , @"File"));
-            ValueLangStrings.Add(new langString(@"_menuSetting_", @"Настройки", @"Setting"));
-            ValueLangStrings.Add(new langString(@"_menuHelp_"       , @"Справка"        , @"Help"));
-            ValueLangStrings.Add(new langString(@"_aboutApp_"       , @"О программе"    , @"About")); 
-
-
-
-
-            ValueLangStrings.Add(new langString(@"_dialog_setting_", @"Настройки программы", @"Setting application"));
-            ValueLangStrings.Add(new langString(@"_select_controller_", @"Выбор контроллера", @"Select controller"));
-
-
-            /*  
-             * 
-             * 
-             * 
-             * 
-             * 
-             * 
-             * 
-             * 
-             */
-
-
+            ValueLangStrings.Add(new langString(@"_menuFile_"                   , @"Файл"                       , @"File"));
+                ValueLangStrings.Add(new langString(@"_menuopenfile_"           , @"Открыть файл..."            , @"Open file..."));
+                ValueLangStrings.Add(new langString(@"_menuloadkodefrombuffer_" , @"Получить из буффера"        , @"Get from buffer"));
+                ValueLangStrings.Add(new langString(@"_menucloseprogramm_"      , @"Закрыть"                    , @"Close")); 
+            ValueLangStrings.Add(new langString(@"_menumodules_"                , @"Модули"                     , @"Modules")); 
+                ValueLangStrings.Add(new langString(@"_menuwebcamera_"          , @"Работа с WEB камерой"       , @"Work with WEB camera")); 
+                ValueLangStrings.Add(new langString(@"_menuscannSurface_"       , @"Сканирование поверхности"   , @"Scan surface")); 
+            ValueLangStrings.Add(new langString(@"_menuhelp_"                   , @"Справка"                    , @"Help")); 
+                ValueLangStrings.Add(new langString(@"_menuabout_"              , @"О программе"                , @"About")); 
+            ValueLangStrings.Add(new langString(@"_menulanguage_"               , @"Выбор языка"                , @"Select language")); 
+                ValueLangStrings.Add(new langString(@"_menurus_"                , @"Русский"                    , @"Russian"));
+                ValueLangStrings.Add(new langString(@"_menueng_"                , @"Английский"                 , @"English")); 
 
 
 
@@ -84,9 +72,24 @@ namespace CNC_Assist
         }
 
 
-        ////будет рекурсивной
-        public static void Tranlate(object _obj)
+        // рекурсивная функция для применения мультиязычности
+        public static void TranlateMenuStrip(ToolStripMenuItem _menuItem)
         {
+            string tagElement = _menuItem.Tag.ToString();
+
+            if (tagElement.Substring(0, 1) == "_")
+            {
+                // попытаемся перевести
+                _menuItem.Text = GetTranslate(GlobalSetting.AppSetting.Language, tagElement);
+            }
+
+
+            foreach (ToolStripMenuItem drmenu in _menuItem.DropDownItems)
+            {
+                TranlateMenuStrip(drmenu);
+            }
+
+
 
 
             //    _obj.Text = Language.GetTranslate(Setting.language, _obj.Text);

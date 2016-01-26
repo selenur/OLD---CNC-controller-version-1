@@ -61,6 +61,9 @@ namespace CNC_Assist
 
             //ScanSurface.Init();
 
+
+            
+
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -472,22 +475,37 @@ namespace CNC_Assist
         }
 
 
-        void GetAllTypedControls(Control ctrl)
-        {
-            //// Работаем только с элементами искомого типа   
-            //if (ctrl.GetType() == type)
-            //{
-            //    controls.Add(ctrl);
-            //////Language.Tranlate(ctrl);
-            //}
-            // Проходим через элементы рекурсивно,   
-            // чтобы не пропустить элементы,   
-            //которые находятся в контейнерах   
-            foreach (Control ctrlChild in ctrl.Controls)
-            {
-                GetAllTypedControls(ctrlChild);
-            }
-        }  
+        //void GetAllTypedControls(Control ctrl)
+        //{
+
+        //    string ss = "";
+
+        //    if (ctrl.Tag != null)
+        //    {
+        //        ss = ctrl.Tag.ToString();
+        //    }
+        //    //// Работаем только с элементами искомого типа   
+        //    //if (ctrl.GetType() == type)
+        //    //{
+        //    //    controls.Add(ctrl);
+        //    //////Language.Tranlate(ctrl);
+        //    //}
+        //    // Проходим через элементы рекурсивно,   
+        //    // чтобы не пропустить элементы,   
+        //    //которые находятся в контейнерах   
+        //    foreach (Control ctrlChild in ctrl.Controls)
+        //    {
+        //        string ss2 = "";
+
+        //        if (ctrlChild.Tag != null)
+        //        {
+        //            ss2 = ctrlChild.Tag.ToString();
+        //        }
+        //        //string ss2 = ctrlChild.Tag.ToString();
+        //        //string ss2 = (Control) ctrlChild.Tag;
+        //        GetAllTypedControls(ctrlChild);
+        //    }
+        //}  
 
 
 
@@ -533,9 +551,26 @@ namespace CNC_Assist
             if (!_reloadPanel) return; //что-бы не перерисовывать панели
 
 
-            // переводчик
+            // --- ПЕРЕВОД меню и диалогов ---
+            //1)заголовок программы
+            this.Text = Language.GetTranslate(GlobalSetting.AppSetting.Language, this.Tag.ToString());
+            //2)меню действий
+            foreach (ToolStripMenuItem item in MainMenu.Items)
+            {
+                Language.TranlateMenuStrip(item);
+            }
+
+
+
+
+
+
+
+            //fileToolStripMenuItem.Tag
+
             //foreach (var ctrl in this.Controls)
             //{
+            //    //string ss = (Control)ctrl.Tag;
             //    if (ctrl is ToolStrip) //
             //    {
             //        Language.Tranlate(ctrl);
