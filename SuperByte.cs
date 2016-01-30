@@ -269,6 +269,31 @@ namespace CNC_Assist
             RefreshByteFromBits();
         }
 
+
+        /// <summary>
+        /// Конструктор из битов
+        /// </summary>
+        /// <param name="bit7"></param>
+        /// <param name="bit6"></param>
+        /// <param name="bit5"></param>
+        /// <param name="bit4"></param>
+        /// <param name="bit3"></param>
+        /// <param name="bit2"></param>
+        /// <param name="bit1"></param>
+        /// <param name="bit0"></param>
+        public SuperByte(int bit7, int bit6, int bit5, int bit4, int bit3, int bit2, int bit1, int bit0)
+        {
+            _valueBit[0] = (bit0 == 1);
+            _valueBit[1] = (bit1 == 1);
+            _valueBit[2] = (bit2 == 1);
+            _valueBit[3] = (bit3 == 1);
+            _valueBit[4] = (bit4 == 1);
+            _valueBit[5] = (bit5 == 1);
+            _valueBit[6] = (bit6 == 1);
+            _valueBit[7] = (bit7 == 1);
+            RefreshByteFromBits();
+        }
+
         /// <summary>
         /// Конструктор из строки
         /// </summary>

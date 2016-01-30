@@ -55,6 +55,11 @@ namespace CNC_Assist
         /// </summary>
         public static SettingPanels PanelSetting = new SettingPanels();
 
+
+
+        public static bool DISSABLE_CHECK = false;
+
+
         /// <summary>
         /// Сохранение настроек в файл
         /// </summary>
@@ -184,6 +189,30 @@ namespace CNC_Assist
             set { _autoconnect = value; }           
 
         }
+
+
+
+
+
+        /// <summary>
+        /// Режим отладки
+        /// </summary>
+        private int _debugLevel = 0;
+        /// <summary>
+        /// Режим отладки
+        /// </summary>
+        [DisplayName(@"Режим отладки")]
+        [Description("Настройка позволяет указать режим отладки программы.")]
+        [PropertyOrder(5)]
+        [Category("1. Настройки программы")]
+        public int debugLevel
+        {
+            get { return _debugLevel; }
+            set { _debugLevel = value; }
+
+        }
+
+
     }
 
     /// <summary>
@@ -210,6 +239,41 @@ namespace CNC_Assist
             set { _minBuffSize = value; }
 
         }
+
+
+
+        private bool _allowMotorUse = true;
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        [DisplayName(@"Разрешить управление мотором")]
+        [Description("!!!назначение данного параметра мне пока непонятно!!!!")]
+        [PropertyOrder(1)]
+        [Category("2. Настройки контроллера")]
+        [TypeConverter(typeof(BooleanTypeConverter))]
+        public bool allowMotorUse
+        {
+            get { return _allowMotorUse; }
+            set { _allowMotorUse = value; }
+        }
+
+        private bool _useSensorTools = true;
+        /// <summary>
+        /// Использование концевика
+        /// </summary>
+        [DisplayName(@"Использовать датчик инструмента")]
+        [Description("Включает возможность применения датчика инструмента")]
+        [PropertyOrder(1)]
+        [Category("2. Настройки контроллера")]
+        [TypeConverter(typeof(BooleanTypeConverter))]
+        public bool useSensorTools
+        {
+            get { return _useSensorTools; }
+            set { _useSensorTools = value; }
+        }
+
+
+
 
         /// <summary>
         /// Настройки оси

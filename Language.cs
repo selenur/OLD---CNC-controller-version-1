@@ -25,51 +25,23 @@ namespace CNC_Assist
                 ValueLangStrings.Add(new langString(@"_menuabout_"              , @"О программе"                , @"About")); 
             ValueLangStrings.Add(new langString(@"_menulanguage_"               , @"Выбор языка"                , @"Select language")); 
                 ValueLangStrings.Add(new langString(@"_menurus_"                , @"Русский"                    , @"Russian"));
-                ValueLangStrings.Add(new langString(@"_menueng_"                , @"Английский"                 , @"English")); 
+                ValueLangStrings.Add(new langString(@"_menueng_"                , @"Английский"                 , @"English"));
 
 
 
-        }
+                ValueLangStrings.Add(new langString(@"_panelSpindel_"       , @"Шпиндель"               , @"Shpindel"));
+                ValueLangStrings.Add(new langString(@"_panelEnergystop_"    , @"ОСТАНОВКА"              , @"STOP"));
+                ValueLangStrings.Add(new langString(@"_panelSetting_"       , @"Настройки"              , @"Setting"));
+                ValueLangStrings.Add(new langString(@"_panelEditGkode_"     , @"Корректировка G-Кода"   , @"Edit G-kode"));
+                ValueLangStrings.Add(new langString(@"_panelAdditionally_"  , @"Дополнительно"          , @"Additionally"));
+                ValueLangStrings.Add(new langString(@"_panelSetting3D_"     , @"настройки 3D"           , @"Setting 3D"));
 
-
-        private static void TranslateMenu(MenuStrip _mm)
-        {
-
-
-        //    for (int i = 0; i < _mm.Items.Count; i++)
-        //    {
-        //        _mm.Items[i].Text = Language.GetTranslate(Setting.language, _mm.Items[i].Text);
-
-        //        //TranslateMenu((MenuStrip) _mm.Items[i].Owner);
-
-        //       // for (int n = 0; n < _mm.Items[i].Owner.Items.Count;n++ )
-        //        //{
-
-
-        //      //  }
-
-
-        //      //_mm.Items[3].Owner.Items[1]
-
-        //    //foreach (ToolStripMenuItem tsiCollection in _mm.Items)
-        //    //{
-        //    //   // Tranlate(ctrl);
-
-        //    //    //ctrl.Text = Language.GetTranslate(Setting.language, ctrl.Text);
-
-
-
-        //    //}              
-
-
-
-        //    }
-
-
-
-
+                ValueLangStrings.Add(new langString(@"_panelConnect_"   , @"Подключение к контроллеру"  , @"Connect to controller"));
+                ValueLangStrings.Add(new langString(@"_panelOpenFile_"  , @"Открыть файл"               , @"Setting 3D"));
+                ValueLangStrings.Add(new langString(@"_panelExit_"      , @"Выход"                      , @"EXIT"));
 
         }
+
 
 
         // рекурсивная функция для применения мультиязычности
@@ -88,32 +60,7 @@ namespace CNC_Assist
             {
                 TranlateMenuStrip(drmenu);
             }
-
-
-
-
-            //    _obj.Text = Language.GetTranslate(Setting.language, _obj.Text);
-
-            //    if (_obj.Controls.Count > 0)
-            //    {
-
-            //        foreach (Control ctrl in _obj.Controls)
-            //        {
-            //            Tranlate(ctrl);
-
-            //            //ctrl.Text = Language.GetTranslate(Setting.language, ctrl.Text);
-
-
-
-            //        }
-
-            //    }
-
-
-
         }
-
-
 
         public static string GetTranslate(Languages _lang,string _value)
         {
@@ -176,13 +123,6 @@ namespace CNC_Assist
             rus = _rus;
             eng = _eng;
         }
-
-
-
-
-
-
-
     }
 }
 

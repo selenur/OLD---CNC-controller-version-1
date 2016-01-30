@@ -80,6 +80,8 @@
             this.posAngleZm = new System.Windows.Forms.ToolStripButton();
             this.OpenGL_preview = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.tabPageSupp = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btSendSetting = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -105,6 +107,7 @@
             this.panelCenter = new System.Windows.Forms.Panel();
             this.panelRight = new System.Windows.Forms.FlowLayoutPanel();
             this.panelLeft = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBoxDisableControl = new System.Windows.Forms.CheckBox();
             this.MainMenu.SuspendLayout();
             this.MainToolStrip.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
@@ -112,6 +115,7 @@
             this.tabPage3D.SuspendLayout();
             this.menu3Dview.SuspendLayout();
             this.tabPageSupp.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             this.groupBox9.SuspendLayout();
@@ -220,7 +224,7 @@
             this.aboutToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.contact_email;
             this.aboutToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(165, 38);
             this.aboutToolStripMenuItem.Tag = "_menuabout_";
             this.aboutToolStripMenuItem.Text = "О программе";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
@@ -241,7 +245,7 @@
             this.menuRuToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.flag_russia;
             this.menuRuToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuRuToolStripMenuItem.Name = "menuRuToolStripMenuItem";
-            this.menuRuToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
+            this.menuRuToolStripMenuItem.Size = new System.Drawing.Size(157, 38);
             this.menuRuToolStripMenuItem.Tag = "_menurus_";
             this.menuRuToolStripMenuItem.Text = "русский";
             this.menuRuToolStripMenuItem.Click += new System.EventHandler(this.menuRuToolStripMenuItem_Click);
@@ -251,7 +255,7 @@
             this.menuEnToolStripMenuItem.Image = global::CNC_Assist.Properties.Resources.flag_great_britain;
             this.menuEnToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuEnToolStripMenuItem.Name = "menuEnToolStripMenuItem";
-            this.menuEnToolStripMenuItem.Size = new System.Drawing.Size(168, 38);
+            this.menuEnToolStripMenuItem.Size = new System.Drawing.Size(157, 38);
             this.menuEnToolStripMenuItem.Tag = "_menueng_";
             this.menuEnToolStripMenuItem.Text = "Английский";
             this.menuEnToolStripMenuItem.Click += new System.EventHandler(this.menuEnToolStripMenuItem_Click);
@@ -285,7 +289,9 @@
             this.bt_ConnDiskonect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.bt_ConnDiskonect.Name = "bt_ConnDiskonect";
             this.bt_ConnDiskonect.Size = new System.Drawing.Size(36, 36);
+            this.bt_ConnDiskonect.Tag = "_panelConnect_";
             this.bt_ConnDiskonect.Text = "Подключиться к контроллеру";
+            this.bt_ConnDiskonect.ToolTipText = "\r\n";
             this.bt_ConnDiskonect.Click += new System.EventHandler(this.bt_ConnDiskonect_Click);
             // 
             // toolStripSeparator1
@@ -301,7 +307,9 @@
             this.btOpenFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btOpenFile.Name = "btOpenFile";
             this.btOpenFile.Size = new System.Drawing.Size(36, 36);
+            this.btOpenFile.Tag = "_panelOpenFile_";
             this.btOpenFile.Text = "Открыть файл";
+            this.btOpenFile.ToolTipText = "\r\n";
             this.btOpenFile.Click += new System.EventHandler(this.btOpenFile_Click);
             // 
             // toolStripSeparator2
@@ -317,7 +325,9 @@
             this.bt_exit2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.bt_exit2.Name = "bt_exit2";
             this.bt_exit2.Size = new System.Drawing.Size(36, 36);
+            this.bt_exit2.Tag = "_panelExit_";
             this.bt_exit2.Text = "toolStripButton2";
+            this.bt_exit2.ToolTipText = "\r\n";
             this.bt_exit2.Click += new System.EventHandler(this.bt_exit2_Click);
             // 
             // toolStripSeparator3
@@ -333,6 +343,7 @@
             this.buttonSpindel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonSpindel.Name = "buttonSpindel";
             this.buttonSpindel.Size = new System.Drawing.Size(110, 36);
+            this.buttonSpindel.Tag = "_panelSpindel_";
             this.buttonSpindel.Text = "ШПИНДЕЛЬ";
             this.buttonSpindel.Click += new System.EventHandler(this.buttonSpindel_Click);
             // 
@@ -344,7 +355,7 @@
             this.buttonESTOP.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonESTOP.Name = "buttonESTOP";
             this.buttonESTOP.Size = new System.Drawing.Size(115, 36);
-            this.buttonESTOP.Tag = "_energystop_";
+            this.buttonESTOP.Tag = "_panelEnergystop_";
             this.buttonESTOP.Text = "ОСТАНОВКА";
             this.buttonESTOP.Click += new System.EventHandler(this.toolStripButtonEnergyStop_Click);
             // 
@@ -360,7 +371,7 @@
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(103, 36);
-            this.toolStripButton1.Tag = "_setting_";
+            this.toolStripButton1.Tag = "_panelSetting_";
             this.toolStripButton1.Text = "Настройки";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
@@ -371,6 +382,7 @@
             this.toolStripButtonEditData.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonEditData.Name = "toolStripButtonEditData";
             this.toolStripButtonEditData.Size = new System.Drawing.Size(179, 36);
+            this.toolStripButtonEditData.Tag = "_panelEditGkode_";
             this.toolStripButtonEditData.Text = "манипуляции с G-кодом";
             this.toolStripButtonEditData.Click += new System.EventHandler(this.toolStripButtonEditData_Click);
             // 
@@ -383,6 +395,7 @@
             this.toolStripDropDownadditionally.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownadditionally.Name = "toolStripDropDownadditionally";
             this.toolStripDropDownadditionally.Size = new System.Drawing.Size(140, 36);
+            this.toolStripDropDownadditionally.Tag = "_panelAdditionally_";
             this.toolStripDropDownadditionally.Text = "Дополнительно";
             // 
             // additionallyToolStripMenuItem
@@ -391,6 +404,7 @@
             this.additionallyToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.additionallyToolStripMenuItem.Name = "additionallyToolStripMenuItem";
             this.additionallyToolStripMenuItem.Size = new System.Drawing.Size(243, 38);
+            this.additionallyToolStripMenuItem.Tag = "_panelSetting3D_";
             this.additionallyToolStripMenuItem.Text = "Настройка 3D отображения";
             this.additionallyToolStripMenuItem.Click += new System.EventHandler(this.additionallyToolStripMenuItem_Click);
             // 
@@ -630,6 +644,7 @@
             // 
             // tabPageSupp
             // 
+            this.tabPageSupp.Controls.Add(this.groupBox1);
             this.tabPageSupp.Controls.Add(this.label2);
             this.tabPageSupp.Controls.Add(this.numericUpDown1);
             this.tabPageSupp.Controls.Add(this.label1);
@@ -647,10 +662,31 @@
             this.tabPageSupp.Text = "Дополнительно";
             this.tabPageSupp.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.checkBoxDisableControl);
+            this.groupBox1.Controls.Add(this.btSendSetting);
+            this.groupBox1.Location = new System.Drawing.Point(237, 372);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(179, 96);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "отладка";
+            // 
+            // btSendSetting
+            // 
+            this.btSendSetting.Location = new System.Drawing.Point(10, 24);
+            this.btSendSetting.Name = "btSendSetting";
+            this.btSendSetting.Size = new System.Drawing.Size(163, 26);
+            this.btSendSetting.TabIndex = 0;
+            this.btSendSetting.Text = "послать настройки";
+            this.btSendSetting.UseVisualStyleBackColor = true;
+            this.btSendSetting.Click += new System.EventHandler(this.btSendSetting_Click);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(273, 405);
+            this.label2.Location = new System.Drawing.Point(243, 323);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(51, 13);
             this.label2.TabIndex = 14;
@@ -658,7 +694,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(273, 428);
+            this.numericUpDown1.Location = new System.Drawing.Point(237, 338);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             330000,
             0,
@@ -679,7 +715,7 @@
             this.label1.AutoSize = true;
             this.label1.Enabled = false;
             this.label1.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label1.Location = new System.Drawing.Point(232, 318);
+            this.label1.Location = new System.Drawing.Point(234, 276);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(132, 13);
             this.label1.TabIndex = 12;
@@ -689,7 +725,7 @@
             // 
             this.numericUpDown9.Enabled = false;
             this.numericUpDown9.ForeColor = System.Drawing.Color.DarkBlue;
-            this.numericUpDown9.Location = new System.Drawing.Point(254, 342);
+            this.numericUpDown9.Location = new System.Drawing.Point(246, 297);
             this.numericUpDown9.Minimum = new decimal(new int[] {
             1,
             0,
@@ -711,7 +747,7 @@
             this.checkBoxNewSpped.Enabled = false;
             this.checkBoxNewSpped.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.checkBoxNewSpped.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.checkBoxNewSpped.Location = new System.Drawing.Point(233, 269);
+            this.checkBoxNewSpped.Location = new System.Drawing.Point(235, 227);
             this.checkBoxNewSpped.Name = "checkBoxNewSpped";
             this.checkBoxNewSpped.Size = new System.Drawing.Size(131, 46);
             this.checkBoxNewSpped.TabIndex = 10;
@@ -918,6 +954,18 @@
             this.panelLeft.Size = new System.Drawing.Size(204, 511);
             this.panelLeft.TabIndex = 10;
             // 
+            // checkBoxDisableControl
+            // 
+            this.checkBoxDisableControl.AutoSize = true;
+            this.checkBoxDisableControl.ForeColor = System.Drawing.Color.Red;
+            this.checkBoxDisableControl.Location = new System.Drawing.Point(15, 66);
+            this.checkBoxDisableControl.Name = "checkBoxDisableControl";
+            this.checkBoxDisableControl.Size = new System.Drawing.Size(153, 17);
+            this.checkBoxDisableControl.TabIndex = 1;
+            this.checkBoxDisableControl.Text = "!!! отключить контроль !!!";
+            this.checkBoxDisableControl.UseVisualStyleBackColor = true;
+            this.checkBoxDisableControl.CheckedChanged += new System.EventHandler(this.checkBoxDisableControl_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -947,6 +995,8 @@
             this.menu3Dview.PerformLayout();
             this.tabPageSupp.ResumeLayout(false);
             this.tabPageSupp.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
             this.groupBox9.ResumeLayout(false);
@@ -1037,6 +1087,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuLanguageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuRuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuEnToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btSendSetting;
+        private System.Windows.Forms.CheckBox checkBoxDisableControl;
     }
 }
 

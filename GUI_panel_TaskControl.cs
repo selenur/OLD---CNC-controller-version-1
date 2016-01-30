@@ -341,15 +341,26 @@ namespace CNC_Assist
             //активного элемента в новый цвет  
             //e.Graphics.FillRectangle(myBrush, e.Bounds);  
 
-            // Перерисовываем текст текущего элемента  
-            e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(), e.Font, myBrush, e.Bounds, StringFormat.GenericDefault);
-            
-            //выделение другим цветом в той-же строке
-            //e.Graphics.DrawString(" 123", e.Font, Brushes.Blue, e.Bounds, StringFormat.GenericDefault);
 
-            // Если ListBox в фокусе, рисуем прямоугольник   
-            //вокруг активного элемента.  
-            e.DrawFocusRectangle();
+            try
+            {
+                // Перерисовываем текст текущего элемента  
+                e.Graphics.DrawString(((ListBox)sender).Items[e.Index].ToString(), e.Font, myBrush, e.Bounds, StringFormat.GenericDefault);
+                //выделение другим цветом в той-же строке
+                //e.Graphics.DrawString(" 123", e.Font, Brushes.Blue, e.Bounds, StringFormat.GenericDefault);
+
+                // Если ListBox в фокусе, рисуем прямоугольник   
+                //вокруг активного элемента.  
+                e.DrawFocusRectangle();
+            }
+            catch (Exception)
+            {
+                
+              //  throw;
+            }
+
+            
+
         }
     }
 }

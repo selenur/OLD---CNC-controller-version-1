@@ -562,7 +562,44 @@ namespace CNC_Assist
 
 
 
+            //3)панель действий
+            foreach (var item in MainToolStrip.Items)
+            {
+                if (item is ToolStripButton)
+                {
 
+                    string ss = ((ToolStripButton)item).Tag.ToString();		
+
+
+                    ((ToolStripButton)item).Text = Language.GetTranslate(GlobalSetting.AppSetting.Language, ss);
+                    
+
+                    
+                    
+
+                }
+
+                 //пропускаем ToolStripSeparator
+
+                if (item is ToolStripDropDownButton)
+                {
+                    //тут нужно пробежаться внутри так-же
+                    string ss = ((ToolStripDropDownButton)item).Tag.ToString();
+                    ((ToolStripDropDownButton)item).Text = Language.GetTranslate(GlobalSetting.AppSetting.Language, ss);
+
+                    foreach (var ddb in ((ToolStripDropDownButton)item).DropDownItems)
+                    {
+                        string ss2 = ((ToolStripMenuItem)ddb).Tag.ToString();
+                        ((ToolStripMenuItem)ddb).Text = Language.GetTranslate(GlobalSetting.AppSetting.Language, ss2);
+
+                    }
+
+                    //  ((ToolStripDropDownButton)item).DropDownItems[0]
+                    
+
+                }
+               // Language.TranlateMenuStrip(item);
+            }
 
 
 
@@ -1821,6 +1858,54 @@ namespace CNC_Assist
             GlobalSetting.AppSetting.Language = Languages.English;
             GlobalSetting.SaveToFile();
             RefreshElementsForms(true);
+        }
+
+        private void btSendSetting_Click(object sender, EventArgs e)
+        {
+            Controller.SendBinaryData(BinaryData.pack_D3());
+            Controller.SendBinaryData(BinaryData.pack_AB());
+            Controller.SendBinaryData(BinaryData.pack_9F(GlobalSetting.ControllerSetting.allowMotorUse,
+                GlobalSetting.ControllerSetting.useSensorTools, GlobalSetting.ControllerSetting.AxleX.CountPulse,
+                GlobalSetting.ControllerSetting.AxleY.CountPulse, GlobalSetting.ControllerSetting.AxleZ.CountPulse,
+                GlobalSetting.ControllerSetting.AxleA.CountPulse));
+
+
+
+            Controller.SendBinaryData(BinaryData.pack_BF(GlobalSetting.ControllerSetting.AxleX.MaxSpeed,
+                GlobalSetting.ControllerSetting.AxleY.MaxSpeed, GlobalSetting.ControllerSetting.AxleZ.MaxSpeed,
+                GlobalSetting.ControllerSetting.AxleA.MaxSpeed));
+
+            Controller.SendBinaryData(BinaryData.pack_B5());
+            Controller.SendBinaryData(BinaryData.pack_B6());
+            Controller.SendBinaryData(BinaryData.pack_C2());
+            Controller.SendBinaryData(BinaryData.pack_9D());
+            Controller.SendBinaryData(BinaryData.pack_9E(0x01));
+
+            /*
+             *  D3 - ok
+                AB - ok
+                9F - ok
+                A0
+                A1
+                BF - ok
+                B5 - ok
+                B6 - ok
+                C2 - ok
+                9D - ok
+                9E - ok
+                */
+
+
+
+
+            //Controller.SendBinaryData(BinaryData.pack_B5(checkBox18.Checked, (int)numericUpDown7.Value, BinaryData.TypeSignal.None, (int)numericUpDown8.Value));
+
+
+        }
+
+        private void checkBoxDisableControl_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobalSetting.DISSABLE_CHECK = checkBoxDisableControl.Checked;
         }
 
     }

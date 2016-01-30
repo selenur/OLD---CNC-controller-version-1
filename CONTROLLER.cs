@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.IO.Ports;
+using System.Reflection;
+using System.Text;
 using System.Threading;
 using CNC_Assist.PlanetCNC;
 using LibUsbDotNet;
@@ -157,13 +161,32 @@ namespace CNC_Assist
                         if (WasDisconnected != null) WasDisconnected(null, new DeviceEventArgsMessage(@"Ошибка получения данных с контроллера, связь разорвана!"));
                     }
 
-                    if (bytesRead > 0 &&
-                        readBuffer[0] == 0x01 &&
-                        !CompareArray(oldInfoFromController, readBuffer))
+                    if (bytesRead > 0 && readBuffer[0] == 0x01 && !CompareArray(oldInfoFromController, readBuffer))
                     {
                         INFO.rawData = readBuffer;
 
                         ParseInfo(readBuffer);
+
+
+                        if (GlobalSetting.AppSetting.debugLevel == 1)
+                        {
+                            //добавим запись в файл
+
+                            string fileDebug = string.Format("{0}\\debug.log",
+                                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
+
+                            string ss = GetTextFromBinary(readBuffer);
+
+                            File.AppendAllText(fileDebug, ss, Encoding.UTF8);
+
+                            //File.AppendText() //               fileDebug, ss, Encoding.UTF8);
+                            //StreamWriter sw = new StreamWriter(fileDebug,Encoding.UTF8);
+
+                            
+                        }
+
+
                         oldInfoFromController = readBuffer;
 
                         if (NewDataFromController != null) NewDataFromController(null); //событие о получении новых данных                       
@@ -198,6 +221,26 @@ namespace CNC_Assist
             AddMessage("Завершение потока.................");
 
         } //окончание потока работы с контроллерами
+
+
+        private static string GetTextFromBinary(byte[] _bytes)
+        {
+            string returnValue = @"[" + DateTime.Now.ToString("O") + "] ";
+
+            //и добавим байты в виде строк
+
+            foreach (byte VARIABLE in _bytes)
+            {
+                string sByte = VARIABLE.ToString("X2");
+
+                returnValue += sByte + " ";
+
+            }
+
+            returnValue += Environment.NewLine;
+
+            return returnValue;
+        }
 
 
         #endregion
@@ -384,9 +427,16 @@ namespace CNC_Assist
         private static void ParseInfo(IList<byte> readBuffer)
         {
 
-            int ttm = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 2.1);
+            if (GlobalSetting.DISSABLE_CHECK != true)
+            {
+                
+                // получим значение скорости движения
+                int ttm = (int)(((readBuffer[22] * 65536) + (readBuffer[21] * 256) + (readBuffer[20])) / 2.1);
 
-            if (ttm > 5000) return;
+                if (ttm > 5000) return;
+
+            }
+
 
             //TODO: иногда в МК2 бывает глюк, поэтому защитимся от него, костылем
             //if (readBuffer[10] == 0x58 && readBuffer[11] == 0x02 && readBuffer[22] == 0x20 && readBuffer[23] == 0x02) return;
@@ -792,6 +842,20 @@ namespace CNC_Assist
             return buf;
         }
 
+
+
+        public static byte[] pack_C2()
+        {
+            byte[] buf = new byte[64];
+
+            buf[0] = 0xC2;
+            buf[4] = 0x80;
+            buf[5] = 0x03;
+
+            return buf;
+        }
+
+
         public enum TypeSignal
         {
             None,
@@ -807,7 +871,7 @@ namespace CNC_Assist
         /// <param name="ts">Тип сигнала</param>
         /// <param name="SpeedShim">Значение определяющее форму сигнала</param>
         /// <returns></returns>
-        public static byte[] pack_B5(bool shpindelON, int numShimChanel = 0, TypeSignal ts = TypeSignal.None, int SpeedShim = 0)
+        public static byte[] pack_B5(bool shpindelON = false, int numShimChanel = 0, TypeSignal ts = TypeSignal.None, int SpeedShim = 0)
         {
 
             int tmpSpeed = SpeedShim;
@@ -894,7 +958,7 @@ namespace CNC_Assist
 
 
 
-        public static byte[] pack_B6(bool chanel2ON,bool chanel3ON)
+        public static byte[] pack_B6(bool chanel2ON = false,bool chanel3ON = false)
         {
             byte[] buf = new byte[64];
 
@@ -937,6 +1001,14 @@ namespace CNC_Assist
         {
             byte[] buf = new byte[64];
             buf[0] = 0xAA;
+            buf[4] = 0x80;
+            return buf;
+        }
+
+        public static byte[] pack_AB()
+        {
+            byte[] buf = new byte[64];
+            buf[0] = 0xAB;
             buf[4] = 0x80;
             return buf;
         }
@@ -1033,6 +1105,16 @@ namespace CNC_Assist
         }
 
 
+
+        public static byte[] pack_D3()
+        {
+            byte[] buf = new byte[64];
+
+            buf[0] = 0xD3;
+            buf[5] = 0x01;
+
+            return buf;
+        }
 
         /// <summary>
         /// Запуск движения без остановки (и остановка)
@@ -1195,47 +1277,13 @@ namespace CNC_Assist
         }
 
 
-
-        ///// <summary>
-        ///// используется временно для прощупывания
-        ///// </summary>
-        ///// <returns></returns>
-        //public static byte[] pack_CA()
-        //{
-        //    byte[] buf = new byte[64];
-
-
-        //    buf[0] = 0xCA;
-
-        //    buf[5] = 0xB9;
-        //    buf[14] = 0xD0;
-        //    buf[15] = 0x07;
-        //    buf[43] = 0x10;
-        //    buf[44] = 0x0E;
-
-        //    return buf;
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public static byte[] pack_9E(byte value)
+        public static byte[] pack_9E(byte _byte4 = 0x00, byte _byte5 = 0x00)
         {
             byte[] buf = new byte[64];
 
-            buf[0] = 0x9e;
-            buf[5] = value;
+            buf[0] = 0x9E;
+            buf[4] = _byte4;
+            buf[5] = _byte5;
 
             return buf;
         }
@@ -1245,15 +1293,27 @@ namespace CNC_Assist
 
 
 
-        public static byte[] pack_9F(byte value)
+        public static byte[] pack_9F(bool _allowMotorUse, bool _useSensorTools, int _countPulseX, int _countPulseY, int _countPulseZ, int _countPulseA)
         {
             byte[] buf = new byte[64];
 
-            buf[0] = 0x9e;
-            buf[5] = value;
+            buf[0] = 0x9E;
+            buf[4] = 0x80;
+
+            buf[5] = (new SuperByte(true, false, true, true, false, false, _useSensorTools, _allowMotorUse)).ValueByte;
+
+
+
+
 
             return buf;
         }
+
+
+
+
+
+
 
         /// <summary>
         /// Установка ограничения максимальной скорости, по осям
@@ -1266,7 +1326,7 @@ namespace CNC_Assist
         {
             byte[] buf = new byte[64];
 
-            buf[0] = 0xbf;
+            buf[0] = 0xBF;
 
             buf[4] = 0x00;
 
@@ -1329,7 +1389,7 @@ namespace CNC_Assist
         {
             byte[] buf = new byte[64];
 
-            buf[0] = 0xc0;
+            buf[0] = 0xC0;
 
             return buf;
         }
@@ -1520,7 +1580,7 @@ namespace CNC_Assist
         {
             byte[] buf = new byte[64];
 
-            buf[0] = 0xff;
+            buf[0] = 0xFF;
 
             return buf;
         }
@@ -1533,7 +1593,7 @@ namespace CNC_Assist
         {
             byte[] buf = new byte[64];
 
-            buf[0] = 0x9d;
+            buf[0] = 0x9D;
 
             return buf;
         }
